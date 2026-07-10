@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   concepts,
   datasets,
@@ -12,6 +12,18 @@ import {
   thrusts,
   tools,
 } from "./apto-data";
+import {
+  ConstellationBuilder,
+  DataLoom,
+  EvidenceXRay,
+  ForecastWeather,
+  FrontierTerrain,
+  ResearchPassport,
+  SignalLens,
+  SignalSymphony,
+  Timefold,
+  WhatIfMachine,
+} from "./interactive-mockups";
 
 const mapPoints = [
   [13, 31, "cyan"], [18, 54, "blue"], [24, 22, "gold"], [28, 67, "mint"],
@@ -131,7 +143,7 @@ function ConceptSwitcher({ current, onSelect }: { current: string; onSelect: (id
       </div>
       <nav className="review-actions" aria-label="Mockup navigation">
         <button type="button" onClick={() => onSelect(previous.id)} aria-label={`Previous mockup: ${previous.name}`}><Arrow left /></button>
-        <button type="button" onClick={() => onSelect("gallery")}>All 10</button>
+        <button type="button" onClick={() => onSelect("gallery")}>All 20</button>
         <button type="button" onClick={() => onSelect(next.id)} aria-label={`Next mockup: ${next.name}`}>Next <span aria-hidden="true">→</span></button>
       </nav>
     </div>
@@ -154,11 +166,11 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
     <div className="gallery-page">
       <header className="gallery-header">
         <div className="gallery-kicker"><span>APTO</span> Website direction study · July 2026</div>
-        <h1>Ten possible<br />front doors to <em>APTO.</em></h1>
+        <h1>Twenty possible<br />front doors to <em>APTO.</em></h1>
         <div className="gallery-intro">
           <p>Each direction puts working tools, open data, major results, publications, teams, and participating institutions at the center of the program—not behind a generic project homepage.</p>
           <div className="gallery-summary">
-            <span>10</span><small>distinct<br />directions</small>
+            <span>20</span><small>distinct<br />directions</small>
             <span>01</span><small>shared content<br />architecture</small>
           </div>
         </div>
@@ -173,8 +185,23 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
         <button type="button" onClick={() => onSelect("civic")}>View recommended direction <Arrow /></button>
       </section>
 
-      <section className="concept-grid" aria-label="Ten APTO website mockups">
-        {concepts.map((concept) => (
+      <div className="gallery-group-heading"><span>01—10</span><div><h2>Foundational directions</h2><p>Ten complete visual systems for a credible, useful APTO program portal.</p></div></div>
+      <section className="concept-grid" aria-label="First ten APTO website mockups">
+        {concepts.slice(0, 10).map((concept) => (
+          <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
+            <ConceptMiniature id={concept.id} />
+            <div className="concept-card-meta">
+              <span>{concept.number}</span>
+              <div><strong>{concept.name}</strong><small>{concept.mood}</small></div>
+              <i style={{ background: concept.color }} />
+            </div>
+          </button>
+        ))}
+      </section>
+
+      <div className="gallery-group-heading is-experimental"><span>11—20</span><div><h2>Interactive experiments</h2><p>Ten memorable interaction models: scrub, reveal, build, simulate, listen, collect, and weave.</p></div><i>NEW</i></div>
+      <section className="concept-grid" aria-label="Ten interactive APTO website mockups">
+        {concepts.slice(10).map((concept) => (
           <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
             <ConceptMiniature id={concept.id} />
             <div className="concept-card-meta">
@@ -463,6 +490,16 @@ function renderConcept(id: string) {
     case "editorial": return <EditorialLab />;
     case "commons": return <OpenScienceCommons />;
     case "story": return <SignalStory />;
+    case "timefold": return <Timefold />;
+    case "lens": return <SignalLens />;
+    case "builder": return <ConstellationBuilder />;
+    case "weather": return <ForecastWeather />;
+    case "whatif": return <WhatIfMachine />;
+    case "xray": return <EvidenceXRay />;
+    case "terrain": return <FrontierTerrain />;
+    case "symphony": return <SignalSymphony />;
+    case "passport": return <ResearchPassport />;
+    case "loom": return <DataLoom />;
     default: return null;
   }
 }
@@ -471,13 +508,13 @@ export default function MockupStudio() {
   const [selected, setSelected] = useState("gallery");
 
   useEffect(() => {
-    const syncHash = () => {
-      const hash = window.location.hash.replace("#", "");
-      setSelected(concepts.some((concept) => concept.id === hash) ? hash : "gallery");
+    const syncQuery = () => {
+      const id = new URLSearchParams(window.location.search).get("concept") ?? "gallery";
+      setSelected(concepts.some((concept) => concept.id === id) ? id : "gallery");
     };
-    syncHash();
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
+    syncQuery();
+    window.addEventListener("popstate", syncQuery);
+    return () => window.removeEventListener("popstate", syncQuery);
   }, []);
 
   useEffect(() => {
@@ -486,19 +523,24 @@ export default function MockupStudio() {
       if (
         target &&
         (["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName) ||
-          target.isContentEditable)
+          target.isContentEditable ||
+          Boolean(target.closest('[data-local-arrows="true"]')))
       ) {
         return;
       }
       if (selected === "gallery" || !["ArrowLeft", "ArrowRight", "Escape"].includes(event.key)) return;
       if (event.key === "Escape") {
-        window.location.hash = "";
+        history.pushState(null, "", window.location.pathname);
+        setSelected("gallery");
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
       const index = concepts.findIndex((concept) => concept.id === selected);
       const offset = event.key === "ArrowRight" ? 1 : -1;
       const next = concepts[(index + offset + concepts.length) % concepts.length];
-      window.location.hash = next.id;
+      history.pushState(null, "", `${window.location.pathname}?concept=${next.id}`);
+      setSelected(next.id);
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -506,12 +548,12 @@ export default function MockupStudio() {
 
   const choose = (id: string) => {
     if (id === "gallery") {
-      history.pushState(null, "", `${window.location.pathname}${window.location.search}`);
+      history.pushState(null, "", window.location.pathname);
       setSelected("gallery");
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    window.location.hash = id;
+    history.pushState(null, "", `${window.location.pathname}?concept=${id}`);
     setSelected(id);
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   };

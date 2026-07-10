@@ -32,16 +32,17 @@ test("server-renders the APTO design gallery", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>APTO Website Direction Study<\/title>/i);
-  assert.match(html, /Ten possible/);
+  assert.match(html, /Twenty possible/);
   assert.match(html, /front doors to/);
   assert.match(html, /Civic Observatory/);
   assert.match(html, /Signal Story/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
 
-test("ships ten concepts, responsive behavior, and APTO assets", async () => {
-  const [source, styles, packageJson] = await Promise.all([
+test("ships twenty concepts, responsive behavior, and APTO assets", async () => {
+  const [source, interactiveSource, styles, packageJson] = await Promise.all([
     readFile(new URL("../app/mockups.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/interactive-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
@@ -57,6 +58,16 @@ test("ships ten concepts, responsive behavior, and APTO assets", async () => {
     "editorial",
     "commons",
     "story",
+    "timefold",
+    "lens",
+    "builder",
+    "weather",
+    "whatif",
+    "xray",
+    "terrain",
+    "symphony",
+    "passport",
+    "loom",
   ]) {
     assert.match(source, new RegExp(`case \\\"${id}\\\"`));
   }
@@ -65,6 +76,9 @@ test("ships ten concepts, responsive behavior, and APTO assets", async () => {
   assert.match(styles, /prefers-reduced-motion/);
   assert.match(source, /Increase forecast horizon/);
   assert.match(source, /Public explorers use verified open resources/);
+  assert.match(interactiveSource, /Hear the data/);
+  assert.match(interactiveSource, /Show all evidence/);
+  assert.match(interactiveSource, /RUN SCENARIO/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
   for (const asset of [
