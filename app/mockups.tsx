@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import {
   concepts,
   datasets,
@@ -24,6 +24,8 @@ import {
   Timefold,
   WhatIfMachine,
 } from "./interactive-mockups";
+
+const KineticMockup = lazy(() => import("./kinetic-mockups").then((module) => ({ default: module.KineticMockup })));
 
 const mapPoints = [
   [13, 31, "cyan"], [18, 54, "blue"], [24, 22, "gold"], [28, 67, "mint"],
@@ -143,7 +145,7 @@ function ConceptSwitcher({ current, onSelect }: { current: string; onSelect: (id
       </div>
       <nav className="review-actions" aria-label="Mockup navigation">
         <button type="button" onClick={() => onSelect(previous.id)} aria-label={`Previous mockup: ${previous.name}`}><Arrow left /></button>
-        <button type="button" onClick={() => onSelect("gallery")}>All 20</button>
+        <button type="button" onClick={() => onSelect("gallery")}>All 30</button>
         <button type="button" onClick={() => onSelect(next.id)} aria-label={`Next mockup: ${next.name}`}>Next <span aria-hidden="true">→</span></button>
       </nav>
     </div>
@@ -166,11 +168,11 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
     <div className="gallery-page">
       <header className="gallery-header">
         <div className="gallery-kicker"><span>APTO</span> Website direction study · July 2026</div>
-        <h1>Twenty possible<br />front doors to <em>APTO.</em></h1>
+        <h1>Thirty possible<br />front doors to <em>APTO.</em></h1>
         <div className="gallery-intro">
           <p>Each direction puts working tools, open data, major results, publications, teams, and participating institutions at the center of the program—not behind a generic project homepage.</p>
           <div className="gallery-summary">
-            <span>20</span><small>distinct<br />directions</small>
+            <span>30</span><small>distinct<br />directions</small>
             <span>01</span><small>shared content<br />architecture</small>
           </div>
         </div>
@@ -201,7 +203,21 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
 
       <div className="gallery-group-heading is-experimental"><span>11—20</span><div><h2>Interactive experiments</h2><p>Ten memorable interaction models: scrub, reveal, build, simulate, listen, collect, and weave.</p></div><i>NEW</i></div>
       <section className="concept-grid" aria-label="Ten interactive APTO website mockups">
-        {concepts.slice(10).map((concept) => (
+        {concepts.slice(10, 20).map((concept) => (
+          <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
+            <ConceptMiniature id={concept.id} />
+            <div className="concept-card-meta">
+              <span>{concept.number}</span>
+              <div><strong>{concept.name}</strong><small>{concept.mood}</small></div>
+              <i style={{ background: concept.color }} />
+            </div>
+          </button>
+        ))}
+      </section>
+
+      <div className="gallery-group-heading is-kinetic"><span>21—30</span><div><h2>Motion and spatial worlds</h2><p>Ten reactive design systems: scroll through depth, bend fields, refract light, orbit content, and steer live GPU scenes.</p></div><i>LIVE</i></div>
+      <section className="concept-grid" aria-label="Ten motion-first APTO website mockups">
+        {concepts.slice(20, 30).map((concept) => (
           <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
             <ConceptMiniature id={concept.id} />
             <div className="concept-card-meta">
@@ -500,6 +516,16 @@ function renderConcept(id: string) {
     case "symphony": return <SignalSymphony />;
     case "passport": return <ResearchPassport />;
     case "loom": return <DataLoom />;
+    case "gravity": return <KineticMockup id="gravity" />;
+    case "deepzoom": return <KineticMockup id="deepzoom" />;
+    case "prism": return <KineticMockup id="prism" />;
+    case "orbit": return <KineticMockup id="orbit" />;
+    case "circuit": return <KineticMockup id="circuit" />;
+    case "magnet": return <KineticMockup id="magnet" />;
+    case "vortex": return <KineticMockup id="vortex" />;
+    case "morph": return <KineticMockup id="morph" />;
+    case "infinite": return <KineticMockup id="infinite" />;
+    case "liquid": return <KineticMockup id="liquid" />;
     default: return null;
   }
 }
@@ -511,6 +537,7 @@ export default function MockupStudio() {
     const syncQuery = () => {
       const id = new URLSearchParams(window.location.search).get("concept") ?? "gallery";
       setSelected(concepts.some((concept) => concept.id === id) ? id : "gallery");
+      requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior }));
     };
     syncQuery();
     window.addEventListener("popstate", syncQuery);
@@ -529,6 +556,8 @@ export default function MockupStudio() {
         return;
       }
       if (selected === "gallery" || !["ArrowLeft", "ArrowRight", "Escape"].includes(event.key)) return;
+      if (event.key === "Escape" && (document.fullscreenElement || document.pointerLockElement)) return;
+      event.preventDefault();
       if (event.key === "Escape") {
         history.pushState(null, "", window.location.pathname);
         setSelected("gallery");
@@ -560,7 +589,7 @@ export default function MockupStudio() {
 
   return (
     <main className={`mockup-studio view-${selected}`}>
-      {selected === "gallery" ? <Gallery onSelect={choose} /> : <><ConceptSwitcher current={selected} onSelect={choose} />{renderConcept(selected)}</>}
+      {selected === "gallery" ? <Gallery onSelect={choose} /> : <><ConceptSwitcher current={selected} onSelect={choose} /><Suspense fallback={<div className="kinetic-loading"><span>APTO</span><p>Preparing the live scene…</p></div>}>{renderConcept(selected)}</Suspense></>}
     </main>
   );
 }
