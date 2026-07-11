@@ -70,6 +70,32 @@ export const technologies = [
   "Computational biomedicine",
 ];
 
+export type TechnologyTrend = {
+  name: string;
+  shortName: string;
+  domain: string;
+  direction: "Accelerating" | "Rising" | "Steady" | "Variable";
+  momentum: number;
+  maturity: number;
+  confidence: number;
+  horizon: string;
+  signal: string;
+  spark: number[];
+  color: string;
+};
+
+/** Shared fictional portfolio used only to compare the design directions. */
+export const technologyTrends: TechnologyTrend[] = [
+  { name: "Artificial intelligence", shortName: "AI systems", domain: "Computation", direction: "Accelerating", momentum: 92, maturity: 78, confidence: 84, horizon: "Now—3 yrs", signal: "Capability gains remain broad, with uneven translation across domains.", spark: [28, 34, 41, 48, 59, 71, 83, 92], color: "#6f5cff" },
+  { name: "Superconducting qubits", shortName: "Quantum", domain: "Quantum systems", direction: "Rising", momentum: 73, maturity: 46, confidence: 68, horizon: "3—7 yrs", signal: "Multiple technical pathways are advancing while uncertainty stays material.", spark: [24, 30, 29, 38, 45, 53, 64, 73], color: "#27c5ff" },
+  { name: "Perovskite solar cells", shortName: "Clean energy", domain: "Energy", direction: "Rising", momentum: 81, maturity: 64, confidence: 76, horizon: "2—5 yrs", signal: "Performance signals are strong; durability and manufacturing shape the outlook.", spark: [31, 39, 47, 55, 61, 69, 75, 81], color: "#d8ff3e" },
+  { name: "Advanced manufacturing", shortName: "Manufacturing", domain: "Production", direction: "Steady", momentum: 66, maturity: 72, confidence: 79, horizon: "Now—5 yrs", signal: "Progress is distributed across processes, materials, and deployment contexts.", spark: [42, 46, 49, 52, 56, 59, 63, 66], color: "#ff8a4c" },
+  { name: "Synthetic biology", shortName: "SynBio", domain: "Biotechnology", direction: "Accelerating", momentum: 87, maturity: 58, confidence: 71, horizon: "3—8 yrs", signal: "Tooling and design cycles are improving faster than adoption pathways converge.", spark: [25, 31, 36, 43, 52, 63, 76, 87], color: "#4be0ac" },
+  { name: "Structural biology", shortName: "Structural bio", domain: "Life science", direction: "Rising", momentum: 77, maturity: 70, confidence: 82, horizon: "Now—4 yrs", signal: "Measurement and computation are creating a denser capability landscape.", spark: [38, 43, 48, 56, 61, 68, 73, 77], color: "#f072c8" },
+  { name: "Superconducting materials", shortName: "New materials", domain: "Materials", direction: "Variable", momentum: 59, maturity: 41, confidence: 57, horizon: "5—10 yrs", signal: "Promising signals remain fragmented across material families and conditions.", spark: [35, 41, 38, 46, 44, 52, 55, 59], color: "#ffd05a" },
+  { name: "Graphics processors", shortName: "Accelerators", domain: "Computing hardware", direction: "Accelerating", momentum: 89, maturity: 83, confidence: 86, horizon: "Now—3 yrs", signal: "Scaling and specialization continue to reshape adjacent technology trajectories.", spark: [44, 49, 57, 63, 70, 78, 84, 89], color: "#ff5d64" },
+];
+
 export const institutions = [
   "Northwestern University",
   "Columbia University",
@@ -201,4 +227,14 @@ export const concepts = [
   { id: "morph", number: "28", name: "Morphic Frontier", mood: "Reshape development", color: "#ff4f2f" },
   { id: "infinite", number: "29", name: "Infinite Observatory", mood: "Enter the institution", color: "#4f73ff" },
   { id: "liquid", number: "30", name: "Liquid Evidence", mood: "Stir the evidence", color: "#9eff38" },
+  { id: "pulseboard", number: "31", name: "APTO Trendroom", mood: "See movement at a glance", color: "#caff43" },
+  { id: "signalgrid", number: "32", name: "Signal Bento", mood: "A calm portfolio overview", color: "#ef5b3f" },
+  { id: "horizon", number: "33", name: "Portfolio Radar", mood: "Compare future horizons", color: "#6b67ff" },
+  { id: "leaderboard", number: "34", name: "Horizon Exchange", mood: "Read the market of ideas", color: "#ffbd3e" },
+  { id: "weatherboard", number: "35", name: "Technology Weatherboard", mood: "Feel the changing outlook", color: "#75b9ff" },
+  { id: "constellation", number: "36", name: "Constellation Ledger", mood: "Connect the portfolio", color: "#44e5c0" },
+  { id: "newsroom", number: "37", name: "The APTO Brief", mood: "Trends as a front page", color: "#d92d3f" },
+  { id: "matrix", number: "38", name: "Portfolio Pulse", mood: "Compare every signal", color: "#ff6a55" },
+  { id: "exchange", number: "39", name: "Trajectory Exchange", mood: "Pin and compare pathways", color: "#3670ff" },
+  { id: "watchtower", number: "40", name: "The Outlook Wall", mood: "The whole portfolio first", color: "#ff642f" },
 ];

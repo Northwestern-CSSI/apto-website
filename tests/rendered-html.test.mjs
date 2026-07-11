@@ -32,24 +32,28 @@ test("server-renders the APTO design gallery", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>APTO Website Direction Study<\/title>/i);
-  assert.match(html, /Thirty possible/);
+  assert.match(html, /Forty possible/);
   assert.match(html, /front doors to/);
   assert.match(html, /Civic Observatory/);
   assert.match(html, /Signal Story/);
   assert.match(html, /Gravity Field/);
   assert.match(html, /Motion and spatial worlds/);
-  assert.equal((html.match(/concept-card card-/g) ?? []).length, 30);
+  assert.match(html, /APTO Trendroom/);
+  assert.match(html, /Technology portfolio front doors/);
+  assert.equal((html.match(/concept-card card-/g) ?? []).length, 40);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
 
-test("ships thirty concepts, responsive behavior, and APTO assets", async () => {
-  const [source, interactiveSource, kineticSource, engines, styles, kineticStyles, packageJson] = await Promise.all([
+test("ships forty concepts, responsive behavior, and APTO assets", async () => {
+  const [source, interactiveSource, kineticSource, portfolioSource, engines, styles, kineticStyles, portfolioStyles, packageJson] = await Promise.all([
     readFile(new URL("../app/mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/interactive-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/kinetic-mockups.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/portfolio-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/kinetic-engines.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/kinetic-mockups.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/portfolio-mockups.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
@@ -84,6 +88,16 @@ test("ships thirty concepts, responsive behavior, and APTO assets", async () => 
     "morph",
     "infinite",
     "liquid",
+    "pulseboard",
+    "signalgrid",
+    "horizon",
+    "leaderboard",
+    "weatherboard",
+    "constellation",
+    "newsroom",
+    "matrix",
+    "exchange",
+    "watchtower",
   ]) {
     assert.match(source, new RegExp(`case \\\"${id}\\\"`));
   }
@@ -93,15 +107,20 @@ test("ships thirty concepts, responsive behavior, and APTO assets", async () => 
   assert.match(kineticStyles, /@media \(max-width:\s*760px\)/);
   assert.match(kineticStyles, /prefers-reduced-motion/);
   assert.match(kineticStyles, /kinetic-fallback-list/);
+  assert.match(portfolioStyles, /@media \(max-width:\s*760px\)/);
+  assert.match(portfolioStyles, /prefers-reduced-motion/);
   assert.match(source, /Increase forecast horizon/);
   assert.match(source, /Public explorers use verified open resources/);
   assert.match(source, /lazy\(\(\) => import\("\.\/kinetic-mockups"\)/);
+  assert.match(source, /lazy\(\(\) => import\("\.\/portfolio-mockups"\)/);
   assert.match(interactiveSource, /Hear the data/);
   assert.match(interactiveSource, /Show all evidence/);
   assert.match(interactiveSource, /RUN SCENARIO/);
   assert.match(kineticSource, /Scroll to dive/);
   assert.match(kineticSource, /Pause field/);
   assert.match(kineticSource, /Enter room/);
+  assert.match(portfolioSource, /Top technologies we are tracking/i);
+  assert.match(portfolioSource, /Illustrative/i);
   assert.match(engines, /webgl2/);
   assert.match(engines, /webgpu/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);

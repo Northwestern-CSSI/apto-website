@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 import "./interactive-mockups.css";
 import "./kinetic-mockups.css";
+import "./portfolio-mockups.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = new URL(`${protocol}://${host}`);
   const title = "APTO Website Direction Study";
   const description =
-    "Thirty modern website mockups for the Assessing and Predicting Technology Outcomes program.";
+    "Forty modern website mockups for the Assessing and Predicting Technology Outcomes program.";
   const socialImage = new URL("/og.png", baseUrl).toString();
 
   return {
