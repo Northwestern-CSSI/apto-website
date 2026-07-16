@@ -27,6 +27,7 @@ import {
 
 const KineticMockup = lazy(() => import("./kinetic-mockups").then((module) => ({ default: module.KineticMockup })));
 const PortfolioMockup = lazy(() => import("./portfolio-mockups").then((module) => ({ default: module.PortfolioMockup })));
+const WidgetMockup = lazy(() => import("./widget-mockups").then((module) => ({ default: module.WidgetMockup })));
 
 const mapPoints = [
   [13, 31, "cyan"], [18, 54, "blue"], [24, 22, "gold"], [28, 67, "mint"],
@@ -146,7 +147,7 @@ function ConceptSwitcher({ current, onSelect }: { current: string; onSelect: (id
       </div>
       <nav className="review-actions" aria-label="Mockup navigation">
         <button type="button" onClick={() => onSelect(previous.id)} aria-label={`Previous mockup: ${previous.name}`}><Arrow left /></button>
-        <button type="button" onClick={() => onSelect("gallery")}>All 40</button>
+        <button type="button" onClick={() => onSelect("gallery")}>All 50</button>
         <button type="button" onClick={() => onSelect(next.id)} aria-label={`Next mockup: ${next.name}`}>Next <span aria-hidden="true">→</span></button>
       </nav>
     </div>
@@ -169,11 +170,11 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
     <div className="gallery-page">
       <header className="gallery-header">
         <div className="gallery-kicker"><span>APTO</span> Website direction study · July 2026</div>
-        <h1>Forty possible<br />front doors to <em>APTO.</em></h1>
+        <h1>Fifty possible<br />front doors to <em>APTO.</em></h1>
         <div className="gallery-intro">
           <p>Each direction puts working tools, open data, major results, publications, teams, and participating institutions at the center of the program—not behind a generic project homepage.</p>
           <div className="gallery-summary">
-            <span>40</span><small>distinct<br />directions</small>
+            <span>50</span><small>distinct<br />directions</small>
             <span>01</span><small>shared content<br />architecture</small>
           </div>
         </div>
@@ -233,6 +234,20 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
       <div className="gallery-group-heading is-portfolio"><span>31—40</span><div><h2>Technology portfolio front doors</h2><p>Ten APTO-wide homepages that put the top technologies being tracked, comparative trends, confidence, and future horizons on screen immediately.</p></div><i>PORTFOLIO</i></div>
       <section className="concept-grid" aria-label="Ten technology portfolio APTO website mockups">
         {concepts.slice(30, 40).map((concept) => (
+          <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
+            <ConceptMiniature id={concept.id} />
+            <div className="concept-card-meta">
+              <span>{concept.number}</span>
+              <div><strong>{concept.name}</strong><small>{concept.mood}</small></div>
+              <i style={{ background: concept.color }} />
+            </div>
+          </button>
+        ))}
+      </section>
+
+      <div className="gallery-group-heading is-widgets"><span>41—50</span><div><h2>Composable widget worlds</h2><p>Ten landing pages where APTO tools become portable modules: choose, add, pin, and reuse maps, trajectories, forecasts, translation signals, and open evidence.</p></div><i>WIDGETS</i></div>
+      <section className="concept-grid" aria-label="Ten widget-based APTO website mockups">
+        {concepts.slice(40, 50).map((concept) => (
           <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
             <ConceptMiniature id={concept.id} />
             <div className="concept-card-meta">
@@ -551,6 +566,16 @@ function renderConcept(id: string) {
     case "matrix": return <PortfolioMockup id="matrix" />;
     case "exchange": return <PortfolioMockup id="exchange" />;
     case "watchtower": return <PortfolioMockup id="watchtower" />;
+    case "widgetdock": return <WidgetMockup id="widgetdock" />;
+    case "widgetcanvas": return <WidgetMockup id="widgetcanvas" />;
+    case "widgetrail": return <WidgetMockup id="widgetrail" />;
+    case "widgetos": return <WidgetMockup id="widgetos" />;
+    case "widgetbrief": return <WidgetMockup id="widgetbrief" />;
+    case "widgetglass": return <WidgetMockup id="widgetglass" />;
+    case "widgetnotebook": return <WidgetMockup id="widgetnotebook" />;
+    case "widgetspatial": return <WidgetMockup id="widgetspatial" />;
+    case "widgetcivic": return <WidgetMockup id="widgetcivic" />;
+    case "widgethome": return <WidgetMockup id="widgethome" />;
     default: return null;
   }
 }

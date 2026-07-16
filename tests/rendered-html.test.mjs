@@ -32,7 +32,7 @@ test("server-renders the APTO design gallery", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>APTO Website Direction Study<\/title>/i);
-  assert.match(html, /Forty possible/);
+  assert.match(html, /Fifty possible/);
   assert.match(html, /front doors to/);
   assert.match(html, /Civic Observatory/);
   assert.match(html, /Signal Story/);
@@ -40,20 +40,24 @@ test("server-renders the APTO design gallery", async () => {
   assert.match(html, /Motion and spatial worlds/);
   assert.match(html, /APTO Trendroom/);
   assert.match(html, /Technology portfolio front doors/);
-  assert.equal((html.match(/concept-card card-/g) ?? []).length, 40);
+  assert.match(html, /Widget Harbor/);
+  assert.match(html, /Composable widget worlds/);
+  assert.equal((html.match(/concept-card card-/g) ?? []).length, 50);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
 
-test("ships forty concepts, responsive behavior, and APTO assets", async () => {
-  const [source, interactiveSource, kineticSource, portfolioSource, engines, styles, kineticStyles, portfolioStyles, packageJson] = await Promise.all([
+test("ships fifty concepts, responsive behavior, and APTO assets", async () => {
+  const [source, interactiveSource, kineticSource, portfolioSource, widgetSource, engines, styles, kineticStyles, portfolioStyles, widgetStyles, packageJson] = await Promise.all([
     readFile(new URL("../app/mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/interactive-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/kinetic-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/portfolio-mockups.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/widget-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/kinetic-engines.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/kinetic-mockups.css", import.meta.url), "utf8"),
     readFile(new URL("../app/portfolio-mockups.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/widget-mockups.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
@@ -98,6 +102,16 @@ test("ships forty concepts, responsive behavior, and APTO assets", async () => {
     "matrix",
     "exchange",
     "watchtower",
+    "widgetdock",
+    "widgetcanvas",
+    "widgetrail",
+    "widgetos",
+    "widgetbrief",
+    "widgetglass",
+    "widgetnotebook",
+    "widgetspatial",
+    "widgetcivic",
+    "widgethome",
   ]) {
     assert.match(source, new RegExp(`case \\\"${id}\\\"`));
   }
@@ -109,10 +123,14 @@ test("ships forty concepts, responsive behavior, and APTO assets", async () => {
   assert.match(kineticStyles, /kinetic-fallback-list/);
   assert.match(portfolioStyles, /@media \(max-width:\s*760px\)/);
   assert.match(portfolioStyles, /prefers-reduced-motion/);
+  assert.match(widgetStyles, /@media \(max-width:\s*760px\)/);
+  assert.match(widgetStyles, /@media \(max-width:\s*860px\)/);
+  assert.match(widgetStyles, /prefers-reduced-motion/);
   assert.match(source, /Increase forecast horizon/);
   assert.match(source, /Public explorers use verified open resources/);
   assert.match(source, /lazy\(\(\) => import\("\.\/kinetic-mockups"\)/);
   assert.match(source, /lazy\(\(\) => import\("\.\/portfolio-mockups"\)/);
+  assert.match(source, /lazy\(\(\) => import\("\.\/widget-mockups"\)/);
   assert.match(interactiveSource, /Hear the data/);
   assert.match(interactiveSource, /Show all evidence/);
   assert.match(interactiveSource, /RUN SCENARIO/);
@@ -121,6 +139,19 @@ test("ships forty concepts, responsive behavior, and APTO assets", async () => {
   assert.match(kineticSource, /Enter room/);
   assert.match(portfolioSource, /Top technologies we are tracking/i);
   assert.match(portfolioSource, /Illustrative/i);
+  assert.match(widgetSource, /MAP OF SCIENCE/);
+  assert.match(widgetSource, /TECHNOLOGY TRAJECTORIES/);
+  assert.match(widgetSource, /Illustrative model score — not a legal patentability determination\./);
+  assert.match(widgetSource, /Illustrative interface — demo values are not APTO findings\./);
+  assert.match(widgetSource, /18.*partner universities · Feb 2026/);
+  assert.match(widgetSource, /Standardize data-use agreements and governance/);
+  assert.match(widgetSource, /Software-use trajectories/);
+  assert.doesNotMatch(widgetSource, /20.*partner universities/);
+  assert.match(widgetSource, /role="group"/);
+  assert.match(widgetSource, /aria-pressed/);
+  assert.match(widgetSource, /data-local-arrows="true"/);
+  assert.match(widgetSource, /widget-science-map-image/);
+  assert.match(widgetStyles, /\/apto\/science-map\.png/);
   assert.match(engines, /webgl2/);
   assert.match(engines, /webgpu/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
