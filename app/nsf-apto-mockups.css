@@ -783,6 +783,7 @@
 }
 .nsf-apto-network .nsf-hero-widget-panel > footer a { color: var(--nsf-light-blue); }
 .nsf-apto-network .nsf-hero-widget-tabs { background: rgba(1,9,20,.68); }
+.nsf-apto-network .nsf-hero-widget-tabs button:hover { background: rgba(120,178,205,.12); }
 .nsf-apto-network .nsf-hero-widget-panel > header p { color: #d8e7f0; }
 .nsf-apto-network .nsf-hero-widget-visual { background: transparent; }
 .nsf-apto-network .nsf-widget-signal-list li > i,
@@ -870,10 +871,22 @@
 .nsf-apto-network .nsf-tool-figure > div::before {
   background: repeating-linear-gradient(0deg,transparent 0 32px,rgba(120,178,205,.12) 33px 34px),repeating-linear-gradient(90deg,transparent 0 58px,rgba(120,178,205,.09) 59px 60px);
 }
+.nsf-apto-network .nsf-tool-figure > div span { background: #72cee3; box-shadow: 0 0 0 2px #72cee3; }
+.nsf-apto-network .nsf-tool-figure > div span:nth-child(2),
+.nsf-apto-network .nsf-tool-figure > div span:nth-child(4) { background: #55c99f; box-shadow: 0 0 0 2px #55c99f; }
+.nsf-apto-network .nsf-tool-figure > div span:nth-child(3) { background: #a69ad3; box-shadow: 0 0 0 2px #a69ad3; }
+.nsf-apto-network .nsf-tool-figure > div span:nth-child(5) { background: var(--nsf-gold); box-shadow: 0 0 0 2px var(--nsf-gold); }
+.nsf-apto-network .nsf-tool-figure > div span:nth-child(6) { background: #4aa4ca; box-shadow: 0 0 0 2px #4aa4ca; }
+.nsf-apto-network .nsf-tool-figure > div::after { background: #4aa4ca; box-shadow: 0 -42px 0 #72cee3,0 46px 0 #a69ad3; }
+.nsf-apto-network .nsf-tool-figure.is-scenario-curves > div::after,
+.nsf-apto-network .nsf-tool-figure.is-technology-timeline > div::after { background: #4aa4ca; box-shadow: 0 -28px 0 #55c99f,0 -60px 0 var(--nsf-gold); }
 .nsf-apto-network .nsf-tool-figure.is-signal-matrix > div::before {
   background: repeating-linear-gradient(90deg,transparent 0 19%,rgba(120,178,205,.14) 20% 21%),repeating-linear-gradient(0deg,transparent 0 19%,rgba(120,178,205,.14) 20% 21%);
 }
-.nsf-apto-network .nsf-tool-figure.is-global-map > div::after { background: repeating-radial-gradient(circle,transparent 0 15px,rgba(120,178,205,.13) 16px 17px); }
+.nsf-apto-network .nsf-tool-figure.is-signal-matrix > div::after { background: rgba(211,179,78,.9); box-shadow: 78px 33px 0 rgba(114,206,227,.9),-82px 47px 0 rgba(166,154,211,.9); }
+.nsf-apto-network .nsf-tool-figure.is-translation-funnel > div::after { background: linear-gradient(180deg,#72cee3,#4aa4ca); }
+.nsf-apto-network .nsf-tool-figure.is-problem-landscape > div::after { background: linear-gradient(180deg,var(--nsf-gold),#55c99f); }
+.nsf-apto-network .nsf-tool-figure.is-global-map > div::after { border-color: #72cee3; background: repeating-radial-gradient(circle,transparent 0 15px,rgba(120,178,205,.13) 16px 17px); }
 .nsf-apto-network .nsf-cohort-stage.is-network { color: #fff; background: radial-gradient(circle at 50% 45%,rgba(18,54,90,.42),transparent 46%),var(--nsf-network-canvas); border-color: var(--nsf-network-line); }
 .nsf-apto-network .nsf-cohort-stage.is-network > header p { color: var(--nsf-light-blue); }
 .nsf-apto-network .nsf-cohort-stage.is-network > header h2,

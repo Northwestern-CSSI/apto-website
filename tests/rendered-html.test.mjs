@@ -619,6 +619,8 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   }
   assert.match(nsfStyles, /\.nsf-apto-network \.nsf-overview-framework[\s\S]*var\(--nsf-network-surface\)/);
   assert.match(nsfStyles, /\.nsf-apto-network \.nsf-tool-figure > div\s*\{[\s\S]*var\(--nsf-network-raised\)/);
+  assert.match(nsfStyles, /\.nsf-apto-network \.nsf-hero-widget-tabs button:hover\s*\{[^}]*rgba\(120,178,205,\.12\)/);
+  assert.match(nsfStyles, /\.nsf-apto-network \.nsf-tool-figure > div::after\s*\{[^}]*background:\s*#4aa4ca/);
   assert.match(nsfStyles, /\.nsf-participant-mark\.tone-dark\.is-fallback\s*\{\s*color:\s*#fff/);
   for (const selector of [
     ".nsf-hero-widget",
