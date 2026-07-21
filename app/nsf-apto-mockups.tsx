@@ -1,12 +1,8 @@
 "use client";
 
-import BadgeCheck from "lucide-react/dist/esm/icons/badge-check.mjs";
-import ChartNoAxesCombined from "lucide-react/dist/esm/icons/chart-no-axes-combined.mjs";
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down.mjs";
 import Moon from "lucide-react/dist/esm/icons/moon.mjs";
-import Network from "lucide-react/dist/esm/icons/network.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
-import TrendingUp from "lucide-react/dist/esm/icons/trending-up.mjs";
 import { useEffect, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
 
 import {
@@ -164,115 +160,9 @@ function NsfProgramHeader({ id, activeSection }: { id: NsfAptoMockupId; activeSe
   </header>;
 }
 
-type NsfHeroWidget = (typeof aptoInterface.widget.items)[number];
-type NsfHeroWidgetId = NsfHeroWidget["id"];
-
-function NsfWidgetIcon({ icon }: { icon: NsfHeroWidget["icon"] }) {
-  const Icon = icon === "trend-up"
-    ? TrendingUp
-    : icon === "network-map"
-      ? Network
-      : icon === "shield-check"
-        ? BadgeCheck
-        : ChartNoAxesCombined;
-  return <Icon aria-hidden="true" focusable="false" strokeWidth={1.8} />;
-}
-
-function NsfHeroWidgetVisual({ widget }: { widget: NsfHeroWidget }) {
-  const preview = widget.preview;
-  switch (preview.kind) {
-    case "signals":
-      return <div className="nsf-widget-signal-preview">
-        <p className="nsf-widget-scale">{aptoInterface.widget.momentumScaleLabel}</p>
-        <ul className="nsf-widget-signal-list" aria-label={aptoInterface.widget.momentumListAriaLabel}>
-          {preview.rows.map((row) => <li key={row.label}>
-            <div><small>{row.category}</small><strong>{row.label}</strong></div>
-            <i aria-hidden="true"><span style={{ "--nsf-widget-value": `${row.value}%` } as CSSProperties} /></i>
-            <b>{row.value}<span aria-hidden="true">/100</span></b>
-          </li>)}
-        </ul>
-      </div>;
-    case "map":
-      return <figure className="nsf-widget-science-map">
-        <figcaption className="nsf-visually-hidden">{aptoInterface.widget.mapCaptionPrefix} {preview.clusters.join(", ")} {aptoInterface.widget.mapCaptionSuffix}</figcaption>
-        {preview.clusters.map((label, index) => <span aria-hidden="true" className={`cluster-index-${index}`} key={label}><i />{label}</span>)}
-        <p><small>{preview.focusLabel}</small><strong>{preview.focusTitle}</strong></p>
-      </figure>;
-    case "translation":
-      return <div className="nsf-widget-translation-preview">
-        <div className="nsf-widget-composite" aria-label={`${aptoInterface.widget.compositeAriaPrefix} ${preview.composite} ${aptoInterface.widget.compositeAriaJoiner} ${preview.maximum}`}><small>{aptoInterface.widget.demoIndexLabel}</small><strong>{preview.composite}</strong><span>/ {preview.maximum}</span></div>
-        <dl>{preview.rows.map((row) => <div key={row.label}>
-          <dt>{row.label}</dt><dd><i aria-hidden="true"><span style={{ "--nsf-widget-value": `${row.value}%` } as CSSProperties} /></i><b>{row.value}</b></dd>
-        </div>)}</dl>
-      </div>;
-    case "trajectories":
-      return <div className="nsf-widget-trajectory-preview">
-        <p className="nsf-widget-scale">{aptoInterface.widget.trajectoryScaleLabel}</p>
-        <div className="nsf-widget-trajectory-grid">
-          {preview.rows.map((row, index) => <article key={row.label}>
-            <small>{row.category}</small><strong>{row.label}</strong>
-            <div className={`nsf-widget-mini-curve curve-${row.tone} curve-index-${index}`} role="img" aria-label={`${row.label} ${aptoInterface.widget.trajectoryAriaSuffix}`}><i /><i /><i /><i /></div>
-            <footer><span>{preview.observedLabel}</span><span>{preview.forecastLabel}</span></footer>
-          </article>)}
-        </div>
-      </div>;
-  }
-}
-
-function NsfHeroToolWidget({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
-  const widgets = aptoInterface.widget.items;
-  const [active, setActive] = useState<NsfHeroWidgetId>(widgets[0].id);
-  const widget = widgets.find((item) => item.id === active) ?? widgets[0];
-  const panelId = `${id}-hero-widget-panel`;
-
-  const handleKeys = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
-    const isMobileGrid = window.matchMedia("(max-width: 640px)").matches;
-    const supportedKeys = isMobileGrid
-      ? ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
-      : ["ArrowLeft", "ArrowRight", "Home", "End"];
-    if (!supportedKeys.includes(event.key)) return;
-    event.preventDefault();
-    const last = widgets.length - 1;
-    const next = event.key === "Home"
-      ? 0
-      : event.key === "End"
-        ? last
-        : (index + (
-          event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : event.key === "ArrowDown" ? 2 : -2
-        ) + widgets.length) % widgets.length;
-    setActive(widgets[next].id);
-    event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
-  };
-
-  return <aside className={`nsf-hero-widget is-${direction}`} aria-label={aptoInterface.widget.previewAriaLabel}>
-    <header className="nsf-hero-widget-header">
-      <div><span>{aptoInterface.widget.eyebrow}</span><h2>{aptoInterface.widget.title}</h2></div>
-      <a href={aptoHref("tools", id)}>{aptoInterface.widget.allToolsLabel}</a>
-    </header>
-    <div className="nsf-hero-widget-tabs" role="tablist" aria-label={aptoInterface.widget.chooserAriaLabel} data-local-arrows="true">
-      {widgets.map((item, index) => <button
-        type="button"
-        role="tab"
-        id={`${id}-hero-widget-tab-${item.id}`}
-        aria-selected={active === item.id}
-        aria-controls={panelId}
-        tabIndex={active === item.id ? 0 : -1}
-        key={item.id}
-        onClick={() => setActive(item.id)}
-        onKeyDown={(event) => handleKeys(event, index)}
-      ><i><NsfWidgetIcon icon={item.icon} /></i><span>{item.tabLabel}</span></button>)}
-    </div>
-    <section className="nsf-hero-widget-panel" id={panelId} role="tabpanel" aria-labelledby={`${id}-hero-widget-tab-${active}`} key={active}>
-      <header><small>{widget.kicker}</small><h3>{widget.title}</h3><p>{widget.summary}</p></header>
-      <div className="nsf-hero-widget-visual"><NsfHeroWidgetVisual widget={widget} /></div>
-      <footer><span>{aptoInterface.widget.disclaimer}</span><a href={aptoHref("tools", id)}>{aptoInterface.widget.exploreLabel}</a></footer>
-    </section>
-  </aside>;
-}
-
-function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
+function CompactProgramHero({ id }: { id: NsfAptoMockupId }) {
   const homeCopy = copyFor("home");
-  return <section className="nsf-program-hero has-widget" aria-labelledby={`${id}-title`}>
+  return <section className="nsf-program-hero" aria-labelledby={`${id}-title`}>
     <div className="nsf-hero-copy">
       <p className="nsf-eyebrow">{homeCopy.eyebrow}</p>
       <h1 id={`${id}-title`}>{homeCopy.title}</h1>
@@ -282,7 +172,6 @@ function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction:
         <a href={aptoHref("about", id)}>{aptoInterface.home.secondaryActionLabel} <span aria-hidden="true">↗</span></a>
       </div>
     </div>
-    <NsfHeroToolWidget id={id} direction={direction} />
     <dl className="nsf-hero-facts">
       {aptoProgram.stats.map((stat) => {
         const item = displayStat(stat);
@@ -323,7 +212,7 @@ function HomePathways({ id, direction }: { id: NsfAptoMockupId; direction: NsfDi
 
 function HomePage({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
   return <>
-    <CompactProgramHero id={id} direction={direction} />
+    <CompactProgramHero id={id} />
     <CohortIdentityStage id={id} direction={direction} />
     <HomePathways id={id} direction={direction} />
   </>;

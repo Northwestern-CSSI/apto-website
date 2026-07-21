@@ -6,7 +6,7 @@ NSF-aligned light interface with a coordinated deep-navy theme.
 
 The public pages are:
 
-- `/apto` — program home and interactive tool widget
+- `/apto` — program home
 - `/apto/about` — program framework
 - `/apto/projects` — expandable project records and awardee map
 - `/apto/tools` — tools filtered by organization and outcome area
@@ -46,7 +46,7 @@ npm run lint
 - `tools/*.md` — one tool per file
 - `pages/*.md` — page titles, metadata, and introductions
 - `program.md` — program copy, framework, statistics, and NSF acknowledgement
-- `interface.md` — navigation, labels, widget content, filters, map, and footer
+- `interface.md` — navigation, labels, filters, map, and footer
 - `assets/` — every APTO image, participant mark, NSF mark, map, and social card
 
 Adding a tool or project does not require changing a hard-coded inventory.
@@ -65,7 +65,7 @@ copies directly. See `content/apto/README.md` for the complete record schema.
 ## Accessibility
 
 The APTO pages use semantic landmarks, one page heading, native expandable
-project panels, keyboard-operable widget tabs and filters, visible focus,
+project panels, keyboard-operable filters, visible focus,
 44-pixel control targets, responsive reflow, reduced-motion support,
 forced-colors treatments, text alternatives, and redundant text navigation for
 the project map. Automated regression checks live in

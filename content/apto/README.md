@@ -10,7 +10,7 @@ The APTO site is built from this folder. Content records are deliberately indepe
 - `tools/` contains one tool per file and joins to an organization with `participantId`. `categories` accepts one or more of `Capability`, `Production`, and `Use`.
 - `pages/` contains the introduction and metadata for each canonical routed page. The visible navigation combines people with the cohort page; the legacy `/people` URL is handled in route code as an alias and therefore needs no duplicate content record.
 - `program.md` contains program-level copy, the NSF framework, statistics, boilerplate, and source references.
-- `interface.md` contains all shared interface labels, the Light and Dark theme names, navigation, home-widget copy, tool-filter labels, project-map configuration, accessibility text, and footer copy.
+- `interface.md` contains all shared interface labels, the Light and Dark theme names, navigation, tool-filter labels, project-map configuration, accessibility text, and footer copy.
 - `assets/` is the source of truth for images used by the APTO site, including participant marks, the NSF logo, and supporting artwork. Do not edit the copies in `public/apto/` directly.
 
 Each Markdown file begins with JSON frontmatter between `---` lines. The readable Markdown sections hold longer prose:

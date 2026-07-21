@@ -56,15 +56,6 @@ const allowedPersonRoles = new Set([
   "Principal Investigator",
   "Co-Principal Investigator",
 ]);
-const allowedHeroWidgetIds = new Set(["emerging", "map", "patent", "trajectories"]);
-const allowedHeroWidgetKinds = new Set(["signals", "map", "translation", "trajectories"]);
-const allowedHeroWidgetIcons = new Set([
-  "trend-up",
-  "network-map",
-  "shield-check",
-  "trajectory",
-]);
-const allowedTrajectoryTones = new Set(["blue", "gold", "purple"]);
 const allowedProgramStatMetrics = new Set([
   "investigators",
   "participants",
@@ -202,14 +193,6 @@ function compareAlphabetically(left, right) {
 
 function projectTitleSortKey(title) {
   return title.replace(/^APTO:\s*/i, "");
-}
-
-function assertAlphabetical(values, context) {
-  const sorted = [...values].sort(compareAlphabetically);
-  assert(
-    values.every((value, index) => value === sorted[index]),
-    `${context} must be alphabetized`,
-  );
 }
 
 function omitFields(object, fields) {
@@ -474,79 +457,6 @@ function validateProgram(document) {
   };
 }
 
-function validateWidget(widget, context) {
-  requireObject(widget, context);
-  const stringKeys = [
-    "eyebrow",
-    "title",
-    "allToolsLabel",
-    "disclaimer",
-    "exploreLabel",
-    "previewAriaLabel",
-    "chooserAriaLabel",
-    "momentumScaleLabel",
-    "momentumListAriaLabel",
-    "mapCaptionPrefix",
-    "mapCaptionSuffix",
-    "compositeAriaPrefix",
-    "compositeAriaJoiner",
-    "demoIndexLabel",
-    "trajectoryScaleLabel",
-    "trajectoryAriaSuffix",
-  ];
-  for (const key of stringKeys) requireString(widget, key, context);
-  const items = requireArray(widget, "items", context);
-  assertExactSet(
-    items.map((item, index) => requireString(item, "id", `${context}.items[${index}]`)),
-    allowedHeroWidgetIds,
-    `${context}.items ids`,
-  );
-  assertAlphabetical(items.map((item) => item.tabLabel), `${context}.items tab labels`);
-  items.forEach((item, index) => {
-    const itemContext = `${context}.items[${index}]`;
-    requireObject(item, itemContext);
-    for (const key of ["tabLabel", "kicker", "title", "summary"]) requireString(item, key, itemContext);
-    assert(allowedHeroWidgetIcons.has(requireString(item, "icon", itemContext)), `${itemContext}.icon is not supported`);
-    const preview = requireObject(item.preview, `${itemContext}.preview`);
-    const kind = requireString(preview, "kind", `${itemContext}.preview`);
-    assert(allowedHeroWidgetKinds.has(kind), `${itemContext}.preview.kind is not supported`);
-    if (kind === "map") {
-      const clusters = requireArray(preview, "clusters", `${itemContext}.preview`);
-      assert(clusters.length > 0, `${itemContext}.preview.clusters must not be empty`);
-      clusters.forEach((cluster, clusterIndex) => requireStringValue(cluster, `${itemContext}.preview.clusters[${clusterIndex}]`));
-      assertAlphabetical(clusters, `${itemContext}.preview.clusters`);
-      requireString(preview, "focusLabel", `${itemContext}.preview`);
-      requireString(preview, "focusTitle", `${itemContext}.preview`);
-      return;
-    }
-    const rows = requireArray(preview, "rows", `${itemContext}.preview`);
-    assert(rows.length >= 3, `${itemContext}.preview.rows must contain at least three records`);
-    rows.forEach((row, rowIndex) => {
-      const rowContext = `${itemContext}.preview.rows[${rowIndex}]`;
-      requireObject(row, rowContext);
-      requireString(row, "label", rowContext);
-      if (kind === "signals" || kind === "trajectories") requireString(row, "category", rowContext);
-      if (kind === "signals" || kind === "translation") {
-        const value = requirePositiveNumber(row, "value", rowContext);
-        assert(value <= 100, `${rowContext}.value must be no greater than 100`);
-      }
-      if (kind === "trajectories") {
-        assert(allowedTrajectoryTones.has(requireString(row, "tone", rowContext)), `${rowContext}.tone is not supported`);
-      }
-    });
-    assertAlphabetical(rows.map((row) => row.label), `${itemContext}.preview.rows`);
-    if (kind === "translation") {
-      const composite = requirePositiveNumber(preview, "composite", `${itemContext}.preview`);
-      const maximum = requirePositiveNumber(preview, "maximum", `${itemContext}.preview`);
-      assert(composite <= maximum, `${itemContext}.preview.composite must not exceed maximum`);
-    }
-    if (kind === "trajectories") {
-      requireString(preview, "observedLabel", `${itemContext}.preview`);
-      requireString(preview, "forecastLabel", `${itemContext}.preview`);
-    }
-  });
-}
-
 function validateInterface(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
@@ -559,7 +469,6 @@ function validateInterface(document) {
       "study",
       "primaryNavigation",
       "home",
-      "widget",
       "common",
       "accessibility",
       "projects",
@@ -598,11 +507,6 @@ function validateInterface(document) {
       "galleryLabel",
       "barLabel",
       "themeChooserLabel",
-      "formatChooserLabel",
-      "formatLabel",
-      "standardLabel",
-      "widgetLabel",
-      "selectedFormatLabel",
     ],
     `${context}.study`,
   );
@@ -650,7 +554,6 @@ function validateInterface(document) {
     `${context}.home.pathways sections`,
   );
 
-  validateWidget(metadata.widget, `${context}.widget`);
   requireStringKeys(metadata.common, ["organizationWebsiteLabel", "participantWebsiteLabel"], `${context}.common`);
   requireStringKeys(
     metadata.accessibility,

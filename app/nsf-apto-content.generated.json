@@ -163,12 +163,7 @@
       "socialImageAlt": "APTO — evidence for better technology decisions.",
       "galleryLabel": "APTO home",
       "barLabel": "APTO",
-      "themeChooserLabel": "Choose color theme",
-      "formatChooserLabel": "Choose homepage format",
-      "formatLabel": "Homepage",
-      "standardLabel": "Standard",
-      "widgetLabel": "Tool widget",
-      "selectedFormatLabel": "selected"
+      "themeChooserLabel": "Choose color theme"
     },
     "primaryNavigation": [
       {
@@ -184,7 +179,7 @@
         "section": "tools"
       },
       {
-        "label": "Cohort & People",
+        "label": "Cohort",
         "section": "cohort"
       }
     ],
@@ -194,7 +189,7 @@
       "outcomeVisualNote": "Connecting evidence about what technologies can do, how they are produced, and how they are used.",
       "cohortEyebrow": "Participating organizations",
       "cohortTitle": "Five teams working toward a shared evidence base",
-      "cohortLinkLabel": "Meet the cohort and people",
+      "cohortLinkLabel": "Meet the cohort",
       "logoDisclosure": "Organization marks identify participating institutions and companies.",
       "networkCoreLabel": "shared evidence",
       "networkVisualAlt": "Research organizations connected through a shared evidence network",
@@ -209,7 +204,7 @@
         },
         {
           "section": "cohort",
-          "title": "Cohort & People",
+          "title": "Cohort",
           "description": "Participating organizations, program leadership, and the investigators leading each project."
         },
         {
@@ -221,140 +216,6 @@
           "section": "tools",
           "title": "Tools",
           "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research."
-        }
-      ]
-    },
-    "widget": {
-      "eyebrow": "APTO tools",
-      "title": "Explore technology evidence",
-      "allToolsLabel": "Browse all tools",
-      "disclaimer": "Demonstration values illustrate how each exploration view can work.",
-      "exploreLabel": "Browse all tools",
-      "previewAriaLabel": "Interactive APTO tool preview",
-      "chooserAriaLabel": "Choose a tool preview",
-      "momentumScaleLabel": "Momentum index · 0–100",
-      "momentumListAriaLabel": "Emerging technology momentum index, from zero to one hundred, listed alphabetically",
-      "mapCaptionPrefix": "Map of science showing connected",
-      "mapCaptionSuffix": "research clusters",
-      "compositeAriaPrefix": "Composite translation index of",
-      "compositeAriaJoiner": "out of",
-      "demoIndexLabel": "Exploration index",
-      "trajectoryScaleLabel": "Comparative trend shapes",
-      "trajectoryAriaSuffix": "rising technology trajectory",
-      "items": [
-        {
-          "id": "emerging",
-          "icon": "trend-up",
-          "tabLabel": "Emerging",
-          "kicker": "Emerging areas",
-          "title": "Signals across candidate frontiers",
-          "summary": "Compare momentum signals across several technology areas.",
-          "preview": {
-            "kind": "signals",
-            "rows": [
-              {
-                "label": "AI-designed proteins",
-                "category": "Biology",
-                "value": 74
-              },
-              {
-                "label": "Perovskite tandems",
-                "category": "Energy",
-                "value": 86
-              },
-              {
-                "label": "Quantum computing",
-                "category": "Computing",
-                "value": 79
-              },
-              {
-                "label": "Solid-state batteries",
-                "category": "Energy",
-                "value": 67
-              }
-            ]
-          }
-        },
-        {
-          "id": "map",
-          "icon": "network-map",
-          "tabLabel": "Map",
-          "kicker": "Map of science",
-          "title": "Where knowledge is forming",
-          "summary": "Explore a UMAP-like landscape of connected research areas and emerging clusters.",
-          "preview": {
-            "kind": "map",
-            "clusters": [
-              "AI",
-              "Biology",
-              "Energy",
-              "Materials",
-              "Quantum"
-            ],
-            "focusLabel": "Emerging cluster",
-            "focusTitle": "Perovskite interfaces"
-          }
-        },
-        {
-          "id": "patent",
-          "icon": "shield-check",
-          "tabLabel": "Patent",
-          "kicker": "Patent & licensing",
-          "title": "Translation signals in one view",
-          "summary": "Review patentability and licensability indicators without making a legal determination.",
-          "preview": {
-            "kind": "translation",
-            "composite": 72,
-            "maximum": 100,
-            "rows": [
-              {
-                "label": "Licensing fit",
-                "value": 72
-              },
-              {
-                "label": "Market adjacency",
-                "value": 64
-              },
-              {
-                "label": "Patent signal",
-                "value": 81
-              },
-              {
-                "label": "Translation readiness",
-                "value": 69
-              }
-            ]
-          }
-        },
-        {
-          "id": "trajectories",
-          "icon": "trajectory",
-          "tabLabel": "Trends",
-          "kicker": "Technology trajectories",
-          "title": "Many curves, one comparative view",
-          "summary": "Inspect small-multiple timelines for technologies developing across different domains.",
-          "preview": {
-            "kind": "trajectories",
-            "rows": [
-              {
-                "label": "Advanced manufacturing",
-                "category": "Physical",
-                "tone": "gold"
-              },
-              {
-                "label": "Perovskite photovoltaics",
-                "category": "Energy",
-                "tone": "blue"
-              },
-              {
-                "label": "Quantum computing",
-                "category": "Computing",
-                "tone": "purple"
-              }
-            ],
-            "observedLabel": "Observed",
-            "forecastLabel": "Forecast"
-          }
         }
       ]
     },
@@ -448,9 +309,9 @@
     },
     {
       "slug": "/cohort",
-      "navLabel": "Cohort & People",
-      "metadataTitle": "Cohort and people",
-      "eyebrow": "Organizations and people",
+      "navLabel": "Cohort",
+      "metadataTitle": "Cohort",
+      "eyebrow": "APTO cohort",
       "title": "The teams behind APTO",
       "introduction": "Meet the APTO program manager and the investigators leading each participating organization’s research. The cohort brings together universities and companies working across economic modeling, knowledge graphs, science and technology observatories, problem-focused analysis, and research-to-market translation. Organizations and people are presented alphabetically without implying rank or preference."
     },

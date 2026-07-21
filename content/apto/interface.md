@@ -12,18 +12,13 @@
     "socialImageAlt": "APTO — evidence for better technology decisions.",
     "galleryLabel": "APTO home",
     "barLabel": "APTO",
-    "themeChooserLabel": "Choose color theme",
-    "formatChooserLabel": "Choose homepage format",
-    "formatLabel": "Homepage",
-    "standardLabel": "Standard",
-    "widgetLabel": "Tool widget",
-    "selectedFormatLabel": "selected"
+    "themeChooserLabel": "Choose color theme"
   },
   "primaryNavigation": [
     { "label": "Program", "section": "about" },
     { "label": "Projects", "section": "projects" },
     { "label": "Tools", "section": "tools" },
-    { "label": "Cohort & People", "section": "cohort" }
+    { "label": "Cohort", "section": "cohort" }
   ],
   "home": {
     "primaryActionLabel": "Explore the projects",
@@ -31,7 +26,7 @@
     "outcomeVisualNote": "Connecting evidence about what technologies can do, how they are produced, and how they are used.",
     "cohortEyebrow": "Participating organizations",
     "cohortTitle": "Five teams working toward a shared evidence base",
-    "cohortLinkLabel": "Meet the cohort and people",
+    "cohortLinkLabel": "Meet the cohort",
     "logoDisclosure": "Organization marks identify participating institutions and companies.",
     "networkCoreLabel": "shared evidence",
     "networkVisualAlt": "Research organizations connected through a shared evidence network",
@@ -40,97 +35,9 @@
     "ledgerVisualTitle": "Evidence for better technology decisions",
     "pathways": [
       { "section": "about", "title": "Program", "description": "The shared outcome framework, research scope, and program approach." },
-      { "section": "cohort", "title": "Cohort & People", "description": "Participating organizations, program leadership, and the investigators leading each project." },
+      { "section": "cohort", "title": "Cohort", "description": "Participating organizations, program leadership, and the investigators leading each project." },
       { "section": "projects", "title": "Projects", "description": "The active APTO awards and the questions each team is pursuing." },
       { "section": "tools", "title": "Tools", "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research." }
-    ]
-  },
-  "widget": {
-    "eyebrow": "APTO tools",
-    "title": "Explore technology evidence",
-    "allToolsLabel": "Browse all tools",
-    "disclaimer": "Demonstration values illustrate how each exploration view can work.",
-    "exploreLabel": "Browse all tools",
-    "previewAriaLabel": "Interactive APTO tool preview",
-    "chooserAriaLabel": "Choose a tool preview",
-    "momentumScaleLabel": "Momentum index · 0–100",
-    "momentumListAriaLabel": "Emerging technology momentum index, from zero to one hundred, listed alphabetically",
-    "mapCaptionPrefix": "Map of science showing connected",
-    "mapCaptionSuffix": "research clusters",
-    "compositeAriaPrefix": "Composite translation index of",
-    "compositeAriaJoiner": "out of",
-    "demoIndexLabel": "Exploration index",
-    "trajectoryScaleLabel": "Comparative trend shapes",
-    "trajectoryAriaSuffix": "rising technology trajectory",
-    "items": [
-      {
-        "id": "emerging",
-        "icon": "trend-up",
-        "tabLabel": "Emerging",
-        "kicker": "Emerging areas",
-        "title": "Signals across candidate frontiers",
-        "summary": "Compare momentum signals across several technology areas.",
-        "preview": {
-          "kind": "signals",
-          "rows": [
-            { "label": "AI-designed proteins", "category": "Biology", "value": 74 },
-            { "label": "Perovskite tandems", "category": "Energy", "value": 86 },
-            { "label": "Quantum computing", "category": "Computing", "value": 79 },
-            { "label": "Solid-state batteries", "category": "Energy", "value": 67 }
-          ]
-        }
-      },
-      {
-        "id": "map",
-        "icon": "network-map",
-        "tabLabel": "Map",
-        "kicker": "Map of science",
-        "title": "Where knowledge is forming",
-        "summary": "Explore a UMAP-like landscape of connected research areas and emerging clusters.",
-        "preview": {
-          "kind": "map",
-          "clusters": ["AI", "Biology", "Energy", "Materials", "Quantum"],
-          "focusLabel": "Emerging cluster",
-          "focusTitle": "Perovskite interfaces"
-        }
-      },
-      {
-        "id": "patent",
-        "icon": "shield-check",
-        "tabLabel": "Patent",
-        "kicker": "Patent & licensing",
-        "title": "Translation signals in one view",
-        "summary": "Review patentability and licensability indicators without making a legal determination.",
-        "preview": {
-          "kind": "translation",
-          "composite": 72,
-          "maximum": 100,
-          "rows": [
-            { "label": "Licensing fit", "value": 72 },
-            { "label": "Market adjacency", "value": 64 },
-            { "label": "Patent signal", "value": 81 },
-            { "label": "Translation readiness", "value": 69 }
-          ]
-        }
-      },
-      {
-        "id": "trajectories",
-        "icon": "trajectory",
-        "tabLabel": "Trends",
-        "kicker": "Technology trajectories",
-        "title": "Many curves, one comparative view",
-        "summary": "Inspect small-multiple timelines for technologies developing across different domains.",
-        "preview": {
-          "kind": "trajectories",
-          "rows": [
-            { "label": "Advanced manufacturing", "category": "Physical", "tone": "gold" },
-            { "label": "Perovskite photovoltaics", "category": "Energy", "tone": "blue" },
-            { "label": "Quantum computing", "category": "Computing", "tone": "purple" }
-          ],
-          "observedLabel": "Observed",
-          "forecastLabel": "Forecast"
-        }
-      }
     ]
   },
   "common": {
@@ -218,4 +125,4 @@
 
 ## Editorial guidance
 
-This file contains the editable labels, navigation, tool-widget copy, project-map configuration, accessibility text, and footer language shared by the light and dark APTO themes.
+This file contains the editable labels, navigation, project-map configuration, tool-filter copy, accessibility text, and footer language shared by the light and dark APTO themes.

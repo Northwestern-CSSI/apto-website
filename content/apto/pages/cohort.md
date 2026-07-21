@@ -2,9 +2,9 @@
 {
   "kind": "page",
   "slug": "/cohort",
-  "navLabel": "Cohort & People",
-  "metadataTitle": "Cohort and people",
-  "eyebrow": "Organizations and people",
+  "navLabel": "Cohort",
+  "metadataTitle": "Cohort",
+  "eyebrow": "APTO cohort",
   "title": "The teams behind APTO"
 }
 ---

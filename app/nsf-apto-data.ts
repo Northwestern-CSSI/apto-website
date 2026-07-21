@@ -165,34 +165,6 @@ export type AptoPage = {
 
 export type AptoInterfaceSection = "about" | "cohort" | "projects" | "tools";
 
-export type AptoHeroWidgetPreview =
-  | {
-      kind: "signals";
-      rows: Array<{ label: string; category: string; value: number }>;
-    }
-  | {
-      kind: "map";
-      clusters: string[];
-      focusLabel: string;
-      focusTitle: string;
-    }
-  | {
-      kind: "translation";
-      composite: number;
-      maximum: number;
-      rows: Array<{ label: string; value: number }>;
-    }
-  | {
-      kind: "trajectories";
-      rows: Array<{
-        label: string;
-        category: string;
-        tone: "blue" | "gold" | "purple";
-      }>;
-      observedLabel: string;
-      forecastLabel: string;
-    };
-
 export type AptoInterfaceContent = {
   directions: Array<{
     id: "nsfhome" | "nsfnetwork";
@@ -207,11 +179,6 @@ export type AptoInterfaceContent = {
     galleryLabel: string;
     barLabel: string;
     themeChooserLabel: string;
-    formatChooserLabel: string;
-    formatLabel: string;
-    standardLabel: string;
-    widgetLabel: string;
-    selectedFormatLabel: string;
   };
   primaryNavigation: Array<{
     label: string;
@@ -234,33 +201,6 @@ export type AptoInterfaceContent = {
       section: AptoInterfaceSection;
       title: string;
       description: string;
-    }>;
-  };
-  widget: {
-    eyebrow: string;
-    title: string;
-    allToolsLabel: string;
-    disclaimer: string;
-    exploreLabel: string;
-    previewAriaLabel: string;
-    chooserAriaLabel: string;
-    momentumScaleLabel: string;
-    momentumListAriaLabel: string;
-    mapCaptionPrefix: string;
-    mapCaptionSuffix: string;
-    compositeAriaPrefix: string;
-    compositeAriaJoiner: string;
-    demoIndexLabel: string;
-    trajectoryScaleLabel: string;
-    trajectoryAriaSuffix: string;
-    items: Array<{
-      id: "emerging" | "map" | "patent" | "trajectories";
-      icon: "trend-up" | "network-map" | "shield-check" | "trajectory";
-      tabLabel: string;
-      kicker: string;
-      title: string;
-      summary: string;
-      preview: AptoHeroWidgetPreview;
     }>;
   };
   common: {

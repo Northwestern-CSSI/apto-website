@@ -134,13 +134,25 @@
   align-items: center;
   gap: clamp(30px, 4vw, 64px);
 }
-.nsf-program-hero > .nsf-hero-copy { grid-column: 1; grid-row: 1; align-self: end; }
+.nsf-program-hero > .nsf-hero-copy { grid-column: 1; grid-row: 1; align-self: center; }
 .nsf-program-hero > .nsf-hero-widget,
 .nsf-program-hero > .nsf-hero-program-note,
 .nsf-program-hero > .nsf-ledger-hero-art,
 .nsf-program-hero > .nsf-network-hero-art { grid-column: 2; grid-row: 1 / span 2; }
-.nsf-program-hero > .nsf-hero-facts { grid-column: 1; grid-row: 2; align-self: start; }
-.nsf-program-hero.has-widget { grid-template-columns: minmax(0,.95fr) minmax(500px,1.05fr); }
+.nsf-program-hero > .nsf-hero-facts {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: stretch;
+  margin-top: 0;
+  padding: 1px;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 1px;
+  overflow: hidden;
+  background: var(--nsf-line);
+  border: 0;
+  border-radius: 24px;
+}
 .nsf-eyebrow,
 .nsf-section-intro > p {
   margin-bottom: 15px !important;
@@ -165,6 +177,7 @@
 .nsf-primary-action { padding: 0 20px; gap: 36px; color: var(--nsf-dark-blue); background: var(--nsf-gold); border: 2px solid var(--nsf-gold); border-radius: 999px; text-decoration: none; }
 .nsf-hero-facts { margin-top: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--nsf-line); }
 .nsf-hero-facts > div { padding: 13px 12px 0 0; }
+.nsf-program-hero > .nsf-hero-facts > div { min-height: 112px; padding: 22px; background: rgba(255,255,255,.94); }
 .nsf-hero-facts dt { color: var(--nsf-blue); font-size: 1.5rem; font-weight: 800; line-height: 1; }
 .nsf-hero-facts dd { margin-top: 6px; color: var(--nsf-muted); font-size: .77rem; font-weight: 700; line-height: 1.35; }
 .nsf-hero-facts dd span,
@@ -1260,6 +1273,8 @@
   border-radius: var(--nsf-radius-large);
   box-shadow: 0 28px 70px rgba(0,0,0,.3);
 }
+.nsf-apto-network .nsf-program-hero > .nsf-hero-facts { width: 100%; max-width: 520px; justify-self: end; background: var(--nsf-network-line); }
+.nsf-apto-network .nsf-program-hero > .nsf-hero-facts > div { background: var(--nsf-network-raised); }
 .nsf-apto-network .nsf-theme-switch { background: #04172a; border-color: var(--nsf-network-line); }
 .nsf-apto-network .nsf-theme-switch a,
 .nsf-apto-network .nsf-theme-switch button { color: #c7d6e1; }
@@ -1336,10 +1351,6 @@
 @media (max-width: 1120px) {
   .nsf-program-header { gap: 8px 24px; }
   .nsf-program-hero { grid-template-columns: 1fr minmax(320px,.72fr); }
-  .nsf-program-hero.has-widget { grid-template-columns: 1fr; }
-  .nsf-program-hero.has-widget > .nsf-hero-copy { grid-column: 1; grid-row: 1; }
-  .nsf-program-hero.has-widget > .nsf-hero-widget { grid-column: 1; grid-row: 2; width: min(100%,720px); justify-self: start; }
-  .nsf-program-hero.has-widget > .nsf-hero-facts { grid-column: 1; grid-row: 3; }
   .nsf-cohort-stage > header { grid-template-columns: 1fr 1fr; }
   .nsf-cohort-stage > header > a { grid-column: 2; }
   .nsf-cohort-canvas { grid-template-columns: repeat(3,minmax(0,1fr)); }
@@ -1372,7 +1383,7 @@
   .nsf-program-hero > .nsf-hero-program-note,
   .nsf-program-hero > .nsf-ledger-hero-art,
   .nsf-program-hero > .nsf-network-hero-art { grid-column: 1; grid-row: 2; }
-  .nsf-program-hero > .nsf-hero-facts { grid-column: 1; grid-row: 3; }
+  .nsf-program-hero > .nsf-hero-facts { grid-column: 1; grid-row: 2; width: 100%; max-width: 720px; margin-top: 4px; justify-self: start; grid-template-columns: repeat(4,minmax(0,1fr)); }
   .nsf-hero-widget { width: 100%; max-width: 720px; justify-self: start; }
   .nsf-hero-program-note { min-height: 230px; }
   .nsf-tool-card { grid-template-columns: 1fr; }
@@ -1448,7 +1459,7 @@
   .nsf-hero-summary { font-size: 1.02rem; }
   .nsf-hero-actions { align-items: stretch; flex-direction: column; }
   .nsf-hero-actions > a { width: 100%; justify-content: space-between; }
-  .nsf-hero-facts { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .nsf-program-hero > .nsf-hero-facts { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .nsf-hero-widget { padding: 14px; border-radius: 14px; }
   .nsf-apto-ledger .nsf-hero-widget { padding-left: 32px; }
   .nsf-hero-widget-header { align-items: flex-start; }

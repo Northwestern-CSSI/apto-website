@@ -157,9 +157,8 @@ test("renders five canonical pages in two themes and preserves every published c
     const html = await response.text();
     assert.match(html, new RegExp(`concept-${canonicalConcept}\\b`));
     assert.match(html, new RegExp(`nsf-apto-${theme}\\b`));
-    assert.equal(countMatches(html, /class="nsf-hero-widget(?:\s|")/g), 1, `${concept} home should always show the tool widget`);
-    assert.equal(countMatches(html, /role="tab"/g), content.interface.widget.items.length);
-    assert.match(html, new RegExp(`/apto/tools\\?concept=${canonicalConcept}`));
+    assert.equal(countMatches(html, /class="nsf-hero-widget(?:\s|")/g), 0, `${concept} home should not show a tool widget`);
+    assert.equal(countMatches(html, /role="tab"/g), 0);
   }
 
   for (const [route, slug, section] of canonicalPages) {
@@ -183,10 +182,11 @@ test("renders five canonical pages in two themes and preserves every published c
       assert.ok(primaryNav, `${section} should expose its primary navigation label`);
       assert.equal(countMatches(primaryNav[1], /<a\b/g), 4);
       for (const item of content.interface.primaryNavigation) assert.ok(text.includes(item.label));
+      assert.equal(text.includes("Cohort & People"), false);
 
       assert.equal(
         countMatches(html, /class="nsf-hero-widget(?:\s|")/g),
-        section === "home" ? 1 : 0,
+        0,
         `${section} widget visibility`,
       );
 
