@@ -3,6 +3,7 @@
   "kind": "page",
   "slug": "/about",
   "navLabel": "About",
+  "metadataTitle": "About the program",
   "eyebrow": "About APTO",
   "title": "How technology becomes capability, production, and use"
 }

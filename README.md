@@ -46,8 +46,10 @@ content lives in `content/apto/`:
 - `program.md` — program description, outcome framework, statistics, sources,
   and required NSF acknowledgement
 - `interface.md` — shared navigation, homepage, design-direction, widget,
-  disclosure, and footer copy, including illustrative widget data
-- `pages/*.md` — titles and introductions for the six routed pages
+  accessibility, social-metadata, disclosure, and footer copy, including
+  illustrative widget data
+- `pages/*.md` — browser-metadata titles, display titles, and introductions for
+  the six routed pages
 - `projects/*.md` — the five APTO award and participant records, including
   investigators, organization links, and provisional logo metadata
 - `tools/*.md` — two clearly labeled tool concepts per participating

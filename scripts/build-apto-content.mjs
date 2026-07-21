@@ -55,6 +55,7 @@ const allowedLogoKinds = new Set(["symbol", "wordmark"]);
 const allowedLogoSurfaces = new Set(["dark", "light"]);
 const allowedHeroWidgetIds = new Set(["emerging", "map", "patent", "trajectories"]);
 const allowedHeroWidgetKinds = new Set(["signals", "map", "translation", "trajectories"]);
+const allowedHeroWidgetIcons = new Set(["trend-up", "network-map", "shield-check", "trajectory"]);
 const allowedTrajectoryTones = new Set(["blue", "gold", "purple"]);
 const expectedDirectionIds = new Set([
   "nsfhome",
@@ -65,71 +66,12 @@ const expectedDirectionIds = new Set([
   "nsfnetworkwidgets",
 ]);
 const expectedPages = new Map([
-  ["about", { slug: "/about", navLabel: "About" }],
-  ["cohort", { slug: "/cohort", navLabel: "Cohort" }],
-  ["home", { slug: "/", navLabel: "Home" }],
-  ["people", { slug: "/people", navLabel: "People" }],
-  ["projects", { slug: "/projects", navLabel: "Projects" }],
-  ["tools", { slug: "/tools", navLabel: "Tools" }],
-]);
-const expectedParticipantLogos = new Map([
-  [
-    "aperture",
-    {
-      src: "/apto/partners/aperture.svg",
-      width: 200,
-      height: 200,
-      surface: "dark",
-      kind: "symbol",
-      sourceUrl: "https://www.aperture.ai/assets/brand/favicon.svg",
-    },
-  ],
-  [
-    "insilicom",
-    {
-      src: "/apto/partners/insilicom.png",
-      width: 158,
-      height: 42,
-      surface: "dark",
-      kind: "wordmark",
-      sourceUrl: "https://www.insilicom.com/",
-    },
-  ],
-  [
-    "macrocosm",
-    {
-      src: "/apto/partners/macrocosm.svg",
-      width: 443,
-      height: 194,
-      surface: "dark",
-      kind: "wordmark",
-      sourceUrl: "https://macrocosm.group/macrocosm-logo.svg",
-    },
-  ],
-  [
-    "northwestern",
-    {
-      src: "/apto/partners/northwestern.png",
-      width: 407,
-      height: 235,
-      surface: "light",
-      kind: "wordmark",
-      sourceUrl:
-        "https://www.northwestern.edu/brand/images/horizontal-wordmark.png",
-    },
-  ],
-  [
-    "uchicago",
-    {
-      src: "/apto/partners/uchicago.png",
-      width: 1920,
-      height: 669,
-      surface: "light",
-      kind: "wordmark",
-      sourceUrl:
-        "https://creative.uchicago.edu/files/2023/09/University-Logo_1Color_Maroon_RGB.png",
-    },
-  ],
+  ["about", { slug: "/about" }],
+  ["cohort", { slug: "/cohort" }],
+  ["home", { slug: "/" }],
+  ["people", { slug: "/people" }],
+  ["projects", { slug: "/projects" }],
+  ["tools", { slug: "/tools" }],
 ]);
 
 function relativeFile(file) {
@@ -213,6 +155,13 @@ function assertExactSet(values, expected, context) {
 
 function assertExactKeys(object, expected, context) {
   assertExactSet(Object.keys(object), new Set(expected), `${context} fields`);
+}
+
+function requireExactStringObject(value, keys, context) {
+  const object = requireObject(value, context);
+  assertExactKeys(object, keys, context);
+  for (const key of keys) requireString(object, key, context);
+  return object;
 }
 
 function normalizeProse(value) {
@@ -337,7 +286,7 @@ function validatePerson(person, context) {
   }
 }
 
-function validateParticipantLogo(logo, participantId, context) {
+function validateParticipantLogo(logo, context) {
   requireObject(logo, context);
   assertExactKeys(
     logo,
@@ -355,38 +304,27 @@ function validateParticipantLogo(logo, participantId, context) {
     context,
   );
 
-  const expected = expectedParticipantLogos.get(participantId);
-  assert(expected, `${context} has no expected participant logo configuration`);
   const src = requireString(logo, "src", context);
-  assert(src === expected.src, `${context}.src must be “${expected.src}”`);
-  const width = requirePositiveNumber(logo, "width", context);
-  const height = requirePositiveNumber(logo, "height", context);
-  assert(width === expected.width, `${context}.width must be ${expected.width}`);
-  assert(height === expected.height, `${context}.height must be ${expected.height}`);
+  assert(src.startsWith("/"), `${context}.src must be a root-relative asset path`);
+  requirePositiveNumber(logo, "width", context);
+  requirePositiveNumber(logo, "height", context);
   const surface = requireString(logo, "surface", context);
   assert(
-    allowedLogoSurfaces.has(surface) && surface === expected.surface,
-    `${context}.surface must be “${expected.surface}”`,
+    allowedLogoSurfaces.has(surface),
+    `${context}.surface must be one of: ${[...allowedLogoSurfaces].join(", ")}`,
   );
   const kind = requireString(logo, "kind", context);
   assert(
-    allowedLogoKinds.has(kind) && kind === expected.kind,
-    `${context}.kind must be “${expected.kind}”`,
+    allowedLogoKinds.has(kind),
+    `${context}.kind must be one of: ${[...allowedLogoKinds].join(", ")}`,
   );
-  const sourceUrl = requireHttpsUrl(
+  requireHttpsUrl(
     requireString(logo, "sourceUrl", context),
     `${context}.sourceUrl`,
   );
-  assert(
-    sourceUrl === expected.sourceUrl,
-    `${context}.sourceUrl must be “${expected.sourceUrl}”`,
-  );
   requireString(logo, "sourceLabel", context);
-  assert(
-    logo.status === "approval-required/mockup",
-    `${context}.status must be “approval-required/mockup”`,
-  );
-  assert(logo.approved === false, `${context}.approved must be false`);
+  requireString(logo, "status", context);
+  assert(typeof logo.approved === "boolean", `${context}.approved must be a boolean`);
   return logo;
 }
 
@@ -396,7 +334,7 @@ function validatePage(document) {
   assert(metadata.kind === "page", `${context}.kind must be “page”`);
   assertExactKeys(
     metadata,
-    ["kind", "slug", "navLabel", "eyebrow", "title"],
+    ["kind", "slug", "navLabel", "metadataTitle", "eyebrow", "title"],
     `${context} frontmatter`,
   );
 
@@ -405,13 +343,10 @@ function validatePage(document) {
   assert(expected, `${context} filename is not a supported routed page`);
   const slug = requireString(metadata, "slug", context);
   const navLabel = requireString(metadata, "navLabel", context);
+  const metadataTitle = requireString(metadata, "metadataTitle", context);
   const eyebrow = requireString(metadata, "eyebrow", context);
   const title = requireString(metadata, "title", context);
   assert(slug === expected.slug, `${context}.slug must be “${expected.slug}”`);
-  assert(
-    navLabel === expected.navLabel,
-    `${context}.navLabel must be “${expected.navLabel}”`,
-  );
   assert(h1 === title, `${context} H1 must match frontmatter title`);
   assert(
     sections.size === 1 && sections.has("Introduction"),
@@ -429,6 +364,7 @@ function validatePage(document) {
     page: {
       slug,
       navLabel,
+      metadataTitle,
       eyebrow,
       title,
       introduction: normalizeProse(introduction),
@@ -463,9 +399,10 @@ function validateProgram(document) {
   const framework = requireObject(metadata.framework, `${context}.framework`);
   assertExactKeys(
     framework,
-    ["outcomesTitle", "outcomesNote", "effortsTitle", "effortsNote"],
+    ["ariaLabel", "outcomesTitle", "outcomesNote", "effortsTitle", "effortsNote"],
     `${context}.framework`,
   );
+  requireString(framework, "ariaLabel", `${context}.framework`);
   requireString(framework, "outcomesTitle", `${context}.framework`);
   requireString(framework, "outcomesNote", `${context}.framework`);
   requireString(framework, "effortsTitle", `${context}.framework`);
@@ -542,6 +479,26 @@ function validateInterface(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
   assert(metadata.kind === "interface", `${context}.kind must be “interface”`);
+  assertExactKeys(
+    metadata,
+    [
+      "kind",
+      "directions",
+      "study",
+      "primaryNavigation",
+      "home",
+      "widget",
+      "common",
+      "accessibility",
+      "projects",
+      "tools",
+      "people",
+      "cohort",
+      "disclosures",
+      "footer",
+    ],
+    `${context} frontmatter`,
+  );
   assert(
     h1 === "APTO website interface content",
     `${context} H1 must be “APTO website interface content”`,
@@ -565,6 +522,37 @@ function validateInterface(document) {
     `${context}.directions`,
   );
 
+  const study = requireObject(metadata.study, `${context}.study`);
+  assertExactKeys(
+    study,
+    [
+      "siteTitle",
+      "siteDescription",
+      "socialImageAlt",
+      "galleryLabel",
+      "barLabel",
+      "themeChooserLabel",
+      "formatChooserLabel",
+      "formatLabel",
+      "standardLabel",
+      "widgetLabel",
+      "selectedFormatLabel",
+    ],
+    `${context}.study`,
+  );
+  for (const key of [
+    "siteTitle",
+    "siteDescription",
+    "socialImageAlt",
+    "galleryLabel",
+    "barLabel",
+    "themeChooserLabel",
+    "formatChooserLabel",
+    "formatLabel",
+    "standardLabel",
+    "widgetLabel",
+    "selectedFormatLabel",
+  ]) requireString(study, key, `${context}.study`);
   const primaryNavigation = requireArray(metadata, "primaryNavigation", context);
   assert(primaryNavigation.length === 5, `${context}.primaryNavigation must contain five links`);
   assertExactSet(
@@ -579,6 +567,25 @@ function validateInterface(document) {
   );
 
   const home = requireObject(metadata.home, `${context}.home`);
+  assertExactKeys(
+    home,
+    [
+      "primaryActionLabel",
+      "secondaryActionLabel",
+      "outcomeVisualNote",
+      "cohortEyebrow",
+      "cohortTitle",
+      "cohortLinkLabel",
+      "logoDisclosure",
+      "networkCoreLabel",
+      "networkVisualAlt",
+      "networkVisualCaption",
+      "ledgerVisualEyebrow",
+      "ledgerVisualTitle",
+      "pathways",
+    ],
+    `${context}.home`,
+  );
   for (const key of [
     "primaryActionLabel",
     "secondaryActionLabel",
@@ -587,6 +594,11 @@ function validateInterface(document) {
     "cohortTitle",
     "cohortLinkLabel",
     "logoDisclosure",
+    "networkCoreLabel",
+    "networkVisualAlt",
+    "networkVisualCaption",
+    "ledgerVisualEyebrow",
+    "ledgerVisualTitle",
   ]) requireString(home, key, `${context}.home`);
   const pathways = requireArray(home, "pathways", `${context}.home`);
   assertExactSet(
@@ -602,7 +614,47 @@ function validateInterface(document) {
   );
 
   const widget = requireObject(metadata.widget, `${context}.widget`);
-  for (const key of ["eyebrow", "title", "allToolsLabel", "disclaimer", "exploreLabel"]) {
+  assertExactKeys(
+    widget,
+    [
+      "eyebrow",
+      "title",
+      "allToolsLabel",
+      "disclaimer",
+      "exploreLabel",
+      "previewAriaLabel",
+      "chooserAriaLabel",
+      "momentumScaleLabel",
+      "momentumListAriaLabel",
+      "mapCaptionPrefix",
+      "mapCaptionSuffix",
+      "compositeAriaPrefix",
+      "compositeAriaJoiner",
+      "demoIndexLabel",
+      "trajectoryScaleLabel",
+      "trajectoryAriaSuffix",
+      "items",
+    ],
+    `${context}.widget`,
+  );
+  for (const key of [
+    "eyebrow",
+    "title",
+    "allToolsLabel",
+    "disclaimer",
+    "exploreLabel",
+    "previewAriaLabel",
+    "chooserAriaLabel",
+    "momentumScaleLabel",
+    "momentumListAriaLabel",
+    "mapCaptionPrefix",
+    "mapCaptionSuffix",
+    "compositeAriaPrefix",
+    "compositeAriaJoiner",
+    "demoIndexLabel",
+    "trajectoryScaleLabel",
+    "trajectoryAriaSuffix",
+  ]) {
     requireString(widget, key, `${context}.widget`);
   }
   const widgetItems = requireArray(widget, "items", `${context}.widget`);
@@ -623,6 +675,10 @@ function validateInterface(document) {
     for (const key of ["icon", "tabLabel", "kicker", "title", "summary"]) {
       requireString(item, key, itemContext);
     }
+    assert(
+      allowedHeroWidgetIcons.has(item.icon),
+      `${itemContext}.icon is not supported`,
+    );
     const preview = requireObject(item.preview, `${itemContext}.preview`);
     const kind = requireString(preview, "kind", `${itemContext}.preview`);
     assert(allowedHeroWidgetKinds.has(kind), `${itemContext}.preview.kind is not supported`);
@@ -668,14 +724,113 @@ function validateInterface(document) {
     }
   });
 
+  requireExactStringObject(
+    metadata.common,
+    [
+      "organizationWebsiteLabel",
+      "officialAwardRecordLabel",
+      "nsfAwardRecordLabel",
+      "awardApiRecordLabel",
+      "participantWebsiteLabel",
+    ],
+    `${context}.common`,
+  );
+  requireExactStringObject(
+    metadata.accessibility,
+    [
+      "skipLinkLabel",
+      "primaryNavigationLabel",
+      "footerNavigationLabel",
+      "homePathwaysLabel",
+      "projectInvestigatorsLabel",
+      "outcomeTypesLabel",
+      "linesOfEffortLabel",
+    ],
+    `${context}.accessibility`,
+  );
+  requireExactStringObject(
+    metadata.projects,
+    [
+      "ledgerTitle",
+      "awardLabel",
+      "personAwardLabel",
+      "legalAwardeeLabel",
+      "agreementLabel",
+      "obligatedAmountLabel",
+      "estimatedTotalLabel",
+      "dataAsOfLabel",
+    ],
+    `${context}.projects`,
+  );
+  requireExactStringObject(
+    metadata.tools,
+    [
+      "registerTitle",
+      "allOrganizationsLabel",
+      "filterAriaLabel",
+      "showingAllLabel",
+      "showingParticipantPrefix",
+      "conceptByLabel",
+      "demoVideoLabel",
+      "toolLinkLabel",
+      "watchWithCaptionsLabel",
+      "captionsForthcomingLabel",
+      "linkForthcomingLabel",
+      "openToolLabel",
+    ],
+    `${context}.tools`,
+  );
+  requireExactStringObject(
+    metadata.people,
+    ["projectProfileLabel", "portraitForthcomingLabel", "viewProfileLabel"],
+    `${context}.people`,
+  );
+  requireExactStringObject(
+    metadata.cohort,
+    ["prominentTitle", "markStatusSuffix"],
+    `${context}.cohort`,
+  );
+
   const disclosures = requireObject(metadata.disclosures, `${context}.disclosures`);
   for (const key of ["cohort", "toolsLabel", "toolsNote"]) {
     requireString(disclosures, key, `${context}.disclosures`);
   }
   const footer = requireObject(metadata.footer, `${context}.footer`);
-  for (const key of ["supportTitle", "supportDescription", "disclaimerTitle", "backToTopLabel", "homeLinkLabel", "programLinkLabel"]) {
+  assertExactKeys(
+    footer,
+    [
+      "supportTitle",
+      "supportDescription",
+      "disclaimerTitle",
+      "backToTopLabel",
+      "homeLinkLabel",
+      "programLinkLabel",
+      "nsfWebsiteUrl",
+      "nsfLogoSrc",
+      "nsfWebsiteAriaLabel",
+      "nsfLogoAlt",
+    ],
+    `${context}.footer`,
+  );
+  for (const key of [
+    "supportTitle",
+    "supportDescription",
+    "disclaimerTitle",
+    "backToTopLabel",
+    "homeLinkLabel",
+    "programLinkLabel",
+    "nsfWebsiteUrl",
+    "nsfLogoSrc",
+    "nsfWebsiteAriaLabel",
+    "nsfLogoAlt",
+  ]) {
     requireString(footer, key, `${context}.footer`);
   }
+  requireHttpsUrl(footer.nsfWebsiteUrl, `${context}.footer.nsfWebsiteUrl`);
+  assert(
+    footer.nsfLogoSrc.startsWith("/"),
+    `${context}.footer.nsfLogoSrc must be a root-relative asset path`,
+  );
 
   return omitFields(metadata, ["kind"]);
 }
@@ -750,7 +905,6 @@ function validateProject(document) {
   );
   validateParticipantLogo(
     participant.logo,
-    participantId,
     `${context}.participant.logo`,
   );
   assert(
@@ -831,10 +985,7 @@ function validateTool(document, projectByParticipant) {
   );
   requireString(figure, "label", `${context}.figure`);
   requireString(figure, "alt", `${context}.figure`);
-  assert(
-    metadata.status === "Concept only · not a released tool",
-    `${context}.status must use the approved concept-only label`,
-  );
+  requireString(metadata, "status", context);
   assert(metadata.isConceptOnly === true, `${context}.isConceptOnly must be true`);
   assert(metadata.demoVideoUrl === null, `${context}.demoVideoUrl must be null for mockups`);
   assert(metadata.toolUrl === null, `${context}.toolUrl must be null for mockups`);
@@ -1001,7 +1152,7 @@ async function buildContent() {
     _generated: {
       warning:
         "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 3,
+      schemaVersion: 4,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

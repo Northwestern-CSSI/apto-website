@@ -3,6 +3,7 @@
   "kind": "page",
   "slug": "/projects",
   "navLabel": "Projects",
+  "metadataTitle": "Projects",
   "eyebrow": "Research portfolio",
   "title": "Projects across the APTO cohort"
 }

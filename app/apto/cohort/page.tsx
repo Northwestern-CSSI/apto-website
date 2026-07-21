@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
+import { metadataFor } from "../_metadata";
 import { AptoRoutePage, type AptoRouteSearchParams } from "../_route-page";
 
-export const metadata: Metadata = { title: "Participating organizations" };
+export const metadata: Metadata = metadataFor("/cohort");
 
 export default function AptoCohortPage({
   searchParams,

@@ -1,7 +1,7 @@
 {
   "_generated": {
     "warning": "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-    "schemaVersion": 3,
+    "schemaVersion": 4,
     "generator": "scripts/build-apto-content.mjs",
     "sourceDirectory": "content/apto",
     "generatedFrom": [
@@ -62,6 +62,7 @@
       }
     ],
     "framework": {
+      "ariaLabel": "APTO research framework",
       "outcomesTitle": "Outcome lenses",
       "outcomesNote": "What APTO measures",
       "effortsTitle": "Research tracks",
@@ -141,6 +142,19 @@
         "note": "Dark tools"
       }
     ],
+    "study": {
+      "siteTitle": "APTO Website Direction Study",
+      "siteDescription": "Fifty-six modern website directions for the Assessing and Predicting Technology Outcomes program.",
+      "socialImageAlt": "APTO — See where technology is going.",
+      "galleryLabel": "Design gallery",
+      "barLabel": "APTO design directions",
+      "themeChooserLabel": "Choose a visual direction",
+      "formatChooserLabel": "Choose a homepage format",
+      "formatLabel": "Homepage",
+      "standardLabel": "Standard",
+      "widgetLabel": "Widget",
+      "selectedFormatLabel": "selected format"
+    },
     "primaryNavigation": [
       {
         "label": "Program",
@@ -171,6 +185,11 @@
       "cohortTitle": "Five teams working toward a shared evidence base",
       "cohortLinkLabel": "Meet the full cohort",
       "logoDisclosure": "Participant marks are shown for identification; final artwork and use remain subject to confirmation.",
+      "networkCoreLabel": "shared evidence",
+      "networkVisualAlt": "Abstract illustration of research organizations connected through a shared evidence network",
+      "networkVisualCaption": "Independent research teams connected by a shared question about technology outcomes.",
+      "ledgerVisualEyebrow": "APTO evidence folio",
+      "ledgerVisualTitle": "Three lenses on technology outcomes",
       "pathways": [
         {
           "section": "about",
@@ -205,6 +224,17 @@
       "allToolsLabel": "Browse tools",
       "disclaimer": "Illustrative interface · demo values are not APTO findings.",
       "exploreLabel": "Browse all tools",
+      "previewAriaLabel": "Interactive APTO tool widget preview",
+      "chooserAriaLabel": "Choose a tool preview",
+      "momentumScaleLabel": "Illustrative momentum index · 0–100",
+      "momentumListAriaLabel": "Illustrative emerging technology momentum index, from zero to one hundred, listed alphabetically",
+      "mapCaptionPrefix": "Illustrative map of science showing connected",
+      "mapCaptionSuffix": "research clusters",
+      "compositeAriaPrefix": "Illustrative composite translation index of",
+      "compositeAriaJoiner": "out of",
+      "demoIndexLabel": "Demo index",
+      "trajectoryScaleLabel": "Illustrative trend shapes · not forecasts",
+      "trajectoryAriaSuffix": "illustrative rising technology trajectory",
       "items": [
         {
           "id": "emerging",
@@ -322,6 +352,55 @@
         }
       ]
     },
+    "common": {
+      "organizationWebsiteLabel": "Organization website",
+      "officialAwardRecordLabel": "Official award record",
+      "nsfAwardRecordLabel": "NSF award record",
+      "awardApiRecordLabel": "Award API record",
+      "participantWebsiteLabel": "Participant website"
+    },
+    "accessibility": {
+      "skipLinkLabel": "Skip to main content",
+      "primaryNavigationLabel": "Primary navigation",
+      "footerNavigationLabel": "Footer navigation",
+      "homePathwaysLabel": "Explore APTO",
+      "projectInvestigatorsLabel": "Project investigators",
+      "outcomeTypesLabel": "Outcome types",
+      "linesOfEffortLabel": "Lines of effort"
+    },
+    "projects": {
+      "ledgerTitle": "The project evidence ledger",
+      "awardLabel": "NSF award",
+      "personAwardLabel": "Award",
+      "legalAwardeeLabel": "Legal awardee",
+      "agreementLabel": "Agreement",
+      "obligatedAmountLabel": "Current obligated amount",
+      "estimatedTotalLabel": "NSF estimated total",
+      "dataAsOfLabel": "NSF data as of"
+    },
+    "tools": {
+      "registerTitle": "A proposed tool register",
+      "allOrganizationsLabel": "All organizations",
+      "filterAriaLabel": "Filter tool concepts by participant",
+      "showingAllLabel": "Showing all concept tools · alphabetical by name",
+      "showingParticipantPrefix": "Showing concept tools for",
+      "conceptByLabel": "A concept by",
+      "demoVideoLabel": "Demo video",
+      "toolLinkLabel": "Tool link",
+      "watchWithCaptionsLabel": "Watch with captions",
+      "captionsForthcomingLabel": "Forthcoming — captions and transcript planned",
+      "linkForthcomingLabel": "Forthcoming",
+      "openToolLabel": "Open tool"
+    },
+    "people": {
+      "projectProfileLabel": "Project profile",
+      "portraitForthcomingLabel": "Portrait forthcoming",
+      "viewProfileLabel": "View profile"
+    },
+    "cohort": {
+      "prominentTitle": "The organizations behind the APTO cohort",
+      "markStatusSuffix": "mark — mockup use pending participant approval"
+    },
     "disclosures": {
       "cohort": "Marks shown here come from participant websites or official university brand resources. Their use is provisional and requires participant confirmation before a production launch.",
       "toolsLabel": "Mock content",
@@ -333,13 +412,18 @@
       "disclaimerTitle": "NSF acknowledgement and disclaimer",
       "backToTopLabel": "Back to top",
       "homeLinkLabel": "Home",
-      "programLinkLabel": "Program"
+      "programLinkLabel": "Program",
+      "nsfWebsiteUrl": "https://www.nsf.gov/",
+      "nsfLogoSrc": "/apto/nsf-logo.png",
+      "nsfWebsiteAriaLabel": "Visit the U.S. National Science Foundation website",
+      "nsfLogoAlt": "U.S. National Science Foundation logo"
     }
   },
   "pages": [
     {
       "slug": "/about",
       "navLabel": "About",
+      "metadataTitle": "About the program",
       "eyebrow": "About APTO",
       "title": "How technology becomes capability, production, and use",
       "introduction": "The Assessing and Predicting Technology Outcomes program supports evidence, models, data sets, and tools for understanding how investments in science and technology shape technical capability, production, and use. APTO research connects historical evidence with possible future states so decision-makers can reason more clearly about research, development, and innovation."
@@ -347,6 +431,7 @@
     {
       "slug": "/cohort",
       "navLabel": "Cohort",
+      "metadataTitle": "Participating organizations",
       "eyebrow": "Participating organizations",
       "title": "Complementary perspectives on technology outcomes",
       "introduction": "The APTO cohort brings together universities and companies working across economic modeling, knowledge graphs, science and technology observatories, problem-focused analysis, and research-to-market translation. Participant and project records are presented alphabetically so the directory communicates collaboration without implying rank or preference."
@@ -354,6 +439,7 @@
     {
       "slug": "/",
       "navLabel": "Home",
+      "metadataTitle": "Program home",
       "eyebrow": "Assessing and Predicting Technology Outcomes",
       "title": "Evidence for better technology decisions",
       "introduction": "APTO is a National Science Foundation program building shared evidence for understanding how technologies develop, spread, and create value. Explore the participating organizations, research projects, people, and illustrative tool concepts for investigating technology outcomes."
@@ -361,6 +447,7 @@
     {
       "slug": "/people",
       "navLabel": "People",
+      "metadataTitle": "People",
       "eyebrow": "Researchers and collaborators",
       "title": "The people behind the program",
       "introduction": "Meet the principal investigators and co-principal investigators leading the APTO projects. People are listed alphabetically within each participating organization, with roles and organization links drawn from the project records."
@@ -368,6 +455,7 @@
     {
       "slug": "/projects",
       "navLabel": "Projects",
+      "metadataTitle": "Projects",
       "eyebrow": "Research portfolio",
       "title": "Projects across the APTO cohort",
       "introduction": "Browse the active NSF award records whose official titles begin with APTO. Each project profile connects its research summary, participating organization, investigators, award dates, funding snapshot, outcomes, and primary NSF record, with projects shown alphabetically by official title."
@@ -375,6 +463,7 @@
     {
       "slug": "/tools",
       "navLabel": "Tools",
+      "metadataTitle": "Tools",
       "eyebrow": "Concept tools",
       "title": "Interfaces for exploring APTO research",
       "introduction": "Explore interface concepts inspired by the research directions of each APTO project. These mockups illustrate possible maps, forecasting views, evidence workbenches, scenario laboratories, and research-to-market interfaces; they are not claims of released tools and will be replaced or linked as project teams publish approved resources."

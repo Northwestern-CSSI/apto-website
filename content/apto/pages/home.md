@@ -3,6 +3,7 @@
   "kind": "page",
   "slug": "/",
   "navLabel": "Home",
+  "metadataTitle": "Program home",
   "eyebrow": "Assessing and Predicting Technology Outcomes",
   "title": "Evidence for better technology decisions"
 }

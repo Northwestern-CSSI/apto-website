@@ -17,8 +17,8 @@ export type AptoParticipantLogo = {
   kind: "symbol" | "wordmark";
   sourceUrl: string;
   sourceLabel: string;
-  status: "approval-required/mockup";
-  approved: false;
+  status: string;
+  approved: boolean;
 };
 
 export type AptoPersonRole =
@@ -61,12 +61,12 @@ export type AptoMockTool = {
   };
   /** Convenience label for compact card treatments. */
   figureLabel: string;
-  status: "Concept only · not a released tool";
+  status: string;
   isConceptOnly: true;
   demoVideoUrl: null;
-  demoVideoLabel: "Demo video placeholder";
+  demoVideoLabel: string;
   toolUrl: null;
-  toolLinkLabel: "Tool link coming soon";
+  toolLinkLabel: string;
   organizationUrl: string;
   awardUrl: string;
 };
@@ -148,6 +148,7 @@ export type AptoProgram = {
   lastVerified: string;
   stats: AptoProgramStat[];
   framework: {
+    ariaLabel: string;
     outcomesTitle: string;
     outcomesNote: string;
     effortsTitle: string;
@@ -173,6 +174,7 @@ export type AptoPageSlug =
 export type AptoPage = {
   slug: AptoPageSlug;
   navLabel: string;
+  metadataTitle: string;
   eyebrow: string;
   title: string;
   introduction: string;
@@ -206,6 +208,19 @@ export type AptoHeroWidgetPreview =
 
 export type AptoInterfaceContent = {
   directions: Array<{ id: string; label: string; note: string }>;
+  study: {
+    siteTitle: string;
+    siteDescription: string;
+    socialImageAlt: string;
+    galleryLabel: string;
+    barLabel: string;
+    themeChooserLabel: string;
+    formatChooserLabel: string;
+    formatLabel: string;
+    standardLabel: string;
+    widgetLabel: string;
+    selectedFormatLabel: string;
+  };
   primaryNavigation: Array<{ label: string; section: AptoInterfaceSection }>;
   home: {
     primaryActionLabel: string;
@@ -215,6 +230,11 @@ export type AptoInterfaceContent = {
     cohortTitle: string;
     cohortLinkLabel: string;
     logoDisclosure: string;
+    networkCoreLabel: string;
+    networkVisualAlt: string;
+    networkVisualCaption: string;
+    ledgerVisualEyebrow: string;
+    ledgerVisualTitle: string;
     pathways: Array<{ section: AptoInterfaceSection; title: string; description: string }>;
   };
   widget: {
@@ -223,15 +243,75 @@ export type AptoInterfaceContent = {
     allToolsLabel: string;
     disclaimer: string;
     exploreLabel: string;
+    previewAriaLabel: string;
+    chooserAriaLabel: string;
+    momentumScaleLabel: string;
+    momentumListAriaLabel: string;
+    mapCaptionPrefix: string;
+    mapCaptionSuffix: string;
+    compositeAriaPrefix: string;
+    compositeAriaJoiner: string;
+    demoIndexLabel: string;
+    trajectoryScaleLabel: string;
+    trajectoryAriaSuffix: string;
     items: Array<{
       id: "emerging" | "map" | "patent" | "trajectories";
-      icon: string;
+      icon: "trend-up" | "network-map" | "shield-check" | "trajectory";
       tabLabel: string;
       kicker: string;
       title: string;
       summary: string;
       preview: AptoHeroWidgetPreview;
     }>;
+  };
+  common: {
+    organizationWebsiteLabel: string;
+    officialAwardRecordLabel: string;
+    nsfAwardRecordLabel: string;
+    awardApiRecordLabel: string;
+    participantWebsiteLabel: string;
+  };
+  accessibility: {
+    skipLinkLabel: string;
+    primaryNavigationLabel: string;
+    footerNavigationLabel: string;
+    homePathwaysLabel: string;
+    projectInvestigatorsLabel: string;
+    outcomeTypesLabel: string;
+    linesOfEffortLabel: string;
+  };
+  projects: {
+    ledgerTitle: string;
+    awardLabel: string;
+    personAwardLabel: string;
+    legalAwardeeLabel: string;
+    agreementLabel: string;
+    obligatedAmountLabel: string;
+    estimatedTotalLabel: string;
+    dataAsOfLabel: string;
+  };
+  tools: {
+    registerTitle: string;
+    allOrganizationsLabel: string;
+    filterAriaLabel: string;
+    showingAllLabel: string;
+    showingParticipantPrefix: string;
+    conceptByLabel: string;
+    demoVideoLabel: string;
+    toolLinkLabel: string;
+    watchWithCaptionsLabel: string;
+    captionsForthcomingLabel: string;
+    linkForthcomingLabel: string;
+    openToolLabel: string;
+  };
+  people: {
+    projectProfileLabel: string;
+    portraitForthcomingLabel: string;
+    viewProfileLabel: string;
+  };
+  cohort: {
+    prominentTitle: string;
+    markStatusSuffix: string;
   };
   disclosures: {
     cohort: string;
@@ -245,6 +325,10 @@ export type AptoInterfaceContent = {
     backToTopLabel: string;
     homeLinkLabel: string;
     programLinkLabel: string;
+    nsfWebsiteUrl: string;
+    nsfLogoSrc: string;
+    nsfWebsiteAriaLabel: string;
+    nsfLogoAlt: string;
   };
 };
 

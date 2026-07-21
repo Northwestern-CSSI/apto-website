@@ -3,6 +3,7 @@
   "kind": "page",
   "slug": "/tools",
   "navLabel": "Tools",
+  "metadataTitle": "Tools",
   "eyebrow": "Concept tools",
   "title": "Interfaces for exploring APTO research"
 }

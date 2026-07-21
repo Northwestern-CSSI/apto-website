@@ -3,6 +3,7 @@
   "kind": "page",
   "slug": "/people",
   "navLabel": "People",
+  "metadataTitle": "People",
   "eyebrow": "Researchers and collaborators",
   "title": "The people behind the program"
 }

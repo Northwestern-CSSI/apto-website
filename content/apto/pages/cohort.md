@@ -3,6 +3,7 @@
   "kind": "page",
   "slug": "/cohort",
   "navLabel": "Cohort",
+  "metadataTitle": "Participating organizations",
   "eyebrow": "Participating organizations",
   "title": "Complementary perspectives on technology outcomes"
 }

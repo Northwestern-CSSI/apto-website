@@ -32,6 +32,7 @@
     }
   ],
   "framework": {
+    "ariaLabel": "APTO research framework",
     "outcomesTitle": "Outcome lenses",
     "outcomesNote": "What APTO measures",
     "effortsTitle": "Research tracks",

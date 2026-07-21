@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { aptoProgram } from "../nsf-apto-data";
 
 export const metadata: Metadata = {
   title: {
-    default: "APTO",
-    template: "%s | APTO",
+    default: aptoProgram.acronym,
+    template: `%s | ${aptoProgram.acronym}`,
   },
-  description:
-    "Program, projects, people, participating organizations, and proposed tools for Assessing and Predicting Technology Outcomes.",
+  description: aptoProgram.shortSummary,
 };
 
 export default function AptoLayout({ children }: { children: ReactNode }) {

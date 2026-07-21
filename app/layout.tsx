@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Open_Sans } from "next/font/google";
 import { headers } from "next/headers";
+import { aptoInterface } from "./nsf-apto-data";
 import "./globals.css";
 import "./interactive-mockups.css";
 import "./kinetic-mockups.css";
@@ -33,9 +34,8 @@ export async function generateMetadata(): Promise<Metadata> {
     requestHeaders.get("x-forwarded-proto") ??
     (host.includes("localhost") ? "http" : "https");
   const baseUrl = new URL(`${protocol}://${host}`);
-  const title = "APTO Website Direction Study";
-  const description =
-    "Fifty-six modern website directions for the Assessing and Predicting Technology Outcomes program.";
+  const { siteTitle: title, siteDescription: description, socialImageAlt } =
+    aptoInterface.study;
   const socialImage = new URL("/og.png", baseUrl).toString();
 
   return {
@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
-      images: [{ url: socialImage, alt: "APTO — See where technology is going." }],
+      images: [{ url: socialImage, alt: socialImageAlt }],
     },
     twitter: {
       card: "summary_large_image",
