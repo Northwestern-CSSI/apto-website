@@ -485,7 +485,7 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.equal(content.tools.filter((tool) => tool.demoVideoLabel === "Demo video placeholder").length, 10);
   assert.equal(content.tools.filter((tool) => tool.toolLinkLabel === "Tool link coming soon").length, 10);
   assert.match(nsfSource, /Portrait forthcoming/);
-  assert.match(nsfSource, /Mock content/);
+  assert.equal(content.interface.disclosures.toolsLabel, "Mock content");
   assert.ok(content.tools.every((tool) => tool.status.includes("Concept only")));
   assert.equal(content.boilerplate, nsfBoilerplate);
 
@@ -523,7 +523,15 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfSource, /role="tablist"/);
   assert.match(nsfSource, /role="tabpanel"/);
   assert.match(nsfSource, /aria-selected=\{active === item\.id\}/);
-  assert.match(nsfSource, /id: "emerging"[\s\S]*id: "map"[\s\S]*id: "patent"[\s\S]*id: "trajectories"/);
+  assert.match(nsfSource, /aptoInterface\.widget\.items/);
+  assert.deepEqual(
+    content.interface.widget.items.map((item) => item.id),
+    ["emerging", "map", "patent", "trajectories"],
+  );
+  assert.deepEqual(
+    content.interface.widget.items.map((item) => item.kicker),
+    sortedAlphabetically(content.interface.widget.items.map((item) => item.kicker)),
+  );
   assert.match(nsfSource, /hasHeroWidgets\(id\) \? <NsfHeroToolWidget/);
 
   const networkThemeRule = cssRuleBody(nsfStyles, ".nsf-apto-network");
@@ -668,6 +676,10 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     markdownFiles(contentEntries).filter((entry) => entry.name === "program.md").length,
     1,
   );
+  assert.equal(
+    markdownFiles(contentEntries).filter((entry) => entry.name === "interface.md").length,
+    1,
+  );
   assert.deepEqual(
     sortedAlphabetically(pageMarkdownFiles.map((entry) => entry.name)),
     [
@@ -688,6 +700,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
 
   const markdownRecords = [
     { name: "program.md", url: new URL("program.md", contentRoot) },
+    { name: "interface.md", url: new URL("interface.md", contentRoot) },
     ...pageMarkdownFiles.map((entry) => ({
       name: `pages/${entry.name}`,
       url: new URL(`pages/${entry.name}`, contentRoot),
@@ -722,6 +735,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     [
       "_generated",
       "boilerplate",
+      "interface",
       "pages",
       "participants",
       "program",
@@ -730,8 +744,8 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
       "tools",
     ].sort(),
   );
-  assert.equal(content._generated.schemaVersion, 2);
-  assert.equal(content._generated.generatedFrom.length, 22);
+  assert.equal(content._generated.schemaVersion, 3);
+  assert.equal(content._generated.generatedFrom.length, 23);
   assert.deepEqual(
     content._generated.generatedFrom,
     sortedAlphabetically(content._generated.generatedFrom),
@@ -740,6 +754,8 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     assert.doesNotMatch(filename, /\/\d/, `${filename} must not encode rank`);
   }
   assert.equal(content.participants.length, 5);
+  assert.equal(content.interface.directions.length, 6);
+  assert.equal(content.interface.widget.items.length, 4);
   assert.equal(content.pages.length, 6);
   assert.deepEqual(
     content.pages.map((page) => page.navLabel),
@@ -772,6 +788,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
 
   assert.match(nsfData, /import generatedContent from "\.\/nsf-apto-content\.generated\.json";/);
   assert.match(nsfData, /export const aptoPages = aptoContent\.pages;/);
+  assert.match(nsfData, /export const aptoInterface = aptoContent\.interface;/);
   assert.doesNotMatch(nsfData, /export const apto(?:Projects|Participants|MockTools)\s*=\s*\[/);
   for (const [awardId, title] of expectedProjects) {
     assert.equal(nsfData.includes(awardId), false);
@@ -788,6 +805,8 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
   assert.match(generator, /toolFiles\.length === 10/);
   assert.match(generator, /pageFiles\.length === expectedPages\.size/);
   assert.match(generator, /function validateParticipantLogo\(/);
+  assert.match(generator, /function validateInterface\(/);
+  assert.match(generator, /const interfaceFile = path\.join\(contentDirectory, "interface\.md"\)/);
   assert.match(generator, /logo\.status === "approval-required\/mockup"/);
   assert.match(generator, /logo\.approved === false/);
   assert.match(

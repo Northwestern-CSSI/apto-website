@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Build the three NSF-aligned APTO concepts from Markdown.
+ * Build the six NSF-aligned APTO directions from Markdown.
  *
  * The frontmatter is deliberately JSON, not YAML, so this pipeline can run with
  * Node.js alone. Human-readable descriptions live in the Markdown H2 sections.
@@ -16,6 +16,7 @@ const rootDirectory = path.resolve(
   "..",
 );
 const contentDirectory = path.join(rootDirectory, "content", "apto");
+const interfaceFile = path.join(contentDirectory, "interface.md");
 const pageDirectory = path.join(contentDirectory, "pages");
 const projectDirectory = path.join(contentDirectory, "projects");
 const toolDirectory = path.join(contentDirectory, "tools");
@@ -52,6 +53,17 @@ const allowedSourceKinds = new Set([
 ]);
 const allowedLogoKinds = new Set(["symbol", "wordmark"]);
 const allowedLogoSurfaces = new Set(["dark", "light"]);
+const allowedHeroWidgetIds = new Set(["emerging", "map", "patent", "trajectories"]);
+const allowedHeroWidgetKinds = new Set(["signals", "map", "translation", "trajectories"]);
+const allowedTrajectoryTones = new Set(["blue", "gold", "purple"]);
+const expectedDirectionIds = new Set([
+  "nsfhome",
+  "nsfhomewidgets",
+  "nsfledger",
+  "nsfledgerwidgets",
+  "nsfnetwork",
+  "nsfnetworkwidgets",
+]);
 const expectedPages = new Map([
   ["about", { slug: "/about", navLabel: "About" }],
   ["cohort", { slug: "/cohort", navLabel: "Cohort" }],
@@ -215,6 +227,14 @@ function compareAlphabetically(left, right) {
 
 function projectTitleSortKey(title) {
   return title.replace(/^APTO:\s*/i, "");
+}
+
+function assertAlphabetical(values, context) {
+  const sorted = [...values].sort(compareAlphabetically);
+  assert(
+    values.every((value, index) => value === sorted[index]),
+    `${context} must be alphabetized`,
+  );
 }
 
 function omitFields(object, fields) {
@@ -506,6 +526,145 @@ function validateProgram(document) {
   };
 }
 
+function validateInterface(document) {
+  const { metadata, h1, sections, file } = document;
+  const context = relativeFile(file);
+  assert(metadata.kind === "interface", `${context}.kind must be “interface”`);
+  assert(
+    h1 === "APTO website interface content",
+    `${context} H1 must be “APTO website interface content”`,
+  );
+  assert(
+    sections.size === 1 && sections.has("Editorial guidance"),
+    `${context} must contain exactly one “## Editorial guidance” section`,
+  );
+
+  const directions = requireArray(metadata, "directions", context);
+  assertExactSet(
+    directions.map((direction, index) => {
+      const directionContext = `${context}.directions[${index}]`;
+      requireObject(direction, directionContext);
+      const id = requireString(direction, "id", directionContext);
+      requireString(direction, "label", directionContext);
+      requireString(direction, "note", directionContext);
+      return id;
+    }),
+    expectedDirectionIds,
+    `${context}.directions`,
+  );
+
+  const primaryNavigation = requireArray(metadata, "primaryNavigation", context);
+  assert(primaryNavigation.length === 5, `${context}.primaryNavigation must contain five links`);
+  assertExactSet(
+    primaryNavigation.map((item, index) => {
+      const itemContext = `${context}.primaryNavigation[${index}]`;
+      requireObject(item, itemContext);
+      requireString(item, "label", itemContext);
+      return requireString(item, "section", itemContext);
+    }),
+    new Set(["about", "cohort", "people", "projects", "tools"]),
+    `${context}.primaryNavigation sections`,
+  );
+
+  const home = requireObject(metadata.home, `${context}.home`);
+  for (const key of [
+    "primaryActionLabel",
+    "secondaryActionLabel",
+    "outcomeVisualNote",
+    "cohortEyebrow",
+    "cohortTitle",
+    "cohortLinkLabel",
+    "logoDisclosure",
+  ]) requireString(home, key, `${context}.home`);
+  const pathways = requireArray(home, "pathways", `${context}.home`);
+  assertExactSet(
+    pathways.map((pathway, index) => {
+      const pathwayContext = `${context}.home.pathways[${index}]`;
+      requireObject(pathway, pathwayContext);
+      requireString(pathway, "title", pathwayContext);
+      requireString(pathway, "description", pathwayContext);
+      return requireString(pathway, "section", pathwayContext);
+    }),
+    new Set(["about", "cohort", "people", "projects", "tools"]),
+    `${context}.home.pathways sections`,
+  );
+
+  const widget = requireObject(metadata.widget, `${context}.widget`);
+  for (const key of ["eyebrow", "title", "allToolsLabel", "disclaimer", "exploreLabel"]) {
+    requireString(widget, key, `${context}.widget`);
+  }
+  const widgetItems = requireArray(widget, "items", `${context}.widget`);
+  assert(widgetItems.length === 4, `${context}.widget.items must contain four records`);
+  assertExactSet(
+    widgetItems.map((item, index) => requireString(item, "id", `${context}.widget.items[${index}]`)),
+    allowedHeroWidgetIds,
+    `${context}.widget item ids`,
+  );
+  assertAlphabetical(widgetItems.map((item) => item.kicker), `${context}.widget.items`);
+
+  widgetItems.forEach((item, index) => {
+    const itemContext = `${context}.widget.items[${index}]`;
+    requireObject(item, itemContext);
+    for (const key of ["icon", "tabLabel", "kicker", "title", "summary"]) {
+      requireString(item, key, itemContext);
+    }
+    const preview = requireObject(item.preview, `${itemContext}.preview`);
+    const kind = requireString(preview, "kind", `${itemContext}.preview`);
+    assert(allowedHeroWidgetKinds.has(kind), `${itemContext}.preview.kind is not supported`);
+
+    if (kind === "map") {
+      const clusters = requireArray(preview, "clusters", `${itemContext}.preview`);
+      assert(clusters.length === 5, `${itemContext}.preview.clusters must contain five labels`);
+      clusters.forEach((cluster, clusterIndex) => assert(
+        typeof cluster === "string" && cluster.length > 0,
+        `${itemContext}.preview.clusters[${clusterIndex}] must be a non-empty string`,
+      ));
+      assertAlphabetical(clusters, `${itemContext}.preview.clusters`);
+      requireString(preview, "focusLabel", `${itemContext}.preview`);
+      requireString(preview, "focusTitle", `${itemContext}.preview`);
+      return;
+    }
+
+    const rows = requireArray(preview, "rows", `${itemContext}.preview`);
+    assert(rows.length >= 3, `${itemContext}.preview.rows must contain at least three records`);
+    rows.forEach((row, rowIndex) => {
+      const rowContext = `${itemContext}.preview.rows[${rowIndex}]`;
+      requireObject(row, rowContext);
+      requireString(row, "label", rowContext);
+      if (kind === "signals" || kind === "trajectories") requireString(row, "category", rowContext);
+      if (kind === "signals" || kind === "translation") {
+        const value = requirePositiveNumber(row, "value", rowContext);
+        assert(value <= 100, `${rowContext}.value must be no greater than 100`);
+      }
+      if (kind === "trajectories") {
+        const tone = requireString(row, "tone", rowContext);
+        assert(allowedTrajectoryTones.has(tone), `${rowContext}.tone is not supported`);
+      }
+    });
+    assertAlphabetical(rows.map((row) => row.label), `${itemContext}.preview.rows`);
+    if (kind === "translation") {
+      const composite = requirePositiveNumber(preview, "composite", `${itemContext}.preview`);
+      const maximum = requirePositiveNumber(preview, "maximum", `${itemContext}.preview`);
+      assert(composite <= maximum, `${itemContext}.preview.composite must not exceed maximum`);
+    }
+    if (kind === "trajectories") {
+      requireString(preview, "observedLabel", `${itemContext}.preview`);
+      requireString(preview, "forecastLabel", `${itemContext}.preview`);
+    }
+  });
+
+  const disclosures = requireObject(metadata.disclosures, `${context}.disclosures`);
+  for (const key of ["cohort", "toolsLabel", "toolsNote"]) {
+    requireString(disclosures, key, `${context}.disclosures`);
+  }
+  const footer = requireObject(metadata.footer, `${context}.footer`);
+  for (const key of ["supportTitle", "supportDescription", "disclaimerTitle", "backToTopLabel", "homeLinkLabel", "programLinkLabel"]) {
+    requireString(footer, key, `${context}.footer`);
+  }
+
+  return omitFields(metadata, ["kind"]);
+}
+
 function validateProject(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
@@ -721,14 +880,16 @@ async function buildContent() {
     `Expected exactly 10 tool Markdown files; found ${toolFiles.length}`,
   );
 
-  const [programDocument, pageDocuments, projectDocuments, toolDocuments] =
+  const [programDocument, interfaceDocument, pageDocuments, projectDocuments, toolDocuments] =
     await Promise.all([
       readMarkdown(programFile),
+      readMarkdown(interfaceFile),
       Promise.all(pageFiles.map(readMarkdown)),
       Promise.all(projectFiles.map(readMarkdown)),
       Promise.all(toolFiles.map(readMarkdown)),
     ]);
   const programRecord = validateProgram(programDocument);
+  const interfaceRecord = validateInterface(interfaceDocument);
   const pageRecords = pageDocuments.map(validatePage);
   assertExactSet(
     pageRecords.map((record) => record.id),
@@ -817,7 +978,7 @@ async function buildContent() {
   ].sort((left, right) => compareAlphabetically(left.label, right.label));
   assertUnique(sources.map((source) => source.id), "generated source ids");
 
-  const sourceFiles = [programFile, ...pageFiles, ...projectFiles, ...toolFiles]
+  const sourceFiles = [programFile, interfaceFile, ...pageFiles, ...projectFiles, ...toolFiles]
     .map(relativeFile)
     .sort(compareAlphabetically);
 
@@ -825,13 +986,14 @@ async function buildContent() {
     _generated: {
       warning:
         "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 2,
+      schemaVersion: 3,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,
       dataAsOf: programRecord.program.lastVerified,
     },
     program: programRecord.program,
+    interface: interfaceRecord,
     pages,
     boilerplate: programRecord.boilerplate,
     participants,
@@ -864,14 +1026,14 @@ async function main() {
       `${relativeFile(outputFile)} is out of date. Run: node scripts/build-apto-content.mjs`,
     );
     console.log(
-      `Validated ${relativeFile(outputFile)} from 1 program, 6 routed pages, 5 projects, and 10 tools.`,
+      `Validated ${relativeFile(outputFile)} from 1 program, 1 interface, 6 routed pages, 5 projects, and 10 tools.`,
     );
     return;
   }
 
   await writeFile(outputFile, serialized, "utf8");
   console.log(
-    `Generated ${relativeFile(outputFile)} from 1 program, 6 routed pages, 5 projects, and 10 tools.`,
+    `Generated ${relativeFile(outputFile)} from 1 program, 1 interface, 6 routed pages, 5 projects, and 10 tools.`,
   );
 }
 

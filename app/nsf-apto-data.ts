@@ -172,6 +172,76 @@ export type AptoPage = {
   introduction: string;
 };
 
+export type AptoInterfaceSection = "about" | "cohort" | "people" | "projects" | "tools";
+
+export type AptoHeroWidgetPreview =
+  | {
+      kind: "signals";
+      rows: Array<{ label: string; category: string; value: number }>;
+    }
+  | {
+      kind: "map";
+      clusters: string[];
+      focusLabel: string;
+      focusTitle: string;
+    }
+  | {
+      kind: "translation";
+      composite: number;
+      maximum: number;
+      rows: Array<{ label: string; value: number }>;
+    }
+  | {
+      kind: "trajectories";
+      rows: Array<{ label: string; category: string; tone: "blue" | "gold" | "purple" }>;
+      observedLabel: string;
+      forecastLabel: string;
+    };
+
+export type AptoInterfaceContent = {
+  directions: Array<{ id: string; label: string; note: string }>;
+  primaryNavigation: Array<{ label: string; section: AptoInterfaceSection }>;
+  home: {
+    primaryActionLabel: string;
+    secondaryActionLabel: string;
+    outcomeVisualNote: string;
+    cohortEyebrow: string;
+    cohortTitle: string;
+    cohortLinkLabel: string;
+    logoDisclosure: string;
+    pathways: Array<{ section: AptoInterfaceSection; title: string; description: string }>;
+  };
+  widget: {
+    eyebrow: string;
+    title: string;
+    allToolsLabel: string;
+    disclaimer: string;
+    exploreLabel: string;
+    items: Array<{
+      id: "emerging" | "map" | "patent" | "trajectories";
+      icon: string;
+      tabLabel: string;
+      kicker: string;
+      title: string;
+      summary: string;
+      preview: AptoHeroWidgetPreview;
+    }>;
+  };
+  disclosures: {
+    cohort: string;
+    toolsLabel: string;
+    toolsNote: string;
+  };
+  footer: {
+    supportTitle: string;
+    supportDescription: string;
+    disclaimerTitle: string;
+    backToTopLabel: string;
+    homeLinkLabel: string;
+    programLinkLabel: string;
+  };
+};
+
 export type AptoSourceKind =
   | "program"
   | "award-search"
@@ -200,6 +270,7 @@ export type AptoContentBuild = {
 type AptoGeneratedContent = {
   _generated: AptoContentBuild;
   program: AptoProgram;
+  interface: AptoInterfaceContent;
   pages: AptoPage[];
   boilerplate: string;
   participants: AptoParticipant[];
@@ -215,6 +286,7 @@ const aptoContent = generatedContent as unknown as AptoGeneratedContent;
 
 export const aptoContentBuild = aptoContent._generated;
 export const aptoProgram = aptoContent.program;
+export const aptoInterface = aptoContent.interface;
 export const aptoPages = aptoContent.pages;
 export const aptoBoilerplate = aptoContent.boilerplate;
 export const aptoParticipants = aptoContent.participants;

@@ -213,7 +213,7 @@
 .nsf-hero-widget-panel { margin-top: 9px; overflow: hidden; color: var(--nsf-widget-ink); background: var(--nsf-widget-panel); border: 1px solid var(--nsf-widget-line); border-radius: 16px; animation: nsf-widget-in .18s ease both; }
 @keyframes nsf-widget-in { from { opacity: 0; transform: translateY(4px); } }
 .nsf-hero-widget-panel > header { min-height: 94px; padding: 15px 17px 13px; border-bottom: 1px solid var(--nsf-widget-line); }
-.nsf-hero-widget-panel > header p { color: var(--nsf-blue); font-size: .61rem; font-weight: 800; letter-spacing: .08em; }
+.nsf-hero-widget-panel > header p { color: var(--nsf-blue); font-size: .61rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .nsf-hero-widget-panel > header h2 { margin: 4px 0 5px; color: var(--nsf-widget-ink); font-size: clamp(1.03rem,1.45vw,1.26rem); letter-spacing: -.025em; line-height: 1.14; }
 .nsf-hero-widget-panel > header span { display: block; color: var(--nsf-widget-muted); font-size: .69rem; line-height: 1.45; }
 .nsf-hero-widget-visual { min-height: 174px; padding: 14px 16px; background: var(--nsf-widget-surface); }

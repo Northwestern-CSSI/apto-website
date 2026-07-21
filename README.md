@@ -1,115 +1,97 @@
-# vinext-starter
+# APTO website design system
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Production-oriented website directions for the National Science Foundation’s
+Assessing and Predicting Technology Outcomes (APTO) program.
 
-## Prerequisites
+The site combines verified program and award information with clearly marked
+mockups for future APTO tools. It currently includes three complete visual
+directions and a matched widget-home variant for each:
+
+- `nsfhome` — light, clear, institutional program home
+- `nsfhomewidgets` — light program home with an interactive tool widget
+- `nsfledger` — editorial evidence-led direction with expandable records
+- `nsfledgerwidgets` — editorial direction with a compact tool plate
+- `nsfnetwork` — dark, organization-first cohort direction
+- `nsfnetworkwidgets` — dark direction with a signal-console widget
+
+The public routes are `/apto`, `/apto/about`, `/apto/cohort`, `/apto/people`,
+`/apto/projects`, and `/apto/tools`. Select a direction with the `concept`
+query parameter, for example `/apto?concept=nsfnetworkwidgets`.
+
+## Requirements
 
 - Node.js `>=22.13.0`
+- npm
 
-## Quick Start
+## Local development
 
 ```bash
 npm install
 npm run dev
-npm run build
 ```
 
-## APTO content workflow
-
-The three NSF-aligned concepts (`nsfhome`, `nsfledger`, and `nsfnetwork`) are built from Markdown in `content/apto/`:
-
-- `program.md` holds program language, outcomes, technology areas, sources, and the required acknowledgement.
-- `projects/*.md` holds the five APTO award and participant records, including investigators and organization links.
-- `tools/*.md` holds the ten clearly labeled interface concepts.
-
-Each file uses JSON frontmatter for structured metadata and ordinary Markdown headings for the editable title and narrative. No Markdown package is required; the generator uses Node.js built-ins only.
+Build and test the complete site:
 
 ```bash
-npm run content:build  # validate Markdown and regenerate app/nsf-apto-content.generated.json
-npm run content:check  # validate and fail if the generated file is stale
+npm run build
+node --test tests/rendered-html.test.mjs
 ```
 
-`npm run dev` and `npm run build` regenerate the content automatically. Edit the Markdown sources, not the generated JSON.
+## Markdown content workflow
 
-This starter does not use `wrangler.jsonc`.
+All editable APTO program, interface, project, participant, people, and tool
+content lives in `content/apto/`:
 
-## Included Shape
+- `program.md` — program description, outcome framework, statistics, sources,
+  and required NSF acknowledgement
+- `interface.md` — shared navigation, homepage, design-direction, widget,
+  disclosure, and footer copy, including illustrative widget data
+- `pages/*.md` — titles and introductions for the six routed pages
+- `projects/*.md` — the five APTO award and participant records, including
+  investigators, organization links, and provisional logo metadata
+- `tools/*.md` — two clearly labeled tool concepts per participating
+  organization
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+Files use JSON frontmatter for structured fields and normal Markdown headings
+for narrative content. The generator uses Node.js built-ins and validates
+alphabetical neutrality, record counts, joins, URLs, required disclaimers, and
+mockup labels.
 
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+npm run content:build
+npm run content:check
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Development and production builds regenerate
+`app/nsf-apto-content.generated.json` automatically. Edit the Markdown source,
+never the generated JSON.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## Accessibility
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+The APTO routes include semantic landmarks, a skip link, one page heading,
+keyboard-operable filters and widget tabs, visible focus, 44px minimum control
+targets, reduced-motion support, forced-colors treatments, non-color chart
+labels, responsive reflow, and text alternatives for meaningful imagery.
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+Automated checks live in `tests/rendered-html.test.mjs`. Accessibility remains
+an ongoing production responsibility: final content, third-party tools,
+approved participant logos, videos, and future data visualizations should be
+reviewed again before launch.
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## Project structure
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+- `app/` — React routes, components, and styles
+- `content/apto/` — editable Markdown source of truth
+- `public/apto/` — APTO, NSF, participant, and visualization assets
+- `scripts/build-apto-content.mjs` — zero-dependency content generator
+- `tests/rendered-html.test.mjs` — rendered HTML, content, responsive, and
+  accessibility regression tests
+- `.openai/hosting.json` — Sites deployment metadata
 
-## Useful Commands
+## Useful commands
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+- `npm run dev` — start local development
+- `npm run build` — build the deployable site
+- `npm run content:build` — validate Markdown and regenerate content
+- `npm run content:check` — fail when generated content is stale
+- `node --test tests/rendered-html.test.mjs` — run regression checks
