@@ -276,12 +276,12 @@
 }
 .nsf-participant-mark.tone-light {
   --nsf-logo-plate-background: #fff;
-  --nsf-logo-plate-border: #b7c9d6;
+  --nsf-logo-plate-border: #99a7ba;
   --nsf-logo-plate-shadow: 0 1px 0 rgba(0, 37, 84, .05);
 }
 .nsf-participant-mark.tone-dark {
-  --nsf-logo-plate-background: #102a46;
-  --nsf-logo-plate-border: #55718a;
+  --nsf-logo-plate-background: var(--nsf-dark-blue);
+  --nsf-logo-plate-border: #667b98;
   --nsf-logo-plate-shadow: 0 1px 0 rgba(255, 255, 255, .08);
 }
 .nsf-participant-mark.is-compact { width: 92px; height: 48px; padding: 7px 9px; }
