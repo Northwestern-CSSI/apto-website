@@ -603,9 +603,12 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfStyles, /\.nsf-apto-network \.nsf-tools-section[\s\S]*--nsf-tools-ink:\s*#fff/);
 
   const networkThemeRule = cssRuleBody(nsfStyles, ".nsf-apto-network");
-  assert.match(networkThemeRule, /--nsf-network-canvas:\s*#031138/);
-  assert.match(networkThemeRule, /--nsf-network-line:\s*#667b98/);
+  assert.match(networkThemeRule, /--nsf-network-canvas:\s*#010914/);
+  assert.match(networkThemeRule, /--nsf-network-surface:\s*#04172a/);
+  assert.match(networkThemeRule, /--nsf-network-raised:\s*#09223d/);
+  assert.match(networkThemeRule, /--nsf-network-line:\s*#425c73/);
   assert.match(networkThemeRule, /--nsf-paper:\s*var\(--nsf-network-canvas\)/);
+  assert.match(networkThemeRule, /color-scheme:\s*dark/);
   assert.match(networkThemeRule, /background:\s*var\(--nsf-network-canvas\)/);
   for (const selector of [
     ".nsf-apto-network .nsf-program-overview",
@@ -614,7 +617,8 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   ]) {
     assert.match(nsfStyles, new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
-  assert.match(nsfStyles, /\.nsf-apto-network \.nsf-overview-framework[\s\S]*#241840/);
+  assert.match(nsfStyles, /\.nsf-apto-network \.nsf-overview-framework[\s\S]*var\(--nsf-network-surface\)/);
+  assert.match(nsfStyles, /\.nsf-apto-network \.nsf-tool-figure > div\s*\{[\s\S]*var\(--nsf-network-raised\)/);
   assert.match(nsfStyles, /\.nsf-participant-mark\.tone-dark\.is-fallback\s*\{\s*color:\s*#fff/);
   for (const selector of [
     ".nsf-hero-widget",
