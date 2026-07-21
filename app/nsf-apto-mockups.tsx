@@ -289,23 +289,62 @@ function revealProject(awardId: string) {
   if (target instanceof HTMLDetailsElement) target.open = true;
 }
 
+type AwardeeMapEntry = { participant: AptoParticipant; project: AptoProject };
+
+function groupNearbyMapEntries(entries: AwardeeMapEntry[]) {
+  return entries.reduce<AwardeeMapEntry[][]>((groups, entry) => {
+    const nearby = groups.find((group) => group.some((candidate) => Math.hypot(
+      candidate.participant.mapPosition.x - entry.participant.mapPosition.x,
+      candidate.participant.mapPosition.y - entry.participant.mapPosition.y,
+    ) < 2));
+    if (nearby) nearby.push(entry);
+    else groups.push([entry]);
+    return groups;
+  }, []);
+}
+
 function AwardeeMap({ id, tone }: { id: NsfAptoMockupId; tone: "light" | "dark" }) {
   const map = aptoInterface.projects.map;
+  const entries = aptoParticipants.flatMap((participant) => {
+    const project = projectForParticipant(participant.id);
+    return project ? [{ participant, project }] : [];
+  });
+  const mapGroups = groupNearbyMapEntries(entries);
   return <aside className="nsf-awardee-map" aria-labelledby={`${id}-awardee-map-title`}>
     <header><p>{map.eyebrow}</p><h2 id={`${id}-awardee-map-title`}>{map.title}</h2><span>{map.description}</span></header>
     <figure>
       <div className="nsf-awardee-map-plot">
-        <img className="nsf-awardee-map-base" src={map.imageUrl} alt={map.imageAlt} width="960" height="593" loading="lazy" />
-        {aptoParticipants.map((participant) => {
-          const project = projectForParticipant(participant.id);
-          return project ? <a
-            className="nsf-awardee-map-pin"
-            key={participant.id}
-            href={`#nsf-award-${project.awardId}`}
-            onClick={() => revealProject(project.awardId)}
-            style={{ left: `${participant.mapPosition.x}%`, top: `${participant.mapPosition.y}%`, "--nsf-participant-accent": participant.accent } as CSSProperties}
-            aria-label={`${participant.displayName}, ${participant.location}`}
-          ><span aria-hidden="true">{participantMonogram(participant.displayName)}</span></a> : null;
+        <img className="nsf-awardee-map-base" src={map.imageUrl} alt={map.imageAlt} width="959" height="593" loading="lazy" />
+        {mapGroups.map((group) => {
+          const x = group.reduce((total, entry) => total + entry.participant.mapPosition.x, 0) / group.length;
+          const y = group.reduce((total, entry) => total + entry.participant.mapPosition.y, 0) / group.length;
+          if (group.length === 1) {
+            const [{ participant, project }] = group;
+            return <a
+              className="nsf-awardee-map-pin"
+              key={participant.id}
+              href={`#nsf-award-${project.awardId}`}
+              onClick={() => revealProject(project.awardId)}
+              style={{ left: `${x}%`, top: `${y}%`, "--nsf-participant-accent": participant.accent } as CSSProperties}
+              aria-label={`${participant.displayName}, ${participant.location}`}
+            ><span aria-hidden="true">{participantMonogram(participant.displayName)}</span></a>;
+          }
+          const names = group.map(({ participant }) => `${participant.displayName}, ${participant.location}`).join("; ");
+          return <details
+            className="nsf-awardee-map-cluster"
+            key={group.map(({ participant }) => participant.id).join("-")}
+            style={{ left: `${x}%`, top: `${y}%` } as CSSProperties}
+          >
+            <summary aria-label={`${group.length} nearby APTO project locations: ${names}`}><span aria-hidden="true">{group.length}</span></summary>
+            <div>
+              <strong>{group.length} nearby projects</strong>
+              {group.map(({ participant, project }) => <a
+                href={`#nsf-award-${project.awardId}`}
+                key={participant.id}
+                onClick={() => revealProject(project.awardId)}
+              ><span>{participant.displayName}</span><small>{participant.location}</small></a>)}
+            </div>
+          </details>;
         })}
       </div>
       <figcaption>{map.caption}</figcaption>

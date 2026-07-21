@@ -18,7 +18,7 @@
     "approved": false
   },
   "accent": "#002554",
-  "mapPosition": { "x": 63, "y": 47 }
+  "mapPosition": { "x": 64.28, "y": 35.69 }
 }
 ---
 

@@ -362,8 +362,8 @@
       },
       "accent": "#D3B34E",
       "mapPosition": {
-        "x": 69,
-        "y": 36
+        "x": 74.18,
+        "y": 35.29
       },
       "description": "Aperture develops intelligence tools that connect technical problems with relevant technologies, evidence, and organizations. Its APTO work focuses on recognizing promising opportunities and leverage points across complex research and innovation landscapes.",
       "people": [
@@ -451,8 +451,8 @@
       },
       "accent": "#473B70",
       "mapPosition": {
-        "x": 76,
-        "y": 78
+        "x": 73.18,
+        "y": 77.29
       },
       "description": "Insilicom builds knowledge systems that turn scientific and technical evidence into structured, explorable relationships. Its APTO work connects publications, patents, databases, problems, and organizations through causal technology knowledge graphs.",
       "people": [
@@ -539,8 +539,8 @@
       },
       "accent": "#00758D",
       "mapPosition": {
-        "x": 83,
-        "y": 29
+        "x": 87.85,
+        "y": 34.05
       },
       "description": "Macrocosm develops data-rich models of economic and technological systems. Its APTO work represents U.S. energy firms, physical assets, markets, investment choices, and policy feedbacks within a spatially explicit simulation environment.",
       "people": [
@@ -639,8 +639,8 @@
       },
       "accent": "#005699",
       "mapPosition": {
-        "x": 55,
-        "y": 36
+        "x": 64.15,
+        "y": 35.08
       },
       "description": "Northwestern University leads APTO research connecting science and technology investment with invention, licensing, company formation, and downstream outcomes. The team combines large-scale data, causal analysis, and predictive models across several technology domains.",
       "people": [
@@ -773,8 +773,8 @@
       },
       "accent": "#002554",
       "mapPosition": {
-        "x": 63,
-        "y": 47
+        "x": 64.28,
+        "y": 35.69
       },
       "description": "The University of Chicago team is developing a global observatory and virtual laboratory for studying how science and technology evolve. Its APTO research links research artifacts, institutions, policy choices, and technology outcomes across time and geography.",
       "people": [

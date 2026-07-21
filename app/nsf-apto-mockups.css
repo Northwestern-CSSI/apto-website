@@ -14,10 +14,10 @@
   --nsf-paper: #ffffff;
   --nsf-soft-surface: #f3f7fa;
   --nsf-raised-surface: #ffffff;
-  --nsf-radius-small: 14px;
-  --nsf-radius-medium: 22px;
-  --nsf-radius-large: 30px;
-  --nsf-soft-shadow: 0 18px 48px rgba(0, 37, 84, .09);
+  --nsf-radius-small: 8px;
+  --nsf-radius-medium: 12px;
+  --nsf-radius-large: 16px;
+  --nsf-soft-shadow: none;
   min-height: 100vh;
   overflow-x: clip;
   color: var(--nsf-ink);
@@ -1574,6 +1574,364 @@
   .nsf-widget-composite { min-height: 92px; }
   .nsf-widget-translation-preview dl > div {
     grid-template-columns: minmax(120px,1fr) minmax(78px,.72fr);
+  }
+}
+
+/* Editorial first version: option-two structure with restrained curvature. */
+.nsf-apto-home {
+  --nsf-paper: #f8f5ee;
+  --nsf-soft-surface: #f3eee3;
+  --nsf-raised-surface: #fffdf8;
+  --nsf-line: #ad9e7c;
+  background: var(--nsf-paper);
+}
+.nsf-apto-home main,
+.nsf-apto-home .nsf-program-overview,
+.nsf-apto-home .nsf-projects-section,
+.nsf-apto-home .nsf-tools-section,
+.nsf-apto-home .nsf-cohort-people { background: var(--nsf-paper); }
+.nsf-apto-home .nsf-cohort-stage { background: #f3eee3; border-color: var(--nsf-line); }
+.nsf-apto-home .nsf-program-header {
+  color: #fff;
+  background: rgba(0,37,84,.98);
+  border-color: #52728d;
+}
+.nsf-apto-home .nsf-apto-wordmark strong,
+.nsf-apto-home .nsf-apto-wordmark span,
+.nsf-apto-home .nsf-program-header nav a { color: #fff; }
+.nsf-program-header nav a {
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+}
+.nsf-apto-home .nsf-program-header nav a:hover,
+.nsf-apto-home .nsf-program-header nav a[aria-current="page"],
+.nsf-apto-network .nsf-program-header nav a:hover,
+.nsf-apto-network .nsf-program-header nav a[aria-current="page"] {
+  color: #fff;
+  background: transparent;
+  border-bottom-color: var(--nsf-gold);
+}
+.nsf-theme-switch { border-radius: 10px; }
+.nsf-theme-switch a,
+.nsf-theme-switch button { border-radius: 7px; }
+.nsf-apto-home .nsf-theme-switch { background: #0b4169; border-color: #52728d; }
+.nsf-apto-home .nsf-theme-switch a,
+.nsf-apto-home .nsf-theme-switch button { color: #dce9f1; }
+.nsf-apto-home .nsf-theme-switch a[aria-current],
+.nsf-apto-home .nsf-theme-switch button[aria-pressed="true"] { color: var(--nsf-dark-blue); background: var(--nsf-gold); box-shadow: none; }
+
+.nsf-hero-copy h1,
+.nsf-section-intro h1,
+.nsf-section-intro h2,
+.nsf-framework-heading h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+.nsf-apto-home .nsf-program-hero,
+.nsf-apto-network .nsf-program-hero {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--nsf-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-apto-home .nsf-program-hero {
+  background: radial-gradient(circle at 88% 16%,rgba(211,179,78,.18),transparent 25%),linear-gradient(130deg,#fffdf8,#f8f5ee 72%);
+}
+.nsf-apto-network .nsf-program-hero { border-color: var(--nsf-network-line); }
+.nsf-program-hero > .nsf-hero-facts {
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  overflow: visible;
+  background: transparent;
+  border-top: 1px solid var(--nsf-line);
+  border-bottom: 1px solid var(--nsf-line);
+  border-radius: 0;
+}
+.nsf-program-hero > .nsf-hero-facts > div {
+  min-height: 102px;
+  padding: 18px 20px;
+  background: transparent;
+}
+.nsf-program-hero > .nsf-hero-facts > div:nth-child(odd) { border-right: 1px solid var(--nsf-line); }
+.nsf-program-hero > .nsf-hero-facts > div:nth-child(-n+2) { border-bottom: 1px solid var(--nsf-line); }
+.nsf-apto-network .nsf-program-hero > .nsf-hero-facts { background: transparent; border-color: var(--nsf-network-line); }
+.nsf-apto-network .nsf-program-hero > .nsf-hero-facts > div { background: transparent; border-color: var(--nsf-network-line); }
+
+.nsf-cohort-canvas {
+  gap: 0;
+  overflow: hidden;
+  background: var(--nsf-raised-surface);
+  border: 1px solid var(--nsf-line);
+  border-radius: var(--nsf-radius-medium);
+}
+.nsf-cohort-identity,
+.nsf-apto-home .nsf-cohort-identity,
+.nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-identity {
+  min-height: 184px;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--nsf-line);
+  border-radius: 0;
+  box-shadow: none;
+  transform: none !important;
+  transition: background-color .18s ease,color .18s ease;
+}
+.nsf-cohort-identity:last-child,
+.nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-identity:last-child { border-right: 0; }
+.nsf-cohort-identity:hover,
+.nsf-cohort-identity:focus-visible,
+.nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-identity:hover,
+.nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-identity:focus-visible { transform: none !important; }
+.nsf-apto-home .nsf-cohort-identity:hover,
+.nsf-apto-home .nsf-cohort-identity:focus-visible { background: rgba(255,255,255,.72); }
+.nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-canvas { gap: 0; background: var(--nsf-network-raised); border-color: var(--nsf-network-line); }
+.nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-identity { border-color: var(--nsf-network-line); }
+.nsf-cohort-identity > span:last-child small {
+  max-height: none;
+  margin-top: 6px;
+  overflow: visible;
+  opacity: 1;
+  transition: none;
+}
+.nsf-cohort-identity:hover > span:last-child small,
+.nsf-cohort-identity:focus-visible > span:last-child small { max-height: none; margin-top: 6px; opacity: 1; }
+
+.nsf-apto-home .nsf-home-pathways,
+.nsf-apto-network .nsf-home-pathways { gap: 0; border: 0; }
+.nsf-apto-home .nsf-home-pathways > a,
+.nsf-apto-network .nsf-home-pathways > a {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--nsf-line);
+  border-bottom: 1px solid var(--nsf-line);
+  border-right: 1px solid var(--nsf-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-apto-home .nsf-home-pathways > a:last-child,
+.nsf-apto-network .nsf-home-pathways > a:last-child { border-right: 0; }
+.nsf-home-pathways a:hover i,
+.nsf-home-pathways a:focus-visible i { transform: none; }
+
+.nsf-overview-framework { border-radius: var(--nsf-radius-medium); box-shadow: none; }
+.nsf-projects-layout { gap: clamp(28px,4vw,54px); }
+.nsf-project-ledger {
+  gap: 0;
+  border-top: 1px solid var(--nsf-line);
+  border-bottom: 1px solid var(--nsf-line);
+}
+.nsf-project-accordion,
+.nsf-apto-network .nsf-project-accordion {
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--nsf-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-project-accordion:last-child { border-bottom: 0; }
+.nsf-project-accordion > .nsf-project-summary:hover,
+.nsf-project-accordion > .nsf-project-summary:focus-visible { background: rgba(211,179,78,.10); }
+.nsf-apto-network .nsf-project-accordion > .nsf-project-summary:hover,
+.nsf-apto-network .nsf-project-accordion > .nsf-project-summary:focus-visible { background: rgba(78,195,224,.055); }
+.nsf-project-accordion > .nsf-project-summary:focus-visible { outline-offset: -3px; }
+.nsf-project-detail { background: rgba(255,253,248,.75); }
+.nsf-apto-network .nsf-project-detail { background: #04172a; }
+.nsf-project-people { gap: 0 24px; border-top: 1px solid var(--nsf-line); }
+.nsf-project-people li {
+  padding: 13px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--nsf-line);
+  border-radius: 0;
+}
+.nsf-participant-mark { border-radius: var(--nsf-radius-small); }
+.nsf-project-card:hover .nsf-participant-mark,
+.nsf-project-card:focus-within .nsf-participant-mark,
+.nsf-participant-entry:hover .nsf-participant-mark,
+.nsf-participant-entry:focus-within .nsf-participant-mark { transform: none; }
+
+.nsf-awardee-map,
+.nsf-apto-network .nsf-awardee-map {
+  padding: 0 0 0 24px;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--nsf-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-awardee-map-plot { aspect-ratio: 959 / 593; overflow: visible; border-radius: 10px; }
+.nsf-awardee-map-base { border-radius: inherit; }
+.nsf-awardee-map-pin::before { transition: background-color .18s ease,box-shadow .18s ease; }
+.nsf-awardee-map-pin:hover::before,
+.nsf-awardee-map-pin:focus-visible::before { transform: none; background: var(--nsf-teal); box-shadow: 0 0 0 4px rgba(0,117,141,.26),0 4px 12px rgba(0,37,84,.28); }
+.nsf-awardee-map-cluster {
+  position: absolute;
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%,-50%);
+}
+.nsf-awardee-map-cluster > summary {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  cursor: pointer;
+  list-style: none;
+}
+.nsf-awardee-map-cluster > summary::-webkit-details-marker { display: none; }
+.nsf-awardee-map-cluster > summary::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: var(--nsf-blue);
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(0,86,153,.28),0 4px 12px rgba(0,37,84,.28);
+}
+.nsf-awardee-map-cluster[open] > summary::before { background: var(--nsf-teal); }
+.nsf-awardee-map-cluster > summary span { position: relative; z-index: 1; font-size: .68rem; font-weight: 800; }
+.nsf-awardee-map-cluster > div {
+  position: absolute;
+  z-index: 5;
+  right: calc(100% + 8px);
+  top: 50%;
+  width: 218px;
+  padding: 12px;
+  color: var(--nsf-dark-blue);
+  background: #fffdf8;
+  border: 1px solid var(--nsf-line);
+  border-radius: 10px;
+  box-shadow: 0 16px 36px rgba(0,37,84,.16);
+  transform: translateY(-50%);
+}
+.nsf-awardee-map-cluster > div > strong { display: block; padding: 2px 5px 7px; font-size: .73rem; }
+.nsf-awardee-map-cluster > div > a { min-height: 44px; padding: 6px 5px; display: block; color: inherit; border-top: 1px solid var(--nsf-line); text-decoration: none; }
+.nsf-awardee-map-cluster > div span,
+.nsf-awardee-map-cluster > div small { display: block; }
+.nsf-awardee-map-cluster > div span { font-size: .72rem; font-weight: 800; }
+.nsf-awardee-map-cluster > div small { margin-top: 2px; color: var(--nsf-muted); font-size: .64rem; }
+.nsf-apto-network .nsf-awardee-map-cluster > div { color: #f8fbfd; background: var(--nsf-network-raised); border-color: var(--nsf-network-line); box-shadow: 0 18px 44px rgba(0,0,0,.38); }
+.nsf-apto-network .nsf-awardee-map-cluster > div > a { border-color: var(--nsf-network-line); }
+.nsf-apto-network .nsf-awardee-map-cluster > div small { color: #c9dce8; }
+.nsf-awardee-map-legend { gap: 0; border-top: 1px solid var(--nsf-line); }
+.nsf-awardee-map-legend li { border-bottom: 1px solid var(--nsf-line); }
+.nsf-awardee-map-legend a { padding: 8px 0; border-radius: 0; }
+
+.nsf-program-leadership,
+.nsf-cohort-group,
+.nsf-apto-network .nsf-program-leadership,
+.nsf-apto-network .nsf-cohort-group {
+  padding: 30px 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--nsf-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-cohort-people .nsf-cohort-group + .nsf-cohort-group { margin-top: 0; }
+.nsf-cohort-team { gap: 0 26px; }
+.nsf-cohort-team .nsf-person-card,
+.nsf-apto-network .nsf-cohort-team .nsf-person-card {
+  padding: 18px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--nsf-line);
+  border-radius: 0;
+}
+
+.nsf-filter-groups {
+  gap: 0 32px;
+  border-top: 1px solid var(--nsf-tools-line);
+  border-bottom: 1px solid var(--nsf-tools-line);
+}
+.nsf-filter-group,
+.nsf-apto-network .nsf-filter-group {
+  padding: 16px 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-filter button,
+.nsf-tools-section .nsf-filter button,
+.nsf-apto-network .nsf-tools-section .nsf-filter button {
+  padding: 0 10px;
+  color: var(--nsf-tools-muted);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+}
+.nsf-filter button:hover,
+.nsf-tools-section .nsf-filter button:hover { color: var(--nsf-tools-ink); background: transparent; }
+.nsf-filter button[aria-pressed="true"],
+.nsf-tools-section .nsf-filter button[aria-pressed="true"],
+.nsf-apto-home .nsf-tools-section .nsf-filter button[aria-pressed="true"] {
+  color: var(--nsf-tools-ink);
+  background: transparent;
+  border-color: var(--nsf-blue);
+}
+.nsf-apto-network .nsf-tools-section .nsf-filter button[aria-pressed="true"] { color: #fff; background: transparent; border-color: var(--nsf-gold); }
+.nsf-tool-grid { gap: 0; }
+.nsf-tool-card,
+.nsf-apto-network .nsf-tool-card {
+  padding: clamp(34px,5vw,58px) 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--nsf-tools-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-tool-card:last-child { border-bottom: 1px solid var(--nsf-tools-line); }
+.nsf-tool-figure > div { border-radius: 10px; transition: box-shadow .2s ease; }
+.nsf-tool-card:hover .nsf-tool-figure > div,
+.nsf-tool-card:focus-within .nsf-tool-figure > div { transform: none; }
+.nsf-tool-categories { gap: 7px 16px; }
+.nsf-tool-categories li {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.nsf-tool-categories li::before { content: "·"; margin-right: 7px; color: var(--nsf-teal); }
+.nsf-apto-network { --nsf-soft-shadow: none; }
+
+@media (max-width: 1120px) {
+  .nsf-awardee-map,
+  .nsf-apto-network .nsf-awardee-map { max-width: 760px; padding: 26px 0 0; border-left: 0; border-top: 1px solid var(--nsf-line); }
+}
+
+@media (max-width: 640px) {
+  .nsf-cohort-canvas { border-radius: 10px; }
+  .nsf-cohort-identity,
+  .nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-identity { min-height: 0; border-right: 0; border-bottom: 1px solid var(--nsf-line); }
+  .nsf-cohort-identity:last-child,
+  .nsf-apto-network .nsf-cohort-stage.is-network .nsf-cohort-identity:last-child { border-bottom: 0; }
+  .nsf-project-accordion > .nsf-project-summary,
+  .nsf-project-accordion .nsf-project-summary { padding-left: 0; padding-right: 0; }
+  .nsf-apto-home .nsf-home-pathways > a,
+  .nsf-apto-network .nsf-home-pathways > a { border-right: 0; border-bottom: 1px solid var(--nsf-line); }
+  .nsf-apto-home .nsf-home-pathways > a:last-child,
+  .nsf-apto-network .nsf-home-pathways > a:last-child { border-bottom: 1px solid var(--nsf-line); }
+  .nsf-tool-card { padding: 34px 0; }
+  .nsf-awardee-map-cluster > div {
+    left: 50%;
+    right: auto;
+    top: calc(100% + 7px);
+    width: min(218px,78vw);
+    transform: translateX(-50%);
   }
 }
 

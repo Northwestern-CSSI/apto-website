@@ -244,12 +244,16 @@ test("renders five alphabetical native project accordions and a labelled awardee
 
   assert.match(html, /<aside class="nsf-awardee-map" aria-labelledby="[^"]+"/);
   assert.match(html, /<img class="nsf-awardee-map-base"[^>]*alt=""/);
+  assert.match(html, /<img class="nsf-awardee-map-base"[^>]*width="959"[^>]*height="593"/);
+  assert.equal(countMatches(html, /<details class="nsf-awardee-map-cluster"/g), 1);
+  assert.equal(countMatches(html, /class="nsf-awardee-map-pin"/g), 3);
+  assert.match(html, /aria-label="2 nearby APTO project locations:/);
   assert.ok(text.includes(content.interface.projects.map.title));
   for (const participant of content.participants) {
     const project = content.projects.find((candidate) => candidate.participantId === participant.id);
     assert.ok(project, `${participant.displayName} must join to a project`);
     assert.ok(html.includes(`href="#nsf-award-${project.awardId}"`));
-    assert.ok(html.includes(`aria-label="${participant.displayName}, ${participant.location}"`));
+    assert.ok(html.includes(`${participant.displayName}, ${participant.location}`));
     assert.ok(html.includes(`href="${participant.website}"`));
   }
 });
@@ -449,6 +453,10 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /@media \(forced-colors: active\)/);
   assert.match(styles, /forced-color-adjust/);
   assert.match(styles, /color-scheme:\s*dark/);
+  assert.match(styles, /\.nsf-awardee-map-plot\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593/);
+  assert.match(styles, /\.nsf-cohort-identity > span:last-child small\s*\{[^}]*max-height:\s*none/);
+  assert.match(styles, /\.nsf-tool-card:hover \.nsf-tool-figure > div,[\s\S]*?transform:\s*none/);
+  assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
   const headingRule = styles.match(/\.nsf-hero-copy h1\s*\{([^}]*)\}/);
   assert.ok(headingRule, "Expected a compact homepage heading rule");
   assert.ok(maxPixelValueFor(headingRule[1], "font-size") <= 44);

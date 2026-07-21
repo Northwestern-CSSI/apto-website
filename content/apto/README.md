@@ -28,7 +28,7 @@ Projects use an `awardedYear` and `statusLabel` instead of precise start/end dat
 
 ## Map positions
 
-Each participant has `mapPosition.x` and `mapPosition.y` values from 0 to 100. These percentages place its accessible project pin over the map configured at `interface.projects.map`. Adjust the values in the participant Markdown if the map artwork changes.
+Each participant has `mapPosition.x` and `mapPosition.y` values from 0 to 100. These are percentages of the configured map’s native `959 × 593` Albers-projection canvas, not unprojected longitude and latitude. The map automatically groups locations that are too close for honest separate pins—such as Chicago and Evanston—into a keyboard-operable project cluster. Recalculate the percentages if the map artwork changes rather than visually displacing nearby cities.
 
 ## Images
 
