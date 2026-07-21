@@ -247,4 +247,7 @@ export const concepts = [
   { id: "widgetspatial", number: "48", name: "Opportunity Orbit", mood: "Arrange tools in space", color: "#44e9dc" },
   { id: "widgetcivic", number: "49", name: "Open Evidence Commons", mood: "Public tools within reach", color: "#2468d8" },
   { id: "widgethome", number: "50", name: "My APTO Workbench", mood: "A personal widget homepage", color: "#ff5f38" },
+  { id: "nsfhome", number: "51", name: "NSF APTO Program Home", mood: "Calm institutional clarity", color: "#005699" },
+  { id: "nsfledger", number: "52", name: "APTO Evidence Ledger", mood: "Editorial program index", color: "#D3B34E" },
+  { id: "nsfnetwork", number: "53", name: "APTO Cohort Network", mood: "Organization-first directory", color: "#4EC3E0" },
 ];

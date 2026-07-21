@@ -28,6 +28,7 @@ import {
 const KineticMockup = lazy(() => import("./kinetic-mockups").then((module) => ({ default: module.KineticMockup })));
 const PortfolioMockup = lazy(() => import("./portfolio-mockups").then((module) => ({ default: module.PortfolioMockup })));
 const WidgetMockup = lazy(() => import("./widget-mockups").then((module) => ({ default: module.WidgetMockup })));
+const NsfAptoMockup = lazy(() => import("./nsf-apto-mockups").then((module) => ({ default: module.NsfAptoMockup })));
 
 const mapPoints = [
   [13, 31, "cyan"], [18, 54, "blue"], [24, 22, "gold"], [28, 67, "mint"],
@@ -147,7 +148,7 @@ function ConceptSwitcher({ current, onSelect }: { current: string; onSelect: (id
       </div>
       <nav className="review-actions" aria-label="Mockup navigation">
         <button type="button" onClick={() => onSelect(previous.id)} aria-label={`Previous mockup: ${previous.name}`}><Arrow left /></button>
-        <button type="button" onClick={() => onSelect("gallery")}>All 50</button>
+        <button type="button" onClick={() => onSelect("gallery")}>All 53</button>
         <button type="button" onClick={() => onSelect(next.id)} aria-label={`Next mockup: ${next.name}`}>Next <span aria-hidden="true">→</span></button>
       </nav>
     </div>
@@ -167,14 +168,14 @@ function ConceptMiniature({ id }: { id: string }) {
 
 function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
   return (
-    <div className="gallery-page">
+    <main className="gallery-page">
       <header className="gallery-header">
         <div className="gallery-kicker"><span>APTO</span> Website direction study · July 2026</div>
-        <h1>Fifty possible<br />front doors to <em>APTO.</em></h1>
+        <h1>Fifty-three possible<br />front doors to <em>APTO.</em></h1>
         <div className="gallery-intro">
           <p>Each direction puts working tools, open data, major results, publications, teams, and participating institutions at the center of the program—not behind a generic project homepage.</p>
           <div className="gallery-summary">
-            <span>50</span><small>distinct<br />directions</small>
+            <span>53</span><small>distinct<br />directions</small>
             <span>01</span><small>shared content<br />architecture</small>
           </div>
         </div>
@@ -259,11 +260,25 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
         ))}
       </section>
 
+      <div className="gallery-group-heading is-nsf"><span>51—53</span><div><h2>NSF-aligned program directions</h2><p>Three complete cohort sites grounded in NSF brand standards, official award records, program content, people, organization links, and clearly labeled conceptual tools.</p></div><i>NSF STUDY</i></div>
+      <section className="concept-grid concept-grid-nsf" aria-label="Three NSF-aligned APTO program website mockups">
+        {concepts.slice(50, 53).map((concept) => (
+          <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
+            <ConceptMiniature id={concept.id} />
+            <div className="concept-card-meta">
+              <span>{concept.number}</span>
+              <div><strong>{concept.name}</strong><small>{concept.mood}</small></div>
+              <i style={{ background: concept.color }} />
+            </div>
+          </button>
+        ))}
+      </section>
+
       <footer className="gallery-footer">
-        <p>Built from APTO’s 2026 program materials and recent award-winning science, data, and institutional website patterns.</p>
-        <span>Current detailed content comes from the Northwestern-led award; the cohort-wide roster and tool catalog still need partner confirmation.</span>
+        <p>Built from APTO’s 2026 program materials, official NSF award records, and recent science, data, and institutional website patterns.</p>
+        <span>Directions 51—53 cover all five APTO-titled awards. Their ten tool entries are explicit interface concepts pending confirmation by each project.</span>
       </footer>
-    </div>
+    </main>
   );
 }
 
@@ -576,6 +591,9 @@ function renderConcept(id: string) {
     case "widgetspatial": return <WidgetMockup id="widgetspatial" />;
     case "widgetcivic": return <WidgetMockup id="widgetcivic" />;
     case "widgethome": return <WidgetMockup id="widgethome" />;
+    case "nsfhome": return <NsfAptoMockup id="nsfhome" />;
+    case "nsfledger": return <NsfAptoMockup id="nsfledger" />;
+    case "nsfnetwork": return <NsfAptoMockup id="nsfnetwork" />;
     default: return null;
   }
 }
@@ -638,8 +656,8 @@ export default function MockupStudio() {
   };
 
   return (
-    <main className={`mockup-studio view-${selected}`}>
+    <div className={`mockup-studio view-${selected}`}>
       {selected === "gallery" ? <Gallery onSelect={choose} /> : <><ConceptSwitcher current={selected} onSelect={choose} /><Suspense fallback={<div className="kinetic-loading"><span>APTO</span><p>Preparing the live scene…</p></div>}>{renderConcept(selected)}</Suspense></>}
-    </main>
+    </div>
   );
 }

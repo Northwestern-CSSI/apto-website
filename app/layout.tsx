@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Open_Sans } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 import "./interactive-mockups.css";
 import "./kinetic-mockups.css";
 import "./portfolio-mockups.css";
 import "./widget-mockups.css";
+import "./nsf-apto-mockups.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,6 +15,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -29,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = new URL(`${protocol}://${host}`);
   const title = "APTO Website Direction Study";
   const description =
-    "Fifty modern website mockups for the Assessing and Predicting Technology Outcomes program.";
+    "Fifty-three modern website mockups for the Assessing and Predicting Technology Outcomes program.";
   const socialImage = new URL("/og.png", baseUrl).toString();
 
   return {
@@ -59,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${openSans.variable} antialiased`}
       >
         {children}
       </body>

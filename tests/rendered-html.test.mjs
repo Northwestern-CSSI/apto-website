@@ -32,7 +32,7 @@ test("server-renders the APTO design gallery", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>APTO Website Direction Study<\/title>/i);
-  assert.match(html, /Fifty possible/);
+  assert.match(html, /Fifty-three possible/);
   assert.match(html, /front doors to/);
   assert.match(html, /Civic Observatory/);
   assert.match(html, /Signal Story/);
@@ -42,11 +42,15 @@ test("server-renders the APTO design gallery", async () => {
   assert.match(html, /Technology portfolio front doors/);
   assert.match(html, /Widget Harbor/);
   assert.match(html, /Composable widget worlds/);
-  assert.equal((html.match(/concept-card card-/g) ?? []).length, 50);
+  assert.match(html, /NSF APTO Program Home/);
+  assert.match(html, /APTO Evidence Ledger/);
+  assert.match(html, /APTO Cohort Network/);
+  assert.match(html, /NSF-aligned program directions/);
+  assert.equal((html.match(/concept-card card-/g) ?? []).length, 53);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
 
-test("ships fifty concepts, responsive behavior, and APTO assets", async () => {
+test("ships fifty-three concepts, responsive behavior, and APTO assets", async () => {
   const [source, interactiveSource, kineticSource, portfolioSource, widgetSource, engines, styles, kineticStyles, portfolioStyles, widgetStyles, packageJson] = await Promise.all([
     readFile(new URL("../app/mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/interactive-mockups.tsx", import.meta.url), "utf8"),
@@ -112,6 +116,9 @@ test("ships fifty concepts, responsive behavior, and APTO assets", async () => {
     "widgetspatial",
     "widgetcivic",
     "widgethome",
+    "nsfhome",
+    "nsfledger",
+    "nsfnetwork",
   ]) {
     assert.match(source, new RegExp(`case \\\"${id}\\\"`));
   }
@@ -131,6 +138,7 @@ test("ships fifty concepts, responsive behavior, and APTO assets", async () => {
   assert.match(source, /lazy\(\(\) => import\("\.\/kinetic-mockups"\)/);
   assert.match(source, /lazy\(\(\) => import\("\.\/portfolio-mockups"\)/);
   assert.match(source, /lazy\(\(\) => import\("\.\/widget-mockups"\)/);
+  assert.match(source, /lazy\(\(\) => import\("\.\/nsf-apto-mockups"\)/);
   assert.match(interactiveSource, /Hear the data/);
   assert.match(interactiveSource, /Show all evidence/);
   assert.match(interactiveSource, /RUN SCENARIO/);
@@ -166,4 +174,132 @@ test("ships fifty concepts, responsive behavior, and APTO assets", async () => {
   }
 
   await assert.rejects(access(new URL("../app/_sites-preview", root)));
+});
+
+test("ships three source-grounded, accessible NSF APTO directions", async () => {
+  const [nsfSource, nsfData, nsfStyles] = await Promise.all([
+    readFile(new URL("../app/nsf-apto-mockups.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nsf-apto-data.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/nsf-apto-mockups.css", import.meta.url), "utf8"),
+  ]);
+
+  for (const id of ["nsfhome", "nsfledger", "nsfnetwork"]) {
+    assert.match(nsfSource, new RegExp(`case \\\"${id}\\\"`));
+    assert.match(nsfSource, new RegExp(`id: NsfAptoMockupId = \\\"${id}\\\"`));
+  }
+
+  const projectsBlock = nsfData.slice(
+    nsfData.indexOf("export const aptoProjects"),
+    nsfData.indexOf("export const aptoProgram"),
+  );
+  assert.equal((projectsBlock.match(/officialTitle:/g) ?? []).length, 5);
+
+  const projects = [
+    ["2404035", "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes"],
+    ["2404109", "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance"],
+    ["2403999", "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector"],
+    ["2403911", "APTO: Constructing causal knowledge graphs for assessing and predicting technology outcomes"],
+    ["2404082", "APTO: Problem-Focused Analysis for Predicting Technology Outcomes and Leverage Points"],
+  ];
+  for (const [awardId, title] of projects) {
+    assert.match(projectsBlock, new RegExp(`awardId: \\\"${awardId}\\\"`));
+    assert.ok(projectsBlock.includes(title));
+  }
+
+  for (const person of [
+    "Dashun Wang",
+    "Alicia I. Loffler",
+    "Jian Cao",
+    "Benjamin Jones",
+    "Yian Yin",
+    "James Evans",
+    "Ian Foster",
+    "Ufuk Akcigit",
+    "James Farmer",
+    "Daniel Eichelsdoerfer",
+    "Jinfeng Zhang",
+    "Jonathan Fegely",
+  ]) {
+    assert.ok(nsfData.includes(`name: "${person}"`));
+  }
+
+  for (const organizationUrl of [
+    "https://www.northwestern.edu/",
+    "https://www.uchicago.edu/",
+    "https://macrocosm.group/",
+    "https://insilicom.com/",
+    "https://www.aperture.ai/",
+  ]) {
+    assert.ok(nsfData.includes(`website: "${organizationUrl}"`));
+    assert.ok(nsfData.includes(`organizationUrl: "${organizationUrl}"`));
+  }
+
+  const toolsBlock = nsfData.slice(
+    nsfData.indexOf("export const aptoMockTools"),
+    nsfData.indexOf("export const aptoParticipants"),
+  );
+  assert.equal((toolsBlock.match(/isConceptOnly: true/g) ?? []).length, 10);
+  assert.equal((toolsBlock.match(/status: "Concept only · not a released tool"/g) ?? []).length, 10);
+  for (const participantId of ["northwestern", "uchicago", "macrocosm", "insilicom", "aperture"]) {
+    assert.equal(
+      (toolsBlock.match(new RegExp(`participantId: \\\"${participantId}\\\"`, "g")) ?? []).length,
+      2,
+    );
+  }
+  for (const toolName of [
+    "Research-to-Market Navigator",
+    "Technology Trajectory Forecaster",
+    "Global S&T Observatory",
+    "Virtual Policy Laboratory",
+    "Energy System Digital Twin",
+    "Policy & Investment Scenario Lab",
+    "Causal Technology Knowledge Graph",
+    "Evidence Extraction Workbench",
+    "Problem Landscape Explorer",
+    "Leverage Point Finder",
+  ]) {
+    assert.ok(toolsBlock.includes(`name: "${toolName}"`));
+  }
+
+  assert.match(nsfData, /Demo video placeholder/);
+  assert.match(nsfData, /Tool link coming soon/);
+  assert.match(nsfSource, /Headshot placeholder/);
+  assert.match(nsfSource, /Mock content/);
+  assert.match(nsfData, /Concept only/);
+  assert.ok(nsfData.includes(
+    "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
+  ));
+
+  assert.match(nsfSource, /className="nsf-skip-link"/);
+  assert.match(nsfSource, /<main id=\{`\$\{id\}-main`\} tabIndex=\{-1\}>/);
+  assert.match(nsfSource, /<nav aria-label="Primary navigation">/);
+  assert.match(nsfSource, /<footer className="nsf-program-footer">/);
+  assert.match(nsfSource, /aria-labelledby/);
+  assert.match(nsfSource, /aria-controls/);
+  assert.match(nsfSource, /aria-pressed/);
+  assert.match(nsfSource, /aria-live="polite"/);
+  assert.match(nsfSource, /data-local-arrows="true"/);
+  assert.match(nsfSource, /role="group"/);
+  assert.match(nsfSource, /role="note"/);
+  assert.match(nsfSource, /role="img"/);
+  assert.match(nsfSource, /<figure/);
+  assert.match(nsfSource, /<figcaption>/);
+  assert.match(nsfSource, /<details/);
+  assert.match(nsfSource, /<summary>/);
+  assert.doesNotMatch(nsfSource, /WidgetDeck|WidgetChooser/);
+
+  assert.match(nsfSource, /\/apto\/nsf-logo\.png/);
+  assert.match(nsfSource, /\/apto\/nsf-network-art\.png/);
+  assert.match(nsfSource, /alt="U\.S\. National Science Foundation logo"/);
+  assert.match(nsfSource, /width="82" height="82"/);
+  assert.match(nsfStyles, /\.nsf-apto :focus-visible/);
+  assert.match(nsfStyles, /\.nsf-skip-link:focus/);
+  assert.match(nsfStyles, /min-height: 44px/);
+  assert.match(nsfStyles, /@media \(max-width: 1120px\)/);
+  assert.match(nsfStyles, /@media \(max-width: 860px\)/);
+  assert.match(nsfStyles, /@media \(max-width: 640px\)/);
+  assert.match(nsfStyles, /@media \(prefers-reduced-motion: reduce\)/);
+
+  await access(new URL("../public/apto/nsf-logo.png", import.meta.url));
+  await access(new URL("../public/apto/nsf-network-art.png", import.meta.url));
 });
