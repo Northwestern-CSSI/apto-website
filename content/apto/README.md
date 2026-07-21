@@ -8,6 +8,7 @@ The APTO site is built from this folder. Content records are deliberately indepe
 - `people/` contains one person per file. Investigators join to an organization with `participantId`; program leadership uses `participantId: null` and supplies an `organization`.
 - `projects/` contains one project per file and joins to an organization with `participantId`.
 - `tools/` contains one tool per file and joins to an organization with `participantId`. `categories` accepts one or more of `Capability`, `Production`, and `Use`.
+- `future/` preserves approved-but-disabled interface modules and their editable configuration. These records are not included in the public build until explicitly wired into the content generator.
 - `pages/` contains the introduction and metadata for each canonical routed page. The visible navigation combines people with the cohort page; the legacy `/people` URL is handled in route code as an alias and therefore needs no duplicate content record.
 - `program.md` contains program-level copy, the NSF framework, statistics, boilerplate, and source references.
 - `interface.md` contains all shared interface labels, the Light and Dark theme names, navigation, tool-filter labels, project-map configuration, accessibility text, and footer copy.
@@ -53,3 +54,5 @@ The builder validates IDs, joins, alphabetical presentation, URLs, award numbers
 Generated presentation order is neutral: organizations by display name, people by name, projects by official title after the shared `APTO:` prefix, tools by name, and sources by label. Do not add numeric ranking or sequence fields.
 
 Do not edit `app/nsf-apto-content.generated.json` or the copies in `public/apto/` by hand.
+
+The dormant homepage tool widget is preserved in `future/home-tool-widget.md`, with its reusable React implementation in `app/apto/_future/home-tool-widget.tsx`. No live route imports that module.

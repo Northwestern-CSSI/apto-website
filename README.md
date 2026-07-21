@@ -76,6 +76,7 @@ reviewed again as they are added.
 
 - `app/` — React routes, components, metadata, and styles
 - `content/apto/` — editable Markdown and image sources
+- `content/apto/future/` — disabled feature configurations retained for later use
 - `public/apto/` — generated public image copies
 - `scripts/build-apto-content.mjs` — content generator and validator
 - `tests/rendered-html.test.mjs` — rendered HTML and accessibility regressions

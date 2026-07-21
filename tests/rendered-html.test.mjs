@@ -143,6 +143,22 @@ test("redirects the repository root to the first-version APTO website", async ()
   assert.equal(new URL(location, "http://localhost").pathname, "/apto");
 });
 
+test("preserves the dormant homepage widget without exposing it on public routes", async () => {
+  const [futureConfig, futureComponent, liveHome] = await Promise.all([
+    readFile(new URL("future/home-tool-widget.md", contentRoot), "utf8"),
+    readFile(new URL("../app/apto/_future/home-tool-widget.tsx", import.meta.url), "utf8"),
+    render("/apto?concept=nsfhome"),
+  ]);
+  const metadata = parseJsonFrontmatter(futureConfig, "future/home-tool-widget.md");
+  assert.equal(metadata.enabled, false);
+  assert.equal(metadata.component, "app/apto/_future/home-tool-widget.tsx");
+  assert.match(futureComponent, /export function FutureAptoHomeToolWidget/);
+  assert.match(futureComponent, /Dormant by design/);
+  const html = await liveHome.text();
+  assert.equal(countMatches(html, /class="nsf-hero-widget(?:\s|")/g), 0);
+  assert.equal(countMatches(html, /role="tab"/g), 0);
+});
+
 test("renders five canonical pages in two themes and preserves every published concept alias", async () => {
   const content = await generatedContent();
   assert.equal(content.interface.primaryNavigation.length, 4);
