@@ -16,6 +16,23 @@ npm run dev
 npm run build
 ```
 
+## APTO content workflow
+
+The three NSF-aligned concepts (`nsfhome`, `nsfledger`, and `nsfnetwork`) are built from Markdown in `content/apto/`:
+
+- `program.md` holds program language, outcomes, technology areas, sources, and the required acknowledgement.
+- `projects/*.md` holds the five APTO award and participant records, including investigators and organization links.
+- `tools/*.md` holds the ten clearly labeled interface concepts.
+
+Each file uses JSON frontmatter for structured metadata and ordinary Markdown headings for the editable title and narrative. No Markdown package is required; the generator uses Node.js built-ins only.
+
+```bash
+npm run content:build  # validate Markdown and regenerate app/nsf-apto-content.generated.json
+npm run content:check  # validate and fail if the generated file is stale
+```
+
+`npm run dev` and `npm run build` regenerate the content automatically. Edit the Markdown sources, not the generated JSON.
+
 This starter does not use `wrangler.jsonc`.
 
 ## Included Shape

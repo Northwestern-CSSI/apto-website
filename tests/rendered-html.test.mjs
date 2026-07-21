@@ -1,8 +1,63 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
+const nsfBoilerplate =
+  "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
+
+const expectedProjects = [
+  ["2404035", "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes"],
+  ["2404109", "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance"],
+  ["2403999", "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector"],
+  ["2403911", "APTO: Constructing causal knowledge graphs for assessing and predicting technology outcomes"],
+  ["2404082", "APTO: Problem-Focused Analysis for Predicting Technology Outcomes and Leverage Points"],
+];
+
+const expectedPeople = [
+  "Dashun Wang",
+  "Alicia I. Loffler",
+  "Jian Cao",
+  "Benjamin Jones",
+  "Yian Yin",
+  "James Evans",
+  "Ian Foster",
+  "Ufuk Akcigit",
+  "James Farmer",
+  "Daniel Eichelsdoerfer",
+  "Jinfeng Zhang",
+  "Jonathan Fegely",
+];
+
+const expectedTools = [
+  "Research-to-Market Navigator",
+  "Technology Trajectory Forecaster",
+  "Global S&T Observatory",
+  "Virtual Policy Laboratory",
+  "Energy System Digital Twin",
+  "Policy & Investment Scenario Lab",
+  "Causal Technology Knowledge Graph",
+  "Evidence Extraction Workbench",
+  "Problem Landscape Explorer",
+  "Leverage Point Finder",
+];
+
+function cssRuleBody(styles, selector, fromIndex = 0) {
+  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = styles
+    .slice(fromIndex)
+    .match(new RegExp(`${escapedSelector}\\s*\\{([^}]*)\\}`));
+  assert.ok(match, `Expected CSS rule for ${selector}`);
+  return match[1];
+}
+
+function maxPixelValueFor(styles, property) {
+  const match = styles.match(new RegExp(`${property}\\s*:\\s*([^;]+);`));
+  assert.ok(match, `Expected ${property} declaration`);
+  const values = [...match[1].matchAll(/([\d.]+)px/g)].map((value) => Number(value[1]));
+  assert.ok(values.length > 0, `Expected ${property} to include a pixel value`);
+  return Math.max(...values);
+}
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -177,50 +232,30 @@ test("ships fifty-three concepts, responsive behavior, and APTO assets", async (
 });
 
 test("ships three source-grounded, accessible NSF APTO directions", async () => {
-  const [nsfSource, nsfData, nsfStyles] = await Promise.all([
+  const [nsfSource, nsfStyles, generatedJson] = await Promise.all([
     readFile(new URL("../app/nsf-apto-mockups.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/nsf-apto-data.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-mockups.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
   ]);
+  const content = JSON.parse(generatedJson);
 
   for (const id of ["nsfhome", "nsfledger", "nsfnetwork"]) {
     assert.match(nsfSource, new RegExp(`case \\\"${id}\\\"`));
     assert.match(nsfSource, new RegExp(`id: NsfAptoMockupId = \\\"${id}\\\"`));
   }
 
-  const projectsBlock = nsfData.slice(
-    nsfData.indexOf("export const aptoProjects"),
-    nsfData.indexOf("export const aptoProgram"),
-  );
-  assert.equal((projectsBlock.match(/officialTitle:/g) ?? []).length, 5);
-
-  const projects = [
-    ["2404035", "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes"],
-    ["2404109", "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance"],
-    ["2403999", "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector"],
-    ["2403911", "APTO: Constructing causal knowledge graphs for assessing and predicting technology outcomes"],
-    ["2404082", "APTO: Problem-Focused Analysis for Predicting Technology Outcomes and Leverage Points"],
-  ];
-  for (const [awardId, title] of projects) {
-    assert.match(projectsBlock, new RegExp(`awardId: \\\"${awardId}\\\"`));
-    assert.ok(projectsBlock.includes(title));
+  assert.equal(content.projects.length, 5);
+  for (const [awardId, title] of expectedProjects) {
+    const project = content.projects.find((item) => item.awardId === awardId);
+    assert.ok(project, `Expected NSF award ${awardId}`);
+    assert.equal(project.officialTitle, title);
   }
 
-  for (const person of [
-    "Dashun Wang",
-    "Alicia I. Loffler",
-    "Jian Cao",
-    "Benjamin Jones",
-    "Yian Yin",
-    "James Evans",
-    "Ian Foster",
-    "Ufuk Akcigit",
-    "James Farmer",
-    "Daniel Eichelsdoerfer",
-    "Jinfeng Zhang",
-    "Jonathan Fegely",
-  ]) {
-    assert.ok(nsfData.includes(`name: "${person}"`));
+  const people = content.participants.flatMap((participant) =>
+    participant.people.map((person) => person.name),
+  );
+  for (const person of expectedPeople) {
+    assert.ok(people.includes(person), `Expected APTO team member ${person}`);
   }
 
   for (const organizationUrl of [
@@ -230,45 +265,34 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     "https://insilicom.com/",
     "https://www.aperture.ai/",
   ]) {
-    assert.ok(nsfData.includes(`website: "${organizationUrl}"`));
-    assert.ok(nsfData.includes(`organizationUrl: "${organizationUrl}"`));
-  }
-
-  const toolsBlock = nsfData.slice(
-    nsfData.indexOf("export const aptoMockTools"),
-    nsfData.indexOf("export const aptoParticipants"),
-  );
-  assert.equal((toolsBlock.match(/isConceptOnly: true/g) ?? []).length, 10);
-  assert.equal((toolsBlock.match(/status: "Concept only · not a released tool"/g) ?? []).length, 10);
-  for (const participantId of ["northwestern", "uchicago", "macrocosm", "insilicom", "aperture"]) {
+    assert.ok(content.participants.some((participant) => participant.website === organizationUrl));
     assert.equal(
-      (toolsBlock.match(new RegExp(`participantId: \\\"${participantId}\\\"`, "g")) ?? []).length,
+      content.tools.filter((tool) => tool.organizationUrl === organizationUrl).length,
       2,
     );
   }
-  for (const toolName of [
-    "Research-to-Market Navigator",
-    "Technology Trajectory Forecaster",
-    "Global S&T Observatory",
-    "Virtual Policy Laboratory",
-    "Energy System Digital Twin",
-    "Policy & Investment Scenario Lab",
-    "Causal Technology Knowledge Graph",
-    "Evidence Extraction Workbench",
-    "Problem Landscape Explorer",
-    "Leverage Point Finder",
-  ]) {
-    assert.ok(toolsBlock.includes(`name: "${toolName}"`));
+
+  assert.equal(content.tools.filter((tool) => tool.isConceptOnly === true).length, 10);
+  assert.equal(
+    content.tools.filter((tool) => tool.status === "Concept only · not a released tool").length,
+    10,
+  );
+  for (const participantId of ["northwestern", "uchicago", "macrocosm", "insilicom", "aperture"]) {
+    assert.equal(
+      content.tools.filter((tool) => tool.participantId === participantId).length,
+      2,
+    );
+  }
+  for (const toolName of expectedTools) {
+    assert.ok(content.tools.some((tool) => tool.name === toolName));
   }
 
-  assert.match(nsfData, /Demo video placeholder/);
-  assert.match(nsfData, /Tool link coming soon/);
+  assert.equal(content.tools.filter((tool) => tool.demoVideoLabel === "Demo video placeholder").length, 10);
+  assert.equal(content.tools.filter((tool) => tool.toolLinkLabel === "Tool link coming soon").length, 10);
   assert.match(nsfSource, /Headshot placeholder/);
   assert.match(nsfSource, /Mock content/);
-  assert.match(nsfData, /Concept only/);
-  assert.ok(nsfData.includes(
-    "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
-  ));
+  assert.ok(content.tools.every((tool) => tool.status.includes("Concept only")));
+  assert.equal(content.boilerplate, nsfBoilerplate);
 
   assert.match(nsfSource, /className="nsf-skip-link"/);
   assert.match(nsfSource, /<main id=\{`\$\{id\}-main`\} tabIndex=\{-1\}>/);
@@ -300,6 +324,96 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfStyles, /@media \(max-width: 640px\)/);
   assert.match(nsfStyles, /@media \(prefers-reduced-motion: reduce\)/);
 
+  const heroRule = cssRuleBody(nsfStyles, ".nsf-program-hero");
+  assert.match(heroRule, /min-height:\s*400px/);
+  const desktopHeadingRule = cssRuleBody(nsfStyles, ".nsf-hero-copy h1");
+  assert.ok(maxPixelValueFor(desktopHeadingRule, "font-size") <= 44);
+  const mobileBreakpoint = nsfStyles.indexOf("@media (max-width: 640px)");
+  assert.notEqual(mobileBreakpoint, -1);
+  const mobileHeadingRule = cssRuleBody(nsfStyles, ".nsf-hero-copy h1", mobileBreakpoint);
+  assert.ok(maxPixelValueFor(mobileHeadingRule, "font-size") <= 34);
+
   await access(new URL("../public/apto/nsf-logo.png", import.meta.url));
   await access(new URL("../public/apto/nsf-network-art.png", import.meta.url));
+});
+
+test("builds the NSF APTO content artifact from the Markdown source of truth", async () => {
+  const contentRoot = new URL("../content/apto/", import.meta.url);
+  const [contentEntries, projectEntries, toolEntries, generatedJson, nsfData, generator, packageJson] =
+    await Promise.all([
+      readdir(contentRoot, { withFileTypes: true }),
+      readdir(new URL("projects/", contentRoot), { withFileTypes: true }),
+      readdir(new URL("tools/", contentRoot), { withFileTypes: true }),
+      readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
+      readFile(new URL("../app/nsf-apto-data.ts", import.meta.url), "utf8"),
+      readFile(new URL("../scripts/build-apto-content.mjs", import.meta.url), "utf8"),
+      readFile(new URL("../package.json", import.meta.url), "utf8"),
+    ]);
+
+  const markdownFiles = (entries) =>
+    entries.filter((entry) => entry.isFile() && entry.name.endsWith(".md"));
+  assert.equal(
+    markdownFiles(contentEntries).filter((entry) => entry.name === "program.md").length,
+    1,
+  );
+  assert.equal(markdownFiles(projectEntries).length, 5);
+  assert.equal(markdownFiles(toolEntries).length, 10);
+
+  const content = JSON.parse(generatedJson);
+  assert.deepEqual(
+    Object.keys(content).sort(),
+    [
+      "_generated",
+      "boilerplate",
+      "participants",
+      "program",
+      "projects",
+      "sources",
+      "tools",
+    ].sort(),
+  );
+  assert.equal(content._generated.generatedFrom.length, 16);
+  assert.equal(content.participants.length, 5);
+  assert.equal(content.projects.length, 5);
+  assert.equal(content.tools.length, 10);
+  assert.equal(
+    content.participants.reduce((total, participant) => total + participant.people.length, 0),
+    12,
+  );
+  assert.ok(content.projects.every((project) => project.officialTitle.startsWith("APTO:")));
+  assert.equal(content.boilerplate, nsfBoilerplate);
+
+  for (const participant of content.participants) {
+    const participantTools = content.tools.filter(
+      (tool) => tool.participantId === participant.id,
+    );
+    assert.equal(participantTools.length, 2, `${participant.id} must have exactly two tools`);
+    assert.equal(participant.tools.length, 2, `${participant.id} must embed exactly two tools`);
+    assert.deepEqual(
+      participant.tools.map((tool) => tool.id),
+      participantTools.map((tool) => tool.id),
+    );
+  }
+
+  assert.match(nsfData, /import generatedContent from "\.\/nsf-apto-content\.generated\.json";/);
+  assert.doesNotMatch(nsfData, /export const apto(?:Projects|Participants|MockTools)\s*=\s*\[/);
+  for (const [awardId, title] of expectedProjects) {
+    assert.equal(nsfData.includes(awardId), false);
+    assert.equal(nsfData.includes(title), false);
+  }
+  for (const person of expectedPeople) assert.equal(nsfData.includes(person), false);
+  for (const tool of expectedTools) assert.equal(nsfData.includes(tool), false);
+
+  assert.match(generator, /const checkOnly = args\[0\] === "--check"/);
+  assert.match(generator, /current === serialized/);
+  assert.match(generator, /writeFile\(outputFile, serialized, "utf8"\)/);
+  assert.match(generator, /process\.exitCode = 1/);
+  assert.match(generator, /projectFiles\.length === 5/);
+  assert.match(generator, /toolFiles\.length === 10/);
+
+  const scripts = JSON.parse(packageJson).scripts;
+  assert.equal(scripts["content:build"], "node scripts/build-apto-content.mjs");
+  assert.equal(scripts["content:check"], "node scripts/build-apto-content.mjs --check");
+  assert.equal(scripts.predev, "npm run content:build");
+  assert.equal(scripts.prebuild, "npm run content:build");
 });

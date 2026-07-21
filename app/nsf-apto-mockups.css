@@ -55,8 +55,8 @@
   position: sticky;
   z-index: 90;
   top: 58px;
-  min-height: 112px;
-  padding: 9px max(3.5vw, 24px);
+  min-height: 88px;
+  padding: 6px max(3.5vw, 24px);
   display: grid;
   grid-template-columns: minmax(310px, 1fr) auto auto;
   align-items: center;
@@ -67,19 +67,19 @@
 }
 .nsf-program-brand { display: flex; align-items: center; min-width: 0; }
 .nsf-logo-link {
-  width: 102px;
-  height: 102px;
-  flex: 0 0 102px;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
   display: grid;
   place-items: center;
-  padding: 10px;
+  padding: 6px;
   border-radius: 3px;
   background: #fff;
 }
-.nsf-logo-link img { width: 82px; height: 82px; object-fit: contain; }
-.nsf-brand-divider { width: 1px; height: 62px; margin: 0 22px 0 12px; background: #7892a8; }
+.nsf-logo-link img { width: 64px; height: 64px; object-fit: contain; }
+.nsf-brand-divider { width: 1px; height: 52px; margin: 0 18px 0 10px; background: #7892a8; }
 .nsf-apto-wordmark { min-width: 0; display: flex; flex-direction: column; text-decoration: none; }
-.nsf-apto-wordmark strong { color: var(--nsf-blue); font-size: 1.85rem; line-height: 1; letter-spacing: -.04em; }
+.nsf-apto-wordmark strong { color: var(--nsf-blue); font-size: 1.55rem; line-height: 1; letter-spacing: -.04em; }
 .nsf-apto-wordmark span { max-width: 245px; margin-top: 7px; color: var(--nsf-dark-blue); font-size: .81rem; font-weight: 700; line-height: 1.25; }
 .nsf-program-header nav { display: flex; align-items: center; gap: clamp(15px, 1.8vw, 29px); }
 .nsf-program-header nav a,
@@ -90,13 +90,13 @@
 
 .nsf-program-hero {
   max-width: 1560px;
-  min-height: 510px;
+  min-height: 400px;
   margin: 0 auto;
-  padding: clamp(60px, 7vw, 108px) max(5vw, 28px);
+  padding: clamp(42px, 4.5vw, 62px) max(5vw, 28px);
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(350px, .85fr);
   align-items: center;
-  gap: clamp(44px, 7vw, 112px);
+  gap: clamp(30px, 4vw, 64px);
 }
 .nsf-eyebrow,
 .nsf-section-intro > p {
@@ -110,28 +110,28 @@
 }
 .nsf-hero-copy h1 {
   max-width: 760px;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
   color: var(--nsf-dark-blue);
-  font-size: clamp(2.65rem, 4.5vw, 3.8rem);
+  font-size: clamp(36px, 3.4vw, 44px);
   font-weight: 700;
   letter-spacing: -.052em;
   line-height: 1.04;
 }
-.nsf-hero-summary { max-width: 760px; color: var(--nsf-muted); font-size: 1.16rem; line-height: 1.66; }
-.nsf-hero-actions { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.nsf-hero-summary { max-width: 720px; color: var(--nsf-muted); font-size: 1.04rem; line-height: 1.58; }
+.nsf-hero-actions { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .nsf-hero-actions > a { min-height: 48px; display: inline-flex; align-items: center; font-size: .91rem; font-weight: 750; }
 .nsf-primary-action { padding: 0 18px; gap: 36px; color: var(--nsf-dark-blue); background: var(--nsf-gold); border: 2px solid var(--nsf-gold); border-radius: 3px; text-decoration: none; }
-.nsf-hero-facts { margin-top: 44px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--nsf-line); }
-.nsf-hero-facts > div { padding: 18px 14px 0 0; }
-.nsf-hero-facts dt { color: var(--nsf-blue); font-size: 1.75rem; font-weight: 800; line-height: 1; }
+.nsf-hero-facts { margin-top: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--nsf-line); }
+.nsf-hero-facts > div { padding: 13px 12px 0 0; }
+.nsf-hero-facts dt { color: var(--nsf-blue); font-size: 1.5rem; font-weight: 800; line-height: 1; }
 .nsf-hero-facts dd { margin-top: 6px; color: var(--nsf-muted); font-size: .77rem; font-weight: 700; line-height: 1.35; }
 .nsf-hero-facts dd span,
 .nsf-hero-facts dd small { display: block; }
 .nsf-hero-facts dd small { margin-top: 4px; font-size: .66rem; font-weight: 600; line-height: 1.4; }
 .nsf-hero-program-note {
   position: relative;
-  min-height: 315px;
-  padding: 42px;
+  min-height: 250px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -143,16 +143,16 @@
 .nsf-hero-program-note::before {
   content: "";
   position: absolute;
-  inset: 20px;
+  inset: 15px;
   border: 1px solid rgba(255,255,255,.35);
   pointer-events: none;
 }
 .nsf-hero-program-note > * { position: relative; }
 .nsf-hero-program-note > span { margin-bottom: auto; font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-.nsf-hero-program-note strong { max-width: 420px; margin-bottom: 15px; font-size: 1.55rem; line-height: 1.15; }
-.nsf-hero-program-note p { max-width: 520px; color: #e8f2f8; font-size: .94rem; }
-.nsf-network-hero-art { position: relative; min-height: 340px; overflow: hidden; background: var(--nsf-dark-blue); border: 1px solid #4b789a; border-radius: 4px; }
-.nsf-network-hero-art img { width: 100%; height: 340px; object-fit: cover; }
+.nsf-hero-program-note strong { max-width: 420px; margin-bottom: 11px; font-size: 1.35rem; line-height: 1.18; }
+.nsf-hero-program-note p { max-width: 520px; color: #e8f2f8; font-size: .88rem; }
+.nsf-network-hero-art { position: relative; min-height: 270px; overflow: hidden; background: var(--nsf-dark-blue); border: 1px solid #4b789a; border-radius: 4px; }
+.nsf-network-hero-art img { width: 100%; height: 270px; object-fit: cover; }
 .nsf-network-hero-art figcaption { position: absolute; left: 18px; right: 18px; bottom: 18px; padding: 12px 14px; color: #fff; background: rgba(0,37,84,.88); font-size: .82rem; line-height: 1.45; }
 
 .nsf-program-overview,
@@ -411,7 +411,7 @@
   .nsf-apto { font-size: 16px; }
   .nsf-program-header { position: relative; top: 0; }
   .nsf-program-hero { min-height: 0; grid-template-columns: 1fr; }
-  .nsf-hero-program-note { min-height: 260px; }
+  .nsf-hero-program-note { min-height: 230px; }
   .nsf-overview-framework,
   .nsf-program-notes,
   .nsf-project-grid,
@@ -443,12 +443,13 @@
   .nsf-people-section,
   .nsf-participants-section,
   .nsf-sources-section { padding: 56px 20px; }
-  .nsf-hero-copy h1 { font-size: clamp(2.15rem,11vw,2.75rem); line-height: 1.08; }
+  .nsf-program-hero { padding-top: 44px; padding-bottom: 44px; }
+  .nsf-hero-copy h1 { font-size: clamp(30px, 8vw, 34px); line-height: 1.08; }
   .nsf-hero-summary { font-size: 1.02rem; }
   .nsf-hero-actions { align-items: stretch; flex-direction: column; }
   .nsf-hero-actions > a { width: 100%; justify-content: space-between; }
   .nsf-hero-facts { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .nsf-hero-program-note { padding: 32px; }
+  .nsf-hero-program-note { padding: 27px; }
   .nsf-network-hero-art,
   .nsf-network-hero-art img { min-height: 260px; height: 260px; }
   .nsf-section-intro { grid-template-columns: 1fr; gap: 13px; }
