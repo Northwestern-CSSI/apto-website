@@ -10,7 +10,6 @@
       "content/apto/pages/home.md",
       "content/apto/pages/people.md",
       "content/apto/pages/projects.md",
-      "content/apto/pages/sources.md",
       "content/apto/pages/tools.md",
       "content/apto/program.md",
       "content/apto/projects/aperture.md",
@@ -137,13 +136,6 @@
       "eyebrow": "Research portfolio",
       "title": "Projects across the APTO cohort",
       "introduction": "Browse the active NSF award records whose official titles begin with APTO. Each project profile connects its research summary, participating organization, investigators, award dates, funding snapshot, outcomes, and primary NSF record, with projects shown alphabetically by official title."
-    },
-    {
-      "slug": "/sources",
-      "navLabel": "Sources",
-      "eyebrow": "Evidence and provenance",
-      "title": "Sources and verification",
-      "introduction": "Program language, project details, investigator records, award data, organization links, and brand references are connected to their primary sources. The directory records when the data was last verified and distinguishes official records from interface concepts that remain placeholders."
     },
     {
       "slug": "/tools",

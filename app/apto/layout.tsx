@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s | APTO",
   },
   description:
-    "Program, projects, people, participating organizations, sources, and proposed tools for Assessing and Predicting Technology Outcomes.",
+    "Program, projects, people, participating organizations, and proposed tools for Assessing and Predicting Technology Outcomes.",
 };
 
 export default function AptoLayout({ children }: { children: ReactNode }) {

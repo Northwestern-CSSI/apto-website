@@ -162,7 +162,6 @@ export type AptoPageSlug =
   | "/cohort"
   | "/people"
   | "/projects"
-  | "/sources"
   | "/tools";
 
 export type AptoPage = {

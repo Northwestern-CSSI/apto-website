@@ -20,7 +20,6 @@ const expectedPageSlugs = [
   "/cohort",
   "/people",
   "/projects",
-  "/sources",
   "/tools",
 ];
 
@@ -30,7 +29,6 @@ const expectedPageNavLabels = [
   "Home",
   "People",
   "Projects",
-  "Sources",
   "Tools",
 ];
 
@@ -322,25 +320,28 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   }
 
   const routeSpecs = [
-    ["page.tsx", "home"],
-    ["about/page.tsx", "about"],
-    ["cohort/page.tsx", "cohort"],
-    ["people/page.tsx", "people"],
-    ["projects/page.tsx", "projects"],
-    ["sources/page.tsx", "sources"],
-    ["tools/page.tsx", "tools"],
+    ["page.tsx", "home", "Program home"],
+    ["about/page.tsx", "about", "About the program"],
+    ["cohort/page.tsx", "cohort", "Participating organizations"],
+    ["people/page.tsx", "people", "People"],
+    ["projects/page.tsx", "projects", "Projects"],
+    ["tools/page.tsx", "tools", "Tools"],
   ];
   const routeSources = await Promise.all(
     routeSpecs.map(([file]) =>
       readFile(new URL(`../app/apto/${file}`, import.meta.url), "utf8"),
     ),
   );
-  routeSpecs.forEach(([, section], index) => {
+  routeSpecs.forEach(([, section, title], index) => {
     assert.match(
       routeSources[index],
       new RegExp(`<AptoRoutePage section=\\"${section}\\"`),
     );
+    assert.match(routeSources[index], new RegExp(`title: \\"${title}\\"`));
   });
+  await assert.rejects(
+    access(new URL("../app/apto/sources/page.tsx", import.meta.url)),
+  );
 
   assert.deepEqual(
     content.pages.map((page) => page.navLabel),
@@ -350,7 +351,7 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     content.pages.map((page) => page.slug).sort(),
     expectedPageSlugs,
   );
-  assert.equal(new Set(content.pages.map((page) => page.slug)).size, 7);
+  assert.equal(new Set(content.pages.map((page) => page.slug)).size, 6);
   for (const page of content.pages) {
     assert.ok(page.eyebrow.trim().length > 0);
     assert.ok(page.title.trim().length > 0);
@@ -457,15 +458,13 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.equal(content.boilerplate, nsfBoilerplate);
 
   assert.doesNotMatch(nsfSource, /Official NSF source/i);
+  assert.doesNotMatch(nsfSource, /Prototype accessibility approach|NSF brand policy|Brand application draft/);
   assert.doesNotMatch(nsfSource, /Design concept/i);
   assert.doesNotMatch(nsfSource, /nsf-project-orbit|nsf-participant-node/);
   assert.doesNotMatch(nsfSource, /aptoParticipants\.map\(\s*\(participant,\s*index\)/);
-  assert.doesNotMatch(nsfSource, /aptoSources\.map\(\s*\(source,\s*index\)/);
+  assert.doesNotMatch(nsfSource, /\baptoSources\b/);
   assert.doesNotMatch(nsfSource, /String\(index \+ 1\)\.padStart/);
   assert.doesNotMatch(nsfSource, /nsf-logo-link|nsf-header-source/);
-  assert.doesNotMatch(nsfSource, /aptoSources\[0\]/);
-  assert.match(nsfSource, /<ul>\{aptoSources\.map\(\(source\) => <li/);
-  assert.doesNotMatch(nsfSource, /<ol>\{aptoSources\.map/);
   for (const className of [
     "nsf-participant-directory",
     "nsf-participant-entry",
@@ -485,6 +484,14 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.ok(footerStart >= 0 && logoStart > footerStart, "NSF logo must live in the funder footer");
 
   assert.match(nsfSource, /className="nsf-skip-link"/);
+  const pageComponent = nsfSource.slice(
+    nsfSource.indexOf("export function NsfAptoPage"),
+    nsfSource.indexOf("export function NsfAptoMockup"),
+  );
+  assert.ok(
+    pageComponent.indexOf("nsf-skip-link") < pageComponent.indexOf("NsfDirectionStudyBar"),
+    "the skip link must precede the routed design-direction controls",
+  );
   assert.match(nsfSource, /<main id=\{`\$\{id\}-main`\} tabIndex=\{-1\}>/);
   assert.match(nsfSource, /<nav aria-label="Primary navigation">/);
   assert.match(nsfSource, /<footer className="nsf-program-footer">/);
@@ -587,7 +594,6 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
       "home.md",
       "people.md",
       "projects.md",
-      "sources.md",
       "tools.md",
     ],
   );
@@ -643,7 +649,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     ].sort(),
   );
   assert.equal(content._generated.schemaVersion, 2);
-  assert.equal(content._generated.generatedFrom.length, 23);
+  assert.equal(content._generated.generatedFrom.length, 22);
   assert.deepEqual(
     content._generated.generatedFrom,
     sortedAlphabetically(content._generated.generatedFrom),
@@ -652,7 +658,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     assert.doesNotMatch(filename, /\/\d/, `${filename} must not encode rank`);
   }
   assert.equal(content.participants.length, 5);
-  assert.equal(content.pages.length, 7);
+  assert.equal(content.pages.length, 6);
   assert.deepEqual(
     content.pages.map((page) => page.navLabel),
     expectedPageNavLabels,

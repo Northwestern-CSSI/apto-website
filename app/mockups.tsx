@@ -657,7 +657,11 @@ export default function MockupStudio() {
 
   return (
     <div className={`mockup-studio view-${selected}`}>
-      {selected === "gallery" ? <Gallery onSelect={choose} /> : <><ConceptSwitcher current={selected} onSelect={choose} /><Suspense fallback={<div className="kinetic-loading"><span>APTO</span><p>Preparing the live scene…</p></div>}>{renderConcept(selected)}</Suspense></>}
+      {selected === "gallery" ? <Gallery onSelect={choose} /> : <>
+        {["nsfhome", "nsfledger", "nsfnetwork"].includes(selected) && <a className="nsf-skip-link" href={`#${selected}-main`}>Skip to main content</a>}
+        <ConceptSwitcher current={selected} onSelect={choose} />
+        <Suspense fallback={<div className="kinetic-loading"><span>APTO</span><p>Preparing the live scene…</p></div>}>{renderConcept(selected)}</Suspense>
+      </>}
     </div>
   );
 }

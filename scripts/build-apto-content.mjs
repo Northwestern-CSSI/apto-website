@@ -58,7 +58,6 @@ const expectedPages = new Map([
   ["home", { slug: "/", navLabel: "Home" }],
   ["people", { slug: "/people", navLabel: "People" }],
   ["projects", { slug: "/projects", navLabel: "Projects" }],
-  ["sources", { slug: "/sources", navLabel: "Sources" }],
   ["tools", { slug: "/tools", navLabel: "Tools" }],
 ]);
 const expectedParticipantLogos = new Map([
@@ -865,14 +864,14 @@ async function main() {
       `${relativeFile(outputFile)} is out of date. Run: node scripts/build-apto-content.mjs`,
     );
     console.log(
-      `Validated ${relativeFile(outputFile)} from 1 program, 7 routed pages, 5 projects, and 10 tools.`,
+      `Validated ${relativeFile(outputFile)} from 1 program, 6 routed pages, 5 projects, and 10 tools.`,
     );
     return;
   }
 
   await writeFile(outputFile, serialized, "utf8");
   console.log(
-    `Generated ${relativeFile(outputFile)} from 1 program, 7 routed pages, 5 projects, and 10 tools.`,
+    `Generated ${relativeFile(outputFile)} from 1 program, 6 routed pages, 5 projects, and 10 tools.`,
   );
 }
 
