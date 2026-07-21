@@ -27,6 +27,17 @@
     "kind": "University",
     "location": "Evanston, Illinois",
     "website": "https://www.northwestern.edu/",
+    "logo": {
+      "src": "/apto/partners/northwestern.png",
+      "width": 407,
+      "height": 235,
+      "surface": "light",
+      "kind": "wordmark",
+      "sourceUrl": "https://www.northwestern.edu/brand/images/horizontal-wordmark.png",
+      "sourceLabel": "Northwestern preferred wordmark preview",
+      "status": "approval-required/mockup",
+      "approved": false
+    },
     "accent": "#005699"
   },
   "people": [

@@ -27,6 +27,17 @@
     "kind": "Company",
     "location": "Tallahassee, Florida",
     "website": "https://insilicom.com/",
+    "logo": {
+      "src": "/apto/partners/insilicom.png",
+      "width": 158,
+      "height": 42,
+      "surface": "dark",
+      "kind": "wordmark",
+      "sourceUrl": "https://www.insilicom.com/",
+      "sourceLabel": "Insilicom official website reference",
+      "status": "approval-required/mockup",
+      "approved": false
+    },
     "accent": "#473B70"
   },
   "people": [

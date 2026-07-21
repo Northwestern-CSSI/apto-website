@@ -27,6 +27,17 @@
     "kind": "Company",
     "location": "Brooklyn, New York",
     "website": "https://macrocosm.group/",
+    "logo": {
+      "src": "/apto/partners/macrocosm.svg",
+      "width": 443,
+      "height": 194,
+      "surface": "dark",
+      "kind": "wordmark",
+      "sourceUrl": "https://macrocosm.group/macrocosm-logo.svg",
+      "sourceLabel": "Macrocosm official logo asset",
+      "status": "approval-required/mockup",
+      "approved": false
+    },
     "accent": "#00758D"
   },
   "people": [

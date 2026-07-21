@@ -14,6 +14,34 @@ const expectedParticipants = [
   "University of Chicago",
 ];
 
+const expectedPageSlugs = [
+  "/",
+  "/about",
+  "/cohort",
+  "/people",
+  "/projects",
+  "/sources",
+  "/tools",
+];
+
+const expectedPageNavLabels = [
+  "About",
+  "Cohort",
+  "Home",
+  "People",
+  "Projects",
+  "Sources",
+  "Tools",
+];
+
+const expectedParticipantLogoSources = [
+  "/apto/partners/aperture.svg",
+  "/apto/partners/insilicom.png",
+  "/apto/partners/macrocosm.svg",
+  "/apto/partners/northwestern.png",
+  "/apto/partners/uchicago.png",
+];
+
 const expectedProjects = [
   ["2403999", "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector"],
   ["2404109", "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance"],
@@ -88,13 +116,13 @@ function maxPixelValueFor(styles, property) {
   return Math.max(...values);
 }
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(new URL(pathname, "http://localhost"), {
       headers: { accept: "text/html" },
     }),
     {
@@ -132,6 +160,20 @@ test("server-renders the APTO design gallery", async () => {
   assert.match(html, /NSF-aligned program directions/);
   assert.equal((html.match(/concept-card card-/g) ?? []).length, 53);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
+});
+
+test("server-renders a representative explicit APTO route", async () => {
+  const response = await render("/apto/projects?concept=nsfledger");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+
+  const html = await response.text();
+  assert.match(html, /"pathname":"\/apto\/projects"/);
+  assert.match(html, /\[\["concept","nsfledger"\]\]/);
+  assert.match(html, /Evidence ledger/);
+  assert.match(html, /APTO design directions/);
+  assert.match(html, /\/apto\/tools\?concept=nsfledger/);
+  assert.doesNotMatch(html, /Official NSF source/i);
 });
 
 test("ships fifty-three concepts, responsive behavior, and APTO assets", async () => {
@@ -261,22 +303,81 @@ test("ships fifty-three concepts, responsive behavior, and APTO assets", async (
 });
 
 test("ships three source-grounded, accessible NSF APTO directions", async () => {
-  const [nsfSource, nsfStyles, generatedJson] = await Promise.all([
+  const [nsfSource, nsfStyles, generatedJson, routePageSource] = await Promise.all([
     readFile(new URL("../app/nsf-apto-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-mockups.css", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/_route-page.tsx", import.meta.url), "utf8"),
   ]);
   const content = JSON.parse(generatedJson);
 
+  assert.match(nsfSource, /export function NsfAptoPage\(/);
+  assert.match(nsfSource, /return <NsfAptoPage id=\{id\} section="home" embedded \/>/);
+  assert.match(nsfSource, /\/apto\$\{path/);
+  assert.match(nsfSource, /\?concept=\$\{id\}/);
+  assert.match(routePageSource, /return <NsfAptoPage id=\{conceptId\} section=\{section\} \/>/);
+  assert.match(routePageSource, /: "nsfhome"/);
   for (const id of ["nsfhome", "nsfledger", "nsfnetwork"]) {
-    assert.match(nsfSource, new RegExp(`case \\\"${id}\\\"`));
-    assert.match(nsfSource, new RegExp(`id: NsfAptoMockupId = \\\"${id}\\\"`));
+    assert.match(routePageSource, new RegExp(`\\"${id}\\"`));
+  }
+
+  const routeSpecs = [
+    ["page.tsx", "home"],
+    ["about/page.tsx", "about"],
+    ["cohort/page.tsx", "cohort"],
+    ["people/page.tsx", "people"],
+    ["projects/page.tsx", "projects"],
+    ["sources/page.tsx", "sources"],
+    ["tools/page.tsx", "tools"],
+  ];
+  const routeSources = await Promise.all(
+    routeSpecs.map(([file]) =>
+      readFile(new URL(`../app/apto/${file}`, import.meta.url), "utf8"),
+    ),
+  );
+  routeSpecs.forEach(([, section], index) => {
+    assert.match(
+      routeSources[index],
+      new RegExp(`<AptoRoutePage section=\\"${section}\\"`),
+    );
+  });
+
+  assert.deepEqual(
+    content.pages.map((page) => page.navLabel),
+    expectedPageNavLabels,
+  );
+  assert.deepEqual(
+    content.pages.map((page) => page.slug).sort(),
+    expectedPageSlugs,
+  );
+  assert.equal(new Set(content.pages.map((page) => page.slug)).size, 7);
+  for (const page of content.pages) {
+    assert.ok(page.eyebrow.trim().length > 0);
+    assert.ok(page.title.trim().length > 0);
+    assert.ok(page.introduction.trim().length > 0);
   }
 
   assert.deepEqual(
     content.participants.map((participant) => participant.displayName),
     expectedParticipants,
   );
+  assert.deepEqual(
+    content.participants.map((participant) => participant.logo.src),
+    expectedParticipantLogoSources,
+  );
+  assert.equal(new Set(content.participants.map((participant) => participant.logo.src)).size, 5);
+  for (const participant of content.participants) {
+    const { logo } = participant;
+    assert.ok(Number.isFinite(logo.width) && logo.width > 0);
+    assert.ok(Number.isFinite(logo.height) && logo.height > 0);
+    assert.ok(["light", "dark"].includes(logo.surface));
+    assert.ok(["symbol", "wordmark"].includes(logo.kind));
+    assert.equal(new URL(logo.sourceUrl).protocol, "https:");
+    assert.ok(logo.sourceLabel.trim().length > 0);
+    assert.equal(logo.status, "approval-required/mockup");
+    assert.equal(logo.approved, false);
+    await access(new URL(`../public${logo.src}`, import.meta.url));
+  }
   assert.equal(content.projects.length, 5);
   for (const [awardId, title] of expectedProjects) {
     const project = content.projects.find((item) => item.awardId === awardId);
@@ -357,26 +458,23 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
 
   assert.doesNotMatch(nsfSource, /Official NSF source/i);
   assert.doesNotMatch(nsfSource, /Design concept/i);
+  assert.doesNotMatch(nsfSource, /nsf-project-orbit|nsf-participant-node/);
   assert.doesNotMatch(nsfSource, /aptoParticipants\.map\(\s*\(participant,\s*index\)/);
   assert.doesNotMatch(nsfSource, /aptoSources\.map\(\s*\(source,\s*index\)/);
   assert.doesNotMatch(nsfSource, /String\(index \+ 1\)\.padStart/);
   assert.doesNotMatch(nsfSource, /nsf-logo-link|nsf-header-source/);
   assert.doesNotMatch(nsfSource, /aptoSources\[0\]/);
-  assert.match(
-    nsfSource,
-    /aptoSources\.find\(\s*\(source\) => source\.id === "nsf-apto-solicitation"/,
-  );
   assert.match(nsfSource, /<ul>\{aptoSources\.map\(\(source\) => <li/);
   assert.doesNotMatch(nsfSource, /<ol>\{aptoSources\.map/);
   for (const className of [
     "nsf-participant-directory",
     "nsf-participant-entry",
-    "nsf-participant-node",
     "nsf-funder-mark",
     "nsf-funder-copy",
   ]) {
     assert.match(nsfSource, new RegExp(`className=\"${className}\"`));
   }
+  assert.match(nsfSource, /nsf-participant-mark is-\$\{size\}/);
 
   const headerStart = nsfSource.indexOf("function NsfProgramHeader");
   const heroStart = nsfSource.indexOf("function CompactProgramHero");
@@ -417,6 +515,7 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfStyles, /@media \(prefers-reduced-motion: reduce\)/);
 
   assert.doesNotMatch(nsfStyles, /\.(?:nsf-)?participant-[1-9]\b/);
+  assert.doesNotMatch(nsfStyles, /\.nsf-project-orbit|\.nsf-participant-node/);
   assert.doesNotMatch(nsfStyles, /\.nsf-project-card:nth-child/);
   assert.doesNotMatch(nsfStyles, /border-top:\s*(?:6|7|8|12)px\b/i);
   assert.doesNotMatch(nsfStyles, /\.nsf-logo-link|\.nsf-header-source/);
@@ -432,7 +531,7 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     ".nsf-tool-figure",
     ".nsf-outcome-lens",
     ".nsf-participant-directory",
-    ".nsf-participant-node",
+    ".nsf-participant-mark",
   ]) {
     cssRuleBody(nsfStyles, selector);
   }
@@ -459,9 +558,10 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
 
 test("builds the NSF APTO content artifact from the Markdown source of truth", async () => {
   const contentRoot = new URL("../content/apto/", import.meta.url);
-  const [contentEntries, projectEntries, toolEntries, generatedJson, nsfData, generator, packageJson] =
+  const [contentEntries, pageEntries, projectEntries, toolEntries, generatedJson, nsfData, generator, packageJson] =
     await Promise.all([
       readdir(contentRoot, { withFileTypes: true }),
+      readdir(new URL("pages/", contentRoot), { withFileTypes: true }),
       readdir(new URL("projects/", contentRoot), { withFileTypes: true }),
       readdir(new URL("tools/", contentRoot), { withFileTypes: true }),
       readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
@@ -472,21 +572,38 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
 
   const markdownFiles = (entries) =>
     entries.filter((entry) => entry.isFile() && entry.name.endsWith(".md"));
+  const pageMarkdownFiles = markdownFiles(pageEntries);
   const projectMarkdownFiles = markdownFiles(projectEntries);
   const toolMarkdownFiles = markdownFiles(toolEntries);
   assert.equal(
     markdownFiles(contentEntries).filter((entry) => entry.name === "program.md").length,
     1,
   );
+  assert.deepEqual(
+    sortedAlphabetically(pageMarkdownFiles.map((entry) => entry.name)),
+    [
+      "about.md",
+      "cohort.md",
+      "home.md",
+      "people.md",
+      "projects.md",
+      "sources.md",
+      "tools.md",
+    ],
+  );
   assert.equal(projectMarkdownFiles.length, 5);
   assert.equal(toolMarkdownFiles.length, 10);
 
-  for (const entry of [...projectMarkdownFiles, ...toolMarkdownFiles]) {
+  for (const entry of [...pageMarkdownFiles, ...projectMarkdownFiles, ...toolMarkdownFiles]) {
     assert.doesNotMatch(entry.name, /^\d/, `${entry.name} must not have a numeric prefix`);
   }
 
   const markdownRecords = [
     { name: "program.md", url: new URL("program.md", contentRoot) },
+    ...pageMarkdownFiles.map((entry) => ({
+      name: `pages/${entry.name}`,
+      url: new URL(`pages/${entry.name}`, contentRoot),
+    })),
     ...projectMarkdownFiles.map((entry) => ({
       name: `projects/${entry.name}`,
       url: new URL(`projects/${entry.name}`, contentRoot),
@@ -517,6 +634,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     [
       "_generated",
       "boilerplate",
+      "pages",
       "participants",
       "program",
       "projects",
@@ -524,7 +642,8 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
       "tools",
     ].sort(),
   );
-  assert.equal(content._generated.generatedFrom.length, 16);
+  assert.equal(content._generated.schemaVersion, 2);
+  assert.equal(content._generated.generatedFrom.length, 23);
   assert.deepEqual(
     content._generated.generatedFrom,
     sortedAlphabetically(content._generated.generatedFrom),
@@ -533,6 +652,15 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     assert.doesNotMatch(filename, /\/\d/, `${filename} must not encode rank`);
   }
   assert.equal(content.participants.length, 5);
+  assert.equal(content.pages.length, 7);
+  assert.deepEqual(
+    content.pages.map((page) => page.navLabel),
+    expectedPageNavLabels,
+  );
+  assert.deepEqual(
+    content.pages.map((page) => page.slug).sort(),
+    expectedPageSlugs,
+  );
   assert.equal(content.projects.length, 5);
   assert.equal(content.tools.length, 10);
   assert.equal(
@@ -555,6 +683,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
   }
 
   assert.match(nsfData, /import generatedContent from "\.\/nsf-apto-content\.generated\.json";/);
+  assert.match(nsfData, /export const aptoPages = aptoContent\.pages;/);
   assert.doesNotMatch(nsfData, /export const apto(?:Projects|Participants|MockTools)\s*=\s*\[/);
   for (const [awardId, title] of expectedProjects) {
     assert.equal(nsfData.includes(awardId), false);
@@ -569,6 +698,14 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
   assert.match(generator, /process\.exitCode = 1/);
   assert.match(generator, /projectFiles\.length === 5/);
   assert.match(generator, /toolFiles\.length === 10/);
+  assert.match(generator, /pageFiles\.length === expectedPages\.size/);
+  assert.match(generator, /function validateParticipantLogo\(/);
+  assert.match(generator, /logo\.status === "approval-required\/mockup"/);
+  assert.match(generator, /logo\.approved === false/);
+  assert.match(
+    generator,
+    /compareAlphabetically\(left\.navLabel,\s*right\.navLabel\)/,
+  );
   assert.match(generator, /function compareAlphabetically\(left, right\)/);
   assert.match(generator, /function projectTitleSortKey\(title\)/);
   assert.match(

@@ -7,7 +7,7 @@
  * Node.js alone. Human-readable descriptions live in the Markdown H2 sections.
  */
 
-import { readFile, readdir, writeFile } from "node:fs/promises";
+import { access, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,6 +16,7 @@ const rootDirectory = path.resolve(
   "..",
 );
 const contentDirectory = path.join(rootDirectory, "content", "apto");
+const pageDirectory = path.join(contentDirectory, "pages");
 const projectDirectory = path.join(contentDirectory, "projects");
 const toolDirectory = path.join(contentDirectory, "tools");
 const outputFile = path.join(
@@ -49,6 +50,76 @@ const allowedSourceKinds = new Set([
   "brand",
   "organization",
 ]);
+const allowedLogoKinds = new Set(["symbol", "wordmark"]);
+const allowedLogoSurfaces = new Set(["dark", "light"]);
+const expectedPages = new Map([
+  ["about", { slug: "/about", navLabel: "About" }],
+  ["cohort", { slug: "/cohort", navLabel: "Cohort" }],
+  ["home", { slug: "/", navLabel: "Home" }],
+  ["people", { slug: "/people", navLabel: "People" }],
+  ["projects", { slug: "/projects", navLabel: "Projects" }],
+  ["sources", { slug: "/sources", navLabel: "Sources" }],
+  ["tools", { slug: "/tools", navLabel: "Tools" }],
+]);
+const expectedParticipantLogos = new Map([
+  [
+    "aperture",
+    {
+      src: "/apto/partners/aperture.svg",
+      width: 200,
+      height: 200,
+      surface: "dark",
+      kind: "symbol",
+      sourceUrl: "https://www.aperture.ai/assets/brand/favicon.svg",
+    },
+  ],
+  [
+    "insilicom",
+    {
+      src: "/apto/partners/insilicom.png",
+      width: 158,
+      height: 42,
+      surface: "dark",
+      kind: "wordmark",
+      sourceUrl: "https://www.insilicom.com/",
+    },
+  ],
+  [
+    "macrocosm",
+    {
+      src: "/apto/partners/macrocosm.svg",
+      width: 443,
+      height: 194,
+      surface: "dark",
+      kind: "wordmark",
+      sourceUrl: "https://macrocosm.group/macrocosm-logo.svg",
+    },
+  ],
+  [
+    "northwestern",
+    {
+      src: "/apto/partners/northwestern.png",
+      width: 407,
+      height: 235,
+      surface: "light",
+      kind: "wordmark",
+      sourceUrl:
+        "https://www.northwestern.edu/brand/images/horizontal-wordmark.png",
+    },
+  ],
+  [
+    "uchicago",
+    {
+      src: "/apto/partners/uchicago.png",
+      width: 1920,
+      height: 669,
+      surface: "light",
+      kind: "wordmark",
+      sourceUrl:
+        "https://creative.uchicago.edu/files/2023/09/University-Logo_1Color_Maroon_RGB.png",
+    },
+  ],
+]);
 
 function relativeFile(file) {
   return path.relative(rootDirectory, file).split(path.sep).join("/");
@@ -80,6 +151,15 @@ function requireString(object, key, context) {
 function requireArray(object, key, context) {
   const value = object[key];
   assert(Array.isArray(value), `${context}.${key} must be an array`);
+  return value;
+}
+
+function requirePositiveNumber(object, key, context) {
+  const value = object[key];
+  assert(
+    typeof value === "number" && Number.isFinite(value) && value > 0,
+    `${context}.${key} must be a positive finite number`,
+  );
   return value;
 }
 
@@ -117,6 +197,10 @@ function assertExactSet(values, expected, context) {
       values.every((value) => expected.has(value)),
     `${context} must contain exactly: ${[...expected].join(", ")}`,
   );
+}
+
+function assertExactKeys(object, expected, context) {
+  assertExactSet(Object.keys(object), new Set(expected), `${context} fields`);
 }
 
 function normalizeProse(value) {
@@ -231,6 +315,105 @@ function validatePerson(person, context) {
   if (person.profileUrl !== null) {
     requireHttpsUrl(person.profileUrl, `${context}.profileUrl`);
   }
+}
+
+function validateParticipantLogo(logo, participantId, context) {
+  requireObject(logo, context);
+  assertExactKeys(
+    logo,
+    [
+      "src",
+      "width",
+      "height",
+      "surface",
+      "kind",
+      "sourceUrl",
+      "sourceLabel",
+      "status",
+      "approved",
+    ],
+    context,
+  );
+
+  const expected = expectedParticipantLogos.get(participantId);
+  assert(expected, `${context} has no expected participant logo configuration`);
+  const src = requireString(logo, "src", context);
+  assert(src === expected.src, `${context}.src must be “${expected.src}”`);
+  const width = requirePositiveNumber(logo, "width", context);
+  const height = requirePositiveNumber(logo, "height", context);
+  assert(width === expected.width, `${context}.width must be ${expected.width}`);
+  assert(height === expected.height, `${context}.height must be ${expected.height}`);
+  const surface = requireString(logo, "surface", context);
+  assert(
+    allowedLogoSurfaces.has(surface) && surface === expected.surface,
+    `${context}.surface must be “${expected.surface}”`,
+  );
+  const kind = requireString(logo, "kind", context);
+  assert(
+    allowedLogoKinds.has(kind) && kind === expected.kind,
+    `${context}.kind must be “${expected.kind}”`,
+  );
+  const sourceUrl = requireHttpsUrl(
+    requireString(logo, "sourceUrl", context),
+    `${context}.sourceUrl`,
+  );
+  assert(
+    sourceUrl === expected.sourceUrl,
+    `${context}.sourceUrl must be “${expected.sourceUrl}”`,
+  );
+  requireString(logo, "sourceLabel", context);
+  assert(
+    logo.status === "approval-required/mockup",
+    `${context}.status must be “approval-required/mockup”`,
+  );
+  assert(logo.approved === false, `${context}.approved must be false`);
+  return logo;
+}
+
+function validatePage(document) {
+  const { metadata, h1, sections, file } = document;
+  const context = relativeFile(file);
+  assert(metadata.kind === "page", `${context}.kind must be “page”`);
+  assertExactKeys(
+    metadata,
+    ["kind", "slug", "navLabel", "eyebrow", "title"],
+    `${context} frontmatter`,
+  );
+
+  const id = path.basename(file, ".md");
+  const expected = expectedPages.get(id);
+  assert(expected, `${context} filename is not a supported routed page`);
+  const slug = requireString(metadata, "slug", context);
+  const navLabel = requireString(metadata, "navLabel", context);
+  const eyebrow = requireString(metadata, "eyebrow", context);
+  const title = requireString(metadata, "title", context);
+  assert(slug === expected.slug, `${context}.slug must be “${expected.slug}”`);
+  assert(
+    navLabel === expected.navLabel,
+    `${context}.navLabel must be “${expected.navLabel}”`,
+  );
+  assert(h1 === title, `${context} H1 must match frontmatter title`);
+  assert(
+    sections.size === 1 && sections.has("Introduction"),
+    `${context} must contain exactly one “## Introduction” section`,
+  );
+  const introduction = sections.get("Introduction");
+  assert(
+    introduction,
+    `${context} must contain a non-empty “## Introduction” section`,
+  );
+
+  return {
+    id,
+    sourceFile: file,
+    page: {
+      slug,
+      navLabel,
+      eyebrow,
+      title,
+      introduction: normalizeProse(introduction),
+    },
+  };
 }
 
 function validateProgram(document) {
@@ -392,6 +575,11 @@ function validateProject(document) {
     requireString(participant, "website", `${context}.participant`),
     `${context}.participant.website`,
   );
+  validateParticipantLogo(
+    participant.logo,
+    participantId,
+    `${context}.participant.logo`,
+  );
   assert(
     /^#[0-9A-F]{6}$/i.test(requireString(participant, "accent", `${context}.participant`)),
     `${context}.participant.accent must be a six-digit hex color`,
@@ -497,10 +685,34 @@ function validateTool(document, projectByParticipant) {
   };
 }
 
+async function validateParticipantLogoFiles(projectRecords) {
+  await Promise.all(
+    projectRecords.map(async (record) => {
+      const logoFile = path.join(
+        rootDirectory,
+        "public",
+        record.participant.logo.src.slice(1),
+      );
+      try {
+        await access(logoFile);
+      } catch {
+        throw new Error(
+          `${relativeFile(record.sourceFile)} references missing logo asset ${relativeFile(logoFile)}`,
+        );
+      }
+    }),
+  );
+}
+
 async function buildContent() {
   const programFile = path.join(contentDirectory, "program.md");
+  const pageFiles = await markdownFiles(pageDirectory);
   const projectFiles = await markdownFiles(projectDirectory);
   const toolFiles = await markdownFiles(toolDirectory);
+  assert(
+    pageFiles.length === expectedPages.size,
+    `Expected exactly ${expectedPages.size} routed page Markdown files; found ${pageFiles.length}`,
+  );
   assert(
     projectFiles.length === 5,
     `Expected exactly 5 project Markdown files; found ${projectFiles.length}`,
@@ -510,13 +722,35 @@ async function buildContent() {
     `Expected exactly 10 tool Markdown files; found ${toolFiles.length}`,
   );
 
-  const [programDocument, projectDocuments, toolDocuments] = await Promise.all([
-    readMarkdown(programFile),
-    Promise.all(projectFiles.map(readMarkdown)),
-    Promise.all(toolFiles.map(readMarkdown)),
-  ]);
+  const [programDocument, pageDocuments, projectDocuments, toolDocuments] =
+    await Promise.all([
+      readMarkdown(programFile),
+      Promise.all(pageFiles.map(readMarkdown)),
+      Promise.all(projectFiles.map(readMarkdown)),
+      Promise.all(toolFiles.map(readMarkdown)),
+    ]);
   const programRecord = validateProgram(programDocument);
+  const pageRecords = pageDocuments.map(validatePage);
+  assertExactSet(
+    pageRecords.map((record) => record.id),
+    new Set(expectedPages.keys()),
+    "routed page ids",
+  );
+  assertUnique(
+    pageRecords.map((record) => record.page.slug),
+    "routed page slugs",
+  );
+  assertUnique(
+    pageRecords.map((record) => record.page.navLabel),
+    "routed page navigation labels",
+  );
+  const pages = pageRecords
+    .map((record) => record.page)
+    .sort((left, right) =>
+      compareAlphabetically(left.navLabel, right.navLabel),
+    );
   const projectRecords = projectDocuments.map(validateProject);
+  await validateParticipantLogoFiles(projectRecords);
 
   assertUnique(projectRecords.map((record) => record.id), "project ids");
   assertUnique(projectRecords.map((record) => record.awardId), "award ids");
@@ -584,7 +818,7 @@ async function buildContent() {
   ].sort((left, right) => compareAlphabetically(left.label, right.label));
   assertUnique(sources.map((source) => source.id), "generated source ids");
 
-  const sourceFiles = [programFile, ...projectFiles, ...toolFiles]
+  const sourceFiles = [programFile, ...pageFiles, ...projectFiles, ...toolFiles]
     .map(relativeFile)
     .sort(compareAlphabetically);
 
@@ -592,13 +826,14 @@ async function buildContent() {
     _generated: {
       warning:
         "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 1,
+      schemaVersion: 2,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,
       dataAsOf: programRecord.program.lastVerified,
     },
     program: programRecord.program,
+    pages,
     boilerplate: programRecord.boilerplate,
     participants,
     projects,
@@ -630,14 +865,14 @@ async function main() {
       `${relativeFile(outputFile)} is out of date. Run: node scripts/build-apto-content.mjs`,
     );
     console.log(
-      `Validated ${relativeFile(outputFile)} from 1 program, 5 projects, and 10 tools.`,
+      `Validated ${relativeFile(outputFile)} from 1 program, 7 routed pages, 5 projects, and 10 tools.`,
     );
     return;
   }
 
   await writeFile(outputFile, serialized, "utf8");
   console.log(
-    `Generated ${relativeFile(outputFile)} from 1 program, 5 projects, and 10 tools.`,
+    `Generated ${relativeFile(outputFile)} from 1 program, 7 routed pages, 5 projects, and 10 tools.`,
   );
 }
 

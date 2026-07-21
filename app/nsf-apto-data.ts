@@ -9,6 +9,18 @@ export type AptoParticipantId =
 
 export type AptoParticipantKind = "University" | "Company";
 
+export type AptoParticipantLogo = {
+  src: string;
+  width: number;
+  height: number;
+  surface: "dark" | "light";
+  kind: "symbol" | "wordmark";
+  sourceUrl: string;
+  sourceLabel: string;
+  status: "approval-required/mockup";
+  approved: false;
+};
+
 export type AptoPersonRole =
   | "Principal Investigator"
   | "Co-Principal Investigator";
@@ -68,6 +80,7 @@ export type AptoParticipant = {
   kind: AptoParticipantKind;
   location: string;
   website: string;
+  logo: AptoParticipantLogo;
   awardId: string;
   people: AptoPerson[];
   tools: AptoMockTool[];
@@ -143,6 +156,23 @@ export type AptoProgram = {
   openAccessNote: string;
 };
 
+export type AptoPageSlug =
+  | "/"
+  | "/about"
+  | "/cohort"
+  | "/people"
+  | "/projects"
+  | "/sources"
+  | "/tools";
+
+export type AptoPage = {
+  slug: AptoPageSlug;
+  navLabel: string;
+  eyebrow: string;
+  title: string;
+  introduction: string;
+};
+
 export type AptoSourceKind =
   | "program"
   | "award-search"
@@ -171,6 +201,7 @@ export type AptoContentBuild = {
 type AptoGeneratedContent = {
   _generated: AptoContentBuild;
   program: AptoProgram;
+  pages: AptoPage[];
   boilerplate: string;
   participants: AptoParticipant[];
   projects: AptoProject[];
@@ -185,6 +216,7 @@ const aptoContent = generatedContent as unknown as AptoGeneratedContent;
 
 export const aptoContentBuild = aptoContent._generated;
 export const aptoProgram = aptoContent.program;
+export const aptoPages = aptoContent.pages;
 export const aptoBoilerplate = aptoContent.boilerplate;
 export const aptoParticipants = aptoContent.participants;
 export const aptoProjects = aptoContent.projects;

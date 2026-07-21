@@ -27,6 +27,17 @@
     "kind": "University",
     "location": "Chicago, Illinois",
     "website": "https://www.uchicago.edu/",
+    "logo": {
+      "src": "/apto/partners/uchicago.png",
+      "width": 1920,
+      "height": 669,
+      "surface": "light",
+      "kind": "wordmark",
+      "sourceUrl": "https://creative.uchicago.edu/files/2023/09/University-Logo_1Color_Maroon_RGB.png",
+      "sourceLabel": "University of Chicago official maroon logo",
+      "status": "approval-required/mockup",
+      "approved": false
+    },
     "accent": "#002554"
   },
   "people": [
