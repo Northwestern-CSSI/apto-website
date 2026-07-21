@@ -35,6 +35,11 @@ export type AptoPerson = {
   profileUrl: string | null;
 };
 
+export type AptoProgramPerson = Omit<AptoPerson, "role"> & {
+  role: string;
+  organization: string;
+};
+
 export type AptoFigureKind =
   | "agent-network"
   | "causal-graph"
@@ -147,6 +152,7 @@ export type AptoProgram = {
   cohortDescription: string;
   lastVerified: string;
   stats: AptoProgramStat[];
+  programTeam: AptoProgramPerson[];
   framework: {
     ariaLabel: string;
     outcomesTitle: string;
@@ -305,6 +311,7 @@ export type AptoInterfaceContent = {
     openToolLabel: string;
   };
   people: {
+    programTeamTitle: string;
     projectProfileLabel: string;
     portraitForthcomingLabel: string;
     viewProfileLabel: string;

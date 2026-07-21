@@ -3,7 +3,7 @@
 The three NSF-aligned APTO directions and their matched widget variants use this Markdown as their editable content source. Each content file has two parts:
 
 1. JSON frontmatter between the opening `---` lines for structured fields such as IDs, dates, people, links, and figure settings.
-2. Readable Markdown below the frontmatter. The builder takes program and tool copy from `## Description`, project copy from `## Summary`, and routed-page copy from `## Introduction`; each file’s `#` heading must match its corresponding title field.
+2. Readable Markdown below the frontmatter. The builder takes program and tool copy from `## Description`, project copy from `## Summary`, and routed-page copy from `## Introduction`; program-management records live in `program.md` frontmatter, and each file’s `#` heading must match its corresponding title field.
 
 The content inventory is intentionally fixed at one program, six routed-page files, five project/participant files, and ten concept-tool files. Each participant must join to one NSF award and exactly two tools. Routed pages live in `pages/`; their generated records contain only `slug`, `navLabel`, `metadataTitle`, `eyebrow`, `title`, and normalized `introduction` fields. Shared interface, accessibility, and social-metadata labels live in `interface.md`. Source and provenance records remain part of the generated data for validation, but are not exposed as a public routed page.
 

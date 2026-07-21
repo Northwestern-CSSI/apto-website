@@ -286,6 +286,34 @@ function validatePerson(person, context) {
   }
 }
 
+function validateProgramPerson(person, context) {
+  requireObject(person, context);
+  assertExactKeys(
+    person,
+    ["name", "initials", "role", "organization", "headshotUrl", "headshotAlt", "profileUrl"],
+    context,
+  );
+  requireString(person, "name", context);
+  requireString(person, "initials", context);
+  requireString(person, "role", context);
+  requireString(person, "organization", context);
+  assert(
+    person.headshotUrl === null || typeof person.headshotUrl === "string",
+    `${context}.headshotUrl must be null or a string`,
+  );
+  requireString(person, "headshotAlt", context);
+  assert(
+    person.profileUrl === null || typeof person.profileUrl === "string",
+    `${context}.profileUrl must be null or a string`,
+  );
+  if (person.headshotUrl !== null) {
+    requireHttpsUrl(person.headshotUrl, `${context}.headshotUrl`);
+  }
+  if (person.profileUrl !== null) {
+    requireHttpsUrl(person.profileUrl, `${context}.profileUrl`);
+  }
+}
+
 function validateParticipantLogo(logo, context) {
   requireObject(logo, context);
   assertExactKeys(
@@ -396,6 +424,16 @@ function validateProgram(document) {
     requireString(stat, "detail", statContext);
   });
 
+  const programTeamInput = requireArray(metadata, "programTeam", context);
+  assert(programTeamInput.length > 0, `${context}.programTeam must not be empty`);
+  programTeamInput.forEach((person, index) =>
+    validateProgramPerson(person, `${context}.programTeam[${index}]`),
+  );
+  const programTeam = [...programTeamInput].sort((left, right) =>
+    compareAlphabetically(left.name, right.name),
+  );
+  assertUnique(programTeam.map((person) => person.name), `${context}.programTeam names`);
+
   const framework = requireObject(metadata.framework, `${context}.framework`);
   assertExactKeys(
     framework,
@@ -469,7 +507,7 @@ function validateProgram(document) {
 
   const program = omitFields(metadata, ["kind", "id", "boilerplate", "sources"]);
   return {
-    program: { ...program, description: normalizeProse(description) },
+    program: { ...program, programTeam, description: normalizeProse(description) },
     boilerplate: metadata.boilerplate,
     sources: metadata.sources,
   };
@@ -782,7 +820,7 @@ function validateInterface(document) {
   );
   requireExactStringObject(
     metadata.people,
-    ["projectProfileLabel", "portraitForthcomingLabel", "viewProfileLabel"],
+    ["programTeamTitle", "projectProfileLabel", "portraitForthcomingLabel", "viewProfileLabel"],
     `${context}.people`,
   );
   requireExactStringObject(
@@ -1152,7 +1190,7 @@ async function buildContent() {
     _generated: {
       warning:
         "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 4,
+      schemaVersion: 5,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

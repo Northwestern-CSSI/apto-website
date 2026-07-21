@@ -30,6 +30,7 @@ type AptoProject = (typeof aptoProjects)[number];
 type AptoParticipant = (typeof aptoParticipants)[number];
 type AptoTool = (typeof aptoMockTools)[number];
 type AptoPerson = AptoProject["people"][number];
+type AptoProgramPerson = (typeof aptoProgram.programTeam)[number];
 type NsfDirection = "home" | "ledger" | "network";
 
 const sectionPath: Record<NsfAptoSection, string> = {
@@ -673,6 +674,21 @@ function PersonCard({ person, participant, awardId }: { person: AptoPerson; part
   </article>;
 }
 
+function ProgramPersonCard({ person }: { person: AptoProgramPerson }) {
+  return <article className="nsf-person-card nsf-program-person-card">
+    {person.headshotUrl
+      ? <img src={person.headshotUrl} alt={person.headshotAlt} />
+      : <div className="nsf-headshot-placeholder" aria-hidden="true"><span>{person.initials}</span></div>}
+    <div>
+      <p className="nsf-person-context">{person.organization}</p>
+      <h3>{person.name}</h3>
+      <p>{person.role}</p>
+      <span>{person.headshotUrl ? aptoInterface.people.projectProfileLabel : aptoInterface.people.portraitForthcomingLabel}</span>
+      {person.profileUrl && <ExternalLink href={person.profileUrl}>{aptoInterface.people.viewProfileLabel}</ExternalLink>}
+    </div>
+  </article>;
+}
+
 function PeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
   const copy = copyFor("people");
   const tone = directionFor(id) === "network" ? "dark" : "light";
@@ -685,6 +701,10 @@ function PeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageH
       pageHeading={pageHeading}
     />
     <div className="nsf-people-groups">
+      <section className="nsf-program-team" aria-labelledby={`${id}-program-team-title`}>
+        <header><div className="nsf-people-identity"><h2 id={`${id}-program-team-title`}>{aptoInterface.people.programTeamTitle}</h2></div></header>
+        <div>{aptoProgram.programTeam.map((person) => <ProgramPersonCard key={person.name} person={person} />)}</div>
+      </section>
       {aptoParticipants.map((participant) => <section key={participant.id} aria-labelledby={`${id}-people-${participant.id}`}>
         <header><div className="nsf-people-identity"><ParticipantMark participant={participant} size="compact" tone={tone} /><h2 id={`${id}-people-${participant.id}`}>{participant.displayName}</h2></div><ExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</ExternalLink></header>
         <div>{participant.people.map((person) => <PersonCard key={person.name} person={person} participant={participant} awardId={participant.awardId} />)}</div>

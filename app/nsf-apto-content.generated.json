@@ -1,7 +1,7 @@
 {
   "_generated": {
     "warning": "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-    "schemaVersion": 4,
+    "schemaVersion": 5,
     "generator": "scripts/build-apto-content.mjs",
     "sourceDirectory": "content/apto",
     "generatedFrom": [
@@ -59,6 +59,17 @@
         "value": "12",
         "label": "named investigators",
         "detail": "Named across the five active awards"
+      }
+    ],
+    "programTeam": [
+      {
+        "name": "Rebecca Chmiel",
+        "initials": "RC",
+        "role": "Program Manager",
+        "organization": "U.S. National Science Foundation",
+        "headshotUrl": null,
+        "headshotAlt": "Portrait of Rebecca Chmiel",
+        "profileUrl": null
       }
     ],
     "framework": {
@@ -393,6 +404,7 @@
       "openToolLabel": "Open tool"
     },
     "people": {
+      "programTeamTitle": "Program leadership",
       "projectProfileLabel": "Project profile",
       "portraitForthcomingLabel": "Portrait forthcoming",
       "viewProfileLabel": "View profile"

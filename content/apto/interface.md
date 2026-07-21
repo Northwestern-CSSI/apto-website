@@ -179,6 +179,7 @@
     "openToolLabel": "Open tool"
   },
   "people": {
+    "programTeamTitle": "Program leadership",
     "projectProfileLabel": "Project profile",
     "portraitForthcomingLabel": "Portrait forthcoming",
     "viewProfileLabel": "View profile"

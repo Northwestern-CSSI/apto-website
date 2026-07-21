@@ -607,7 +607,9 @@
 .nsf-people-groups > section > header h2 { color: var(--nsf-dark-blue); font-size: 1.35rem; }
 .nsf-people-groups > section > header a { font-size: .83rem; font-weight: 800; }
 .nsf-people-groups > section > div { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0 26px; }
+.nsf-people-groups > section.nsf-program-team > div { grid-template-columns: minmax(0,560px); }
 .nsf-person-card { min-width: 0; min-height: 145px; padding: 22px 0; display: grid; grid-template-columns: 84px 1fr; gap: 18px; align-items: center; border-bottom: 1px solid #d0dde5; }
+.nsf-person-card > img { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; }
 .nsf-headshot-placeholder { position: relative; width: 80px; height: 80px; display: grid; place-items: center; color: var(--nsf-blue); background: #f6fafc; border: 2px solid var(--nsf-blue); border-radius: 50%; }
 .nsf-headshot-placeholder::after { content: ""; position: absolute; inset: -7px; border: 1px dashed rgba(0,117,141,.45); border-radius: 50%; }
 .nsf-headshot-placeholder span { font-size: 1rem; font-weight: 800; }
@@ -1053,6 +1055,7 @@
   .nsf-people-groups > section > header { align-items: flex-start; flex-direction: column; }
   .nsf-people-groups > section > div { grid-template-columns: 1fr; }
   .nsf-person-card { grid-template-columns: 72px 1fr; }
+  .nsf-person-card > img,
   .nsf-headshot-placeholder { width: 66px; height: 66px; }
   .nsf-participant-entry { grid-template-columns: 1fr; gap: 18px; }
   .nsf-participant-mark.is-feature { width: 132px; height: 72px; }

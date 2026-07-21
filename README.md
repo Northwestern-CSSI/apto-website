@@ -43,8 +43,8 @@ node --test tests/rendered-html.test.mjs
 All editable APTO program, interface, project, participant, people, and tool
 content lives in `content/apto/`:
 
-- `program.md` — program description, outcome framework, statistics, sources,
-  and required NSF acknowledgement
+- `program.md` — program description, program management, outcome framework,
+  statistics, sources, and required NSF acknowledgement
 - `interface.md` — shared navigation, homepage, design-direction, widget,
   accessibility, social-metadata, disclosure, and footer copy, including
   illustrative widget data

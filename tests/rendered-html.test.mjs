@@ -202,6 +202,12 @@ test("server-renders every APTO route in every direction without theme drift", a
         shouldShowWidget,
         `${concept} ${section} widget visibility`,
       );
+      if (section === "people") {
+        for (const person of generated.program.programTeam) {
+          assert.ok(html.includes(person.name), `${concept} people should include ${person.name}`);
+          assert.ok(html.includes(person.role), `${concept} people should include ${person.role}`);
+        }
+      }
     }
   }
 });
@@ -366,7 +372,7 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     "registerTitle", "allOrganizationsLabel", "filterAriaLabel", "showingAllLabel",
     "showingParticipantPrefix", "conceptByLabel", "demoVideoLabel", "toolLinkLabel",
     "watchWithCaptionsLabel", "captionsForthcomingLabel", "linkForthcomingLabel",
-    "openToolLabel", "projectProfileLabel", "portraitForthcomingLabel",
+    "openToolLabel", "programTeamTitle", "projectProfileLabel", "portraitForthcomingLabel",
     "viewProfileLabel", "prominentTitle", "markStatusSuffix", "nsfWebsiteUrl",
     "nsfLogoSrc", "nsfWebsiteAriaLabel", "nsfLogoAlt", "metadataTitle", "ariaLabel",
   ]) {
@@ -808,6 +814,10 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
 
   const programFrontmatter = frontmatterByName.get("program.md");
   assert.deepEqual(content.program.framework, programFrontmatter.framework);
+  assert.deepEqual(
+    content.program.programTeam,
+    [...programFrontmatter.programTeam].sort((left, right) => compareAlphabetically(left.name, right.name)),
+  );
   assert.equal(content.boilerplate, programFrontmatter.boilerplate);
 
   for (const [name, frontmatter] of frontmatterByName) {
@@ -855,7 +865,7 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
       "tools",
     ].sort(),
   );
-  assert.equal(content._generated.schemaVersion, 4);
+  assert.equal(content._generated.schemaVersion, 5);
   assert.equal(content._generated.generatedFrom.length, 23);
   assert.deepEqual(
     content._generated.generatedFrom,
@@ -865,6 +875,11 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     assert.doesNotMatch(filename, /\/\d/, `${filename} must not encode rank`);
   }
   assert.equal(content.participants.length, 5);
+  assert.ok(content.program.programTeam.length > 0);
+  assert.deepEqual(
+    content.program.programTeam.map((person) => person.name),
+    sortedAlphabetically(content.program.programTeam.map((person) => person.name)),
+  );
   assert.equal(content.interface.directions.length, 6);
   assert.equal(content.interface.widget.items.length, 4);
   assert.equal(content.pages.length, 6);
@@ -904,6 +919,9 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     assert.equal(nsfData.includes(project.officialTitle), false);
   }
   for (const person of content.participants.flatMap((participant) => participant.people)) {
+    assert.equal(nsfData.includes(person.name), false);
+  }
+  for (const person of content.program.programTeam) {
     assert.equal(nsfData.includes(person.name), false);
   }
   for (const tool of content.tools) assert.equal(nsfData.includes(tool.name), false);

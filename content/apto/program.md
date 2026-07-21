@@ -31,6 +31,17 @@
       "detail": "Named across the five active awards"
     }
   ],
+  "programTeam": [
+    {
+      "name": "Rebecca Chmiel",
+      "initials": "RC",
+      "role": "Program Manager",
+      "organization": "U.S. National Science Foundation",
+      "headshotUrl": null,
+      "headshotAlt": "Portrait of Rebecca Chmiel",
+      "profileUrl": null
+    }
+  ],
   "framework": {
     "ariaLabel": "APTO research framework",
     "outcomesTitle": "Outcome lenses",
