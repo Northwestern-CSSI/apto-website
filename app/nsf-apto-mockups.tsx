@@ -365,13 +365,13 @@ function projectEffortLabels(project: AptoProject) {
   return project.linesOfEffort.map((effort) => aptoProgram.linesOfEffort.find((line) => line.id === effort)?.title ?? effort);
 }
 
-function ProjectCard({ project }: { project: AptoProject }) {
+function ProjectCard({ project, tone }: { project: AptoProject; tone: "light" | "dark" }) {
   const participant = participantFor(project.participantId);
   return <article className="nsf-project-card" id={`nsf-award-${project.awardId}`}>
     <header className="nsf-project-heading">
       {participant
-        ? <ParticipantMark participant={participant} size="directory" tone="light" />
-        : <span className="nsf-participant-mark is-directory is-fallback tone-light" aria-hidden="true">{participantMonogram(project.organization)}</span>}
+        ? <ParticipantMark participant={participant} size="directory" tone={tone} />
+        : <span className={`nsf-participant-mark is-directory is-fallback tone-${tone}`} aria-hidden="true">{participantMonogram(project.organization)}</span>}
       <div>
         <p className="nsf-project-context">{project.organization} <span aria-hidden="true">·</span> {project.location}</p>
         <h2>{project.officialTitle}</h2>
@@ -429,6 +429,7 @@ function ProjectLedgerRow({ project }: { project: AptoProject }) {
 
 function ProjectsSection({ id, ledger = false, pageHeading = false }: { id: NsfAptoMockupId; ledger?: boolean; pageHeading?: boolean }) {
   const copy = copyFor("projects");
+  const tone = id === "nsfnetwork" ? "dark" : "light";
 
   return <section className={`nsf-projects-section ${ledger ? "is-ledger" : ""}`} id={`${id}-projects`} aria-labelledby={`${id}-projects-title`}>
     <SectionIntro
@@ -441,7 +442,7 @@ function ProjectsSection({ id, ledger = false, pageHeading = false }: { id: NsfA
     <div className={ledger ? "nsf-project-ledger" : "nsf-project-grid"} id={`${id}-project-list`}>
       {aptoProjects.map((project) => ledger
         ? <ProjectLedgerRow key={project.awardId} project={project} />
-        : <ProjectCard key={project.awardId} project={project} />)}
+        : <ProjectCard key={project.awardId} project={project} tone={tone} />)}
     </div>
   </section>;
 }
@@ -518,6 +519,7 @@ function PersonCard({ person, participant, awardId }: { person: AptoPerson; part
 
 function PeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
   const copy = copyFor("people");
+  const tone = id === "nsfnetwork" ? "dark" : "light";
   return <section className="nsf-people-section" id={`${id}-people`} aria-labelledby={`${id}-people-title`}>
     <SectionIntro
       eyebrow={copy.eyebrow}
@@ -528,7 +530,7 @@ function PeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageH
     />
     <div className="nsf-people-groups">
       {aptoParticipants.map((participant) => <section key={participant.id} aria-labelledby={`${id}-people-${participant.id}`}>
-        <header><div className="nsf-people-identity"><ParticipantMark participant={participant} size="compact" tone="light" /><h2 id={`${id}-people-${participant.id}`}>{participant.displayName}</h2></div><ExternalLink href={participant.website}>Organization website</ExternalLink></header>
+        <header><div className="nsf-people-identity"><ParticipantMark participant={participant} size="compact" tone={tone} /><h2 id={`${id}-people-${participant.id}`}>{participant.displayName}</h2></div><ExternalLink href={participant.website}>Organization website</ExternalLink></header>
         <div>{participant.people.map((person) => <PersonCard key={person.name} person={person} participant={participant} awardId={participant.awardId} />)}</div>
       </section>)}
     </div>

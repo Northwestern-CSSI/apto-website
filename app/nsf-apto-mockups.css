@@ -273,7 +273,7 @@
 }
 .nsf-participant-mark.tone-dark {
   --nsf-logo-plate-background: var(--nsf-dark-blue);
-  --nsf-logo-plate-border: #667b98;
+  --nsf-logo-plate-border: #99a7ba;
   --nsf-logo-plate-shadow: 0 1px 0 rgba(255, 255, 255, .08);
 }
 .nsf-participant-mark.is-compact { width: 92px; height: 48px; padding: 7px 9px; }
@@ -297,6 +297,7 @@
 .nsf-participant-mark.is-symbol img { max-width: 52px; max-height: 52px; }
 .nsf-participant-mark.is-compact.is-symbol img { max-width: 34px; max-height: 34px; }
 .nsf-participant-mark.is-fallback { color: var(--nsf-dark-blue); font-size: .8rem; font-weight: 800; }
+.nsf-participant-mark.tone-dark.is-fallback { color: #fff; }
 .nsf-filter { margin-bottom: 13px; display: flex; gap: 22px; overflow-x: auto; padding: 0 4px; border-bottom: 1px solid #9fb4c2; scrollbar-width: thin; }
 .nsf-filter button { min-width: max-content; min-height: 48px; padding: 0 2px; color: var(--nsf-muted); background: transparent; border: 0; border-bottom: 3px solid transparent; border-radius: 0; font-size: .82rem; font-weight: 700; }
 .nsf-filter button[aria-pressed="true"] { color: var(--nsf-dark-blue); background: transparent; border-color: var(--nsf-blue); }
@@ -488,7 +489,19 @@
 .nsf-apto-ledger .nsf-home-pathways strong { font-family: Georgia,"Times New Roman",serif; font-weight: 500; }
 
 /* Organization-first network */
+.nsf-apto-network {
+  --nsf-network-canvas: #031138;
+  --nsf-network-line: #667b98;
+  --nsf-paper: var(--nsf-network-canvas);
+  --nsf-ink: #f8fbfd;
+  --nsf-muted: #c9dce8;
+  --nsf-line: var(--nsf-network-line);
+  color: #fff;
+  background: var(--nsf-network-canvas);
+}
+.nsf-apto-network main { background: var(--nsf-network-canvas); }
 .nsf-apto-network .nsf-program-header { color: #fff; background: rgba(0,37,84,.98); border-color: #52728d; }
+.nsf-apto-network .nsf-program-brand::before { border-color: var(--nsf-light-blue); }
 .nsf-apto-network .nsf-apto-wordmark strong,
 .nsf-apto-network .nsf-apto-wordmark span,
 .nsf-apto-network .nsf-program-header nav a { color: #fff; }
@@ -503,6 +516,47 @@
 .nsf-apto-network .nsf-hero-facts dt { color: var(--nsf-light-blue); }
 .nsf-apto-network .nsf-hero-facts dd { color: #d3e4ee; }
 .nsf-apto-network .nsf-hero-actions > a:not(.nsf-primary-action) { color: #fff; }
+.nsf-apto-network .nsf-program-overview,
+.nsf-apto-network .nsf-projects-section,
+.nsf-apto-network .nsf-people-section { color: #fff; background: var(--nsf-network-canvas); }
+.nsf-apto-network .nsf-section-intro h1,
+.nsf-apto-network .nsf-section-intro h2 { color: #fff; }
+.nsf-apto-network .nsf-section-intro > p { color: var(--nsf-light-blue); }
+.nsf-apto-network .nsf-section-intro > span { color: #d8e7f0; }
+.nsf-apto-network .nsf-overview-framework {
+  background: linear-gradient(135deg,var(--nsf-dark-blue),#241840);
+  border: 1px solid var(--nsf-network-line);
+}
+.nsf-apto-network .nsf-project-grid,
+.nsf-apto-network .nsf-project-card,
+.nsf-apto-network .nsf-project-people,
+.nsf-apto-network .nsf-award-funding { border-color: var(--nsf-network-line); }
+.nsf-apto-network .nsf-project-card:hover,
+.nsf-apto-network .nsf-project-card:focus-within { background: rgba(78,195,224,.08); }
+.nsf-apto-network .nsf-project-people li > span { border: 1px solid #99a7ba; }
+.nsf-apto-network .nsf-project-context { color: var(--nsf-light-blue); }
+.nsf-apto-network .nsf-project-card h2,
+.nsf-apto-network .nsf-project-people strong,
+.nsf-apto-network .nsf-award-funding dd,
+.nsf-apto-network .nsf-tag-group > span { color: #fff; }
+.nsf-apto-network .nsf-project-record,
+.nsf-apto-network .nsf-project-people small { color: #b8e7f2; }
+.nsf-apto-network .nsf-project-summary { color: #dce8ef; }
+.nsf-apto-network .nsf-award-funding dt { color: #b8e7f2; }
+.nsf-apto-network .nsf-project-body > footer a { color: var(--nsf-light-blue); }
+.nsf-apto-network .nsf-data-caveat { padding-left: 15px; color: #f6f0dc; background: transparent; border-left: 2px solid var(--nsf-gold); border-radius: 0; }
+.nsf-apto-network .nsf-people-groups > section > header,
+.nsf-apto-network .nsf-person-card { border-color: var(--nsf-network-line); }
+.nsf-apto-network .nsf-people-groups > section > header h2,
+.nsf-apto-network .nsf-person-card h3 { color: #fff; }
+.nsf-apto-network .nsf-people-groups > section > header a,
+.nsf-apto-network .nsf-person-card a,
+.nsf-apto-network .nsf-person-context { color: var(--nsf-light-blue); }
+.nsf-apto-network .nsf-headshot-placeholder { color: #fff; background: var(--nsf-dark-blue); border-color: var(--nsf-light-blue); }
+.nsf-apto-network .nsf-headshot-placeholder::after { border-color: rgba(78,195,224,.6); }
+.nsf-apto-network .nsf-person-card h3 + p { color: #d8e7f0; }
+.nsf-apto-network .nsf-person-card div > span { color: #b8d4e4; }
+.nsf-apto-network .nsf-logo-disclosure { color: #c9dce8; }
 .nsf-apto-network .nsf-participants-section.is-prominent { color: #fff; background: linear-gradient(145deg,var(--nsf-purple),var(--nsf-dark-blue)); border: 0; }
 .nsf-apto-network .nsf-participants-section.is-prominent .nsf-section-intro h1,
 .nsf-apto-network .nsf-participants-section.is-prominent .nsf-section-intro h2,

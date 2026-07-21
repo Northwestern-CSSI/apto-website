@@ -481,6 +481,27 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfSource, /tone=\{direction === "network" \? "dark" : "light"\}/);
   assert.match(nsfSource, /size="compact" tone="dark"/);
   assert.match(nsfSource, /tone=\{prominent \? "dark" : "light"\}/);
+  assert.equal(
+    (nsfSource.match(/const tone = id === "nsfnetwork" \? "dark" : "light";/g) ?? []).length,
+    2,
+  );
+  assert.match(nsfSource, /<ProjectCard key=\{project\.awardId\} project=\{project\} tone=\{tone\} \/>/);
+  assert.match(nsfSource, /size="compact" tone=\{tone\}/);
+
+  const networkThemeRule = cssRuleBody(nsfStyles, ".nsf-apto-network");
+  assert.match(networkThemeRule, /--nsf-network-canvas:\s*#031138/);
+  assert.match(networkThemeRule, /--nsf-network-line:\s*#667b98/);
+  assert.match(networkThemeRule, /--nsf-paper:\s*var\(--nsf-network-canvas\)/);
+  assert.match(networkThemeRule, /background:\s*var\(--nsf-network-canvas\)/);
+  for (const selector of [
+    ".nsf-apto-network .nsf-program-overview",
+    ".nsf-apto-network .nsf-projects-section",
+    ".nsf-apto-network .nsf-people-section",
+  ]) {
+    assert.match(nsfStyles, new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(nsfStyles, /\.nsf-apto-network \.nsf-overview-framework[\s\S]*#241840/);
+  assert.match(nsfStyles, /\.nsf-participant-mark\.tone-dark\.is-fallback\s*\{\s*color:\s*#fff/);
 
   const headerStart = nsfSource.indexOf("function NsfProgramHeader");
   const heroStart = nsfSource.indexOf("function CompactProgramHero");
