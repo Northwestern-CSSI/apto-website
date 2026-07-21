@@ -1836,23 +1836,66 @@
 .nsf-cohort-group,
 .nsf-apto-network .nsf-program-leadership,
 .nsf-apto-network .nsf-cohort-group {
-  padding: 30px 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(230px,.42fr) minmax(0,1.58fr);
+  align-items: start;
+  gap: clamp(32px,5vw,76px);
   background: transparent;
   border: 0;
-  border-top: 1px solid var(--nsf-line);
   border-radius: 0;
   box-shadow: none;
 }
+.nsf-program-leadership { margin: 0 0 clamp(42px,5vw,60px); }
+.nsf-cohort-directory { display: grid; gap: clamp(40px,5vw,58px); }
 .nsf-cohort-people .nsf-cohort-group + .nsf-cohort-group { margin-top: 0; }
-.nsf-cohort-team { gap: 0 26px; }
-.nsf-cohort-team .nsf-person-card,
-.nsf-apto-network .nsf-cohort-team .nsf-person-card {
-  padding: 18px 0;
+.nsf-program-leadership > header,
+.nsf-cohort-group-header { margin: 0; align-self: start; }
+.nsf-program-leadership > header { padding-top: 4px; display: block; }
+.nsf-program-leadership > div { max-width: none; }
+.nsf-cohort-group-header {
+  display: grid;
+  grid-template-columns: 104px minmax(0,1fr);
+  align-items: center;
+  justify-content: start;
+  gap: 14px;
+}
+.nsf-cohort-group-header .nsf-participant-mark.is-feature {
+  width: 104px;
+  height: 60px;
+  padding: 0;
+  overflow: visible;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--nsf-line);
   border-radius: 0;
+  box-shadow: none;
 }
+.nsf-cohort-group-header > a { width: max-content; margin-top: 3px; grid-column: 2; }
+.nsf-cohort-team,
+.nsf-program-leadership > div {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 28px 32px;
+}
+.nsf-cohort-team .nsf-person-card,
+.nsf-program-leadership .nsf-person-card,
+.nsf-apto-network .nsf-cohort-team .nsf-person-card,
+.nsf-apto-network .nsf-program-leadership .nsf-person-card {
+  min-height: 0;
+  padding: 0;
+  grid-template-columns: 64px minmax(0,1fr);
+  gap: 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.nsf-cohort-team .nsf-person-card > img,
+.nsf-cohort-team .nsf-headshot-placeholder,
+.nsf-program-leadership .nsf-person-card > img,
+.nsf-program-leadership .nsf-headshot-placeholder { width: 60px; height: 60px; }
+.nsf-cohort-team .nsf-person-card h3,
+.nsf-program-leadership .nsf-person-card h3 { margin-top: 0; }
 
 .nsf-filter-groups {
   gap: 0 32px;
@@ -2239,6 +2282,31 @@
   .nsf-filter-status { grid-column: 1 / -1; min-height: 0; justify-content: flex-start; }
 }
 
+@media (max-width: 1100px) {
+  .nsf-program-leadership,
+  .nsf-cohort-group,
+  .nsf-apto-network .nsf-program-leadership,
+  .nsf-apto-network .nsf-cohort-group {
+    grid-template-columns: minmax(200px,.42fr) minmax(0,1.58fr);
+    gap: 36px;
+  }
+  .nsf-cohort-team,
+  .nsf-program-leadership > div { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width: 760px) {
+  .nsf-program-leadership,
+  .nsf-cohort-group,
+  .nsf-apto-network .nsf-program-leadership,
+  .nsf-apto-network .nsf-cohort-group {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .nsf-program-leadership { margin-bottom: 44px; }
+  .nsf-cohort-directory { gap: 42px; }
+  .nsf-cohort-group-header { max-width: 520px; }
+}
+
 @media (max-width: 640px) {
   .nsf-hero-partners ul { grid-template-columns: 1fr; gap: 14px; }
   .nsf-hero-partners li:last-child { grid-column: auto; max-width: none; }
@@ -2253,6 +2321,8 @@
   .nsf-tool-copy { grid-row: 2; }
   .nsf-tool-figure > img { max-height: 220px; }
   .nsf-program-header nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nsf-cohort-team,
+  .nsf-program-leadership > div { grid-template-columns: 1fr; gap: 24px; }
 }
 
 @media (forced-colors: active) {

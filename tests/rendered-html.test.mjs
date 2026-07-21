@@ -359,6 +359,7 @@ test("combines program leadership, organizations, and project teams on the cohor
     assert.equal(countMatches(html, /<h1\b/g), 1);
     assert.ok(text.includes("Rebecca Chmiel"));
     assert.match(html, /class="nsf-program-leadership"/);
+    assert.match(html, /class="nsf-cohort-directory"/);
 
     for (const person of content.program.programTeam) {
       assert.ok(text.includes(person.name));

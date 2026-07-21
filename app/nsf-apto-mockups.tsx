@@ -518,7 +518,7 @@ function CohortPeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId;
       <header><p>{aptoInterface.people.programTeamEyebrow}</p><h2 id={`${id}-program-leadership-title`}>{aptoInterface.people.programTeamTitle}</h2></header>
       <div>{aptoProgram.programTeam.map((person) => <PersonCard key={person.name} person={person} />)}</div>
     </section>
-    <div>
+    <div className="nsf-cohort-directory">
       {aptoParticipants.map((participant) => {
         const project = projectForParticipant(participant.id);
         return <section className="nsf-cohort-group" id={`participant-${participant.id}`} key={participant.id} aria-labelledby={`${id}-cohort-${participant.id}`}>
