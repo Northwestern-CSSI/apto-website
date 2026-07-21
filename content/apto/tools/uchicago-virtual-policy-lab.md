@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "uchicago-virtual-policy-lab",
   "participantId": "uchicago",
-  "awardId": "2404109",
   "name": "Virtual Policy Laboratory",
+  "categories": ["Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
-    "label": "Policy experiment mockup",
-    "alt": "Placeholder plot comparing baseline and policy-scenario technology trajectories"
+    "label": "Policy experiment comparison",
+    "alt": "Chart comparing baseline and alternative policy scenarios for technology outcomes over time"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept environment for testing simulated changes in funding, competition, and immigration against technology-performance scenarios.
+Run simulated policy experiments against a model of the global science and technology system. Comparable trajectories show how changes in funding, competition, collaboration, or immigration may influence later outcomes.
 
-## Prototype note
+## Use case
 
-This is an interface concept for the University of Chicago, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the laboratory to compare policy scenarios, examine possible mechanisms, and identify assumptions or evidence that deserve closer analysis before drawing conclusions.

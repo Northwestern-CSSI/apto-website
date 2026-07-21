@@ -7,39 +7,28 @@
   "acronym": "APTO",
   "title": "Evidence for better technology decisions",
   "shortSummary": "APTO supports a cohort of projects building data, tools, and generalizable models to understand how science and technology investments contribute to national outcomes.",
-  "cohortDescription": "This mockup includes the five active records under NSF Program Element Code 267Y00 whose official award titles begin with “APTO.”",
+  "cohortDescription": "Five participating organizations bring complementary approaches to measuring, modeling, and anticipating technology outcomes.",
   "lastVerified": "2026-07-20",
   "stats": [
     {
-      "value": "5",
+      "metric": "projects",
       "label": "research projects",
       "detail": "Active APTO awards across the cohort"
     },
     {
-      "value": "2",
-      "label": "research tracks",
-      "detail": "Outcome models; data sets and tools"
+      "metric": "participants",
+      "label": "participating organizations",
+      "detail": "Universities and companies working across the program"
     },
     {
-      "value": "3",
-      "label": "outcome lenses",
-      "detail": "Capability, production, and use"
+      "metric": "tools",
+      "label": "research tools",
+      "detail": "Exploration, modeling, and evidence interfaces"
     },
     {
-      "value": "12",
+      "metric": "investigators",
       "label": "named investigators",
-      "detail": "Named across the five active awards"
-    }
-  ],
-  "programTeam": [
-    {
-      "name": "Rebecca Chmiel",
-      "initials": "RC",
-      "role": "Program Manager",
-      "organization": "U.S. National Science Foundation",
-      "headshotUrl": null,
-      "headshotAlt": "Portrait of Rebecca Chmiel",
-      "profileUrl": null
+      "detail": "Principal and co-principal investigators across the cohort"
     }
   ],
   "framework": {
@@ -75,54 +64,27 @@
       "description": "Generalizable, empirically grounded models for assessing and predicting technology capability, production, and use across past and possible future states."
     }
   ],
-  "technologyAreas": [
-    "Artificial intelligence, machine learning, autonomy, and related advances",
-    "High-performance computing, semiconductors, and advanced computer hardware and software",
-    "Quantum information science and technology",
-    "Robotics, automation, and advanced manufacturing",
-    "Natural and anthropogenic disaster prevention or mitigation",
-    "Advanced communications, networking, sensing, and immersive technologies",
-    "Biotechnology, medical technology, genomics, and synthetic biology",
-    "Data storage and management, distributed ledgers, and cybersecurity",
-    "Advanced energy and industrial-efficiency technologies",
-    "Advanced materials science, including manufacturing-related advances"
-  ],
-  "openAccessNote": "The solicitation calls for models, data sets, and tools to be openly accessible to the broadest possible range of users whenever possible, while recognizing that some projects may rely on proprietary data or tools that cannot be shared.",
   "boilerplate": "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
   "sources": [
     {
       "id": "nsf-apto-solicitation",
       "label": "NSF 23-600: Assessing and Predicting Technology Outcomes",
       "url": "https://www.nsf.gov/funding/opportunities/apto-assessing-predicting-technology-outcomes/506195/nsf23-600/solicitation",
-      "detail": "Official program purpose, lines of effort, outcome dimensions, technology areas, and access expectations.",
+      "detail": "Official program purpose, lines of effort, and outcome dimensions.",
       "kind": "program"
     },
     {
       "id": "nsf-apto-award-search",
       "label": "NSF Award Search · Program Element Code 267Y00",
       "url": "https://www.nsf.gov/awardsearch/search-results/?ProgEleCode=267Y00&BooleanElement=Any&BooleanRef=Any&ActiveAwards=true#results",
-      "detail": "Official active-award search; this mockup includes only records whose titles begin with APTO.",
+      "detail": "Official active-award search used to identify APTO-titled projects.",
       "kind": "award-search"
-    },
-    {
-      "id": "nsf-awards-api",
-      "label": "NSF Awards API · Program Element Code 267Y00",
-      "url": "https://api.nsf.gov/services/v1/awards.json?ProgEleCode=267Y00",
-      "detail": "Machine-readable source for official titles, investigators, dates, locations, award amounts, and abstracts; data snapshot verified July 20, 2026.",
-      "kind": "awards-api"
-    },
-    {
-      "id": "nsf-brand-policy",
-      "label": "NSF Brand Standards and Usage",
-      "url": "https://www.nsf.gov/policies/brand",
-      "detail": "Official NSF identity, logo-use, acknowledgment, and attribution policy.",
-      "kind": "brand"
     },
     {
       "id": "nsf-brand-manual",
       "label": "NSF Brand Standards Manual",
       "url": "https://nsf.widen.net/s/xzrd9bgklh",
-      "detail": "Official March 2025 manual covering the NSF logo, colors, typography, partnerships, award-recipient sites, and accessibility considerations.",
+      "detail": "Official identity, color, typography, partnership, acknowledgment, and accessibility guidance.",
       "kind": "brand"
     }
   ]
@@ -134,13 +96,3 @@
 ## Description
 
 Through the NSF Directorate for Technology, Innovation and Partnerships, APTO advances the assessment of how investments in science and technology research and development lead to changes in technology capability, production, and use. Projects study past and possible future states, create models that can extend across technology areas, and develop evidence intended to improve R&D investment decisions and strengthen long-term U.S. competitiveness.
-
-## Editorial note
-
-The five project records are filtered from active NSF awards under Program Element Code 267Y00. The ten tool records are clearly labeled interface concepts and are not claims of released tools.
-
-## Primary sources
-
-- [NSF 23-600: Assessing and Predicting Technology Outcomes](https://www.nsf.gov/funding/opportunities/apto-assessing-predicting-technology-outcomes/506195/nsf23-600/solicitation)
-- [NSF Award Search for Program Element Code 267Y00](https://www.nsf.gov/awardsearch/search-results/?ProgEleCode=267Y00&BooleanElement=Any&BooleanRef=Any&ActiveAwards=true#results)
-- [NSF Brand Standards and Usage](https://www.nsf.gov/policies/brand)

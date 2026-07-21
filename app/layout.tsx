@@ -34,9 +34,13 @@ export async function generateMetadata(): Promise<Metadata> {
     requestHeaders.get("x-forwarded-proto") ??
     (host.includes("localhost") ? "http" : "https");
   const baseUrl = new URL(`${protocol}://${host}`);
-  const { siteTitle: title, siteDescription: description, socialImageAlt } =
-    aptoInterface.study;
-  const socialImage = new URL("/og.png", baseUrl).toString();
+  const {
+    siteTitle: title,
+    siteDescription: description,
+    socialImageSrc,
+    socialImageAlt,
+  } = aptoInterface.study;
+  const socialImage = new URL(socialImageSrc, baseUrl).toString();
 
   return {
     metadataBase: baseUrl,

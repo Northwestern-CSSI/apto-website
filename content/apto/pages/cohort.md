@@ -2,15 +2,15 @@
 {
   "kind": "page",
   "slug": "/cohort",
-  "navLabel": "Cohort",
-  "metadataTitle": "Participating organizations",
-  "eyebrow": "Participating organizations",
-  "title": "Complementary perspectives on technology outcomes"
+  "navLabel": "Cohort & People",
+  "metadataTitle": "Cohort and people",
+  "eyebrow": "Organizations and people",
+  "title": "The teams behind APTO"
 }
 ---
 
-# Complementary perspectives on technology outcomes
+# The teams behind APTO
 
 ## Introduction
 
-The APTO cohort brings together universities and companies working across economic modeling, knowledge graphs, science and technology observatories, problem-focused analysis, and research-to-market translation. Participant and project records are presented alphabetically so the directory communicates collaboration without implying rank or preference.
+Meet the APTO program manager and the investigators leading each participating organization’s research. The cohort brings together universities and companies working across economic modeling, knowledge graphs, science and technology observatories, problem-focused analysis, and research-to-market translation. Organizations and people are presented alphabetically without implying rank or preference.

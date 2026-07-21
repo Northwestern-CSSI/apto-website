@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "uchicago-global-observatory",
   "participantId": "uchicago",
-  "awardId": "2404109",
   "name": "Global S&T Observatory",
+  "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "global-map",
-    "label": "Global observatory mockup",
-    "alt": "Placeholder world map linking research and technology signals among regions"
+    "label": "Global science and technology observatory",
+    "alt": "World map connecting research, patent, product, funding, workforce, and market signals among regions"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept map for exploring how research, patents, products, funding, workforce, and markets connect across the global technology system.
+Explore how research, patents, products, funding, workforce, and markets connect across the global science and technology system. The observatory combines geographic, organizational, and temporal views of activity.
 
-## Prototype note
+## Use case
 
-This is an interface concept for the University of Chicago, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the observatory to compare regions, trace the movement of ideas and talent, and examine how scientific activity relates to later technology outcomes.

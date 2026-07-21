@@ -28,9 +28,14 @@ function conceptFromSearchParams(
 ): NsfAptoMockupId {
   const concept = firstValue(searchParams.concept);
 
-  return concept && aptoConceptIds.has(concept as NsfAptoMockupId)
-    ? (concept as NsfAptoMockupId)
-    : "nsfhome";
+  if (!concept || !aptoConceptIds.has(concept as NsfAptoMockupId)) {
+    return "nsfhome";
+  }
+
+  // Preserve every published study URL while folding the former first and
+  // second options into the curved light design. The network option remains
+  // the coordinated dark theme.
+  return concept.startsWith("nsfnetwork") ? "nsfnetwork" : "nsfhome";
 }
 
 export async function AptoRoutePage({

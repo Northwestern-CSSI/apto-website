@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "insilicom-causal-knowledge-graph",
   "participantId": "insilicom",
-  "awardId": "2403911",
   "name": "Causal Technology Knowledge Graph",
+  "categories": ["Capability", "Production"],
   "figure": {
     "kind": "causal-graph",
-    "label": "Causal knowledge-graph mockup",
-    "alt": "Placeholder directed graph connecting technologies, problems, evidence, and organizations"
+    "label": "Causal technology graph",
+    "alt": "Directed graph connecting technologies, problems, evidence, methods, and organizations"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept explorer for navigating technologies, features, problems, methods, datasets, organizations, and their directed relationships.
+Explore directed relationships among technologies, features, problems, methods, datasets, and organizations. Each connection retains its supporting source so users can move from a broad systems view to the underlying evidence.
 
-## Prototype note
+## Use case
 
-This is an interface concept for Insilicom, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the graph to trace possible drivers of an outcome, compare competing causal pathways, or assemble a focused evidence set for a technology assessment.

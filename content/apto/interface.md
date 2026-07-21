@@ -2,32 +2,28 @@
 {
   "kind": "interface",
   "directions": [
-    { "id": "nsfhome", "label": "Program home", "note": "Light core" },
-    { "id": "nsfhomewidgets", "label": "Program + widget", "note": "Light tools" },
-    { "id": "nsfledger", "label": "Evidence ledger", "note": "Editorial core" },
-    { "id": "nsfledgerwidgets", "label": "Ledger + widget", "note": "Editorial tools" },
-    { "id": "nsfnetwork", "label": "Cohort network", "note": "Dark core" },
-    { "id": "nsfnetworkwidgets", "label": "Network + widget", "note": "Dark tools" }
+    { "id": "nsfhome", "label": "Light", "note": "Curved NSF light theme" },
+    { "id": "nsfnetwork", "label": "Dark", "note": "Deep navy NSF theme" }
   ],
   "study": {
-    "siteTitle": "APTO Website Direction Study",
-    "siteDescription": "Fifty-six modern website directions for the Assessing and Predicting Technology Outcomes program.",
-    "socialImageAlt": "APTO — See where technology is going.",
-    "galleryLabel": "Design gallery",
-    "barLabel": "APTO design directions",
-    "themeChooserLabel": "Choose a visual direction",
-    "formatChooserLabel": "Choose a homepage format",
+    "siteTitle": "APTO",
+    "siteDescription": "Research, people, projects, and tools from the Assessing and Predicting Technology Outcomes program.",
+    "socialImageSrc": "/apto/og-apto.png",
+    "socialImageAlt": "APTO — evidence for better technology decisions.",
+    "galleryLabel": "APTO home",
+    "barLabel": "APTO",
+    "themeChooserLabel": "Choose color theme",
+    "formatChooserLabel": "Choose homepage format",
     "formatLabel": "Homepage",
     "standardLabel": "Standard",
-    "widgetLabel": "Widget",
-    "selectedFormatLabel": "selected format"
+    "widgetLabel": "Tool widget",
+    "selectedFormatLabel": "selected"
   },
   "primaryNavigation": [
     { "label": "Program", "section": "about" },
     { "label": "Projects", "section": "projects" },
     { "label": "Tools", "section": "tools" },
-    { "label": "People", "section": "people" },
-    { "label": "Cohort", "section": "cohort" }
+    { "label": "Cohort & People", "section": "cohort" }
   ],
   "home": {
     "primaryActionLabel": "Explore the projects",
@@ -35,38 +31,37 @@
     "outcomeVisualNote": "Connecting evidence about what technologies can do, how they are produced, and how they are used.",
     "cohortEyebrow": "Participating organizations",
     "cohortTitle": "Five teams working toward a shared evidence base",
-    "cohortLinkLabel": "Meet the full cohort",
-    "logoDisclosure": "Participant marks are shown for identification; final artwork and use remain subject to confirmation.",
+    "cohortLinkLabel": "Meet the cohort and people",
+    "logoDisclosure": "Organization marks identify participating institutions and companies.",
     "networkCoreLabel": "shared evidence",
-    "networkVisualAlt": "Abstract illustration of research organizations connected through a shared evidence network",
+    "networkVisualAlt": "Research organizations connected through a shared evidence network",
     "networkVisualCaption": "Independent research teams connected by a shared question about technology outcomes.",
-    "ledgerVisualEyebrow": "APTO evidence folio",
-    "ledgerVisualTitle": "Three lenses on technology outcomes",
+    "ledgerVisualEyebrow": "APTO research portfolio",
+    "ledgerVisualTitle": "Evidence for better technology decisions",
     "pathways": [
       { "section": "about", "title": "Program", "description": "The shared outcome framework, research scope, and program approach." },
-      { "section": "cohort", "title": "Cohort", "description": "Participating organizations, legal awardees, projects, and official links." },
-      { "section": "people", "title": "People", "description": "Principal investigators and co-principal investigators across the program." },
+      { "section": "cohort", "title": "Cohort & People", "description": "Participating organizations, program leadership, and the investigators leading each project." },
       { "section": "projects", "title": "Projects", "description": "The active APTO awards and the questions each team is pursuing." },
-      { "section": "tools", "title": "Tools", "description": "Illustrative interfaces for future datasets, models, and exploration tools." }
+      { "section": "tools", "title": "Tools", "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research." }
     ]
   },
   "widget": {
-    "eyebrow": "Illustrative APTO tools",
-    "title": "Explore an evidence tool",
-    "allToolsLabel": "Browse tools",
-    "disclaimer": "Illustrative interface · demo values are not APTO findings.",
+    "eyebrow": "APTO tools",
+    "title": "Explore technology evidence",
+    "allToolsLabel": "Browse all tools",
+    "disclaimer": "Demonstration values illustrate how each exploration view can work.",
     "exploreLabel": "Browse all tools",
-    "previewAriaLabel": "Interactive APTO tool widget preview",
+    "previewAriaLabel": "Interactive APTO tool preview",
     "chooserAriaLabel": "Choose a tool preview",
-    "momentumScaleLabel": "Illustrative momentum index · 0–100",
-    "momentumListAriaLabel": "Illustrative emerging technology momentum index, from zero to one hundred, listed alphabetically",
-    "mapCaptionPrefix": "Illustrative map of science showing connected",
+    "momentumScaleLabel": "Momentum index · 0–100",
+    "momentumListAriaLabel": "Emerging technology momentum index, from zero to one hundred, listed alphabetically",
+    "mapCaptionPrefix": "Map of science showing connected",
     "mapCaptionSuffix": "research clusters",
-    "compositeAriaPrefix": "Illustrative composite translation index of",
+    "compositeAriaPrefix": "Composite translation index of",
     "compositeAriaJoiner": "out of",
-    "demoIndexLabel": "Demo index",
-    "trajectoryScaleLabel": "Illustrative trend shapes · not forecasts",
-    "trajectoryAriaSuffix": "illustrative rising technology trajectory",
+    "demoIndexLabel": "Exploration index",
+    "trajectoryScaleLabel": "Comparative trend shapes",
+    "trajectoryAriaSuffix": "rising technology trajectory",
     "items": [
       {
         "id": "emerging",
@@ -74,7 +69,7 @@
         "tabLabel": "Emerging",
         "kicker": "Emerging areas",
         "title": "Signals across candidate frontiers",
-        "summary": "Compare illustrative momentum signals across several technology areas.",
+        "summary": "Compare momentum signals across several technology areas.",
         "preview": {
           "kind": "signals",
           "rows": [
@@ -105,7 +100,7 @@
         "tabLabel": "Patent",
         "kicker": "Patent & licensing",
         "title": "Translation signals in one view",
-        "summary": "Preview possible patentability and licensability indicators without making a legal determination.",
+        "summary": "Review patentability and licensability indicators without making a legal determination.",
         "preview": {
           "kind": "translation",
           "composite": 72,
@@ -140,10 +135,7 @@
   },
   "common": {
     "organizationWebsiteLabel": "Organization website",
-    "officialAwardRecordLabel": "Official award record",
-    "nsfAwardRecordLabel": "NSF award record",
-    "awardApiRecordLabel": "Award API record",
-    "participantWebsiteLabel": "Participant website"
+    "participantWebsiteLabel": "Visit organization website"
   },
   "accessibility": {
     "skipLinkLabel": "Skip to main content",
@@ -151,47 +143,61 @@
     "footerNavigationLabel": "Footer navigation",
     "homePathwaysLabel": "Explore APTO",
     "projectInvestigatorsLabel": "Project investigators",
-    "outcomeTypesLabel": "Outcome types",
-    "linesOfEffortLabel": "Lines of effort"
+    "projectMapLabel": "Map of participating organizations",
+    "toolFiltersLabel": "Filter tools"
   },
   "projects": {
-    "ledgerTitle": "The project evidence ledger",
+    "ledgerTitle": "APTO projects",
     "awardLabel": "NSF award",
-    "personAwardLabel": "Award",
-    "legalAwardeeLabel": "Legal awardee",
-    "agreementLabel": "Agreement",
-    "obligatedAmountLabel": "Current obligated amount",
-    "estimatedTotalLabel": "NSF estimated total",
-    "dataAsOfLabel": "NSF data as of"
+    "awardedPrefix": "Awarded in",
+    "dateStatusSeparator": "–",
+    "expandLabel": "View project details",
+    "collapseLabel": "Hide project details",
+    "map": {
+      "eyebrow": "Project locations",
+      "title": "Where the cohort works",
+      "description": "APTO teams span universities and companies across the United States.",
+      "caption": "Select a location to move to that organization’s project.",
+      "imageUrl": "/apto/us-map.svg",
+      "imageAlt": "",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blank_US_Map_%28states_only%29.svg",
+      "sourceLabel": "CC0 map base from Wikimedia Commons"
+    }
   },
   "tools": {
-    "registerTitle": "A proposed tool register",
+    "registerTitle": "Explore APTO tools",
     "allOrganizationsLabel": "All organizations",
-    "filterAriaLabel": "Filter tool concepts by participant",
-    "showingAllLabel": "Showing all concept tools · alphabetical by name",
-    "showingParticipantPrefix": "Showing concept tools for",
-    "conceptByLabel": "A concept by",
-    "demoVideoLabel": "Demo video",
-    "toolLinkLabel": "Tool link",
-    "watchWithCaptionsLabel": "Watch with captions",
-    "captionsForthcomingLabel": "Forthcoming — captions and transcript planned",
-    "linkForthcomingLabel": "Forthcoming",
-    "openToolLabel": "Open tool"
+    "allCategoriesLabel": "All outcome areas",
+    "organizationFilterLabel": "Institution",
+    "organizationFilterAriaLabel": "Filter tools by institution",
+    "categoryFilterLabel": "Outcome area",
+    "categoryFilterAriaLabel": "Filter tools by outcome area",
+    "showingPrefix": "Showing",
+    "toolSingular": "tool",
+    "toolPlural": "tools",
+    "useCaseLabel": "Useful for",
+    "categoriesLabel": "Outcome areas",
+    "emptyTitle": "No matching tools",
+    "emptyDescription": "Try another institution or outcome area.",
+    "watchDemoLabel": "Watch demonstration",
+    "openToolLabel": "Open tool",
+    "statusLabel": "Status"
   },
   "people": {
+    "programTeamEyebrow": "Program team",
     "programTeamTitle": "Program leadership",
     "projectProfileLabel": "Project profile",
     "portraitForthcomingLabel": "Portrait forthcoming",
     "viewProfileLabel": "View profile"
   },
   "cohort": {
-    "prominentTitle": "The organizations behind the APTO cohort",
-    "markStatusSuffix": "mark — mockup use pending participant approval"
+    "prominentTitle": "The organizations and people behind APTO",
+    "markStatusSuffix": "organization mark",
+    "peopleTitle": "Project team",
+    "projectLabel": "Research project"
   },
   "disclosures": {
-    "cohort": "Marks shown here come from participant websites or official university brand resources. Their use is provisional and requires participant confirmation before a production launch.",
-    "toolsLabel": "Mock content",
-    "toolsNote": "Nothing in this section should be interpreted as a released tool, validated model, or APTO finding."
+    "cohort": "Organization marks are shown for identification and remain subject to each organization’s brand guidance."
   },
   "footer": {
     "supportTitle": "Supported by the U.S. National Science Foundation",
@@ -212,4 +218,4 @@
 
 ## Editorial guidance
 
-This file contains editable navigation, homepage, widget-preview, disclosure, and footer language shared by the six NSF-aligned website directions. Widget values are illustrative interface data and are not APTO findings.
+This file contains the editable labels, navigation, tool-widget copy, project-map configuration, accessibility text, and footer language shared by the light and dark APTO themes.

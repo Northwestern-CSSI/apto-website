@@ -1,0 +1,29 @@
+---
+{
+  "kind": "participant",
+  "id": "aperture",
+  "displayName": "Aperture",
+  "organizationType": "Company",
+  "location": "Rocky River, Ohio",
+  "website": "https://www.aperture.ai/",
+  "logo": {
+    "src": "/apto/partners/aperture.svg",
+    "width": 200,
+    "height": 200,
+    "surface": "dark",
+    "kind": "symbol",
+    "sourceUrl": "https://www.aperture.ai/assets/brand/favicon.svg",
+    "sourceLabel": "Aperture official website mark",
+    "status": "approval-required",
+    "approved": false
+  },
+  "accent": "#D3B34E",
+  "mapPosition": { "x": 69, "y": 36 }
+}
+---
+
+# Aperture
+
+## Description
+
+Aperture develops intelligence tools that connect technical problems with relevant technologies, evidence, and organizations. Its APTO work focuses on recognizing promising opportunities and leverage points across complex research and innovation landscapes.

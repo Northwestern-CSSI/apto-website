@@ -1,5 +1,5 @@
-import MockupStudio from "./mockups";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <MockupStudio />;
+  redirect("/apto");
 }

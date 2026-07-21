@@ -1,13 +1,11 @@
 import generatedContent from "./nsf-apto-content.generated.json";
 
-export type AptoParticipantId =
-  | "northwestern"
-  | "uchicago"
-  | "macrocosm"
-  | "insilicom"
-  | "aperture";
-
+// IDs are intentionally open strings: adding a Markdown record must not
+// require a TypeScript edit.
+export type AptoParticipantId = string;
 export type AptoParticipantKind = "University" | "Company";
+export type AptoOutcome = "Capability" | "Production" | "Use";
+export type AptoLineOfEffortId = "models" | "data-tools";
 
 export type AptoParticipantLogo = {
   src: string;
@@ -22,22 +20,25 @@ export type AptoParticipantLogo = {
 };
 
 export type AptoPersonRole =
+  | "Program Manager"
   | "Principal Investigator"
   | "Co-Principal Investigator";
 
 export type AptoPerson = {
+  id: string;
+  participantId: AptoParticipantId | null;
   name: string;
   initials: string;
   role: AptoPersonRole;
-  /** Intentionally null while the website uses an accessible headshot mockup. */
+  organization: string;
   headshotUrl: string | null;
   headshotAlt: string;
   profileUrl: string | null;
 };
 
-export type AptoProgramPerson = Omit<AptoPerson, "role"> & {
-  role: string;
-  organization: string;
+export type AptoProgramPerson = AptoPerson & {
+  participantId: null;
+  role: "Program Manager";
 };
 
 export type AptoFigureKind =
@@ -52,82 +53,61 @@ export type AptoFigureKind =
   | "technology-timeline"
   | "translation-funnel";
 
-export type AptoMockTool = {
+export type AptoTool = {
   id: string;
   participantId: AptoParticipantId;
-  /** Alias retained for straightforward UI joins. */
   organizationId: AptoParticipantId;
+  organizationName: string;
   name: string;
+  categories: AptoOutcome[];
   description: string;
+  useCase: string;
   figure: {
     kind: AptoFigureKind;
     label: string;
     alt: string;
   };
-  /** Convenience label for compact card treatments. */
   figureLabel: string;
-  status: string;
-  isConceptOnly: true;
-  demoVideoUrl: null;
-  demoVideoLabel: string;
-  toolUrl: null;
-  toolLinkLabel: string;
+  statusLabel: string;
+  demoVideoUrl: string | null;
+  toolUrl: string | null;
   organizationUrl: string;
-  awardUrl: string;
 };
+
+// Kept as an export alias while existing page imports migrate to AptoTool.
+export type AptoMockTool = AptoTool;
 
 export type AptoParticipant = {
   id: AptoParticipantId;
   displayName: string;
-  /** Short alias for UI variants that expect `name`. */
   name: string;
-  legalName: string;
   kind: AptoParticipantKind;
   location: string;
   website: string;
   logo: AptoParticipantLogo;
-  awardId: string;
-  people: AptoPerson[];
-  tools: AptoMockTool[];
   accent: string;
-};
-
-export type AptoOutcome = "Capability" | "Production" | "Use";
-
-export type AptoLineOfEffortId = "models" | "data-tools";
-
-export type AptoProjectFunding = {
-  /** Funds obligated in the NSF Awards API snapshot. */
-  obligatedAmount: number;
-  /** Estimated total intended award amount in the NSF Awards API snapshot. */
-  estimatedTotalAmount: number;
-  currency: "USD";
-  dataAsOf: string;
-  dataAsOfLabel: string;
-  caveat?: string;
+  mapPosition: { x: number; y: number };
+  description: string;
+  people: AptoPerson[];
+  tools: AptoTool[];
+  projectIds: string[];
 };
 
 export type AptoProject = {
   id: string;
+  participantId: AptoParticipantId;
   awardId: string;
   shortName: string;
   officialTitle: string;
-  participantId: AptoParticipantId;
+  awardedYear: number;
+  statusLabel: string;
+  awardUrl: string;
   organization: string;
-  legalAwardeeName: string;
   location: string;
-  agreementType: "Cooperative Agreement";
-  startDate: string;
-  endDate: string;
-  funding: AptoProjectFunding;
   people: AptoPerson[];
   pi: string;
   coPIs: string[];
   summary: string;
-  outcomes: AptoOutcome[];
-  linesOfEffort: AptoLineOfEffortId[];
-  awardUrl: string;
-  apiUrl: string;
 };
 
 export type AptoProgramStat = {
@@ -165,15 +145,12 @@ export type AptoProgram = {
     description: string;
   }>;
   linesOfEffort: AptoProgramLineOfEffort[];
-  technologyAreas: string[];
-  openAccessNote: string;
 };
 
 export type AptoPageSlug =
   | "/"
   | "/about"
   | "/cohort"
-  | "/people"
   | "/projects"
   | "/tools";
 
@@ -186,7 +163,7 @@ export type AptoPage = {
   introduction: string;
 };
 
-export type AptoInterfaceSection = "about" | "cohort" | "people" | "projects" | "tools";
+export type AptoInterfaceSection = "about" | "cohort" | "projects" | "tools";
 
 export type AptoHeroWidgetPreview =
   | {
@@ -207,16 +184,25 @@ export type AptoHeroWidgetPreview =
     }
   | {
       kind: "trajectories";
-      rows: Array<{ label: string; category: string; tone: "blue" | "gold" | "purple" }>;
+      rows: Array<{
+        label: string;
+        category: string;
+        tone: "blue" | "gold" | "purple";
+      }>;
       observedLabel: string;
       forecastLabel: string;
     };
 
 export type AptoInterfaceContent = {
-  directions: Array<{ id: string; label: string; note: string }>;
+  directions: Array<{
+    id: "nsfhome" | "nsfnetwork";
+    label: string;
+    note: string;
+  }>;
   study: {
     siteTitle: string;
     siteDescription: string;
+    socialImageSrc: string;
     socialImageAlt: string;
     galleryLabel: string;
     barLabel: string;
@@ -227,7 +213,10 @@ export type AptoInterfaceContent = {
     widgetLabel: string;
     selectedFormatLabel: string;
   };
-  primaryNavigation: Array<{ label: string; section: AptoInterfaceSection }>;
+  primaryNavigation: Array<{
+    label: string;
+    section: AptoInterfaceSection;
+  }>;
   home: {
     primaryActionLabel: string;
     secondaryActionLabel: string;
@@ -241,7 +230,11 @@ export type AptoInterfaceContent = {
     networkVisualCaption: string;
     ledgerVisualEyebrow: string;
     ledgerVisualTitle: string;
-    pathways: Array<{ section: AptoInterfaceSection; title: string; description: string }>;
+    pathways: Array<{
+      section: AptoInterfaceSection;
+      title: string;
+      description: string;
+    }>;
   };
   widget: {
     eyebrow: string;
@@ -272,9 +265,6 @@ export type AptoInterfaceContent = {
   };
   common: {
     organizationWebsiteLabel: string;
-    officialAwardRecordLabel: string;
-    nsfAwardRecordLabel: string;
-    awardApiRecordLabel: string;
     participantWebsiteLabel: string;
   };
   accessibility: {
@@ -283,34 +273,48 @@ export type AptoInterfaceContent = {
     footerNavigationLabel: string;
     homePathwaysLabel: string;
     projectInvestigatorsLabel: string;
-    outcomeTypesLabel: string;
-    linesOfEffortLabel: string;
+    projectMapLabel: string;
+    toolFiltersLabel: string;
   };
   projects: {
     ledgerTitle: string;
     awardLabel: string;
-    personAwardLabel: string;
-    legalAwardeeLabel: string;
-    agreementLabel: string;
-    obligatedAmountLabel: string;
-    estimatedTotalLabel: string;
-    dataAsOfLabel: string;
+    awardedPrefix: string;
+    dateStatusSeparator: string;
+    expandLabel: string;
+    collapseLabel: string;
+    map: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      caption: string;
+      imageUrl: string;
+      imageAlt: string;
+      sourceUrl: string;
+      sourceLabel: string;
+    };
   };
   tools: {
     registerTitle: string;
     allOrganizationsLabel: string;
-    filterAriaLabel: string;
-    showingAllLabel: string;
-    showingParticipantPrefix: string;
-    conceptByLabel: string;
-    demoVideoLabel: string;
-    toolLinkLabel: string;
-    watchWithCaptionsLabel: string;
-    captionsForthcomingLabel: string;
-    linkForthcomingLabel: string;
+    allCategoriesLabel: string;
+    organizationFilterLabel: string;
+    organizationFilterAriaLabel: string;
+    categoryFilterLabel: string;
+    categoryFilterAriaLabel: string;
+    showingPrefix: string;
+    toolSingular: string;
+    toolPlural: string;
+    useCaseLabel: string;
+    categoriesLabel: string;
+    emptyTitle: string;
+    emptyDescription: string;
+    watchDemoLabel: string;
     openToolLabel: string;
+    statusLabel: string;
   };
   people: {
+    programTeamEyebrow: string;
     programTeamTitle: string;
     projectProfileLabel: string;
     portraitForthcomingLabel: string;
@@ -319,11 +323,11 @@ export type AptoInterfaceContent = {
   cohort: {
     prominentTitle: string;
     markStatusSuffix: string;
+    peopleTitle: string;
+    projectLabel: string;
   };
   disclosures: {
     cohort: string;
-    toolsLabel: string;
-    toolsNote: string;
   };
   footer: {
     supportTitle: string;
@@ -342,7 +346,6 @@ export type AptoInterfaceContent = {
 export type AptoSourceKind =
   | "program"
   | "award-search"
-  | "awards-api"
   | "award"
   | "brand"
   | "organization";
@@ -372,13 +375,13 @@ type AptoGeneratedContent = {
   boilerplate: string;
   participants: AptoParticipant[];
   projects: AptoProject[];
-  tools: AptoMockTool[];
+  tools: AptoTool[];
   sources: AptoSource[];
 };
 
 // The browser-facing records are generated from content/apto/**/*.md. Keeping
-// this module as the typed boundary means the React concepts never need to
-// know how the Markdown files are parsed or joined.
+// this module as the typed boundary means components never need to parse or
+// join content files themselves.
 const aptoContent = generatedContent as unknown as AptoGeneratedContent;
 
 export const aptoContentBuild = aptoContent._generated;
@@ -388,5 +391,6 @@ export const aptoPages = aptoContent.pages;
 export const aptoBoilerplate = aptoContent.boilerplate;
 export const aptoParticipants = aptoContent.participants;
 export const aptoProjects = aptoContent.projects;
+export const aptoTools = aptoContent.tools;
 export const aptoMockTools = aptoContent.tools;
 export const aptoSources = aptoContent.sources;

@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "northwestern-trajectory-forecaster",
   "participantId": "northwestern",
-  "awardId": "2404035",
   "name": "Technology Trajectory Forecaster",
+  "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "technology-timeline",
-    "label": "Multi-technology forecast mockup",
-    "alt": "Placeholder chart with several technology trajectories and uncertainty bands over time"
+    "label": "Multi-technology trajectory forecast",
+    "alt": "Chart comparing several technology trajectories with observed values and uncertainty bands"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept workspace for comparing capability, production, and use trajectories across selected technology domains and assumptions.
+Compare observed and projected trajectories for technology capability, production, and use. Assumptions and uncertainty remain visible so users can see how alternative model choices change the shape and timing of each trajectory.
 
-## Prototype note
+## Use case
 
-This is an interface concept for Northwestern University, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the forecaster to compare candidate technologies, explore scenario assumptions, and distinguish robust signals from projections that depend heavily on uncertain inputs.

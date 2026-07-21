@@ -4,13 +4,13 @@
   "slug": "/tools",
   "navLabel": "Tools",
   "metadataTitle": "Tools",
-  "eyebrow": "Concept tools",
-  "title": "Interfaces for exploring APTO research"
+  "eyebrow": "Research tools",
+  "title": "Tools for exploring technology outcomes"
 }
 ---
 
-# Interfaces for exploring APTO research
+# Tools for exploring technology outcomes
 
 ## Introduction
 
-Explore interface concepts inspired by the research directions of each APTO project. These mockups illustrate possible maps, forecasting views, evidence workbenches, scenario laboratories, and research-to-market interfaces; they are not claims of released tools and will be replaced or linked as project teams publish approved resources.
+Explore maps, forecasting views, evidence workbenches, scenario laboratories, and research-to-market interfaces emerging from APTO research. Filter the collection by participating institution or by the capability, production, and use dimensions each tool helps investigate.

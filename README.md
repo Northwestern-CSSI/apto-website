@@ -1,23 +1,20 @@
-# APTO website design system
+# APTO website
 
-Production-oriented website directions for the National Science Foundation’s
-Assessing and Predicting Technology Outcomes (APTO) program.
+The first public website for the National Science Foundation’s Assessing and
+Predicting Technology Outcomes (APTO) program. It combines a curved,
+NSF-aligned light interface with a coordinated deep-navy theme.
 
-The site combines verified program and award information with clearly marked
-mockups for future APTO tools. The design-study gallery retains 56 concepts;
-the six current NSF-aligned candidates are three complete visual directions
-with a matched widget-home variant for each:
+The public pages are:
 
-- `nsfhome` — light, clear, institutional program home
-- `nsfhomewidgets` — light program home with an interactive tool widget
-- `nsfledger` — editorial evidence-led direction with expandable records
-- `nsfledgerwidgets` — editorial direction with a compact tool plate
-- `nsfnetwork` — dark, organization-first cohort direction
-- `nsfnetworkwidgets` — dark direction with a signal-console widget
+- `/apto` — program home and interactive tool widget
+- `/apto/about` — program framework
+- `/apto/projects` — expandable project records and awardee map
+- `/apto/tools` — tools filtered by organization and outcome area
+- `/apto/cohort` — participating organizations, program leadership, and teams
 
-The public routes are `/apto`, `/apto/about`, `/apto/cohort`, `/apto/people`,
-`/apto/projects`, and `/apto/tools`. Select a direction with the `concept`
-query parameter, for example `/apto?concept=nsfnetworkwidgets`.
+The legacy `/apto/people` route displays the combined cohort page. Previously
+published `concept` links remain compatible: light/editorial variants resolve
+to the merged light site, and network variants resolve to the dark site.
 
 ## Requirements
 
@@ -31,84 +28,57 @@ npm ci
 npm run dev
 ```
 
-Build and test the complete site:
+Run all production checks:
 
 ```bash
-npm run build
-node --test tests/rendered-html.test.mjs
+npm test
+npm run typecheck
+npm run lint
 ```
 
-## Markdown content workflow
+## Markdown and image workflow
 
-All editable APTO program, interface, project, participant, people, and tool
-content lives in `content/apto/`:
+`content/apto/` is the source of truth for the public site:
 
-- `program.md` — program description, program management, outcome framework,
-  statistics, sources, and required NSF acknowledgement
-- `interface.md` — shared navigation, homepage, design-direction, widget,
-  accessibility, social-metadata, disclosure, and footer copy, including
-  illustrative widget data
-- `pages/*.md` — browser-metadata titles, display titles, and introductions for
-  the six routed pages
-- `projects/*.md` — the five APTO award and participant records, including
-  investigators, organization links, and provisional logo metadata
-- `tools/*.md` — two clearly labeled tool concepts per participating
-  organization
+- `participants/*.md` — one participating organization per file
+- `people/*.md` — one program or project-team member per file
+- `projects/*.md` — one project per file
+- `tools/*.md` — one tool per file
+- `pages/*.md` — page titles, metadata, and introductions
+- `program.md` — program copy, framework, statistics, and NSF acknowledgement
+- `interface.md` — navigation, labels, widget content, filters, map, and footer
+- `assets/` — every APTO image, participant mark, NSF mark, map, and social card
 
-Files use JSON frontmatter for structured fields and normal Markdown headings
-for narrative content. The generator uses Node.js built-ins and validates
-alphabetical neutrality, record counts, joins, URLs, required disclaimers, and
-mockup labels.
+Adding a tool or project does not require changing a hard-coded inventory.
+Create a Markdown record, add any image under `content/apto/assets/`, and run:
 
 ```bash
 npm run content:build
 npm run content:check
 ```
 
-Development and production builds regenerate
-`app/nsf-apto-content.generated.json` automatically. Edit the Markdown source,
-never the generated JSON.
+The builder validates and alphabetizes records, joins relationships, derives
+program statistics, generates `app/nsf-apto-content.generated.json`, and copies
+content assets to `public/apto/`. Never edit generated JSON or public asset
+copies directly. See `content/apto/README.md` for the complete record schema.
 
 ## Accessibility
 
-The APTO routes include semantic landmarks, a skip link, one page heading,
-keyboard-operable filters and widget tabs, visible focus, 44px minimum control
-targets, reduced-motion support, forced-colors treatments, non-color chart
-labels, responsive reflow, and text alternatives for meaningful imagery.
-
-Automated checks live in `tests/rendered-html.test.mjs`. Accessibility remains
-an ongoing production responsibility: final content, third-party tools,
-approved participant logos, videos, and future data visualizations should be
-reviewed again before launch.
-
-## Data, brands, and assets
-
-Award and program facts are source-grounded; widget scores and visualizations
-are expressly illustrative and must not be presented as APTO findings. NSF and
-participant marks are third-party identifiers, are not covered by any code
-license, and require compliance with the relevant owner’s guidance. See
-`ASSETS.md` for the asset-review register.
+The APTO pages use semantic landmarks, one page heading, native expandable
+project panels, keyboard-operable widget tabs and filters, visible focus,
+44-pixel control targets, responsive reflow, reduced-motion support,
+forced-colors treatments, text alternatives, and redundant text navigation for
+the project map. Automated regression checks live in
+`tests/rendered-html.test.mjs`; new content and future embedded tools should be
+reviewed again as they are added.
 
 ## Project structure
 
-- `app/` — React routes, components, and styles
-- `content/apto/` — editable Markdown source of truth
-- `public/apto/` — APTO, NSF, participant, and visualization assets
-- `scripts/build-apto-content.mjs` — zero-dependency content generator
-- `tests/rendered-html.test.mjs` — rendered HTML, content, responsive, and
-  accessibility regression tests
+- `app/` — React routes, components, metadata, and styles
+- `content/apto/` — editable Markdown and image sources
+- `public/apto/` — generated public image copies
+- `scripts/build-apto-content.mjs` — content generator and validator
+- `tests/rendered-html.test.mjs` — rendered HTML and accessibility regressions
 - `.openai/hosting.json` — Sites deployment metadata
 
-The current hosted study is
-[apto-design-study.moondark.chatgpt.site](https://apto-design-study.moondark.chatgpt.site/).
-Build and test before asking Codex Sites to deploy the contents of `dist/`;
-deployment metadata is already recorded in `.openai/hosting.json`.
-
-## Useful commands
-
-- `npm run dev` — start local development
-- `npm run build` — build the deployable site
-- `npm run content:build` — validate Markdown and regenerate content
-- `npm run content:check` — fail when generated content is stale
-- `npm run typecheck` — run the strict TypeScript check
-- `node --test tests/rendered-html.test.mjs` — run regression checks
+Hosted site: [apto-design-study.moondark.chatgpt.site](https://apto-design-study.moondark.chatgpt.site/)

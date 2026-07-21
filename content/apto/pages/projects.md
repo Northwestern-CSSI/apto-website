@@ -13,4 +13,4 @@
 
 ## Introduction
 
-Browse the active NSF award records whose official titles begin with APTO. Each project profile connects its research summary, participating organization, investigators, award dates, funding snapshot, outcomes, and primary NSF record, with projects shown alphabetically by official title.
+Browse active NSF awards whose official titles begin with APTO. Expand a project to read its research summary, meet its investigators, visit the organization, or open the corresponding NSF award. Projects are shown alphabetically, and the map locates each participating team.

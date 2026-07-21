@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "aperture-problem-landscape",
   "participantId": "aperture",
-  "awardId": "2404082",
   "name": "Problem Landscape Explorer",
+  "categories": ["Capability", "Use"],
   "figure": {
     "kind": "problem-landscape",
-    "label": "Problem-to-solution landscape mockup",
-    "alt": "Placeholder terrain connecting problem clusters to technologies and organizations"
+    "label": "Problem-to-solution landscape",
+    "alt": "Landscape connecting clusters of technical problems with technologies and organizations"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept landscape that organizes problems, technologies, and organizations so users can inspect unmet needs alongside proposed solutions.
+Navigate a landscape of technical problems, candidate solutions, organizations, and supporting evidence. Related needs and approaches are grouped together so gaps, crowded areas, and unexpected connections are easier to see.
 
-## Prototype note
+## Use case
 
-This is an interface concept for Aperture, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the explorer to frame an unfamiliar problem domain, find adjacent technologies, and identify organizations already working on relevant parts of the challenge.

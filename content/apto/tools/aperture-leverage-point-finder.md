@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "aperture-leverage-point-finder",
   "participantId": "aperture",
-  "awardId": "2404082",
   "name": "Leverage Point Finder",
+  "categories": ["Production", "Use"],
   "figure": {
     "kind": "signal-matrix",
-    "label": "Opportunity signal matrix mockup",
-    "alt": "Placeholder matrix ranking technical problems by evidence, activity, and potential leverage"
+    "label": "Opportunity signal matrix",
+    "alt": "Matrix comparing technical problems by evidence strength, activity, and potential leverage"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept matrix for comparing signals that may reveal high-value research questions, complementary partners, and investment leverage points.
+Compare technical needs, organizational activity, investment signals, and available evidence in a single ranked view. The matrix helps surface places where a focused intervention may unlock disproportionate progress.
 
-## Prototype note
+## Use case
 
-This is an interface concept for Aperture, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the finder to shortlist research questions, potential collaborators, or investment targets, then inspect the evidence behind each score before deciding where to investigate further.

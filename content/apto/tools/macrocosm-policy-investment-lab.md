@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "macrocosm-policy-investment-lab",
   "participantId": "macrocosm",
-  "awardId": "2403999",
   "name": "Policy & Investment Scenario Lab",
+  "categories": ["Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
-    "label": "Energy scenario comparison mockup",
-    "alt": "Placeholder small-multiple charts comparing energy policy and investment scenarios"
+    "label": "Energy scenario comparison",
+    "alt": "Small-multiple charts comparing energy technology, policy, and investment scenarios over time"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept simulator for comparing how policy and private-investment choices could influence energy technologies, firms, employment, and materials.
+Compare how policy choices and private investment strategies could shape energy technologies, firms, employment, and material needs. Coordinated charts make differences among scenarios visible across time and geography.
 
-## Prototype note
+## Use case
 
-This is an interface concept for Macrocosm, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the lab to test assumptions, compare a baseline with alternative interventions, and identify which outcomes are most sensitive to policy or investment choices.

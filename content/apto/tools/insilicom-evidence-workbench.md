@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "insilicom-evidence-workbench",
   "participantId": "insilicom",
-  "awardId": "2403911",
   "name": "Evidence Extraction Workbench",
+  "categories": ["Capability"],
   "figure": {
     "kind": "evidence-stream",
-    "label": "Information-extraction workflow mockup",
-    "alt": "Placeholder workflow turning articles and patents into reviewed entities and relations"
+    "label": "Evidence extraction workflow",
+    "alt": "Workflow that turns articles and patents into reviewed entities, relationships, and evidence records"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept end-to-end workspace for annotating text, reviewing AI-assisted extractions, and assembling domain-specific knowledge graphs.
+Turn publications, patents, reports, and other technical text into structured evidence. The workspace combines AI-assisted extraction with human review so entities and relationships can be checked before entering a domain knowledge graph.
 
-## Prototype note
+## Use case
 
-This is an interface concept for Insilicom, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the workbench to build a reusable evidence base for a new technology area, review extracted claims with subject-matter experts, and track each structured record back to its source.

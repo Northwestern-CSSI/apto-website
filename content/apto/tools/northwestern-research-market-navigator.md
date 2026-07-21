@@ -3,19 +3,16 @@
   "kind": "tool",
   "id": "northwestern-research-market-navigator",
   "participantId": "northwestern",
-  "awardId": "2404035",
   "name": "Research-to-Market Navigator",
+  "categories": ["Production", "Use"],
   "figure": {
     "kind": "translation-funnel",
-    "label": "Research-to-market pathway mockup",
-    "alt": "Placeholder figure showing research flowing through invention, licensing, and market-use stages"
+    "label": "Research-to-market pathway",
+    "alt": "Pathway from research investment through invention, licensing, company formation, and technology use"
   },
-  "status": "Concept only · not a released tool",
-  "isConceptOnly": true,
+  "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "demoVideoLabel": "Demo video placeholder",
-  "toolUrl": null,
-  "toolLinkLabel": "Tool link coming soon"
+  "toolUrl": null
 }
 ---
 
@@ -23,8 +20,8 @@
 
 ## Description
 
-A concept interface for following research investments through disclosures, licenses, startups, and downstream technology outcomes.
+Follow research investments through invention disclosures, licenses, company formation, and downstream technology outcomes. Linked records reveal where translation pathways accelerate, stall, or branch into different forms of use.
 
-## Prototype note
+## Use case
 
-This is an interface concept for Northwestern University, not a released tool. Figure, video, and tool destinations remain placeholders.
+Use the navigator to compare research-to-market pathways across institutions or technology areas and identify the stages most associated with successful translation.
