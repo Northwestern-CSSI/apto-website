@@ -64,6 +64,7 @@ export type AptoTool = {
   useCase: string;
   figure: {
     kind: AptoFigureKind;
+    src: string;
     label: string;
     alt: string;
   };
@@ -130,6 +131,8 @@ export type AptoProgram = {
   shortSummary: string;
   description: string;
   cohortDescription: string;
+  objectivesTitle: string;
+  objectives: string[];
   lastVerified: string;
   stats: AptoProgramStat[];
   programTeam: AptoProgramPerson[];

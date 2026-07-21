@@ -6,10 +6,10 @@ NSF-aligned light interface with a coordinated deep-navy theme.
 
 The public pages are:
 
-- `/apto` — program home
-- `/apto/about` — program framework
+- `/apto` — program description, objectives, partner roster, and framework
+- `/apto/about` — compatibility route for the program framework
 - `/apto/projects` — expandable project records and awardee map
-- `/apto/tools` — tools filtered by organization and outcome area
+- `/apto/tools` — compact tool catalog filtered by organization and outcome area
 - `/apto/cohort` — participating organizations, program leadership, and teams
 
 The legacy `/apto/people` route displays the combined cohort page. Previously
@@ -43,9 +43,9 @@ npm run lint
 - `participants/*.md` — one participating organization per file
 - `people/*.md` — one program or project-team member per file
 - `projects/*.md` — one project per file
-- `tools/*.md` — one tool per file
+- `tools/*.md` — one tool per file, including its image path
 - `pages/*.md` — page titles, metadata, and introductions
-- `program.md` — program copy, framework, statistics, and NSF acknowledgement
+- `program.md` — program copy, objectives, framework, statistics, and NSF acknowledgement
 - `interface.md` — navigation, labels, filters, map, and footer
 - `assets/` — every APTO image, participant mark, NSF mark, map, and social card
 

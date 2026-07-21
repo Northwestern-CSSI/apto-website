@@ -7,6 +7,7 @@
   "categories": ["Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
+    "src": "/apto/model-scale.png",
     "label": "Energy scenario comparison",
     "alt": "Small-multiple charts comparing energy technology, policy, and investment scenarios over time"
   },

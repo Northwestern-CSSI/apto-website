@@ -7,6 +7,7 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "global-map",
+    "src": "/apto/science-map-widget.avif",
     "label": "Global science and technology observatory",
     "alt": "World map connecting research, patent, product, funding, workforce, and market signals among regions"
   },

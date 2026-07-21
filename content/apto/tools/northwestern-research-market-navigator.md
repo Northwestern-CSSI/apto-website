@@ -7,6 +7,7 @@
   "categories": ["Production", "Use"],
   "figure": {
     "kind": "translation-funnel",
+    "src": "/apto/nsf-network-art.avif",
     "label": "Research-to-market pathway",
     "alt": "Pathway from research investment through invention, licensing, company formation, and technology use"
   },

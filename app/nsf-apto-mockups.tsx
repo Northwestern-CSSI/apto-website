@@ -3,7 +3,7 @@
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down.mjs";
 import Moon from "lucide-react/dist/esm/icons/moon.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
-import { useEffect, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 import {
   aptoBoilerplate,
@@ -68,16 +68,6 @@ function displayRecord(value: unknown) {
   return {
     label: String(record.label ?? record.name ?? record.title ?? record.value ?? ""),
     description: String(record.description ?? record.detail ?? record.note ?? ""),
-  };
-}
-
-function displayStat(value: unknown) {
-  if (!value || typeof value !== "object") return { value: String(value ?? ""), label: "", detail: "" };
-  const record = value as Record<string, unknown>;
-  return {
-    value: String(record.value ?? record.number ?? ""),
-    label: String(record.label ?? record.name ?? record.detail ?? ""),
-    detail: String(record.detail ?? record.note ?? ""),
   };
 }
 
@@ -160,8 +150,9 @@ function NsfProgramHeader({ id, activeSection }: { id: NsfAptoMockupId; activeSe
   </header>;
 }
 
-function CompactProgramHero({ id }: { id: NsfAptoMockupId }) {
+function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
   const homeCopy = copyFor("home");
+  const tone = direction === "network" ? "dark" : "light";
   return <section className="nsf-program-hero" aria-labelledby={`${id}-title`}>
     <div className="nsf-hero-copy">
       <p className="nsf-eyebrow">{homeCopy.eyebrow}</p>
@@ -169,35 +160,23 @@ function CompactProgramHero({ id }: { id: NsfAptoMockupId }) {
       <p className="nsf-hero-summary">{homeCopy.introduction}</p>
       <div className="nsf-hero-actions">
         <a className="nsf-primary-action" href={aptoHref("projects", id)}>{aptoInterface.home.primaryActionLabel} <span aria-hidden="true">→</span></a>
-        <a href={aptoHref("about", id)}>{aptoInterface.home.secondaryActionLabel} <span aria-hidden="true">↗</span></a>
+        <a href={`${aptoHref("home", id)}#${id}-about`}>{aptoInterface.home.secondaryActionLabel} <span aria-hidden="true">↓</span></a>
       </div>
     </div>
-    <dl className="nsf-hero-facts">
-      {aptoProgram.stats.map((stat) => {
-        const item = displayStat(stat);
-        return <div key={`${item.value}-${item.label}`}><dt>{item.value}</dt><dd><span>{item.label}</span>{item.detail && <small>{item.detail}</small>}</dd></div>;
-      })}
-    </dl>
-  </section>;
-}
-
-function CohortIdentityStage({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
-  const tone = direction === "network" ? "dark" : "light";
-  return <section className={`nsf-cohort-stage is-${direction}`} aria-labelledby={`${id}-cohort-stage-title`}>
-    <header>
-      <p>{aptoInterface.home.cohortEyebrow}</p>
-      <h2 id={`${id}-cohort-stage-title`}>{aptoInterface.home.cohortTitle}</h2>
-      <a href={aptoHref("cohort", id)}>{aptoInterface.home.cohortLinkLabel} <span aria-hidden="true">→</span></a>
-    </header>
-    <div className="nsf-cohort-canvas">
-      {aptoParticipants.map((participant) => {
-        const project = projectForParticipant(participant.id);
-        return <a className="nsf-cohort-identity" key={participant.id} href={`${aptoHref("cohort", id)}#participant-${participant.id}`}>
-          <ParticipantMark participant={participant} size="directory" tone={tone} />
-          <span><strong>{participant.displayName}</strong><small>{project?.shortName}</small></span>
-        </a>;
-      })}
-    </div>
+    <aside className="nsf-hero-partners" aria-labelledby={`${id}-hero-partners-title`}>
+      <header>
+        <p id={`${id}-hero-partners-title`}>{aptoInterface.home.cohortEyebrow}</p>
+        <a href={aptoHref("cohort", id)}>{aptoInterface.home.cohortLinkLabel} <span aria-hidden="true">→</span></a>
+      </header>
+      <ul>
+        {aptoParticipants.map((participant) => <li key={participant.id}>
+          <a href={`${aptoHref("cohort", id)}#participant-${participant.id}`}>
+            <ParticipantMark participant={participant} size="compact" tone={tone} />
+            <span>{participant.displayName}</span>
+          </a>
+        </li>)}
+      </ul>
+    </aside>
   </section>;
 }
 
@@ -212,8 +191,8 @@ function HomePathways({ id, direction }: { id: NsfAptoMockupId; direction: NsfDi
 
 function HomePage({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
   return <>
-    <CompactProgramHero id={id} />
-    <CohortIdentityStage id={id} direction={direction} />
+    <CompactProgramHero id={id} direction={direction} />
+    <ProgramOverview id={id} />
     <HomePathways id={id} direction={direction} />
   </>;
 }
@@ -229,7 +208,11 @@ function SectionIntro({ eyebrow, title, description, id, pageHeading = false }: 
 function ProgramOverview({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
   const copy = copyFor("about");
   return <section className="nsf-program-overview" id={`${id}-about`} aria-labelledby={`${id}-about-title`}>
-    <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-about-title`} pageHeading={pageHeading} />
+    <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={pageHeading ? copy.introduction : aptoProgram.description} id={`${id}-about-title`} pageHeading={pageHeading} />
+    <section className="nsf-program-objectives" aria-labelledby={`${id}-objectives-title`}>
+      <h2 id={`${id}-objectives-title`}>{aptoProgram.objectivesTitle}</h2>
+      <ul>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
+    </section>
     <div className="nsf-overview-framework" role="group" aria-label={aptoProgram.framework.ariaLabel}>
       <section className="nsf-framework-block is-outcomes" aria-labelledby={`${id}-outcomes-title`}>
         <header className="nsf-framework-heading"><h2 id={`${id}-outcomes-title`}>{aptoProgram.framework.outcomesTitle}</h2><p>{aptoProgram.framework.outcomesNote}</p></header>
@@ -284,9 +267,11 @@ function ProjectAccordionItem({ project, tone }: { project: AptoProject; tone: "
   </details>;
 }
 
-function revealProject(awardId: string) {
+function revealProject(awardId: string, focusSummary = false) {
   const target = document.getElementById(`nsf-award-${awardId}`);
-  if (target instanceof HTMLDetailsElement) target.open = true;
+  if (!(target instanceof HTMLDetailsElement)) return;
+  target.open = true;
+  if (focusSummary) requestAnimationFrame(() => target.querySelector<HTMLElement>("summary")?.focus({ preventScroll: true }));
 }
 
 type AwardeeMapEntry = { participant: AptoParticipant; project: AptoProject };
@@ -301,6 +286,62 @@ function groupNearbyMapEntries(entries: AwardeeMapEntry[]) {
     else groups.push([entry]);
     return groups;
   }, []);
+}
+
+function AwardeeMapCluster({ id, group, x, y }: { id: NsfAptoMockupId; group: AwardeeMapEntry[]; x: number; y: number }) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const clusterKey = group.map(({ participant }) => participant.id).join("-");
+  const panelId = `${id}-awardee-cluster-${clusterKey}`;
+  const titleId = `${panelId}-title`;
+  const names = group.map(({ participant }) => `${participant.displayName}, ${participant.location}`).join("; ");
+
+  useEffect(() => {
+    if (!open) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (target instanceof Node && !rootRef.current?.contains(target)) setOpen(false);
+    };
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      setOpen(false);
+      requestAnimationFrame(() => triggerRef.current?.focus());
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  return <div
+    ref={rootRef}
+    className={`nsf-awardee-map-cluster${open ? " is-open" : ""}`}
+    style={{ left: `${x}%`, top: `${y}%` } as CSSProperties}
+  >
+    <button
+      ref={triggerRef}
+      type="button"
+      aria-expanded={open}
+      aria-controls={panelId}
+      aria-label={`${group.length} nearby APTO project locations: ${names}`}
+      onClick={() => setOpen((value) => !value)}
+    ><span aria-hidden="true">{group.length}</span></button>
+    <div id={panelId} hidden={!open} aria-labelledby={titleId}>
+      <strong id={titleId}>{group.length} nearby projects</strong>
+      {group.map(({ participant, project }) => <a
+        href={`#nsf-award-${project.awardId}`}
+        key={participant.id}
+        onClick={() => {
+          setOpen(false);
+          revealProject(project.awardId, true);
+        }}
+      ><span>{participant.displayName}</span><small>{participant.location}</small></a>)}
+    </div>
+  </div>;
 }
 
 function AwardeeMap({ id, tone }: { id: NsfAptoMockupId; tone: "light" | "dark" }) {
@@ -329,22 +370,13 @@ function AwardeeMap({ id, tone }: { id: NsfAptoMockupId; tone: "light" | "dark" 
               aria-label={`${participant.displayName}, ${participant.location}`}
             ><span aria-hidden="true">{participantMonogram(participant.displayName)}</span></a>;
           }
-          const names = group.map(({ participant }) => `${participant.displayName}, ${participant.location}`).join("; ");
-          return <details
-            className="nsf-awardee-map-cluster"
+          return <AwardeeMapCluster
             key={group.map(({ participant }) => participant.id).join("-")}
-            style={{ left: `${x}%`, top: `${y}%` } as CSSProperties}
-          >
-            <summary aria-label={`${group.length} nearby APTO project locations: ${names}`}><span aria-hidden="true">{group.length}</span></summary>
-            <div>
-              <strong>{group.length} nearby projects</strong>
-              {group.map(({ participant, project }) => <a
-                href={`#nsf-award-${project.awardId}`}
-                key={participant.id}
-                onClick={() => revealProject(project.awardId)}
-              ><span>{participant.displayName}</span><small>{participant.location}</small></a>)}
-            </div>
-          </details>;
+            id={id}
+            group={group}
+            x={x}
+            y={y}
+          />;
         })}
       </div>
       <figcaption>{map.caption}</figcaption>
@@ -380,39 +412,30 @@ function ProjectsSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pag
 
 function ToolFigure({ tool }: { tool: AptoTool }) {
   return <figure className={`nsf-tool-figure is-${tool.figure.kind}`}>
-    <div role="img" aria-label={tool.figure.alt}><span /><span /><span /><span /><span /><span /></div>
+    <img src={tool.figure.src} alt={tool.figure.alt} width="640" height="420" loading="lazy" decoding="async" />
     <figcaption>{tool.figure.label}</figcaption>
   </figure>;
 }
 
 type FilterOption = { id: string; label: string };
 
-function FilterBar({ value, onChange, controls, label, options }: {
+function FilterSelect({ value, onChange, controls, title, label, options }: {
   value: string;
   onChange: (value: string) => void;
   controls: string;
+  title: string;
   label: string;
   options: FilterOption[];
 }) {
-  const handleKeys = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
-    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-    event.preventDefault();
-    const last = options.length - 1;
-    const next = event.key === "Home" ? 0 : event.key === "End" ? last : (index + (event.key === "ArrowRight" ? 1 : -1) + options.length) % options.length;
-    onChange(options[next].id);
-    event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
-  };
-  return <div className="nsf-filter" role="group" aria-label={label} data-local-arrows="true">
-    {options.map((option, index) => <button
-      type="button"
-      key={option.id}
-      aria-controls={controls}
-      aria-pressed={value === option.id}
-      className={value === option.id ? "is-active" : undefined}
-      onClick={() => onChange(option.id)}
-      onKeyDown={(event) => handleKeys(event, index)}
-    >{option.label}</button>)}
-  </div>;
+  return <label className="nsf-filter-group">
+    <span className="nsf-filter-title">{title}</span>
+    <span className="nsf-filter-select">
+      <select value={value} onChange={(event) => onChange(event.target.value)} aria-label={label} aria-controls={controls}>
+        {options.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+      </select>
+      <ChevronDown aria-hidden="true" focusable="false" />
+    </span>
+  </label>;
 }
 
 function ToolCard({ tool, tone }: { tool: AptoTool; tone: "light" | "dark" }) {
@@ -462,11 +485,11 @@ function ToolsSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHe
 
   return <section className="nsf-tools-section" id={`${id}-tools`} aria-labelledby={`${id}-tools-title`}>
     <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-tools-title`} pageHeading={pageHeading} />
-    <div className="nsf-filter-groups">
-      <div className="nsf-filter-group"><h2 className="nsf-filter-title">{aptoInterface.tools.organizationFilterLabel}</h2><FilterBar value={participant} onChange={setParticipant} controls={listId} label={aptoInterface.tools.organizationFilterAriaLabel} options={organizationOptions} /></div>
-      <div className="nsf-filter-group"><h2 className="nsf-filter-title">{aptoInterface.tools.categoryFilterLabel}</h2><FilterBar value={category} onChange={setCategory} controls={listId} label={aptoInterface.tools.categoryFilterAriaLabel} options={categoryOptions} /></div>
+    <div className="nsf-filter-groups" role="group" aria-label={aptoInterface.accessibility.toolFiltersLabel}>
+      <FilterSelect title={aptoInterface.tools.organizationFilterLabel} value={participant} onChange={setParticipant} controls={listId} label={aptoInterface.tools.organizationFilterAriaLabel} options={organizationOptions} />
+      <FilterSelect title={aptoInterface.tools.categoryFilterLabel} value={category} onChange={setCategory} controls={listId} label={aptoInterface.tools.categoryFilterAriaLabel} options={categoryOptions} />
+      <p className="nsf-filter-status" aria-live="polite">{aptoInterface.tools.showingPrefix} {tools.length} {tools.length === 1 ? aptoInterface.tools.toolSingular : aptoInterface.tools.toolPlural}</p>
     </div>
-    <p className="nsf-filter-status" aria-live="polite">{aptoInterface.tools.showingPrefix} {tools.length} {tools.length === 1 ? aptoInterface.tools.toolSingular : aptoInterface.tools.toolPlural}</p>
     {tools.length > 0
       ? <div className="nsf-tool-grid" id={listId}>{tools.map((tool) => <ToolCard key={tool.id} tool={tool} tone={tone} />)}</div>
       : <div className="nsf-tool-empty" id={listId}><h2>{aptoInterface.tools.emptyTitle}</h2><p>{aptoInterface.tools.emptyDescription}</p></div>}
@@ -523,7 +546,7 @@ function NsfAcknowledgementFooter({ id }: { id: NsfAptoMockupId }) {
       </div>
       <div className="nsf-funder-copy"><strong>{aptoInterface.footer.disclaimerTitle}</strong><p>{aptoBoilerplate}</p></div>
     </div>
-    <nav aria-label={aptoInterface.accessibility.footerNavigationLabel}><a href={`#${id}-main`}>{aptoInterface.footer.backToTopLabel} ↑</a><a href={aptoHref("home", id)}>{aptoInterface.footer.homeLinkLabel}</a><a href={aptoHref("about", id)}>{aptoInterface.footer.programLinkLabel}</a></nav>
+    <nav aria-label={aptoInterface.accessibility.footerNavigationLabel}><a href={`#${id}-main`}>{aptoInterface.footer.backToTopLabel} ↑</a><a href={aptoHref("home", id)}>{aptoInterface.footer.homeLinkLabel}</a><a href={`${aptoHref("home", id)}#${id}-about`}>{aptoInterface.footer.programLinkLabel}</a></nav>
   </footer>;
 }
 

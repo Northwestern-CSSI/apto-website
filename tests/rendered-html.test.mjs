@@ -161,7 +161,11 @@ test("preserves the dormant homepage widget without exposing it on public routes
 
 test("renders five canonical pages in two themes and preserves every published concept alias", async () => {
   const content = await generatedContent();
-  assert.equal(content.interface.primaryNavigation.length, 4);
+  assert.equal(content.interface.primaryNavigation.length, 3);
+  assert.deepEqual(
+    content.interface.primaryNavigation.map((item) => item.label),
+    sortedAlphabetically(content.interface.primaryNavigation.map((item) => item.label)),
+  );
   assert.equal(content.interface.directions.length, 2);
   const generatedSlugs = new Set(content.pages.map((page) => page.slug));
   for (const [, slug] of canonicalPages) assert.ok(generatedSlugs.has(slug));
@@ -196,7 +200,7 @@ test("renders five canonical pages in two themes and preserves every published c
         `<nav[^>]*aria-label="${escapeRegex(content.interface.accessibility.primaryNavigationLabel)}"[^>]*>([\\s\\S]*?)<\\/nav>`,
       ));
       assert.ok(primaryNav, `${section} should expose its primary navigation label`);
-      assert.equal(countMatches(primaryNav[1], /<a\b/g), 4);
+      assert.equal(countMatches(primaryNav[1], /<a\b/g), content.interface.primaryNavigation.length);
       for (const item of content.interface.primaryNavigation) assert.ok(text.includes(item.label));
       assert.equal(text.includes("Cohort & People"), false);
 
@@ -227,6 +231,32 @@ test("renders five canonical pages in two themes and preserves every published c
   const peopleHtml = await peopleAlias.text();
   assert.match(peopleHtml, /concept-nsfnetwork\b/);
   assert.match(peopleHtml, /class="nsf-cohort-people\b/);
+});
+
+test("merges the program overview into home and replaces statistics with an integrated partner roster", async () => {
+  const content = await generatedContent();
+  for (const concept of ["nsfhome", "nsfnetwork"]) {
+    const response = await render(`/apto?concept=${concept}`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    const text = visibleText(html);
+    assert.equal(countMatches(html, /class="nsf-hero-facts"/g), 0);
+    assert.equal(countMatches(html, /class="nsf-hero-partners"/g), 1);
+    assert.ok(text.includes(content.program.description));
+    assert.ok(text.includes(content.program.objectivesTitle));
+    for (const objective of content.program.objectives) assert.ok(text.includes(objective));
+
+    const roster = html.match(/<aside class="nsf-hero-partners"[\s\S]*?<\/aside>/);
+    assert.ok(roster);
+    assert.equal(countMatches(roster[0], /class="nsf-participant-mark/g), content.participants.length);
+    for (const participant of content.participants) {
+      assert.ok(roster[0].includes(participant.displayName));
+      assert.ok(roster[0].includes(`src="${participant.logo.src}"`));
+      const project = content.projects.find((candidate) => candidate.participantId === participant.id);
+      assert.ok(project);
+      assert.equal(roster[0].includes(project.shortName), false, "The home logo roster must not repeat project subtitles");
+    }
+  }
 });
 
 test("renders five alphabetical native project accordions and a labelled awardee map", async () => {
@@ -261,9 +291,10 @@ test("renders five alphabetical native project accordions and a labelled awardee
   assert.match(html, /<aside class="nsf-awardee-map" aria-labelledby="[^"]+"/);
   assert.match(html, /<img class="nsf-awardee-map-base"[^>]*alt=""/);
   assert.match(html, /<img class="nsf-awardee-map-base"[^>]*width="959"[^>]*height="593"/);
-  assert.equal(countMatches(html, /<details class="nsf-awardee-map-cluster"/g), 1);
+  assert.equal(countMatches(html, /<div class="nsf-awardee-map-cluster"/g), 1);
   assert.equal(countMatches(html, /class="nsf-awardee-map-pin"/g), 3);
-  assert.match(html, /aria-label="2 nearby APTO project locations:/);
+  assert.match(html, /<button[^>]*aria-expanded="false"[^>]*aria-controls="[^"]+"[^>]*aria-label="2 nearby APTO project locations:/);
+  assert.match(html, /<div id="[^"]*awardee-cluster-[^"]+" hidden="" aria-labelledby="[^"]+">/);
   assert.ok(text.includes(content.interface.projects.map.title));
   for (const participant of content.participants) {
     const project = content.projects.find((candidate) => candidate.participantId === participant.id);
@@ -288,8 +319,8 @@ test("renders Markdown-sourced tools with two AND-able filter groups and useful 
   const html = await response.text();
   const text = visibleText(html);
   assert.equal(countMatches(html, /class="nsf-filter-group"/g), 2);
-  assert.ok(countMatches(html, /aria-pressed="(?:true|false)"/g) >= content.participants.length + 5);
-  assert.equal(countMatches(html, /aria-pressed="true"/g), 2);
+  assert.equal(countMatches(html, /<select\b/g), 2);
+  assert.equal(countMatches(html, /<select[^>]*aria-controls="[^"]+"/g), 2);
   assert.equal(countMatches(html, /class="nsf-tool-card"/g), content.tools.length);
 
   for (const category of ["Capability", "Production", "Use"]) assert.ok(text.includes(category));
@@ -301,16 +332,17 @@ test("renders Markdown-sourced tools with two AND-able filter groups and useful 
     assert.ok(text.includes(tool.name));
     assert.ok(text.includes(tool.description));
     assert.ok(text.includes(tool.useCase));
-    assert.ok(html.includes(`aria-label="${tool.figure.alt}"`));
+    assert.ok(html.includes(`src="${tool.figure.src}"`));
+    assert.ok(html.includes(`alt="${tool.figure.alt}"`));
   }
 
   assert.match(
     source,
     /participant === "all"[\s\S]*tool\.participantId === participant[\s\S]*&&[\s\S]*category === "all"[\s\S]*tool\.categories\.includes/,
   );
-  assert.match(source, /<FilterBar value=\{participant\}/);
-  assert.match(source, /<FilterBar value=\{category\}/);
-  assert.match(source, /aria-pressed=\{value === option\.id\}/);
+  assert.match(source, /<FilterSelect title=\{aptoInterface\.tools\.organizationFilterLabel\} value=\{participant\}/);
+  assert.match(source, /<FilterSelect title=\{aptoInterface\.tools\.categoryFilterLabel\} value=\{category\}/);
+  assert.match(source, /<select value=\{value\}/);
   assert.doesNotMatch(source, /must have exactly two tools|\.length === 2[^\n]*tools/i);
 });
 
@@ -345,10 +377,11 @@ test("combines program leadership, organizations, and project teams on the cohor
 });
 
 test("builds a flexible Markdown inventory, copies content assets, and preserves accessibility essentials", async () => {
-  const [content, generator, dataSource, routeSource, styles, rootLayout, aptoLayout] = await Promise.all([
+  const [content, generator, dataSource, mockupSource, routeSource, styles, rootLayout, aptoLayout] = await Promise.all([
     generatedContent(),
     readFile(new URL("../scripts/build-apto-content.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-data.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/nsf-apto-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/_route-page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-mockups.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
@@ -376,7 +409,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     content.program.programTeam.length + content.participants.reduce((sum, participant) => sum + participant.people.length, 0),
     directories.people.length,
   );
-  assert.ok(content._generated.schemaVersion >= 6);
+  assert.ok(content._generated.schemaVersion >= 7);
   assert.equal(content.boilerplate, nsfBoilerplate);
 
   const allPeople = [
@@ -446,6 +479,9 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(generator, /const participantDirectory = path\.join\(contentDirectory, "participants"\)/);
   assert.match(generator, /const peopleDirectory = path\.join\(contentDirectory, "people"\)/);
   assert.match(generator, /const assetDirectory = path\.join\(contentDirectory, "assets"\)/);
+  assert.match(generator, /path\.relative\(assetDirectory, assetFile\)/);
+  assert.match(generator, /fileStatus\.isFile\(\)/);
+  assert.match(generator, /allowedImageExtensions/);
   assert.match(generator, /participantFiles\.length > 0/);
   assert.match(generator, /peopleFiles\.length > 0/);
   assert.match(generator, /projectFiles\.length > 0/);
@@ -471,8 +507,13 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /color-scheme:\s*dark/);
   assert.match(styles, /\.nsf-awardee-map-plot\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593/);
   assert.match(styles, /\.nsf-cohort-identity > span:last-child small\s*\{[^}]*max-height:\s*none/);
-  assert.match(styles, /\.nsf-tool-card:hover \.nsf-tool-figure > div,[\s\S]*?transform:\s*none/);
+  assert.match(styles, /\.nsf-tool-figure > img\s*\{[^}]*object-fit:\s*cover/);
   assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
+  assert.match(mockupSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
+  assert.match(mockupSource, /!rootRef\.current\?\.contains\(target\)/);
+  assert.match(mockupSource, /document\.removeEventListener\("pointerdown", handlePointerDown\)/);
+  assert.match(mockupSource, /event\.key !== "Escape"/);
+  assert.match(mockupSource, /triggerRef\.current\?\.focus\(\)/);
   const headingRule = styles.match(/\.nsf-hero-copy h1\s*\{([^}]*)\}/);
   assert.ok(headingRule, "Expected a compact homepage heading rule");
   assert.ok(maxPixelValueFor(headingRule[1], "font-size") <= 44);

@@ -7,6 +7,7 @@
   "categories": ["Capability", "Production"],
   "figure": {
     "kind": "causal-graph",
+    "src": "/apto/nsf-network-art.avif",
     "label": "Causal technology graph",
     "alt": "Directed graph connecting technologies, problems, evidence, methods, and organizations"
   },

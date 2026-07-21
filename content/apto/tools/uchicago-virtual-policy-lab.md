@@ -7,6 +7,7 @@
   "categories": ["Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
+    "src": "/apto/model-scale.png",
     "label": "Policy experiment comparison",
     "alt": "Chart comparing baseline and alternative policy scenarios for technology outcomes over time"
   },

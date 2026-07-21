@@ -15,10 +15,9 @@
     "themeChooserLabel": "Choose color theme"
   },
   "primaryNavigation": [
-    { "label": "Program", "section": "about" },
+    { "label": "Cohort", "section": "cohort" },
     { "label": "Projects", "section": "projects" },
-    { "label": "Tools", "section": "tools" },
-    { "label": "Cohort", "section": "cohort" }
+    { "label": "Tools", "section": "tools" }
   ],
   "home": {
     "primaryActionLabel": "Explore the projects",
@@ -34,7 +33,6 @@
     "ledgerVisualEyebrow": "APTO research portfolio",
     "ledgerVisualTitle": "Evidence for better technology decisions",
     "pathways": [
-      { "section": "about", "title": "Program", "description": "The shared outcome framework, research scope, and program approach." },
       { "section": "cohort", "title": "Cohort", "description": "Participating organizations, program leadership, and the investigators leading each project." },
       { "section": "projects", "title": "Projects", "description": "The active APTO awards and the questions each team is pursuing." },
       { "section": "tools", "title": "Tools", "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research." }

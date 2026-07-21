@@ -8,7 +8,7 @@
  * adding a record only requires adding a Markdown file in the relevant folder.
  */
 
-import { access, copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -51,6 +51,7 @@ const allowedSourceKinds = new Set([
 const allowedLogoKinds = new Set(["symbol", "wordmark"]);
 const allowedLogoSurfaces = new Set(["dark", "light"]);
 const allowedParticipantKinds = new Set(["Company", "University"]);
+const allowedImageExtensions = new Set([".avif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const allowedPersonRoles = new Set([
   "Program Manager",
   "Principal Investigator",
@@ -268,7 +269,28 @@ async function filesRecursively(directory) {
 
 function assetSourceForPublicPath(publicPath, context) {
   assert(publicPath.startsWith("/apto/"), `${context} must begin with /apto/`);
-  return path.join(assetDirectory, publicPath.slice("/apto/".length));
+  const relativeAsset = publicPath.slice("/apto/".length);
+  assert(relativeAsset.length > 0, `${context} must reference a file inside content/apto/assets`);
+  const assetFile = path.resolve(assetDirectory, relativeAsset);
+  const containmentPath = path.relative(assetDirectory, assetFile);
+  assert(
+    containmentPath.length > 0 && containmentPath !== ".." && !containmentPath.startsWith(`..${path.sep}`) && !path.isAbsolute(containmentPath),
+    `${context} must remain inside content/apto/assets`,
+  );
+  return assetFile;
+}
+
+async function validateImageAsset(publicPath, context) {
+  const assetFile = assetSourceForPublicPath(publicPath, context);
+  assert(allowedImageExtensions.has(path.extname(assetFile).toLowerCase()), `${context} must reference a supported image file`);
+  let fileStatus;
+  try {
+    fileStatus = await stat(assetFile);
+  } catch {
+    throw new Error(`${context} references missing image asset ${relativeFile(assetFile)}`);
+  }
+  assert(fileStatus.isFile(), `${context} must reference an image file, not a directory`);
+  return assetFile;
 }
 
 async function syncAssets(assetFiles, checkOnly) {
@@ -371,6 +393,8 @@ function validateProgram(document) {
       "title",
       "shortSummary",
       "cohortDescription",
+      "objectivesTitle",
+      "objectives",
       "lastVerified",
       "stats",
       "framework",
@@ -387,7 +411,10 @@ function validateProgram(document) {
   const name = requireString(metadata, "name", context);
   assert(h1 === name, `${context} H1 must match frontmatter name`);
   assert(metadata.acronym === "APTO", `${context}.acronym must be “APTO”`);
-  for (const key of ["title", "shortSummary", "cohortDescription"]) requireString(metadata, key, context);
+  for (const key of ["title", "shortSummary", "cohortDescription", "objectivesTitle"]) requireString(metadata, key, context);
+  const objectives = requireArray(metadata, "objectives", context);
+  assert(objectives.length > 0, `${context}.objectives must not be empty`);
+  objectives.forEach((objective, index) => requireStringValue(objective, `${context}.objectives[${index}]`));
   requireIsoDate(requireString(metadata, "lastVerified", context), `${context}.lastVerified`);
 
   const stats = requireArray(metadata, "stats", context);
@@ -513,7 +540,7 @@ function validateInterface(document) {
   assert(study.socialImageSrc.startsWith("/apto/"), `${context}.study.socialImageSrc must begin with /apto/`);
 
   const primaryNavigation = requireArray(metadata, "primaryNavigation", context);
-  assert(primaryNavigation.length === 4, `${context}.primaryNavigation must contain four links`);
+  assert(primaryNavigation.length === 3, `${context}.primaryNavigation must contain three links`);
   assertExactSet(
     primaryNavigation.map((item, index) => {
       const itemContext = `${context}.primaryNavigation[${index}]`;
@@ -522,7 +549,7 @@ function validateInterface(document) {
       requireString(item, "label", itemContext);
       return requireString(item, "section", itemContext);
     }),
-    new Set(["about", "cohort", "projects", "tools"]),
+    new Set(["cohort", "projects", "tools"]),
     `${context}.primaryNavigation sections`,
   );
 
@@ -550,7 +577,7 @@ function validateInterface(document) {
       for (const key of ["title", "description"]) requireString(pathway, key, pathwayContext);
       return requireString(pathway, "section", pathwayContext);
     }),
-    new Set(["about", "cohort", "projects", "tools"]),
+    new Set(["cohort", "projects", "tools"]),
     `${context}.home.pathways sections`,
   );
 
@@ -818,8 +845,10 @@ function validateTool(document) {
     assert(allowedCategories.has(category), `${context}.categories[${index}] is not supported`);
   });
   const figure = requireObject(metadata.figure, `${context}.figure`);
-  assertExactKeys(figure, ["kind", "label", "alt"], `${context}.figure`);
+  assertExactKeys(figure, ["kind", "src", "label", "alt"], `${context}.figure`);
   assert(allowedFigureKinds.has(requireString(figure, "kind", `${context}.figure`)), `${context}.figure.kind is not supported`);
+  const figureSrc = requireString(figure, "src", `${context}.figure`);
+  assert(figureSrc.startsWith("/apto/"), `${context}.figure.src must begin with /apto/`);
   requireString(figure, "label", `${context}.figure`);
   requireString(figure, "alt", `${context}.figure`);
   requireString(metadata, "statusLabel", context);
@@ -846,17 +875,19 @@ function validateTool(document) {
 
 async function validateParticipantLogoFiles(participantRecords) {
   await Promise.all(
-    participantRecords.map(async (record) => {
-      const logoFile = assetSourceForPublicPath(
-        record.participant.logo.src,
-        `${relativeFile(record.sourceFile)}.logo.src`,
-      );
-      try {
-        await access(logoFile);
-      } catch {
-        throw new Error(`${relativeFile(record.sourceFile)} references missing logo asset ${relativeFile(logoFile)}`);
-      }
-    }),
+    participantRecords.map((record) => validateImageAsset(
+      record.participant.logo.src,
+      `${relativeFile(record.sourceFile)}.logo.src`,
+    )),
+  );
+}
+
+async function validateToolFigureFiles(toolRecords) {
+  await Promise.all(
+    toolRecords.map((record) => validateImageAsset(
+      record.tool.figure.src,
+      `${relativeFile(record.sourceFile)}.figure.src`,
+    )),
   );
 }
 
@@ -902,17 +933,10 @@ async function buildContent() {
     [interfaceRecord.footer.nsfLogoSrc, "footer.nsfLogoSrc"],
     [interfaceRecord.projects.map.imageUrl, "projects.map.imageUrl"],
   ]) {
-    const sourceAsset = assetSourceForPublicPath(
+    await validateImageAsset(
       publicPath,
       `${relativeFile(interfaceFile)}.${field}`,
     );
-    try {
-      await access(sourceAsset);
-    } catch {
-      throw new Error(
-        `${relativeFile(interfaceFile)} references missing content asset ${relativeFile(sourceAsset)}`,
-      );
-    }
   }
   const pageRecords = pageDocuments.map(validatePage);
   assertExactSet(pageRecords.map((record) => record.id), new Set(expectedPages.keys()), "routed page ids");
@@ -943,6 +967,7 @@ async function buildContent() {
   });
 
   const toolRecords = toolDocuments.map(validateTool);
+  await validateToolFigureFiles(toolRecords);
   assertUnique(toolRecords.map((record) => record.id), "tool ids");
   toolRecords.forEach((record) => {
     assert(participantById.has(record.participantId), `${relativeFile(record.sourceFile)}.participantId does not join to a participant`);
@@ -1069,7 +1094,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 6,
+      schemaVersion: 7,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

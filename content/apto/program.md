@@ -8,6 +8,12 @@
   "title": "Evidence for better technology decisions",
   "shortSummary": "APTO supports a cohort of projects building data, tools, and generalizable models to understand how science and technology investments contribute to national outcomes.",
   "cohortDescription": "Five participating organizations bring complementary approaches to measuring, modeling, and anticipating technology outcomes.",
+  "objectivesTitle": "What APTO is designed to do",
+  "objectives": [
+    "Build generalizable, empirically grounded models for assessing and predicting changes in technology capability, production, and use.",
+    "Develop data sets, measurement approaches, and practical tools that make technology-outcome evidence easier to assemble, test, and apply.",
+    "Connect historical evidence with possible future states so research and development decisions can be made with greater clarity."
+  ],
   "lastVerified": "2026-07-20",
   "stats": [
     {

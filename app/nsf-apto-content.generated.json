@@ -1,7 +1,7 @@
 {
   "_generated": {
     "warning": "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-    "schemaVersion": 6,
+    "schemaVersion": 7,
     "generator": "scripts/build-apto-content.mjs",
     "sourceDirectory": "content/apto",
     "generatedFrom": [
@@ -72,6 +72,12 @@
     "title": "Evidence for better technology decisions",
     "shortSummary": "APTO supports a cohort of projects building data, tools, and generalizable models to understand how science and technology investments contribute to national outcomes.",
     "cohortDescription": "Five participating organizations bring complementary approaches to measuring, modeling, and anticipating technology outcomes.",
+    "objectivesTitle": "What APTO is designed to do",
+    "objectives": [
+      "Build generalizable, empirically grounded models for assessing and predicting changes in technology capability, production, and use.",
+      "Develop data sets, measurement approaches, and practical tools that make technology-outcome evidence easier to assemble, test, and apply.",
+      "Connect historical evidence with possible future states so research and development decisions can be made with greater clarity."
+    ],
     "lastVerified": "2026-07-20",
     "stats": [
       {
@@ -167,8 +173,8 @@
     },
     "primaryNavigation": [
       {
-        "label": "Program",
-        "section": "about"
+        "label": "Cohort",
+        "section": "cohort"
       },
       {
         "label": "Projects",
@@ -177,10 +183,6 @@
       {
         "label": "Tools",
         "section": "tools"
-      },
-      {
-        "label": "Cohort",
-        "section": "cohort"
       }
     ],
     "home": {
@@ -197,11 +199,6 @@
       "ledgerVisualEyebrow": "APTO research portfolio",
       "ledgerVisualTitle": "Evidence for better technology decisions",
       "pathways": [
-        {
-          "section": "about",
-          "title": "Program",
-          "description": "The shared outcome framework, research scope, and program approach."
-        },
         {
           "section": "cohort",
           "title": "Cohort",
@@ -390,6 +387,7 @@
           ],
           "figure": {
             "kind": "signal-matrix",
+            "src": "/apto/pce-prediction.png",
             "label": "Opportunity signal matrix",
             "alt": "Matrix comparing technical problems by evidence strength, activity, and potential leverage"
           },
@@ -413,6 +411,7 @@
           ],
           "figure": {
             "kind": "problem-landscape",
+            "src": "/apto/science-map-widget.avif",
             "label": "Problem-to-solution landscape",
             "alt": "Landscape connecting clusters of technical problems with technologies and organizations"
           },
@@ -479,6 +478,7 @@
           ],
           "figure": {
             "kind": "causal-graph",
+            "src": "/apto/nsf-network-art.avif",
             "label": "Causal technology graph",
             "alt": "Directed graph connecting technologies, problems, evidence, methods, and organizations"
           },
@@ -501,6 +501,7 @@
           ],
           "figure": {
             "kind": "evidence-stream",
+            "src": "/apto/science-map-widget.avif",
             "label": "Evidence extraction workflow",
             "alt": "Workflow that turns articles and patents into reviewed entities, relationships, and evidence records"
           },
@@ -578,6 +579,7 @@
           ],
           "figure": {
             "kind": "agent-network",
+            "src": "/apto/nsf-network-art.avif",
             "label": "Firm and energy-asset network",
             "alt": "Network of energy firms, physical assets, markets, investment relationships, and geographic connections"
           },
@@ -601,6 +603,7 @@
           ],
           "figure": {
             "kind": "scenario-curves",
+            "src": "/apto/model-scale.png",
             "label": "Energy scenario comparison",
             "alt": "Small-multiple charts comparing energy technology, policy, and investment scenarios over time"
           },
@@ -711,6 +714,7 @@
           ],
           "figure": {
             "kind": "translation-funnel",
+            "src": "/apto/nsf-network-art.avif",
             "label": "Research-to-market pathway",
             "alt": "Pathway from research investment through invention, licensing, company formation, and technology use"
           },
@@ -735,6 +739,7 @@
           ],
           "figure": {
             "kind": "technology-timeline",
+            "src": "/apto/pce-prediction.png",
             "label": "Multi-technology trajectory forecast",
             "alt": "Chart comparing several technology trajectories with observed values and uncertainty bands"
           },
@@ -824,6 +829,7 @@
           ],
           "figure": {
             "kind": "global-map",
+            "src": "/apto/science-map-widget.avif",
             "label": "Global science and technology observatory",
             "alt": "World map connecting research, patent, product, funding, workforce, and market signals among regions"
           },
@@ -847,6 +853,7 @@
           ],
           "figure": {
             "kind": "scenario-curves",
+            "src": "/apto/model-scale.png",
             "label": "Policy experiment comparison",
             "alt": "Chart comparing baseline and alternative policy scenarios for technology outcomes over time"
           },
@@ -1106,6 +1113,7 @@
       ],
       "figure": {
         "kind": "causal-graph",
+        "src": "/apto/nsf-network-art.avif",
         "label": "Causal technology graph",
         "alt": "Directed graph connecting technologies, problems, evidence, methods, and organizations"
       },
@@ -1129,6 +1137,7 @@
       ],
       "figure": {
         "kind": "agent-network",
+        "src": "/apto/nsf-network-art.avif",
         "label": "Firm and energy-asset network",
         "alt": "Network of energy firms, physical assets, markets, investment relationships, and geographic connections"
       },
@@ -1151,6 +1160,7 @@
       ],
       "figure": {
         "kind": "evidence-stream",
+        "src": "/apto/science-map-widget.avif",
         "label": "Evidence extraction workflow",
         "alt": "Workflow that turns articles and patents into reviewed entities, relationships, and evidence records"
       },
@@ -1175,6 +1185,7 @@
       ],
       "figure": {
         "kind": "global-map",
+        "src": "/apto/science-map-widget.avif",
         "label": "Global science and technology observatory",
         "alt": "World map connecting research, patent, product, funding, workforce, and market signals among regions"
       },
@@ -1198,6 +1209,7 @@
       ],
       "figure": {
         "kind": "signal-matrix",
+        "src": "/apto/pce-prediction.png",
         "label": "Opportunity signal matrix",
         "alt": "Matrix comparing technical problems by evidence strength, activity, and potential leverage"
       },
@@ -1221,6 +1233,7 @@
       ],
       "figure": {
         "kind": "scenario-curves",
+        "src": "/apto/model-scale.png",
         "label": "Energy scenario comparison",
         "alt": "Small-multiple charts comparing energy technology, policy, and investment scenarios over time"
       },
@@ -1244,6 +1257,7 @@
       ],
       "figure": {
         "kind": "problem-landscape",
+        "src": "/apto/science-map-widget.avif",
         "label": "Problem-to-solution landscape",
         "alt": "Landscape connecting clusters of technical problems with technologies and organizations"
       },
@@ -1267,6 +1281,7 @@
       ],
       "figure": {
         "kind": "translation-funnel",
+        "src": "/apto/nsf-network-art.avif",
         "label": "Research-to-market pathway",
         "alt": "Pathway from research investment through invention, licensing, company formation, and technology use"
       },
@@ -1291,6 +1306,7 @@
       ],
       "figure": {
         "kind": "technology-timeline",
+        "src": "/apto/pce-prediction.png",
         "label": "Multi-technology trajectory forecast",
         "alt": "Chart comparing several technology trajectories with observed values and uncertainty bands"
       },
@@ -1314,6 +1330,7 @@
       ],
       "figure": {
         "kind": "scenario-curves",
+        "src": "/apto/model-scale.png",
         "label": "Policy experiment comparison",
         "alt": "Chart comparing baseline and alternative policy scenarios for technology outcomes over time"
       },

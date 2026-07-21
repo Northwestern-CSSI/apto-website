@@ -7,9 +7,9 @@ The APTO site is built from this folder. Content records are deliberately indepe
 - `participants/` contains one organization per file, including its website, location, logo metadata, map-pin position, and cohort description.
 - `people/` contains one person per file. Investigators join to an organization with `participantId`; program leadership uses `participantId: null` and supplies an `organization`.
 - `projects/` contains one project per file and joins to an organization with `participantId`.
-- `tools/` contains one tool per file and joins to an organization with `participantId`. `categories` accepts one or more of `Capability`, `Production`, and `Use`.
+- `tools/` contains one tool per file and joins to an organization with `participantId`. `categories` accepts one or more of `Capability`, `Production`, and `Use`; `figure.src` selects its catalog image from `assets/` using the matching `/apto/…` public path.
 - `future/` preserves approved-but-disabled interface modules and their editable configuration. These records are not included in the public build until explicitly wired into the content generator.
-- `pages/` contains the introduction and metadata for each canonical routed page. The visible navigation combines people with the cohort page; the legacy `/people` URL is handled in route code as an alias and therefore needs no duplicate content record.
+- `pages/` contains the introduction and metadata for each canonical routed page. The home page includes the program overview; `/about` remains as a compatibility route. The visible navigation combines people with the cohort page, while the legacy `/people` URL is handled in route code as an alias and therefore needs no duplicate content record.
 - `program.md` contains program-level copy, the NSF framework, statistics, boilerplate, and source references.
 - `interface.md` contains all shared interface labels, the Light and Dark theme names, navigation, tool-filter labels, project-map configuration, accessibility text, and footer copy.
 - `assets/` is the source of truth for images used by the APTO site, including participant marks, the NSF logo, and supporting artwork. Do not edit the copies in `public/apto/` directly.
@@ -33,7 +33,7 @@ Each participant has `mapPosition.x` and `mapPosition.y` values from 0 to 100. T
 
 ## Images
 
-Image metadata uses the public URL that components will render, such as `/apto/partners/northwestern.png`. The actual source file lives at the matching path under `assets/`, such as `assets/partners/northwestern.png`. The content builder copies source images to `public/apto/`; `--check` compares every source and public copy byte-for-byte.
+Image metadata uses the public URL that components will render, such as `/apto/partners/northwestern.png` or `/apto/science-map-widget.avif`. The actual source file lives at the matching path under `assets/`, such as `assets/partners/northwestern.png` or `assets/science-map-widget.avif`. The content builder verifies participant logos and every tool `figure.src`, copies source images to `public/apto/`, and makes `--check` compare every source and public copy byte-for-byte.
 
 ## Build and validate
 

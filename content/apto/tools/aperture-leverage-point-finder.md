@@ -7,6 +7,7 @@
   "categories": ["Production", "Use"],
   "figure": {
     "kind": "signal-matrix",
+    "src": "/apto/pce-prediction.png",
     "label": "Opportunity signal matrix",
     "alt": "Matrix comparing technical problems by evidence strength, activity, and potential leverage"
   },

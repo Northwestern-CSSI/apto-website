@@ -7,6 +7,7 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "technology-timeline",
+    "src": "/apto/pce-prediction.png",
     "label": "Multi-technology trajectory forecast",
     "alt": "Chart comparing several technology trajectories with observed values and uncertainty bands"
   },

@@ -7,6 +7,7 @@
   "categories": ["Production", "Use"],
   "figure": {
     "kind": "agent-network",
+    "src": "/apto/nsf-network-art.avif",
     "label": "Firm and energy-asset network",
     "alt": "Network of energy firms, physical assets, markets, investment relationships, and geographic connections"
   },
