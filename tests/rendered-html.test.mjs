@@ -488,6 +488,16 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.equal(content.interface.disclosures.toolsLabel, "Mock content");
   assert.ok(content.tools.every((tool) => tool.status.includes("Concept only")));
   assert.equal(content.boilerplate, nsfBoilerplate);
+  assert.deepEqual(content.program.framework, {
+    outcomesTitle: "Outcome lenses",
+    outcomesNote: "What APTO measures",
+    effortsTitle: "Research tracks",
+    effortsNote: "How APTO builds evidence",
+  });
+  assert.deepEqual(
+    content.program.linesOfEffort.map((line) => line.title),
+    sortedAlphabetically(content.program.linesOfEffort.map((line) => line.title)),
+  );
 
   assert.doesNotMatch(nsfSource, /Official NSF source/i);
   assert.doesNotMatch(nsfSource, /Prototype accessibility approach|NSF brand policy|Brand application draft/);
@@ -533,6 +543,15 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     sortedAlphabetically(content.interface.widget.items.map((item) => item.kicker)),
   );
   assert.match(nsfSource, /hasHeroWidgets\(id\) \? <NsfHeroToolWidget/);
+  assert.match(nsfSource, /<dl className="nsf-framework-items">/);
+  assert.match(nsfSource, /<dt>\{item\.label\}<\/dt>/);
+  assert.match(nsfSource, /<dd>\{item\.description\}<\/dd>/);
+
+  const toolsThemeRule = cssRuleBody(nsfStyles, ".nsf-tools-section");
+  assert.match(toolsThemeRule, /--nsf-tools-surface:\s*#f2f7f9/);
+  assert.match(toolsThemeRule, /--nsf-tools-ink:\s*var\(--nsf-dark-blue\)/);
+  assert.match(nsfStyles, /\.nsf-apto-ledger \.nsf-tools-section[\s\S]*--nsf-tools-surface:\s*#f8f5ee/);
+  assert.match(nsfStyles, /\.nsf-apto-network \.nsf-tools-section[\s\S]*--nsf-tools-ink:\s*#fff/);
 
   const networkThemeRule = cssRuleBody(nsfStyles, ".nsf-apto-network");
   assert.match(networkThemeRule, /--nsf-network-canvas:\s*#031138/);

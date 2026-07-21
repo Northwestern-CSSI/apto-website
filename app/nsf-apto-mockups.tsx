@@ -469,25 +469,31 @@ function ProgramOverview({ id, ledger = false, pageHeading = false }: { id: NsfA
       id={`${id}-about-title`}
       pageHeading={pageHeading}
     />
-    <div className="nsf-overview-framework">
-      <article className="nsf-framework-block">
-        <h2>Three outcome types</h2>
-        <div className="nsf-framework-items">
+    <div className="nsf-overview-framework" role="group" aria-label="APTO research framework">
+      <section className="nsf-framework-block is-outcomes" aria-labelledby={`${id}-outcomes-title`}>
+        <header className="nsf-framework-heading">
+          <h2 id={`${id}-outcomes-title`}>{aptoProgram.framework.outcomesTitle}</h2>
+          <p>{aptoProgram.framework.outcomesNote}</p>
+        </header>
+        <dl className="nsf-framework-items">
           {aptoProgram.outcomes.map((outcome) => {
             const item = displayRecord(outcome);
-            return <div key={item.label}><strong>{item.label}</strong>{item.description && <p>{item.description}</p>}</div>;
+            return <div key={item.label}><dt>{item.label}</dt>{item.description && <dd>{item.description}</dd>}</div>;
           })}
-        </div>
-      </article>
-      <article className="nsf-framework-block">
-        <h2>Two lines of effort</h2>
-        <div className="nsf-framework-items">
+        </dl>
+      </section>
+      <section className="nsf-framework-block is-efforts" aria-labelledby={`${id}-efforts-title`}>
+        <header className="nsf-framework-heading">
+          <h2 id={`${id}-efforts-title`}>{aptoProgram.framework.effortsTitle}</h2>
+          <p>{aptoProgram.framework.effortsNote}</p>
+        </header>
+        <dl className="nsf-framework-items">
           {aptoProgram.linesOfEffort.map((line) => {
             const item = displayRecord(line);
-            return <div key={item.label}><strong>{item.label}</strong>{item.description && <p>{item.description}</p>}</div>;
+            return <div key={item.label}><dt>{item.label}</dt>{item.description && <dd>{item.description}</dd>}</div>;
           })}
-        </div>
-      </article>
+        </dl>
+      </section>
     </div>
   </section>;
 }

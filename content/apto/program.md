@@ -31,6 +31,12 @@
       "detail": "Named across the five active awards"
     }
   ],
+  "framework": {
+    "outcomesTitle": "Outcome lenses",
+    "outcomesNote": "What APTO measures",
+    "effortsTitle": "Research tracks",
+    "effortsNote": "How APTO builds evidence"
+  },
   "outcomes": [
     {
       "name": "Capability",
@@ -47,14 +53,14 @@
   ],
   "linesOfEffort": [
     {
-      "id": "models",
-      "title": "Technology Outcome Models",
-      "description": "Generalizable, empirically grounded models for assessing and predicting technology capability, production, and use across past and possible future states."
-    },
-    {
       "id": "data-tools",
       "title": "Data Sets and Tools",
       "description": "Data resources, measurement approaches, and tools that make technology-outcome evidence easier to assemble, analyze, validate, and share."
+    },
+    {
+      "id": "models",
+      "title": "Technology Outcome Models",
+      "description": "Generalizable, empirically grounded models for assessing and predicting technology capability, production, and use across past and possible future states."
     }
   ],
   "technologyAreas": [

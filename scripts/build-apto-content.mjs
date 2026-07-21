@@ -460,6 +460,17 @@ function validateProgram(document) {
     requireString(stat, "detail", statContext);
   });
 
+  const framework = requireObject(metadata.framework, `${context}.framework`);
+  assertExactKeys(
+    framework,
+    ["outcomesTitle", "outcomesNote", "effortsTitle", "effortsNote"],
+    `${context}.framework`,
+  );
+  requireString(framework, "outcomesTitle", `${context}.framework`);
+  requireString(framework, "outcomesNote", `${context}.framework`);
+  requireString(framework, "effortsTitle", `${context}.framework`);
+  requireString(framework, "effortsNote", `${context}.framework`);
+
   const outcomes = requireArray(metadata, "outcomes", context);
   assert(outcomes.length === 3, `${context}.outcomes must contain three records`);
   assertExactSet(

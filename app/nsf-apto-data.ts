@@ -147,6 +147,12 @@ export type AptoProgram = {
   cohortDescription: string;
   lastVerified: string;
   stats: AptoProgramStat[];
+  framework: {
+    outcomesTitle: string;
+    outcomesNote: string;
+    effortsTitle: string;
+    effortsNote: string;
+  };
   outcomes: Array<{
     name: AptoOutcome;
     description: string;
