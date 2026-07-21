@@ -1870,7 +1870,7 @@
   border-radius: 0;
   box-shadow: none;
 }
-.nsf-cohort-group-header > a { width: max-content; margin-top: 3px; grid-column: 2; }
+.nsf-cohort-group-header > a { width: fit-content; max-width: 100%; margin-top: 3px; grid-column: 2; }
 .nsf-cohort-team,
 .nsf-program-leadership > div {
   display: grid;
@@ -2323,6 +2323,10 @@
   .nsf-program-header nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .nsf-cohort-team,
   .nsf-program-leadership > div { grid-template-columns: 1fr; gap: 24px; }
+}
+
+@media (max-width: 360px) {
+  .nsf-cohort-group-header > a { grid-column: 1 / -1; }
 }
 
 @media (forced-colors: active) {
