@@ -13,4 +13,4 @@
 
 ## Introduction
 
-Meet the principal investigators and co-principal investigators leading the APTO projects. People are listed alphabetically within each participating organization, with roles and organization links drawn from the project records.
+Meet the APTO program leadership alongside the principal investigators and co-principal investigators leading the cohort’s projects. Program-management and project-team records are presented separately, with people listed alphabetically within each group or participating organization.
