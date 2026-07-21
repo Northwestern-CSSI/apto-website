@@ -337,10 +337,6 @@ function ProgramOverview({ id, ledger = false, pageHeading = false }: { id: NsfA
         </div>
       </article>
     </div>
-    <div className="nsf-program-notes">
-      <article><h2>Technology areas named by NSF</h2><ul>{aptoProgram.technologyAreas.map((area) => <li key={displayRecord(area).label}>{displayRecord(area).label}</li>)}</ul></article>
-      <article><h2>Open access</h2><p>{aptoProgram.openAccessNote}</p></article>
-    </div>
   </section>;
 }
 
@@ -432,9 +428,6 @@ function ProjectLedgerRow({ project }: { project: AptoProject }) {
 }
 
 function ProjectsSection({ id, ledger = false, pageHeading = false }: { id: NsfAptoMockupId; ledger?: boolean; pageHeading?: boolean }) {
-  const [participant, setParticipant] = useState("all");
-  const projects = participant === "all" ? aptoProjects : aptoProjects.filter((project) => project.participantId === participant);
-  const listId = `${id}-project-list`;
   const copy = copyFor("projects");
 
   return <section className={`nsf-projects-section ${ledger ? "is-ledger" : ""}`} id={`${id}-projects`} aria-labelledby={`${id}-projects-title`}>
@@ -445,10 +438,8 @@ function ProjectsSection({ id, ledger = false, pageHeading = false }: { id: NsfA
       id={`${id}-projects-title`}
       pageHeading={pageHeading}
     />
-    <FilterBar value={participant} onChange={setParticipant} controls={listId} label="Filter projects by participant" />
-    <p className="nsf-filter-status" aria-live="polite">{participant === "all" ? "Showing all APTO projects · alphabetical by official title" : `Showing APTO projects for ${participantFor(participant)?.displayName ?? participant}`}</p>
-    <div className={ledger ? "nsf-project-ledger" : "nsf-project-grid"} id={listId}>
-      {projects.map((project) => ledger
+    <div className={ledger ? "nsf-project-ledger" : "nsf-project-grid"} id={`${id}-project-list`}>
+      {aptoProjects.map((project) => ledger
         ? <ProjectLedgerRow key={project.awardId} project={project} />
         : <ProjectCard key={project.awardId} project={project} />)}
     </div>

@@ -459,6 +459,9 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
 
   assert.doesNotMatch(nsfSource, /Official NSF source/i);
   assert.doesNotMatch(nsfSource, /Prototype accessibility approach|NSF brand policy|Brand application draft/);
+  assert.doesNotMatch(nsfSource, /Technology areas named by NSF|<h2>Open access<\/h2>/);
+  assert.doesNotMatch(nsfSource, /Filter projects by participant|Showing all APTO projects/);
+  assert.doesNotMatch(nsfStyles, /\.nsf-program-notes/);
   assert.doesNotMatch(nsfSource, /Design concept/i);
   assert.doesNotMatch(nsfSource, /nsf-project-orbit|nsf-participant-node/);
   assert.doesNotMatch(nsfSource, /aptoParticipants\.map\(\s*\(participant,\s*index\)/);
