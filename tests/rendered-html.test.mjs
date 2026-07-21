@@ -192,13 +192,13 @@ test("keeps three core APTO homes and adds three matched widget variants", async
     assert.match(html, new RegExp(`\\[\\[\"concept\",\"${concept}\"\\]\\]`));
 
     if (hasWidget) {
-      assert.match(html, /Choose a tool widget/);
+      assert.match(html, /Explore an evidence tool/);
       assert.match(html, /Illustrative interface/);
       assert.equal((html.match(/role="tab"/g) ?? []).length, 4);
       assert.equal((html.match(/aria-selected="true"/g) ?? []).length, 1);
       assert.match(html, new RegExp(`/apto/tools\\?concept=${concept}`));
     } else {
-      assert.doesNotMatch(html, /Choose a tool widget/);
+      assert.doesNotMatch(html, /Explore an evidence tool/);
     }
   }
 });
@@ -593,7 +593,8 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.doesNotMatch(nsfSource, /WidgetDeck|WidgetChooser/);
 
   assert.match(nsfSource, /\/apto\/nsf-logo\.png/);
-  assert.match(nsfSource, /\/apto\/nsf-network-art\.png/);
+  assert.match(nsfSource, /\/apto\/nsf-network-art\.avif/);
+  assert.match(nsfSource, /\/apto\/nsf-network-art-fallback\.jpg/);
   assert.match(nsfSource, /alt="U\.S\. National Science Foundation logo"/);
   assert.match(nsfSource, /width="64" height="64"/);
   assert.match(nsfStyles, /\.nsf-apto :focus-visible/);
@@ -650,7 +651,10 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.ok(maxPixelValueFor(mobileHeadingRule, "font-size") <= 34);
 
   await access(new URL("../public/apto/nsf-logo.png", import.meta.url));
-  await access(new URL("../public/apto/nsf-network-art.png", import.meta.url));
+  await access(new URL("../public/apto/nsf-network-art.avif", import.meta.url));
+  await access(new URL("../public/apto/nsf-network-art-fallback.jpg", import.meta.url));
+  await access(new URL("../public/apto/science-map-widget.avif", import.meta.url));
+  await access(new URL("../public/apto/science-map-widget-fallback.jpg", import.meta.url));
 });
 
 test("builds the NSF APTO content artifact from the Markdown source of truth", async () => {

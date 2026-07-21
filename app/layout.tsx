@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = new URL(`${protocol}://${host}`);
   const title = "APTO Website Direction Study";
   const description =
-    "Fifty-three modern website mockups for the Assessing and Predicting Technology Outcomes program.";
+    "Fifty-six modern website directions for the Assessing and Predicting Technology Outcomes program.";
   const socialImage = new URL("/og.png", baseUrl).toString();
 
   return {

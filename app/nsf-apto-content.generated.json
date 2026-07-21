@@ -42,23 +42,23 @@
     "stats": [
       {
         "value": "5",
-        "label": "APTO-titled projects",
-        "detail": "Filtered from the active NSF award records for Program Element Code 267Y00"
+        "label": "research projects",
+        "detail": "Active APTO awards across the cohort"
       },
       {
         "value": "2",
-        "label": "lines of effort",
-        "detail": "Technology Outcome Models and Data Sets and Tools"
+        "label": "research tracks",
+        "detail": "Outcome models; data sets and tools"
       },
       {
         "value": "3",
-        "label": "outcome dimensions",
-        "detail": "Technology capability, production, and use"
+        "label": "outcome lenses",
+        "detail": "Capability, production, and use"
       },
       {
-        "value": "10",
-        "label": "critical technology groupings",
-        "detail": "Areas identified in the NSF 23-600 solicitation"
+        "value": "12",
+        "label": "named investigators",
+        "detail": "Named across the five active awards"
       }
     ],
     "outcomes": [
@@ -162,14 +162,14 @@
       "secondaryActionLabel": "How the program works",
       "outcomeVisualNote": "Connecting evidence about what technologies can do, how they are produced, and how they are used.",
       "cohortEyebrow": "Participating organizations",
-      "cohortTitle": "Five distinct teams, presented with equal visual weight",
+      "cohortTitle": "Five teams working toward a shared evidence base",
       "cohortLinkLabel": "Meet the full cohort",
-      "logoDisclosure": "Organization marks are website-sourced mockup assets. Final artwork and permission should be confirmed with every participant before production release.",
+      "logoDisclosure": "Participant marks are shown for identification; final artwork and use remain subject to confirmation.",
       "pathways": [
         {
           "section": "about",
           "title": "Program",
-          "description": "The shared outcome framework, research scope, and open-access commitments."
+          "description": "The shared outcome framework, research scope, and program approach."
         },
         {
           "section": "cohort",
@@ -194,15 +194,15 @@
       ]
     },
     "widget": {
-      "eyebrow": "Interactive preview",
-      "title": "Choose a tool widget",
-      "allToolsLabel": "All tools",
+      "eyebrow": "Illustrative APTO tools",
+      "title": "Explore an evidence tool",
+      "allToolsLabel": "Browse tools",
       "disclaimer": "Illustrative interface · demo values are not APTO findings.",
-      "exploreLabel": "Explore tool concepts",
+      "exploreLabel": "Browse all tools",
       "items": [
         {
           "id": "emerging",
-          "icon": "↗",
+          "icon": "trend-up",
           "tabLabel": "Emerging",
           "kicker": "Emerging areas",
           "title": "Signals across candidate frontiers",
@@ -235,7 +235,7 @@
         },
         {
           "id": "map",
-          "icon": "◎",
+          "icon": "network-map",
           "tabLabel": "Map",
           "kicker": "Map of science",
           "title": "Where knowledge is forming",
@@ -255,7 +255,7 @@
         },
         {
           "id": "patent",
-          "icon": "◇",
+          "icon": "shield-check",
           "tabLabel": "Patent",
           "kicker": "Patent & licensing",
           "title": "Translation signals in one view",
@@ -286,7 +286,7 @@
         },
         {
           "id": "trajectories",
-          "icon": "⌁",
+          "icon": "trajectory",
           "tabLabel": "Trends",
           "kicker": "Technology trajectories",
           "title": "Many curves, one comparative view",
@@ -350,7 +350,7 @@
       "navLabel": "Home",
       "eyebrow": "Assessing and Predicting Technology Outcomes",
       "title": "Evidence for better technology decisions",
-      "introduction": "APTO is a National Science Foundation program building shared evidence for understanding how technologies develop, spread, and create value. Explore the participating organizations, research projects, people, source records, and early interface concepts for tools that can make technology-outcome evidence easier to investigate."
+      "introduction": "APTO is a National Science Foundation program building shared evidence for understanding how technologies develop, spread, and create value. Explore the participating organizations, research projects, people, and illustrative tool concepts for investigating technology outcomes."
     },
     {
       "slug": "/people",

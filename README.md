@@ -4,8 +4,9 @@ Production-oriented website directions for the National Science Foundation’s
 Assessing and Predicting Technology Outcomes (APTO) program.
 
 The site combines verified program and award information with clearly marked
-mockups for future APTO tools. It currently includes three complete visual
-directions and a matched widget-home variant for each:
+mockups for future APTO tools. The design-study gallery retains 56 concepts;
+the six current NSF-aligned candidates are three complete visual directions
+with a matched widget-home variant for each:
 
 - `nsfhome` — light, clear, institutional program home
 - `nsfhomewidgets` — light program home with an interactive tool widget
@@ -26,7 +27,7 @@ query parameter, for example `/apto?concept=nsfnetworkwidgets`.
 ## Local development
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -78,6 +79,14 @@ an ongoing production responsibility: final content, third-party tools,
 approved participant logos, videos, and future data visualizations should be
 reviewed again before launch.
 
+## Data, brands, and assets
+
+Award and program facts are source-grounded; widget scores and visualizations
+are expressly illustrative and must not be presented as APTO findings. NSF and
+participant marks are third-party identifiers, are not covered by any code
+license, and require compliance with the relevant owner’s guidance. See
+`ASSETS.md` for the asset-review register.
+
 ## Project structure
 
 - `app/` — React routes, components, and styles
@@ -88,10 +97,16 @@ reviewed again before launch.
   accessibility regression tests
 - `.openai/hosting.json` — Sites deployment metadata
 
+The current hosted study is
+[apto-design-study.moondark.chatgpt.site](https://apto-design-study.moondark.chatgpt.site/).
+Build and test before asking Codex Sites to deploy the contents of `dist/`;
+deployment metadata is already recorded in `.openai/hosting.json`.
+
 ## Useful commands
 
 - `npm run dev` — start local development
 - `npm run build` — build the deployable site
 - `npm run content:build` — validate Markdown and regenerate content
 - `npm run content:check` — fail when generated content is stale
+- `npm run typecheck` — run the strict TypeScript check
 - `node --test tests/rendered-html.test.mjs` — run regression checks

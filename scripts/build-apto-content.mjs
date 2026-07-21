@@ -203,6 +203,7 @@ function assertUnique(values, context) {
 }
 
 function assertExactSet(values, expected, context) {
+  assertUnique(values, context);
   assert(
     values.length === expected.size &&
       values.every((value) => expected.has(value)),
@@ -600,7 +601,10 @@ function validateInterface(document) {
     allowedHeroWidgetIds,
     `${context}.widget item ids`,
   );
-  assertAlphabetical(widgetItems.map((item) => item.kicker), `${context}.widget.items`);
+  assertAlphabetical(
+    widgetItems.map((item, index) => requireString(item, "tabLabel", `${context}.widget.items[${index}]`)),
+    `${context}.widget.items tab labels`,
+  );
 
   widgetItems.forEach((item, index) => {
     const itemContext = `${context}.widget.items[${index}]`;

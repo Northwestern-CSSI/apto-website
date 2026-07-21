@@ -21,11 +21,11 @@
     "secondaryActionLabel": "How the program works",
     "outcomeVisualNote": "Connecting evidence about what technologies can do, how they are produced, and how they are used.",
     "cohortEyebrow": "Participating organizations",
-    "cohortTitle": "Five distinct teams, presented with equal visual weight",
+    "cohortTitle": "Five teams working toward a shared evidence base",
     "cohortLinkLabel": "Meet the full cohort",
-    "logoDisclosure": "Organization marks are website-sourced mockup assets. Final artwork and permission should be confirmed with every participant before production release.",
+    "logoDisclosure": "Participant marks are shown for identification; final artwork and use remain subject to confirmation.",
     "pathways": [
-      { "section": "about", "title": "Program", "description": "The shared outcome framework, research scope, and open-access commitments." },
+      { "section": "about", "title": "Program", "description": "The shared outcome framework, research scope, and program approach." },
       { "section": "cohort", "title": "Cohort", "description": "Participating organizations, legal awardees, projects, and official links." },
       { "section": "people", "title": "People", "description": "Principal investigators and co-principal investigators across the program." },
       { "section": "projects", "title": "Projects", "description": "The active APTO awards and the questions each team is pursuing." },
@@ -33,15 +33,15 @@
     ]
   },
   "widget": {
-    "eyebrow": "Interactive preview",
-    "title": "Choose a tool widget",
-    "allToolsLabel": "All tools",
+    "eyebrow": "Illustrative APTO tools",
+    "title": "Explore an evidence tool",
+    "allToolsLabel": "Browse tools",
     "disclaimer": "Illustrative interface · demo values are not APTO findings.",
-    "exploreLabel": "Explore tool concepts",
+    "exploreLabel": "Browse all tools",
     "items": [
       {
         "id": "emerging",
-        "icon": "↗",
+        "icon": "trend-up",
         "tabLabel": "Emerging",
         "kicker": "Emerging areas",
         "title": "Signals across candidate frontiers",
@@ -58,7 +58,7 @@
       },
       {
         "id": "map",
-        "icon": "◎",
+        "icon": "network-map",
         "tabLabel": "Map",
         "kicker": "Map of science",
         "title": "Where knowledge is forming",
@@ -72,7 +72,7 @@
       },
       {
         "id": "patent",
-        "icon": "◇",
+        "icon": "shield-check",
         "tabLabel": "Patent",
         "kicker": "Patent & licensing",
         "title": "Translation signals in one view",
@@ -91,7 +91,7 @@
       },
       {
         "id": "trajectories",
-        "icon": "⌁",
+        "icon": "trajectory",
         "tabLabel": "Trends",
         "kicker": "Technology trajectories",
         "title": "Many curves, one comparative view",

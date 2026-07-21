@@ -12,23 +12,23 @@
   "stats": [
     {
       "value": "5",
-      "label": "APTO-titled projects",
-      "detail": "Filtered from the active NSF award records for Program Element Code 267Y00"
+      "label": "research projects",
+      "detail": "Active APTO awards across the cohort"
     },
     {
       "value": "2",
-      "label": "lines of effort",
-      "detail": "Technology Outcome Models and Data Sets and Tools"
+      "label": "research tracks",
+      "detail": "Outcome models; data sets and tools"
     },
     {
       "value": "3",
-      "label": "outcome dimensions",
-      "detail": "Technology capability, production, and use"
+      "label": "outcome lenses",
+      "detail": "Capability, production, and use"
     },
     {
-      "value": "10",
-      "label": "critical technology groupings",
-      "detail": "Areas identified in the NSF 23-600 solicitation"
+      "value": "12",
+      "label": "named investigators",
+      "detail": "Named across the five active awards"
     }
   ],
   "outcomes": [
