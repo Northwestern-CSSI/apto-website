@@ -264,12 +264,44 @@
 .nsf-program-notes p { color: #304e47; font-size: .94rem; line-height: 1.66; }
 
 .nsf-projects-section { background: #f2f7f9; }
-.nsf-participant-mark { min-width: 0; display: grid; place-items: center; overflow: hidden; background: #fff; border: 1px solid #c6d2da; border-radius: 8px; }
-.nsf-participant-mark.on-dark { background: #102a46; border-color: #35516d; }
+.nsf-participant-mark {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--nsf-logo-plate-background);
+  border: 1px solid var(--nsf-logo-plate-border);
+  border-radius: 10px;
+  box-shadow: var(--nsf-logo-plate-shadow);
+}
+.nsf-participant-mark.tone-light {
+  --nsf-logo-plate-background: #fff;
+  --nsf-logo-plate-border: #b7c9d6;
+  --nsf-logo-plate-shadow: 0 1px 0 rgba(0, 37, 84, .05);
+}
+.nsf-participant-mark.tone-dark {
+  --nsf-logo-plate-background: #102a46;
+  --nsf-logo-plate-border: #55718a;
+  --nsf-logo-plate-shadow: 0 1px 0 rgba(255, 255, 255, .08);
+}
 .nsf-participant-mark.is-compact { width: 92px; height: 48px; padding: 7px 9px; }
 .nsf-participant-mark.is-directory { width: 148px; height: 72px; padding: 10px 13px; }
 .nsf-participant-mark.is-feature { width: 148px; height: 82px; padding: 11px 13px; }
 .nsf-participant-mark img { max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; object-fit: contain; }
+.nsf-participant-mark.tone-light.logo-macrocosm img {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(47%) saturate(1915%) hue-rotate(178deg) brightness(84%) contrast(105%);
+}
+.nsf-participant-mark.tone-light.logo-aperture img {
+  filter: invert(1) grayscale(1) contrast(4);
+  mix-blend-mode: multiply;
+}
+.nsf-participant-mark.tone-dark.logo-uchicago img {
+  filter: grayscale(1) brightness(0) invert(1);
+}
+.nsf-participant-mark.tone-dark.logo-northwestern img {
+  filter: invert(1) grayscale(1) brightness(3);
+  mix-blend-mode: screen;
+}
 .nsf-participant-mark.is-symbol img { max-width: 52px; max-height: 52px; }
 .nsf-participant-mark.is-compact.is-symbol img { max-width: 34px; max-height: 34px; }
 .nsf-participant-mark.is-fallback { color: var(--nsf-dark-blue); font-size: .8rem; font-weight: 800; }
@@ -658,4 +690,5 @@
   .nsf-program-header nav a[aria-current="page"],
   .nsf-direction-bar nav a[aria-current="page"],
   .nsf-filter button[aria-pressed="true"] { border-color: Highlight; }
+  .nsf-participant-mark { border-color: CanvasText; box-shadow: none; }
 }

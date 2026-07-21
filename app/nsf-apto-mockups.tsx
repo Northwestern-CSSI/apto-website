@@ -149,13 +149,15 @@ function FilterBar({
 function ParticipantMark({
   participant,
   size = "directory",
+  tone,
 }: {
   participant: AptoParticipant;
   size?: "compact" | "directory" | "feature";
+  tone: "light" | "dark";
 }) {
   const logo = participant.logo;
   return <span
-    className={`nsf-participant-mark is-${size} is-${logo.kind} on-${logo.surface}`}
+    className={`nsf-participant-mark is-${size} is-${logo.kind} tone-${tone} asset-on-${logo.surface} logo-${participant.id}`}
     aria-hidden="true"
     title={`${participant.displayName} mark — mockup use pending participant approval`}
   >
@@ -259,7 +261,11 @@ function CohortIdentityStage({ id, direction }: { id: NsfAptoMockupId; direction
           key={participant.id}
           href={`${aptoHref("cohort", id)}#participant-${participant.id}`}
         >
-          <ParticipantMark participant={participant} size={direction === "network" ? "feature" : "directory"} />
+          <ParticipantMark
+            participant={participant}
+            size={direction === "network" ? "feature" : "directory"}
+            tone={direction === "network" ? "dark" : "light"}
+          />
           <span><strong>{participant.displayName}</strong><small>{project?.shortName}</small></span>
         </a>;
       })}
@@ -368,8 +374,8 @@ function ProjectCard({ project }: { project: AptoProject }) {
   return <article className="nsf-project-card" id={`nsf-award-${project.awardId}`}>
     <header className="nsf-project-heading">
       {participant
-        ? <ParticipantMark participant={participant} size="directory" />
-        : <span className="nsf-participant-mark is-directory is-fallback" aria-hidden="true">{participantMonogram(project.organization)}</span>}
+        ? <ParticipantMark participant={participant} size="directory" tone="light" />
+        : <span className="nsf-participant-mark is-directory is-fallback tone-light" aria-hidden="true">{participantMonogram(project.organization)}</span>}
       <div>
         <p className="nsf-project-context">{project.organization} <span aria-hidden="true">·</span> {project.location}</p>
         <h2>{project.officialTitle}</h2>
@@ -401,7 +407,7 @@ function ProjectLedgerRow({ project }: { project: AptoProject }) {
   const participant = participantFor(project.participantId);
   return <details className="nsf-project-ledger-row">
     <summary>
-      {participant && <ParticipantMark participant={participant} size="compact" />}
+      {participant && <ParticipantMark participant={participant} size="compact" tone="light" />}
       <strong>{project.shortName}</strong>
       <small>{participant?.displayName ?? project.organization}</small>
       <span>NSF award {project.awardId}</span>
@@ -465,7 +471,7 @@ function ToolCard({ tool }: { tool: AptoTool }) {
       <header className="nsf-tool-heading">
         <h2>{tool.name}</h2>
         <div className="nsf-tool-context">
-          {participant && <ParticipantMark participant={participant} size="compact" />}
+          {participant && <ParticipantMark participant={participant} size="compact" tone="dark" />}
           <p>A concept by <strong>{participant?.displayName ?? tool.organizationId}</strong><span aria-hidden="true"> · </span><span>{tool.status}</span></p>
         </div>
       </header>
@@ -531,7 +537,7 @@ function PeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageH
     />
     <div className="nsf-people-groups">
       {aptoParticipants.map((participant) => <section key={participant.id} aria-labelledby={`${id}-people-${participant.id}`}>
-        <header><div className="nsf-people-identity"><ParticipantMark participant={participant} size="compact" /><h2 id={`${id}-people-${participant.id}`}>{participant.displayName}</h2></div><ExternalLink href={participant.website}>Organization website</ExternalLink></header>
+        <header><div className="nsf-people-identity"><ParticipantMark participant={participant} size="compact" tone="light" /><h2 id={`${id}-people-${participant.id}`}>{participant.displayName}</h2></div><ExternalLink href={participant.website}>Organization website</ExternalLink></header>
         <div>{participant.people.map((person) => <PersonCard key={person.name} person={person} participant={participant} awardId={participant.awardId} />)}</div>
       </section>)}
     </div>
@@ -553,7 +559,7 @@ function ParticipantDirectory({ id, prominent = false, pageHeading = false }: { 
       {aptoParticipants.map((participant) => {
         const project = projectForParticipant(participant.id);
         return <article className="nsf-participant-entry" id={`participant-${participant.id}`} key={participant.id}>
-          <ParticipantMark participant={participant} size="feature" />
+          <ParticipantMark participant={participant} size="feature" tone={prominent ? "dark" : "light"} />
           <div className="nsf-participant-profile">
             <header className="nsf-participant-heading">
               <p className="nsf-participant-context">{participant.kind} <span aria-hidden="true">·</span> {participant.location}</p>

@@ -474,6 +474,10 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     assert.match(nsfSource, new RegExp(`className=\"${className}\"`));
   }
   assert.match(nsfSource, /nsf-participant-mark is-\$\{size\}/);
+  assert.match(nsfSource, /tone: "light" \| "dark"/);
+  assert.match(nsfSource, /tone=\{direction === "network" \? "dark" : "light"\}/);
+  assert.match(nsfSource, /size="compact" tone="dark"/);
+  assert.match(nsfSource, /tone=\{prominent \? "dark" : "light"\}/);
 
   const headerStart = nsfSource.indexOf("function NsfProgramHeader");
   const heroStart = nsfSource.indexOf("function CompactProgramHero");
@@ -520,6 +524,13 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfStyles, /@media \(max-width: 860px\)/);
   assert.match(nsfStyles, /@media \(max-width: 640px\)/);
   assert.match(nsfStyles, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(nsfStyles, /\.nsf-participant-mark\.tone-light/);
+  assert.match(nsfStyles, /\.nsf-participant-mark\.tone-dark/);
+  assert.match(nsfStyles, /\.tone-light\.logo-macrocosm img/);
+  assert.match(nsfStyles, /\.tone-light\.logo-aperture img/);
+  assert.match(nsfStyles, /\.tone-dark\.logo-uchicago img/);
+  assert.match(nsfStyles, /\.tone-dark\.logo-northwestern img/);
+  assert.doesNotMatch(nsfStyles, /\.nsf-participant-mark\.on-dark\s*\{/);
 
   assert.doesNotMatch(nsfStyles, /\.(?:nsf-)?participant-[1-9]\b/);
   assert.doesNotMatch(nsfStyles, /\.nsf-project-orbit|\.nsf-participant-node/);
