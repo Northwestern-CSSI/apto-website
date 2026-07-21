@@ -12,8 +12,11 @@ export type AptoRouteSearchParams = Promise<
 
 const aptoConceptIds = new Set<NsfAptoMockupId>([
   "nsfhome",
+  "nsfhomewidgets",
   "nsfledger",
+  "nsfledgerwidgets",
   "nsfnetwork",
+  "nsfnetworkwidgets",
 ]);
 
 function firstValue(value: SearchParamValue) {

@@ -250,4 +250,7 @@ export const concepts = [
   { id: "nsfhome", number: "51", name: "NSF APTO Program Home", mood: "Calm institutional clarity", color: "#005699" },
   { id: "nsfledger", number: "52", name: "APTO Evidence Ledger", mood: "Editorial program index", color: "#D3B34E" },
   { id: "nsfnetwork", number: "53", name: "APTO Cohort Network", mood: "Organization-first directory", color: "#4EC3E0" },
+  { id: "nsfhomewidgets", number: "54", name: "Program Home + Widgets", mood: "Light modular workbench", color: "#005699" },
+  { id: "nsfledgerwidgets", number: "55", name: "Evidence Ledger + Widgets", mood: "Editorial tool plate", color: "#D3B34E" },
+  { id: "nsfnetworkwidgets", number: "56", name: "Cohort Network + Widgets", mood: "Dark signal console", color: "#4EC3E0" },
 ];

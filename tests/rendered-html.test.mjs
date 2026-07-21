@@ -142,7 +142,7 @@ test("server-renders the APTO design gallery", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>APTO Website Direction Study<\/title>/i);
-  assert.match(html, /Fifty-three possible/);
+  assert.match(html, /Fifty-six possible/);
   assert.match(html, /front doors to/);
   assert.match(html, /Civic Observatory/);
   assert.match(html, /Signal Story/);
@@ -156,7 +156,7 @@ test("server-renders the APTO design gallery", async () => {
   assert.match(html, /APTO Evidence Ledger/);
   assert.match(html, /APTO Cohort Network/);
   assert.match(html, /NSF-aligned program directions/);
-  assert.equal((html.match(/concept-card card-/g) ?? []).length, 53);
+  assert.equal((html.match(/concept-card card-/g) ?? []).length, 56);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
 
@@ -174,7 +174,36 @@ test("server-renders a representative explicit APTO route", async () => {
   assert.doesNotMatch(html, /Official NSF source/i);
 });
 
-test("ships fifty-three concepts, responsive behavior, and APTO assets", async () => {
+test("keeps three core APTO homes and adds three matched widget variants", async () => {
+  const directions = [
+    ["nsfhome", "home", false],
+    ["nsfhomewidgets", "home", true],
+    ["nsfledger", "ledger", false],
+    ["nsfledgerwidgets", "ledger", true],
+    ["nsfnetwork", "network", false],
+    ["nsfnetworkwidgets", "network", true],
+  ];
+
+  for (const [concept, theme, hasWidget] of directions) {
+    const response = await render(`/apto?concept=${concept}`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, new RegExp(`nsf-apto-${theme}`));
+    assert.match(html, new RegExp(`\\[\\[\"concept\",\"${concept}\"\\]\\]`));
+
+    if (hasWidget) {
+      assert.match(html, /Choose a tool widget/);
+      assert.match(html, /Illustrative interface/);
+      assert.equal((html.match(/role="tab"/g) ?? []).length, 4);
+      assert.equal((html.match(/aria-selected="true"/g) ?? []).length, 1);
+      assert.match(html, new RegExp(`/apto/tools\\?concept=${concept}`));
+    } else {
+      assert.doesNotMatch(html, /Choose a tool widget/);
+    }
+  }
+});
+
+test("ships fifty-six concepts, responsive behavior, and APTO assets", async () => {
   const [source, interactiveSource, kineticSource, portfolioSource, widgetSource, engines, styles, kineticStyles, portfolioStyles, widgetStyles, packageJson] = await Promise.all([
     readFile(new URL("../app/mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/interactive-mockups.tsx", import.meta.url), "utf8"),
@@ -241,8 +270,11 @@ test("ships fifty-three concepts, responsive behavior, and APTO assets", async (
     "widgetcivic",
     "widgethome",
     "nsfhome",
+    "nsfhomewidgets",
     "nsfledger",
+    "nsfledgerwidgets",
     "nsfnetwork",
+    "nsfnetworkwidgets",
   ]) {
     assert.match(source, new RegExp(`case \\\"${id}\\\"`));
   }
@@ -315,7 +347,7 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfSource, /\?concept=\$\{id\}/);
   assert.match(routePageSource, /return <NsfAptoPage id=\{conceptId\} section=\{section\} \/>/);
   assert.match(routePageSource, /: "nsfhome"/);
-  for (const id of ["nsfhome", "nsfledger", "nsfnetwork"]) {
+  for (const id of ["nsfhome", "nsfhomewidgets", "nsfledger", "nsfledgerwidgets", "nsfnetwork", "nsfnetworkwidgets"]) {
     assert.match(routePageSource, new RegExp(`\\"${id}\\"`));
   }
 
@@ -482,11 +514,17 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfSource, /size="compact" tone="dark"/);
   assert.match(nsfSource, /tone=\{prominent \? "dark" : "light"\}/);
   assert.equal(
-    (nsfSource.match(/const tone = id === "nsfnetwork" \? "dark" : "light";/g) ?? []).length,
+    (nsfSource.match(/const tone = directionFor\(id\) === "network" \? "dark" : "light";/g) ?? []).length,
     2,
   );
   assert.match(nsfSource, /<ProjectCard key=\{project\.awardId\} project=\{project\} tone=\{tone\} \/>/);
   assert.match(nsfSource, /size="compact" tone=\{tone\}/);
+  assert.match(nsfSource, /function NsfHeroToolWidget/);
+  assert.match(nsfSource, /role="tablist"/);
+  assert.match(nsfSource, /role="tabpanel"/);
+  assert.match(nsfSource, /aria-selected=\{active === item\.id\}/);
+  assert.match(nsfSource, /id: "emerging"[\s\S]*id: "map"[\s\S]*id: "patent"[\s\S]*id: "trajectories"/);
+  assert.match(nsfSource, /hasHeroWidgets\(id\) \? <NsfHeroToolWidget/);
 
   const networkThemeRule = cssRuleBody(nsfStyles, ".nsf-apto-network");
   assert.match(networkThemeRule, /--nsf-network-canvas:\s*#031138/);
@@ -502,6 +540,15 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   }
   assert.match(nsfStyles, /\.nsf-apto-network \.nsf-overview-framework[\s\S]*#241840/);
   assert.match(nsfStyles, /\.nsf-participant-mark\.tone-dark\.is-fallback\s*\{\s*color:\s*#fff/);
+  for (const selector of [
+    ".nsf-hero-widget",
+    ".nsf-hero-widget-tabs",
+    ".nsf-hero-widget-panel",
+    ".nsf-widget-science-map",
+    ".nsf-widget-trajectory-grid",
+  ]) {
+    cssRuleBody(nsfStyles, selector);
+  }
 
   const headerStart = nsfSource.indexOf("function NsfProgramHeader");
   const heroStart = nsfSource.indexOf("function CompactProgramHero");

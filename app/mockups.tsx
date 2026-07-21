@@ -148,7 +148,7 @@ function ConceptSwitcher({ current, onSelect }: { current: string; onSelect: (id
       </div>
       <nav className="review-actions" aria-label="Mockup navigation">
         <button type="button" onClick={() => onSelect(previous.id)} aria-label={`Previous mockup: ${previous.name}`}><Arrow left /></button>
-        <button type="button" onClick={() => onSelect("gallery")}>All 53</button>
+        <button type="button" onClick={() => onSelect("gallery")}>All 56</button>
         <button type="button" onClick={() => onSelect(next.id)} aria-label={`Next mockup: ${next.name}`}>Next <span aria-hidden="true">→</span></button>
       </nav>
     </div>
@@ -171,11 +171,11 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
     <main className="gallery-page">
       <header className="gallery-header">
         <div className="gallery-kicker"><span>APTO</span> Website direction study · July 2026</div>
-        <h1>Fifty-three possible<br />front doors to <em>APTO.</em></h1>
+        <h1>Fifty-six possible<br />front doors to <em>APTO.</em></h1>
         <div className="gallery-intro">
           <p>Each direction puts working tools, open data, major results, publications, teams, and participating institutions at the center of the program—not behind a generic project homepage.</p>
           <div className="gallery-summary">
-            <span>53</span><small>distinct<br />directions</small>
+            <span>56</span><small>distinct<br />directions</small>
             <span>01</span><small>shared content<br />architecture</small>
           </div>
         </div>
@@ -260,9 +260,9 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
         ))}
       </section>
 
-      <div className="gallery-group-heading is-nsf"><span>51—53</span><div><h2>NSF-aligned program directions</h2><p>Three complete cohort sites grounded in NSF brand standards, official award records, program content, people, organization links, and clearly labeled conceptual tools.</p></div><i>NSF STUDY</i></div>
-      <section className="concept-grid concept-grid-nsf" aria-label="Three NSF-aligned APTO program website mockups">
-        {concepts.slice(50, 53).map((concept) => (
+      <div className="gallery-group-heading is-nsf"><span>51—56</span><div><h2>NSF-aligned program directions</h2><p>Three increasingly production-ready cohort sites, each paired with a modular tool-widget homepage using the same verified program content.</p></div><i>NSF STUDY</i></div>
+      <section className="concept-grid concept-grid-nsf" aria-label="Six NSF-aligned APTO program website directions">
+        {concepts.slice(50, 56).map((concept) => (
           <button className={`concept-card card-${concept.id}`} type="button" key={concept.id} onClick={() => onSelect(concept.id)}>
             <ConceptMiniature id={concept.id} />
             <div className="concept-card-meta">
@@ -276,7 +276,7 @@ function Gallery({ onSelect }: { onSelect: (id: string) => void }) {
 
       <footer className="gallery-footer">
         <p>Built from APTO’s 2026 program materials, official NSF award records, and recent science, data, and institutional website patterns.</p>
-        <span>Directions 51—53 cover all five APTO-titled awards. Their ten tool entries are explicit interface concepts pending confirmation by each project.</span>
+        <span>Directions 51—56 cover all five APTO-titled awards. Tool entries and widget values are explicit interface concepts pending confirmation by each project.</span>
       </footer>
     </main>
   );
@@ -594,6 +594,9 @@ function renderConcept(id: string) {
     case "nsfhome": return <NsfAptoMockup id="nsfhome" />;
     case "nsfledger": return <NsfAptoMockup id="nsfledger" />;
     case "nsfnetwork": return <NsfAptoMockup id="nsfnetwork" />;
+    case "nsfhomewidgets": return <NsfAptoMockup id="nsfhomewidgets" />;
+    case "nsfledgerwidgets": return <NsfAptoMockup id="nsfledgerwidgets" />;
+    case "nsfnetworkwidgets": return <NsfAptoMockup id="nsfnetworkwidgets" />;
     default: return null;
   }
 }
@@ -658,7 +661,7 @@ export default function MockupStudio() {
   return (
     <div className={`mockup-studio view-${selected}`}>
       {selected === "gallery" ? <Gallery onSelect={choose} /> : <>
-        {["nsfhome", "nsfledger", "nsfnetwork"].includes(selected) && <a className="nsf-skip-link" href={`#${selected}-main`}>Skip to main content</a>}
+        {["nsfhome", "nsfhomewidgets", "nsfledger", "nsfledgerwidgets", "nsfnetwork", "nsfnetworkwidgets"].includes(selected) && <a className="nsf-skip-link" href={`#${selected}-main`}>Skip to main content</a>}
         <ConceptSwitcher current={selected} onSelect={choose} />
         <Suspense fallback={<div className="kinetic-loading"><span>APTO</span><p>Preparing the live scene…</p></div>}>{renderConcept(selected)}</Suspense>
       </>}

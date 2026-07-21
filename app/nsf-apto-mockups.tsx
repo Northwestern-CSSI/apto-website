@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
 
 import {
   aptoBoilerplate,
@@ -12,7 +12,13 @@ import {
   aptoProjects,
 } from "./nsf-apto-data";
 
-export type NsfAptoMockupId = "nsfhome" | "nsfledger" | "nsfnetwork";
+export type NsfAptoMockupId =
+  | "nsfhome"
+  | "nsfhomewidgets"
+  | "nsfledger"
+  | "nsfledgerwidgets"
+  | "nsfnetwork"
+  | "nsfnetworkwidgets";
 export type NsfAptoSection = "home" | "about" | "cohort" | "people" | "projects" | "tools";
 
 type AptoProject = (typeof aptoProjects)[number];
@@ -39,7 +45,8 @@ const pageSlug: Record<NsfAptoSection, string> = {
   tools: "/tools",
 };
 
-const directionFor = (id: NsfAptoMockupId): NsfDirection => id === "nsfledger" ? "ledger" : id === "nsfnetwork" ? "network" : "home";
+const directionFor = (id: NsfAptoMockupId): NsfDirection => id.startsWith("nsfledger") ? "ledger" : id.startsWith("nsfnetwork") ? "network" : "home";
+const hasHeroWidgets = (id: NsfAptoMockupId) => id.endsWith("widgets");
 
 function aptoHref(section: NsfAptoSection, id: NsfAptoMockupId) {
   const path = sectionPath[section];
@@ -167,9 +174,12 @@ function ParticipantMark({
 
 function NsfDirectionStudyBar({ id, section }: { id: NsfAptoMockupId; section: NsfAptoSection }) {
   const directions: Array<{ id: NsfAptoMockupId; label: string; note: string }> = [
-    { id: "nsfnetwork", label: "Cohort network", note: "Organization-first" },
-    { id: "nsfledger", label: "Evidence ledger", note: "Editorial index" },
-    { id: "nsfhome", label: "Program home", note: "Institutional clarity" },
+    { id: "nsfhome", label: "Program home", note: "Light core" },
+    { id: "nsfhomewidgets", label: "Program + widget", note: "Light tools" },
+    { id: "nsfledger", label: "Evidence ledger", note: "Editorial core" },
+    { id: "nsfledgerwidgets", label: "Ledger + widget", note: "Editorial tools" },
+    { id: "nsfnetwork", label: "Cohort network", note: "Dark core" },
+    { id: "nsfnetworkwidgets", label: "Network + widget", note: "Dark tools" },
   ];
 
   return <aside className="nsf-direction-bar" aria-label="APTO design directions">
@@ -214,6 +224,140 @@ function NsfProgramHeader({ id, activeSection }: { id: NsfAptoMockupId; activeSe
     </header>;
 }
 
+type NsfHeroWidgetId = "emerging" | "map" | "patent" | "trajectories";
+
+const nsfHeroWidgets: readonly {
+  id: NsfHeroWidgetId;
+  icon: string;
+  tabLabel: string;
+  kicker: string;
+  title: string;
+  summary: string;
+}[] = [
+  { id: "emerging", icon: "↗", tabLabel: "Emerging", kicker: "EMERGING AREAS", title: "Signals across candidate frontiers", summary: "Compare illustrative momentum signals across several technology areas." },
+  { id: "map", icon: "◎", tabLabel: "Map", kicker: "MAP OF SCIENCE", title: "Where knowledge is forming", summary: "Explore a UMAP-like landscape of connected research areas and emerging clusters." },
+  { id: "patent", icon: "◇", tabLabel: "Patent", kicker: "PATENT & LICENSING", title: "Translation signals in one view", summary: "Preview possible patentability and licensability indicators without making a legal determination." },
+  { id: "trajectories", icon: "⌁", tabLabel: "Trends", kicker: "TECHNOLOGY TRAJECTORIES", title: "Many curves, one comparative view", summary: "Inspect small-multiple timelines for technologies developing across different domains." },
+];
+
+const emergingPreviewRows = [
+  ["AI-designed proteins", "Biology", 74],
+  ["Perovskite tandems", "Energy", 86],
+  ["Quantum computing", "Computing", 79],
+  ["Solid-state batteries", "Energy", 67],
+] as const;
+
+const translationPreviewRows = [
+  ["Licensing fit", 72],
+  ["Market adjacency", 64],
+  ["Patent signal", 81],
+  ["Translation readiness", 69],
+] as const;
+
+function NsfHeroWidgetVisual({ widget }: { widget: NsfHeroWidgetId }) {
+  switch (widget) {
+    case "emerging":
+      return <ul className="nsf-widget-signal-list" aria-label="Illustrative emerging technology signals, listed alphabetically">
+        {emergingPreviewRows.map(([name, domain, value]) => <li key={name}>
+          <div><small>{domain}</small><strong>{name}</strong></div>
+          <i aria-hidden="true"><span style={{ "--nsf-widget-value": `${value}%` } as CSSProperties} /></i>
+          <b>{value}</b>
+        </li>)}
+      </ul>;
+    case "map":
+      return <div className="nsf-widget-science-map" role="img" aria-label="Illustrative map of science showing connected artificial intelligence, biology, energy, materials, and quantum research clusters">
+        {[
+          ["AI", "cluster-ai"],
+          ["Biology", "cluster-biology"],
+          ["Energy", "cluster-energy"],
+          ["Materials", "cluster-materials"],
+          ["Quantum", "cluster-quantum"],
+        ].map(([label, className]) => <span className={className} key={label}><i />{label}</span>)}
+        <p><small>EMERGING CLUSTER</small><strong>Perovskite interfaces</strong></p>
+      </div>;
+    case "patent":
+      return <div className="nsf-widget-translation-preview">
+        <div className="nsf-widget-composite" aria-label="Illustrative composite translation signal of 72 out of 100"><small>ILLUSTRATIVE COMPOSITE</small><strong>72</strong><span>/ 100</span></div>
+        <dl>{translationPreviewRows.map(([label, value]) => <div key={label}>
+          <dt>{label}</dt><dd><i aria-hidden="true"><span style={{ "--nsf-widget-value": `${value}%` } as CSSProperties} /></i><b>{value}</b></dd>
+        </div>)}</dl>
+      </div>;
+    case "trajectories":
+      return <div className="nsf-widget-trajectory-grid">
+        {[
+          ["Advanced manufacturing", "Physical", "curve-gold"],
+          ["Perovskite photovoltaics", "Energy", "curve-blue"],
+          ["Quantum computing", "Computing", "curve-purple"],
+        ].map(([name, domain, curve]) => <article key={name}>
+          <small>{domain}</small><strong>{name}</strong>
+          <div className={`nsf-widget-mini-curve ${curve}`} role="img" aria-label={`${name} illustrative rising technology trajectory`}><i /><i /><i /><i /></div>
+          <footer><span>Observed</span><span>Forecast</span></footer>
+        </article>)}
+      </div>;
+  }
+}
+
+function NsfHeroToolWidget({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
+  const [active, setActive] = useState<NsfHeroWidgetId>(nsfHeroWidgets[0].id);
+  const widget = nsfHeroWidgets.find((item) => item.id === active) ?? nsfHeroWidgets[0];
+  const panelId = `${id}-hero-widget-panel`;
+
+  const handleKeys = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const last = nsfHeroWidgets.length - 1;
+    const next = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? last
+        : (index + (event.key === "ArrowRight" ? 1 : -1) + nsfHeroWidgets.length) % nsfHeroWidgets.length;
+    setActive(nsfHeroWidgets[next].id);
+    event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
+  };
+
+  return <aside className={`nsf-hero-widget is-${direction}`} aria-label="Interactive APTO tool widget preview">
+    <header className="nsf-hero-widget-header">
+      <div><span>INTERACTIVE PREVIEW</span><strong>Choose a tool widget</strong></div>
+      <a href={aptoHref("tools", id)}>All tools <span aria-hidden="true">↗</span></a>
+    </header>
+    <div className="nsf-hero-widget-tabs" role="tablist" aria-label="Choose a tool preview" data-local-arrows="true">
+      {nsfHeroWidgets.map((item, index) => <button
+        type="button"
+        role="tab"
+        id={`${id}-hero-widget-tab-${item.id}`}
+        aria-selected={active === item.id}
+        aria-controls={panelId}
+        tabIndex={active === item.id ? 0 : -1}
+        key={item.id}
+        onClick={() => setActive(item.id)}
+        onKeyDown={(event) => handleKeys(event, index)}
+      ><i aria-hidden="true">{item.icon}</i><span>{item.tabLabel}</span></button>)}
+    </div>
+    <section className="nsf-hero-widget-panel" id={panelId} role="tabpanel" aria-labelledby={`${id}-hero-widget-tab-${active}`} key={active}>
+      <header>
+        <p>{widget.kicker}</p>
+        <h2>{widget.title}</h2>
+        <span>{widget.summary}</span>
+      </header>
+      <div className="nsf-hero-widget-visual"><NsfHeroWidgetVisual widget={active} /></div>
+      <footer><span>Illustrative interface · demo values are not APTO findings.</span><a href={aptoHref("tools", id)}>Explore tool concepts</a></footer>
+    </section>
+  </aside>;
+}
+
+function NsfHeroOutcomeVisual({ direction }: { direction: NsfDirection }) {
+  return direction === "network" ? <figure className="nsf-network-hero-art">
+    <img src="/apto/nsf-network-art.png" alt="Abstract illustration of research organizations connected through a shared evidence network" />
+    <figcaption>Independent research teams connected by a shared question about technology outcomes.</figcaption>
+  </figure> : <aside className="nsf-hero-program-note" aria-label="APTO outcome framework">
+    <div className="nsf-outcome-lens">
+      {aptoProgram.outcomes.map((outcome) => <span key={displayRecord(outcome).label}>{displayRecord(outcome).label}</span>)}
+      <strong>APTO</strong>
+    </div>
+    <p>Connecting evidence about what technologies can do, how they are produced, and how they are used.</p>
+  </aside>;
+}
+
 function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
   const homeCopy = copyFor("home");
   return <section className="nsf-program-hero" aria-labelledby={`${id}-title`}>
@@ -232,16 +376,7 @@ function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction:
         })}
       </dl>
     </div>
-    {direction === "network" ? <figure className="nsf-network-hero-art">
-      <img src="/apto/nsf-network-art.png" alt="Abstract illustration of research organizations connected through a shared evidence network" />
-      <figcaption>Independent research teams connected by a shared question about technology outcomes.</figcaption>
-    </figure> : <aside className="nsf-hero-program-note" aria-label="APTO outcome framework">
-      <div className="nsf-outcome-lens">
-        {aptoProgram.outcomes.map((outcome) => <span key={displayRecord(outcome).label}>{displayRecord(outcome).label}</span>)}
-        <strong>APTO</strong>
-      </div>
-      <p>Connecting evidence about what technologies can do, how they are produced, and how they are used.</p>
-    </aside>}
+    {hasHeroWidgets(id) ? <NsfHeroToolWidget id={id} direction={direction} /> : <NsfHeroOutcomeVisual direction={direction} />}
   </section>;
 }
 
@@ -429,7 +564,7 @@ function ProjectLedgerRow({ project }: { project: AptoProject }) {
 
 function ProjectsSection({ id, ledger = false, pageHeading = false }: { id: NsfAptoMockupId; ledger?: boolean; pageHeading?: boolean }) {
   const copy = copyFor("projects");
-  const tone = id === "nsfnetwork" ? "dark" : "light";
+  const tone = directionFor(id) === "network" ? "dark" : "light";
 
   return <section className={`nsf-projects-section ${ledger ? "is-ledger" : ""}`} id={`${id}-projects`} aria-labelledby={`${id}-projects-title`}>
     <SectionIntro
@@ -519,7 +654,7 @@ function PersonCard({ person, participant, awardId }: { person: AptoPerson; part
 
 function PeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
   const copy = copyFor("people");
-  const tone = id === "nsfnetwork" ? "dark" : "light";
+  const tone = directionFor(id) === "network" ? "dark" : "light";
   return <section className="nsf-people-section" id={`${id}-people`} aria-labelledby={`${id}-people-title`}>
     <SectionIntro
       eyebrow={copy.eyebrow}
@@ -623,7 +758,7 @@ export function NsfAptoPage({
 
 export function NsfAptoMockup({ id }: { id: NsfAptoMockupId }) {
   useEffect(() => {
-    const match = window.location.hash.match(/^#(nsfhome|nsfledger|nsfnetwork)-(about|cohort|participants|people|projects|sources|tools)$/);
+    const match = window.location.hash.match(/^#(nsfhome(?:widgets)?|nsfledger(?:widgets)?|nsfnetwork(?:widgets)?)-(about|cohort|participants|people|projects|sources|tools)$/);
     if (!match || match[1] !== id) return;
 
     const legacySection = match[2] === "participants"
