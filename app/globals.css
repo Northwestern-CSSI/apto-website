@@ -32,14 +32,14 @@ img { display: block; max-width: 100%; }
   color: #15151a; background: rgba(248, 247, 242, .96); border-bottom: 1px solid #c8c8c3;
   backdrop-filter: blur(18px); font-size: 12px;
 }
-.review-title { border: 0; background: none; display: flex; align-items: center; gap: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.review-title { min-height: 44px; border: 0; background: none; display: flex; align-items: center; gap: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
 .review-dot { width: 9px; height: 9px; border-radius: 50%; background: #5d46ff; box-shadow: 0 0 0 4px #e6e2ff; }
 .review-current { display: flex; align-items: center; gap: 11px; }
 .review-current span { font-family: var(--font-geist-mono); color: #6d6d72; }
 .review-current strong { font-size: 13px; }
 .review-current em { font-style: normal; color: #7a7a7f; }
 .review-actions { justify-self: end; display: flex; align-items: center; gap: 4px; }
-.review-actions button { height: 32px; padding: 0 12px; border: 1px solid #d2d2ce; border-radius: 999px; background: #fff; color: #17171c; }
+.review-actions button { min-width: 44px; height: 44px; padding: 0 12px; border: 1px solid #d2d2ce; border-radius: 999px; background: #fff; color: #17171c; }
 .review-actions button:hover { background: #17171c; color: #fff; border-color: #17171c; }
 
 .apto-mark { display: flex; align-items: center; gap: 9px; line-height: 1; white-space: nowrap; }
@@ -399,7 +399,7 @@ img { display: block; max-width: 100%; }
 }
 
 @media (max-width: 760px) {
-  html{scroll-behavior:auto}.review-bar{height:52px;padding:0 10px}.review-title{font-size:9px}.review-actions button{height:30px;padding:0 9px;font-size:9px}.review-actions button:first-child{display:none}
+  html{scroll-behavior:auto}.review-bar{height:60px;padding:0 10px}.review-title{font-size:9px}.review-actions button{height:44px;padding:0 9px;font-size:9px}.review-actions button:first-child{display:none}
   .gallery-header{padding:35px 20px 60px}.gallery-header h1{margin:55px 0 35px;font-size:58px}.gallery-intro{grid-template-columns:1fr}.gallery-summary{justify-self:start}.gallery-recommendation{grid-template-columns:1fr;padding:40px 20px}.gallery-recommendation button{min-width:0;width:100%}.concept-grid{grid-template-columns:1fr}.concept-mini{height:380px}.gallery-footer{grid-template-columns:1fr;padding:35px 20px}.gallery-footer span{text-align:left}
   .apto-mark small{display:none}.civic-nav,.mission-nav,.forecast-nav,.archive-nav,.commons-nav,.story-nav{height:65px;padding:0 18px}.civic-search{font-size:0;gap:0;padding:5px}.mission-nav nav,.forecast-nav>button,.archive-nav>button,.commons-nav>div button:first-child{display:none}
   .civic-hero{grid-template-columns:1fr;min-height:0;padding:45px 20px 55px;gap:45px}.civic-hero-copy .mock-notice{margin-bottom:35px}.civic-hero h1{font-size:55px}.hero-deck{font-size:15px}.hero-actions{align-items:stretch;flex-direction:column}.button-primary{justify-content:space-between}.civic-query>label{line-height:1.35}.civic-query>div{height:50px}.civic-map-card{height:480px;min-height:0;border-radius:10px}.map-float-card{left:8%;top:27%;width:190px}.map-card-foot button:nth-child(2),.map-card-foot button:nth-child(3),.map-card-foot>span{display:none}

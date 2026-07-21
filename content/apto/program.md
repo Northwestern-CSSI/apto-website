@@ -2,7 +2,7 @@
 {
   "kind": "program",
   "id": "apto",
-  "eyebrow": "U.S. National Science Foundation · TIP",
+  "eyebrow": "APTO program · Research, models, and open tools",
   "name": "Assessing and Predicting Technology Outcomes",
   "acronym": "APTO",
   "title": "Evidence for better technology decisions",

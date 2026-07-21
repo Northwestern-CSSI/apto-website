@@ -1,15 +1,14 @@
 ---
 {
   "kind": "tool",
-  "order": 1,
-  "id": "northwestern-research-market-navigator",
+  "id": "northwestern-trajectory-forecaster",
   "participantId": "northwestern",
   "awardId": "2404035",
-  "name": "Research-to-Market Navigator",
+  "name": "Technology Trajectory Forecaster",
   "figure": {
-    "kind": "translation-funnel",
-    "label": "Research-to-market pathway mockup",
-    "alt": "Placeholder figure showing research flowing through invention, licensing, and market-use stages"
+    "kind": "technology-timeline",
+    "label": "Multi-technology forecast mockup",
+    "alt": "Placeholder chart with several technology trajectories and uncertainty bands over time"
   },
   "status": "Concept only · not a released tool",
   "isConceptOnly": true,
@@ -20,11 +19,11 @@
 }
 ---
 
-# Research-to-Market Navigator
+# Technology Trajectory Forecaster
 
 ## Description
 
-A concept interface for following research investments through disclosures, licenses, startups, and downstream technology outcomes.
+A concept workspace for comparing capability, production, and use trajectories across selected technology domains and assumptions.
 
 ## Prototype note
 

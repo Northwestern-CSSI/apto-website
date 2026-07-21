@@ -6,11 +6,19 @@ const root = new URL("../", import.meta.url);
 const nsfBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
 
+const expectedParticipants = [
+  "Aperture",
+  "Insilicom",
+  "Macrocosm",
+  "Northwestern University",
+  "University of Chicago",
+];
+
 const expectedProjects = [
-  ["2404035", "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes"],
-  ["2404109", "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance"],
   ["2403999", "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector"],
+  ["2404109", "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance"],
   ["2403911", "APTO: Constructing causal knowledge graphs for assessing and predicting technology outcomes"],
+  ["2404035", "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes"],
   ["2404082", "APTO: Problem-Focused Analysis for Predicting Technology Outcomes and Leverage Points"],
 ];
 
@@ -30,17 +38,38 @@ const expectedPeople = [
 ];
 
 const expectedTools = [
+  "Causal Technology Knowledge Graph",
+  "Energy System Digital Twin",
+  "Evidence Extraction Workbench",
+  "Global S&T Observatory",
+  "Leverage Point Finder",
+  "Policy & Investment Scenario Lab",
+  "Problem Landscape Explorer",
   "Research-to-Market Navigator",
   "Technology Trajectory Forecaster",
-  "Global S&T Observatory",
   "Virtual Policy Laboratory",
-  "Energy System Digital Twin",
-  "Policy & Investment Scenario Lab",
-  "Causal Technology Knowledge Graph",
-  "Evidence Extraction Workbench",
-  "Problem Landscape Explorer",
-  "Leverage Point Finder",
 ];
+
+function compareAlphabetically(left, right) {
+  return (
+    left.localeCompare(right, "en", { sensitivity: "base" }) ||
+    left.localeCompare(right, "en")
+  );
+}
+
+function sortedAlphabetically(values) {
+  return [...values].sort(compareAlphabetically);
+}
+
+function projectTitleSortKey(title) {
+  return title.replace(/^APTO:\s*/i, "");
+}
+
+function parseJsonFrontmatter(source, filename) {
+  const match = source.match(/^---\n([\s\S]*?)\n---(?:\n|$)/);
+  assert.ok(match, `${filename} must begin with JSON frontmatter`);
+  return JSON.parse(match[1]);
+}
 
 function cssRuleBody(styles, selector, fromIndex = 0) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -244,12 +273,24 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     assert.match(nsfSource, new RegExp(`id: NsfAptoMockupId = \\\"${id}\\\"`));
   }
 
+  assert.deepEqual(
+    content.participants.map((participant) => participant.displayName),
+    expectedParticipants,
+  );
   assert.equal(content.projects.length, 5);
   for (const [awardId, title] of expectedProjects) {
     const project = content.projects.find((item) => item.awardId === awardId);
     assert.ok(project, `Expected NSF award ${awardId}`);
     assert.equal(project.officialTitle, title);
   }
+  assert.deepEqual(
+    content.projects.map((project) => project.officialTitle),
+    expectedProjects.map(([, title]) => title),
+  );
+  const projectSortKeys = content.projects.map((project) =>
+    projectTitleSortKey(project.officialTitle),
+  );
+  assert.deepEqual(projectSortKeys, sortedAlphabetically(projectSortKeys));
 
   const people = content.participants.flatMap((participant) =>
     participant.people.map((person) => person.name),
@@ -286,13 +327,64 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   for (const toolName of expectedTools) {
     assert.ok(content.tools.some((tool) => tool.name === toolName));
   }
+  assert.deepEqual(
+    content.tools.map((tool) => tool.name),
+    expectedTools,
+  );
+  const sourceLabels = content.sources.map((source) => source.label);
+  assert.deepEqual(sourceLabels, sortedAlphabetically(sourceLabels));
+  for (const participant of content.participants) {
+    const participantPeople = participant.people.map((person) => person.name);
+    assert.deepEqual(
+      participantPeople,
+      sortedAlphabetically(participantPeople),
+      `${participant.displayName} people must be alphabetic`,
+    );
+    const embeddedToolNames = participant.tools.map((tool) => tool.name);
+    assert.deepEqual(
+      embeddedToolNames,
+      sortedAlphabetically(embeddedToolNames),
+      `${participant.displayName} tools must be alphabetic`,
+    );
+  }
 
   assert.equal(content.tools.filter((tool) => tool.demoVideoLabel === "Demo video placeholder").length, 10);
   assert.equal(content.tools.filter((tool) => tool.toolLinkLabel === "Tool link coming soon").length, 10);
-  assert.match(nsfSource, /Headshot placeholder/);
+  assert.match(nsfSource, /Portrait forthcoming/);
   assert.match(nsfSource, /Mock content/);
   assert.ok(content.tools.every((tool) => tool.status.includes("Concept only")));
   assert.equal(content.boilerplate, nsfBoilerplate);
+
+  assert.doesNotMatch(nsfSource, /Official NSF source/i);
+  assert.doesNotMatch(nsfSource, /Design concept/i);
+  assert.doesNotMatch(nsfSource, /aptoParticipants\.map\(\s*\(participant,\s*index\)/);
+  assert.doesNotMatch(nsfSource, /aptoSources\.map\(\s*\(source,\s*index\)/);
+  assert.doesNotMatch(nsfSource, /String\(index \+ 1\)\.padStart/);
+  assert.doesNotMatch(nsfSource, /nsf-logo-link|nsf-header-source/);
+  assert.doesNotMatch(nsfSource, /aptoSources\[0\]/);
+  assert.match(
+    nsfSource,
+    /aptoSources\.find\(\s*\(source\) => source\.id === "nsf-apto-solicitation"/,
+  );
+  assert.match(nsfSource, /<ul>\{aptoSources\.map\(\(source\) => <li/);
+  assert.doesNotMatch(nsfSource, /<ol>\{aptoSources\.map/);
+  for (const className of [
+    "nsf-participant-directory",
+    "nsf-participant-entry",
+    "nsf-participant-node",
+    "nsf-funder-mark",
+    "nsf-funder-copy",
+  ]) {
+    assert.match(nsfSource, new RegExp(`className=\"${className}\"`));
+  }
+
+  const headerStart = nsfSource.indexOf("function NsfProgramHeader");
+  const heroStart = nsfSource.indexOf("function CompactProgramHero");
+  const footerStart = nsfSource.indexOf("function NsfAcknowledgementFooter");
+  const logoStart = nsfSource.indexOf("/apto/nsf-logo.png");
+  assert.ok(headerStart >= 0 && heroStart > headerStart);
+  assert.doesNotMatch(nsfSource.slice(headerStart, heroStart), /nsf-logo\.png/);
+  assert.ok(footerStart >= 0 && logoStart > footerStart, "NSF logo must live in the funder footer");
 
   assert.match(nsfSource, /className="nsf-skip-link"/);
   assert.match(nsfSource, /<main id=\{`\$\{id\}-main`\} tabIndex=\{-1\}>/);
@@ -315,7 +407,7 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfSource, /\/apto\/nsf-logo\.png/);
   assert.match(nsfSource, /\/apto\/nsf-network-art\.png/);
   assert.match(nsfSource, /alt="U\.S\. National Science Foundation logo"/);
-  assert.match(nsfSource, /width="82" height="82"/);
+  assert.match(nsfSource, /width="64" height="64"/);
   assert.match(nsfStyles, /\.nsf-apto :focus-visible/);
   assert.match(nsfStyles, /\.nsf-skip-link:focus/);
   assert.match(nsfStyles, /min-height: 44px/);
@@ -323,6 +415,34 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.match(nsfStyles, /@media \(max-width: 860px\)/);
   assert.match(nsfStyles, /@media \(max-width: 640px\)/);
   assert.match(nsfStyles, /@media \(prefers-reduced-motion: reduce\)/);
+
+  assert.doesNotMatch(nsfStyles, /\.(?:nsf-)?participant-[1-9]\b/);
+  assert.doesNotMatch(nsfStyles, /\.nsf-project-card:nth-child/);
+  assert.doesNotMatch(nsfStyles, /border-top:\s*(?:6|7|8|12)px\b/i);
+  assert.doesNotMatch(nsfStyles, /\.nsf-logo-link|\.nsf-header-source/);
+
+  // These selector groups implement the open editorial rows, visual tool
+  // workbench, and program/participant constellation language.
+  for (const selector of [
+    ".nsf-project-grid",
+    ".nsf-project-heading",
+    ".nsf-project-body",
+    ".nsf-tool-grid",
+    ".nsf-tool-copy",
+    ".nsf-tool-figure",
+    ".nsf-outcome-lens",
+    ".nsf-participant-directory",
+    ".nsf-participant-node",
+  ]) {
+    cssRuleBody(nsfStyles, selector);
+  }
+  const projectRowRule = cssRuleBody(nsfStyles, ".nsf-project-card");
+  assert.match(projectRowRule, /display:\s*grid/);
+  assert.match(projectRowRule, /border-bottom:\s*1px/);
+  assert.doesNotMatch(projectRowRule, /border-top/);
+  const toolWorkbenchRule = cssRuleBody(nsfStyles, ".nsf-tool-card");
+  assert.match(toolWorkbenchRule, /display:\s*grid/);
+  assert.match(toolWorkbenchRule, /border-top:\s*1px/);
 
   const heroRule = cssRuleBody(nsfStyles, ".nsf-program-hero");
   assert.match(heroRule, /min-height:\s*400px/);
@@ -352,12 +472,44 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
 
   const markdownFiles = (entries) =>
     entries.filter((entry) => entry.isFile() && entry.name.endsWith(".md"));
+  const projectMarkdownFiles = markdownFiles(projectEntries);
+  const toolMarkdownFiles = markdownFiles(toolEntries);
   assert.equal(
     markdownFiles(contentEntries).filter((entry) => entry.name === "program.md").length,
     1,
   );
-  assert.equal(markdownFiles(projectEntries).length, 5);
-  assert.equal(markdownFiles(toolEntries).length, 10);
+  assert.equal(projectMarkdownFiles.length, 5);
+  assert.equal(toolMarkdownFiles.length, 10);
+
+  for (const entry of [...projectMarkdownFiles, ...toolMarkdownFiles]) {
+    assert.doesNotMatch(entry.name, /^\d/, `${entry.name} must not have a numeric prefix`);
+  }
+
+  const markdownRecords = [
+    { name: "program.md", url: new URL("program.md", contentRoot) },
+    ...projectMarkdownFiles.map((entry) => ({
+      name: `projects/${entry.name}`,
+      url: new URL(`projects/${entry.name}`, contentRoot),
+    })),
+    ...toolMarkdownFiles.map((entry) => ({
+      name: `tools/${entry.name}`,
+      url: new URL(`tools/${entry.name}`, contentRoot),
+    })),
+  ];
+  const markdownSources = await Promise.all(
+    markdownRecords.map(async (record) => ({
+      ...record,
+      source: await readFile(record.url, "utf8"),
+    })),
+  );
+  for (const record of markdownSources) {
+    const frontmatter = parseJsonFrontmatter(record.source, record.name);
+    assert.equal(
+      Object.hasOwn(frontmatter, "order"),
+      false,
+      `${record.name} must not contain frontmatter order`,
+    );
+  }
 
   const content = JSON.parse(generatedJson);
   assert.deepEqual(
@@ -373,6 +525,13 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
     ].sort(),
   );
   assert.equal(content._generated.generatedFrom.length, 16);
+  assert.deepEqual(
+    content._generated.generatedFrom,
+    sortedAlphabetically(content._generated.generatedFrom),
+  );
+  for (const filename of content._generated.generatedFrom) {
+    assert.doesNotMatch(filename, /\/\d/, `${filename} must not encode rank`);
+  }
   assert.equal(content.participants.length, 5);
   assert.equal(content.projects.length, 5);
   assert.equal(content.tools.length, 10);
@@ -410,6 +569,32 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
   assert.match(generator, /process\.exitCode = 1/);
   assert.match(generator, /projectFiles\.length === 5/);
   assert.match(generator, /toolFiles\.length === 10/);
+  assert.match(generator, /function compareAlphabetically\(left, right\)/);
+  assert.match(generator, /function projectTitleSortKey\(title\)/);
+  assert.match(
+    generator,
+    /compareAlphabetically\(left\.tool\.name,\s*right\.tool\.name\)/,
+  );
+  assert.match(
+    generator,
+    /compareAlphabetically\(left\.displayName,\s*right\.displayName\)/,
+  );
+  assert.match(
+    generator,
+    /compareAlphabetically\(left\.name,\s*right\.name\)/,
+  );
+  assert.match(
+    generator,
+    /projectTitleSortKey\(left\.officialTitle\)[\s\S]*projectTitleSortKey\(right\.officialTitle\)/,
+  );
+  assert.match(
+    generator,
+    /compareAlphabetically\(left\.label,\s*right\.label\)/,
+  );
+  assert.doesNotMatch(generator, /requireInteger\([^)]*"order"/);
+  assert.doesNotMatch(generator, /["']order["']/);
+  assert.doesNotMatch(generator, /\brecord\.order\b|\bleft\.order\b|\bright\.order\b/);
+  assert.doesNotMatch(generator, /Project orders|Tool orders|frontmatter order/i);
 
   const scripts = JSON.parse(packageJson).scripts;
   assert.equal(scripts["content:build"], "node scripts/build-apto-content.mjs");

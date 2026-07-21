@@ -1,15 +1,14 @@
 ---
 {
   "kind": "tool",
-  "order": 3,
-  "id": "uchicago-global-observatory",
+  "id": "uchicago-virtual-policy-lab",
   "participantId": "uchicago",
   "awardId": "2404109",
-  "name": "Global S&T Observatory",
+  "name": "Virtual Policy Laboratory",
   "figure": {
-    "kind": "global-map",
-    "label": "Global observatory mockup",
-    "alt": "Placeholder world map linking research and technology signals among regions"
+    "kind": "scenario-curves",
+    "label": "Policy experiment mockup",
+    "alt": "Placeholder plot comparing baseline and policy-scenario technology trajectories"
   },
   "status": "Concept only · not a released tool",
   "isConceptOnly": true,
@@ -20,11 +19,11 @@
 }
 ---
 
-# Global S&T Observatory
+# Virtual Policy Laboratory
 
 ## Description
 
-A concept map for exploring how research, patents, products, funding, workforce, and markets connect across the global technology system.
+A concept environment for testing simulated changes in funding, competition, and immigration against technology-performance scenarios.
 
 ## Prototype note
 

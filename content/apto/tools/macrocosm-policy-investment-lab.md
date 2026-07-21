@@ -1,7 +1,6 @@
 ---
 {
   "kind": "tool",
-  "order": 6,
   "id": "macrocosm-policy-investment-lab",
   "participantId": "macrocosm",
   "awardId": "2403999",

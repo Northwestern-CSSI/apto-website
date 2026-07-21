@@ -6,26 +6,26 @@
     "sourceDirectory": "content/apto",
     "generatedFrom": [
       "content/apto/program.md",
-      "content/apto/projects/01-northwestern.md",
-      "content/apto/projects/02-uchicago.md",
-      "content/apto/projects/03-macrocosm.md",
-      "content/apto/projects/04-insilicom.md",
-      "content/apto/projects/05-aperture.md",
-      "content/apto/tools/01-northwestern-research-market-navigator.md",
-      "content/apto/tools/02-northwestern-trajectory-forecaster.md",
-      "content/apto/tools/03-uchicago-global-observatory.md",
-      "content/apto/tools/04-uchicago-virtual-policy-lab.md",
-      "content/apto/tools/05-macrocosm-energy-digital-twin.md",
-      "content/apto/tools/06-macrocosm-policy-investment-lab.md",
-      "content/apto/tools/07-insilicom-causal-knowledge-graph.md",
-      "content/apto/tools/08-insilicom-evidence-workbench.md",
-      "content/apto/tools/09-aperture-problem-landscape.md",
-      "content/apto/tools/10-aperture-leverage-point-finder.md"
+      "content/apto/projects/aperture.md",
+      "content/apto/projects/insilicom.md",
+      "content/apto/projects/macrocosm.md",
+      "content/apto/projects/northwestern.md",
+      "content/apto/projects/uchicago.md",
+      "content/apto/tools/aperture-leverage-point-finder.md",
+      "content/apto/tools/aperture-problem-landscape.md",
+      "content/apto/tools/insilicom-causal-knowledge-graph.md",
+      "content/apto/tools/insilicom-evidence-workbench.md",
+      "content/apto/tools/macrocosm-energy-digital-twin.md",
+      "content/apto/tools/macrocosm-policy-investment-lab.md",
+      "content/apto/tools/northwestern-research-market-navigator.md",
+      "content/apto/tools/northwestern-trajectory-forecaster.md",
+      "content/apto/tools/uchicago-global-observatory.md",
+      "content/apto/tools/uchicago-virtual-policy-lab.md"
     ],
     "dataAsOf": "2026-07-20"
   },
   "program": {
-    "eyebrow": "U.S. National Science Foundation · TIP",
+    "eyebrow": "APTO program · Research, models, and open tools",
     "name": "Assessing and Predicting Technology Outcomes",
     "acronym": "APTO",
     "title": "Evidence for better technology decisions",
@@ -98,220 +98,34 @@
   "boilerplate": "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
   "participants": [
     {
-      "id": "northwestern",
-      "displayName": "Northwestern University",
-      "name": "Northwestern University",
-      "legalName": "Northwestern University at Chicago",
-      "kind": "University",
-      "location": "Evanston, Illinois",
-      "website": "https://www.northwestern.edu/",
-      "accent": "#005699",
-      "awardId": "2404035",
-      "people": [
-        {
-          "name": "Dashun Wang",
-          "initials": "DW",
-          "role": "Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Dashun Wang",
-          "profileUrl": null
-        },
-        {
-          "name": "Alicia I. Loffler",
-          "initials": "AL",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Alicia I. Loffler",
-          "profileUrl": null
-        },
-        {
-          "name": "Jian Cao",
-          "initials": "JC",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Jian Cao",
-          "profileUrl": null
-        },
-        {
-          "name": "Benjamin Jones",
-          "initials": "BJ",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Benjamin Jones",
-          "profileUrl": null
-        },
-        {
-          "name": "Yian Yin",
-          "initials": "YY",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Yian Yin",
-          "profileUrl": null
-        }
-      ],
-      "tools": [
-        {
-          "id": "northwestern-research-market-navigator",
-          "participantId": "northwestern",
-          "name": "Research-to-Market Navigator",
-          "figure": {
-            "kind": "translation-funnel",
-            "label": "Research-to-market pathway mockup",
-            "alt": "Placeholder figure showing research flowing through invention, licensing, and market-use stages"
-          },
-          "status": "Concept only · not a released tool",
-          "isConceptOnly": true,
-          "demoVideoUrl": null,
-          "demoVideoLabel": "Demo video placeholder",
-          "toolUrl": null,
-          "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "northwestern",
-          "description": "A concept interface for following research investments through disclosures, licenses, startups, and downstream technology outcomes.",
-          "figureLabel": "Research-to-market pathway mockup",
-          "organizationUrl": "https://www.northwestern.edu/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035"
-        },
-        {
-          "id": "northwestern-trajectory-forecaster",
-          "participantId": "northwestern",
-          "name": "Technology Trajectory Forecaster",
-          "figure": {
-            "kind": "technology-timeline",
-            "label": "Multi-technology forecast mockup",
-            "alt": "Placeholder chart with several technology trajectories and uncertainty bands over time"
-          },
-          "status": "Concept only · not a released tool",
-          "isConceptOnly": true,
-          "demoVideoUrl": null,
-          "demoVideoLabel": "Demo video placeholder",
-          "toolUrl": null,
-          "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "northwestern",
-          "description": "A concept workspace for comparing capability, production, and use trajectories across selected technology domains and assumptions.",
-          "figureLabel": "Multi-technology forecast mockup",
-          "organizationUrl": "https://www.northwestern.edu/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035"
-        }
-      ]
-    },
-    {
-      "id": "uchicago",
-      "displayName": "University of Chicago",
-      "name": "University of Chicago",
-      "legalName": "University of Chicago",
-      "kind": "University",
-      "location": "Chicago, Illinois",
-      "website": "https://www.uchicago.edu/",
-      "accent": "#002554",
-      "awardId": "2404109",
-      "people": [
-        {
-          "name": "James Evans",
-          "initials": "JE",
-          "role": "Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for James Evans",
-          "profileUrl": null
-        },
-        {
-          "name": "Ian Foster",
-          "initials": "IF",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Ian Foster",
-          "profileUrl": null
-        },
-        {
-          "name": "Ufuk Akcigit",
-          "initials": "UA",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Ufuk Akcigit",
-          "profileUrl": null
-        }
-      ],
-      "tools": [
-        {
-          "id": "uchicago-global-observatory",
-          "participantId": "uchicago",
-          "name": "Global S&T Observatory",
-          "figure": {
-            "kind": "global-map",
-            "label": "Global observatory mockup",
-            "alt": "Placeholder world map linking research and technology signals among regions"
-          },
-          "status": "Concept only · not a released tool",
-          "isConceptOnly": true,
-          "demoVideoUrl": null,
-          "demoVideoLabel": "Demo video placeholder",
-          "toolUrl": null,
-          "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "uchicago",
-          "description": "A concept map for exploring how research, patents, products, funding, workforce, and markets connect across the global technology system.",
-          "figureLabel": "Global observatory mockup",
-          "organizationUrl": "https://www.uchicago.edu/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109"
-        },
-        {
-          "id": "uchicago-virtual-policy-lab",
-          "participantId": "uchicago",
-          "name": "Virtual Policy Laboratory",
-          "figure": {
-            "kind": "scenario-curves",
-            "label": "Policy experiment mockup",
-            "alt": "Placeholder plot comparing baseline and policy-scenario technology trajectories"
-          },
-          "status": "Concept only · not a released tool",
-          "isConceptOnly": true,
-          "demoVideoUrl": null,
-          "demoVideoLabel": "Demo video placeholder",
-          "toolUrl": null,
-          "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "uchicago",
-          "description": "A concept environment for testing simulated changes in funding, competition, and immigration against technology-performance scenarios.",
-          "figureLabel": "Policy experiment mockup",
-          "organizationUrl": "https://www.uchicago.edu/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109"
-        }
-      ]
-    },
-    {
-      "id": "macrocosm",
-      "displayName": "Macrocosm",
-      "name": "Macrocosm",
-      "legalName": "MACROCOSM, INC.",
+      "id": "aperture",
+      "displayName": "Aperture",
+      "name": "Aperture",
+      "legalName": "ARTEMIS INTELLIGENCE LLC",
       "kind": "Company",
-      "location": "Brooklyn, New York",
-      "website": "https://macrocosm.group/",
-      "accent": "#00758D",
-      "awardId": "2403999",
+      "location": "Rocky River, Ohio",
+      "website": "https://www.aperture.ai/",
+      "accent": "#D3B34E",
+      "awardId": "2404082",
       "people": [
         {
-          "name": "James Farmer",
+          "name": "Jonathan Fegely",
           "initials": "JF",
           "role": "Principal Investigator",
           "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for James Farmer",
-          "profileUrl": null
-        },
-        {
-          "name": "Daniel Eichelsdoerfer",
-          "initials": "DE",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Daniel Eichelsdoerfer",
+          "headshotAlt": "Headshot placeholder for Jonathan Fegely",
           "profileUrl": null
         }
       ],
       "tools": [
         {
-          "id": "macrocosm-energy-digital-twin",
-          "participantId": "macrocosm",
-          "name": "Energy System Digital Twin",
+          "id": "aperture-leverage-point-finder",
+          "participantId": "aperture",
+          "name": "Leverage Point Finder",
           "figure": {
-            "kind": "agent-network",
-            "label": "Firm and asset network mockup",
-            "alt": "Placeholder network of energy firms, power plants, markets, and investment relationships"
+            "kind": "signal-matrix",
+            "label": "Opportunity signal matrix mockup",
+            "alt": "Placeholder matrix ranking technical problems by evidence, activity, and potential leverage"
           },
           "status": "Concept only · not a released tool",
           "isConceptOnly": true,
@@ -319,20 +133,20 @@
           "demoVideoLabel": "Demo video placeholder",
           "toolUrl": null,
           "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "macrocosm",
-          "description": "A concept view of firms, physical energy assets, local markets, investment decisions, and feedbacks in a spatially explicit U.S. model.",
-          "figureLabel": "Firm and asset network mockup",
-          "organizationUrl": "https://macrocosm.group/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
+          "organizationId": "aperture",
+          "description": "A concept matrix for comparing signals that may reveal high-value research questions, complementary partners, and investment leverage points.",
+          "figureLabel": "Opportunity signal matrix mockup",
+          "organizationUrl": "https://www.aperture.ai/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
         },
         {
-          "id": "macrocosm-policy-investment-lab",
-          "participantId": "macrocosm",
-          "name": "Policy & Investment Scenario Lab",
+          "id": "aperture-problem-landscape",
+          "participantId": "aperture",
+          "name": "Problem Landscape Explorer",
           "figure": {
-            "kind": "scenario-curves",
-            "label": "Energy scenario comparison mockup",
-            "alt": "Placeholder small-multiple charts comparing energy policy and investment scenarios"
+            "kind": "problem-landscape",
+            "label": "Problem-to-solution landscape mockup",
+            "alt": "Placeholder terrain connecting problem clusters to technologies and organizations"
           },
           "status": "Concept only · not a released tool",
           "isConceptOnly": true,
@@ -340,11 +154,11 @@
           "demoVideoLabel": "Demo video placeholder",
           "toolUrl": null,
           "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "macrocosm",
-          "description": "A concept simulator for comparing how policy and private-investment choices could influence energy technologies, firms, employment, and materials.",
-          "figureLabel": "Energy scenario comparison mockup",
-          "organizationUrl": "https://macrocosm.group/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
+          "organizationId": "aperture",
+          "description": "A concept landscape that organizes problems, technologies, and organizations so users can inspect unmet needs alongside proposed solutions.",
+          "figureLabel": "Problem-to-solution landscape mockup",
+          "organizationUrl": "https://www.aperture.ai/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
         }
       ]
     },
@@ -414,34 +228,42 @@
       ]
     },
     {
-      "id": "aperture",
-      "displayName": "Aperture",
-      "name": "Aperture",
-      "legalName": "ARTEMIS INTELLIGENCE LLC",
+      "id": "macrocosm",
+      "displayName": "Macrocosm",
+      "name": "Macrocosm",
+      "legalName": "MACROCOSM, INC.",
       "kind": "Company",
-      "location": "Rocky River, Ohio",
-      "website": "https://www.aperture.ai/",
-      "accent": "#D3B34E",
-      "awardId": "2404082",
+      "location": "Brooklyn, New York",
+      "website": "https://macrocosm.group/",
+      "accent": "#00758D",
+      "awardId": "2403999",
       "people": [
         {
-          "name": "Jonathan Fegely",
+          "name": "Daniel Eichelsdoerfer",
+          "initials": "DE",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Daniel Eichelsdoerfer",
+          "profileUrl": null
+        },
+        {
+          "name": "James Farmer",
           "initials": "JF",
           "role": "Principal Investigator",
           "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Jonathan Fegely",
+          "headshotAlt": "Headshot placeholder for James Farmer",
           "profileUrl": null
         }
       ],
       "tools": [
         {
-          "id": "aperture-problem-landscape",
-          "participantId": "aperture",
-          "name": "Problem Landscape Explorer",
+          "id": "macrocosm-energy-digital-twin",
+          "participantId": "macrocosm",
+          "name": "Energy System Digital Twin",
           "figure": {
-            "kind": "problem-landscape",
-            "label": "Problem-to-solution landscape mockup",
-            "alt": "Placeholder terrain connecting problem clusters to technologies and organizations"
+            "kind": "agent-network",
+            "label": "Firm and asset network mockup",
+            "alt": "Placeholder network of energy firms, power plants, markets, and investment relationships"
           },
           "status": "Concept only · not a released tool",
           "isConceptOnly": true,
@@ -449,20 +271,20 @@
           "demoVideoLabel": "Demo video placeholder",
           "toolUrl": null,
           "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "aperture",
-          "description": "A concept landscape that organizes problems, technologies, and organizations so users can inspect unmet needs alongside proposed solutions.",
-          "figureLabel": "Problem-to-solution landscape mockup",
-          "organizationUrl": "https://www.aperture.ai/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
+          "organizationId": "macrocosm",
+          "description": "A concept view of firms, physical energy assets, local markets, investment decisions, and feedbacks in a spatially explicit U.S. model.",
+          "figureLabel": "Firm and asset network mockup",
+          "organizationUrl": "https://macrocosm.group/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
         },
         {
-          "id": "aperture-leverage-point-finder",
-          "participantId": "aperture",
-          "name": "Leverage Point Finder",
+          "id": "macrocosm-policy-investment-lab",
+          "participantId": "macrocosm",
+          "name": "Policy & Investment Scenario Lab",
           "figure": {
-            "kind": "signal-matrix",
-            "label": "Opportunity signal matrix mockup",
-            "alt": "Placeholder matrix ranking technical problems by evidence, activity, and potential leverage"
+            "kind": "scenario-curves",
+            "label": "Energy scenario comparison mockup",
+            "alt": "Placeholder small-multiple charts comparing energy policy and investment scenarios"
           },
           "status": "Concept only · not a released tool",
           "isConceptOnly": true,
@@ -470,27 +292,205 @@
           "demoVideoLabel": "Demo video placeholder",
           "toolUrl": null,
           "toolLinkLabel": "Tool link coming soon",
-          "organizationId": "aperture",
-          "description": "A concept matrix for comparing signals that may reveal high-value research questions, complementary partners, and investment leverage points.",
-          "figureLabel": "Opportunity signal matrix mockup",
-          "organizationUrl": "https://www.aperture.ai/",
-          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
+          "organizationId": "macrocosm",
+          "description": "A concept simulator for comparing how policy and private-investment choices could influence energy technologies, firms, employment, and materials.",
+          "figureLabel": "Energy scenario comparison mockup",
+          "organizationUrl": "https://macrocosm.group/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
+        }
+      ]
+    },
+    {
+      "id": "northwestern",
+      "displayName": "Northwestern University",
+      "name": "Northwestern University",
+      "legalName": "Northwestern University at Chicago",
+      "kind": "University",
+      "location": "Evanston, Illinois",
+      "website": "https://www.northwestern.edu/",
+      "accent": "#005699",
+      "awardId": "2404035",
+      "people": [
+        {
+          "name": "Alicia I. Loffler",
+          "initials": "AL",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Alicia I. Loffler",
+          "profileUrl": null
+        },
+        {
+          "name": "Benjamin Jones",
+          "initials": "BJ",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Benjamin Jones",
+          "profileUrl": null
+        },
+        {
+          "name": "Dashun Wang",
+          "initials": "DW",
+          "role": "Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Dashun Wang",
+          "profileUrl": null
+        },
+        {
+          "name": "Jian Cao",
+          "initials": "JC",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Jian Cao",
+          "profileUrl": null
+        },
+        {
+          "name": "Yian Yin",
+          "initials": "YY",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Yian Yin",
+          "profileUrl": null
+        }
+      ],
+      "tools": [
+        {
+          "id": "northwestern-research-market-navigator",
+          "participantId": "northwestern",
+          "name": "Research-to-Market Navigator",
+          "figure": {
+            "kind": "translation-funnel",
+            "label": "Research-to-market pathway mockup",
+            "alt": "Placeholder figure showing research flowing through invention, licensing, and market-use stages"
+          },
+          "status": "Concept only · not a released tool",
+          "isConceptOnly": true,
+          "demoVideoUrl": null,
+          "demoVideoLabel": "Demo video placeholder",
+          "toolUrl": null,
+          "toolLinkLabel": "Tool link coming soon",
+          "organizationId": "northwestern",
+          "description": "A concept interface for following research investments through disclosures, licenses, startups, and downstream technology outcomes.",
+          "figureLabel": "Research-to-market pathway mockup",
+          "organizationUrl": "https://www.northwestern.edu/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035"
+        },
+        {
+          "id": "northwestern-trajectory-forecaster",
+          "participantId": "northwestern",
+          "name": "Technology Trajectory Forecaster",
+          "figure": {
+            "kind": "technology-timeline",
+            "label": "Multi-technology forecast mockup",
+            "alt": "Placeholder chart with several technology trajectories and uncertainty bands over time"
+          },
+          "status": "Concept only · not a released tool",
+          "isConceptOnly": true,
+          "demoVideoUrl": null,
+          "demoVideoLabel": "Demo video placeholder",
+          "toolUrl": null,
+          "toolLinkLabel": "Tool link coming soon",
+          "organizationId": "northwestern",
+          "description": "A concept workspace for comparing capability, production, and use trajectories across selected technology domains and assumptions.",
+          "figureLabel": "Multi-technology forecast mockup",
+          "organizationUrl": "https://www.northwestern.edu/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035"
+        }
+      ]
+    },
+    {
+      "id": "uchicago",
+      "displayName": "University of Chicago",
+      "name": "University of Chicago",
+      "legalName": "University of Chicago",
+      "kind": "University",
+      "location": "Chicago, Illinois",
+      "website": "https://www.uchicago.edu/",
+      "accent": "#002554",
+      "awardId": "2404109",
+      "people": [
+        {
+          "name": "Ian Foster",
+          "initials": "IF",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Ian Foster",
+          "profileUrl": null
+        },
+        {
+          "name": "James Evans",
+          "initials": "JE",
+          "role": "Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for James Evans",
+          "profileUrl": null
+        },
+        {
+          "name": "Ufuk Akcigit",
+          "initials": "UA",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Ufuk Akcigit",
+          "profileUrl": null
+        }
+      ],
+      "tools": [
+        {
+          "id": "uchicago-global-observatory",
+          "participantId": "uchicago",
+          "name": "Global S&T Observatory",
+          "figure": {
+            "kind": "global-map",
+            "label": "Global observatory mockup",
+            "alt": "Placeholder world map linking research and technology signals among regions"
+          },
+          "status": "Concept only · not a released tool",
+          "isConceptOnly": true,
+          "demoVideoUrl": null,
+          "demoVideoLabel": "Demo video placeholder",
+          "toolUrl": null,
+          "toolLinkLabel": "Tool link coming soon",
+          "organizationId": "uchicago",
+          "description": "A concept map for exploring how research, patents, products, funding, workforce, and markets connect across the global technology system.",
+          "figureLabel": "Global observatory mockup",
+          "organizationUrl": "https://www.uchicago.edu/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109"
+        },
+        {
+          "id": "uchicago-virtual-policy-lab",
+          "participantId": "uchicago",
+          "name": "Virtual Policy Laboratory",
+          "figure": {
+            "kind": "scenario-curves",
+            "label": "Policy experiment mockup",
+            "alt": "Placeholder plot comparing baseline and policy-scenario technology trajectories"
+          },
+          "status": "Concept only · not a released tool",
+          "isConceptOnly": true,
+          "demoVideoUrl": null,
+          "demoVideoLabel": "Demo video placeholder",
+          "toolUrl": null,
+          "toolLinkLabel": "Tool link coming soon",
+          "organizationId": "uchicago",
+          "description": "A concept environment for testing simulated changes in funding, competition, and immigration against technology-performance scenarios.",
+          "figureLabel": "Policy experiment mockup",
+          "organizationUrl": "https://www.uchicago.edu/",
+          "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109"
         }
       ]
     }
   ],
   "projects": [
     {
-      "id": "northwestern-technology-outcomes",
-      "awardId": "2404035",
-      "shortName": "Measuring and accelerating outcomes",
-      "officialTitle": "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes",
+      "id": "macrocosm-energy-sector",
+      "awardId": "2403999",
+      "shortName": "Firm-level energy-system model",
+      "officialTitle": "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector",
       "agreementType": "Cooperative Agreement",
-      "startDate": "2024-07-01",
-      "endDate": "2029-06-30",
+      "startDate": "2024-08-01",
+      "endDate": "2029-07-31",
       "funding": {
-        "obligatedAmount": 7993116,
-        "estimatedTotalAmount": 19979400,
+        "obligatedAmount": 2071590,
+        "estimatedTotalAmount": 4603600,
         "currency": "USD",
         "dataAsOf": "2026-07-20",
         "dataAsOfLabel": "NSF Awards API snapshot · July 20, 2026"
@@ -504,62 +504,35 @@
         "data-tools",
         "models"
       ],
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035",
-      "apiUrl": "https://api.nsf.gov/services/v1/awards.json?id=2404035",
-      "participantId": "northwestern",
-      "organization": "Northwestern University",
-      "legalAwardeeName": "Northwestern University at Chicago",
-      "location": "Evanston, Illinois",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999",
+      "apiUrl": "https://api.nsf.gov/services/v1/awards.json?id=2403999",
+      "participantId": "macrocosm",
+      "organization": "Macrocosm",
+      "legalAwardeeName": "MACROCOSM, INC.",
+      "location": "Brooklyn, New York",
       "people": [
         {
-          "name": "Dashun Wang",
-          "initials": "DW",
+          "name": "Daniel Eichelsdoerfer",
+          "initials": "DE",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Daniel Eichelsdoerfer",
+          "profileUrl": null
+        },
+        {
+          "name": "James Farmer",
+          "initials": "JF",
           "role": "Principal Investigator",
           "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Dashun Wang",
-          "profileUrl": null
-        },
-        {
-          "name": "Alicia I. Loffler",
-          "initials": "AL",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Alicia I. Loffler",
-          "profileUrl": null
-        },
-        {
-          "name": "Jian Cao",
-          "initials": "JC",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Jian Cao",
-          "profileUrl": null
-        },
-        {
-          "name": "Benjamin Jones",
-          "initials": "BJ",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Benjamin Jones",
-          "profileUrl": null
-        },
-        {
-          "name": "Yian Yin",
-          "initials": "YY",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Yian Yin",
+          "headshotAlt": "Headshot placeholder for James Farmer",
           "profileUrl": null
         }
       ],
-      "pi": "Dashun Wang",
+      "pi": "James Farmer",
       "coPIs": [
-        "Alicia I. Loffler",
-        "Jian Cao",
-        "Benjamin Jones",
-        "Yian Yin"
+        "Daniel Eichelsdoerfer"
       ],
-      "summary": "Northwestern and its partners are building an integrated research-to-market data pipeline and predictive and causal models to measure, understand, predict, and accelerate technology outcomes. The work links university research and investment to disclosures, licensing, startups, and technology-specific measures across additive manufacturing, synthetic biology, advanced materials, AI algorithms, and therapeutics."
+      "summary": "Macrocosm is developing a data-driven, agent-based model of U.S. energy firms, their geolocated physical assets, and their interactions in local markets. The model is intended to explore feedbacks among technological improvement, investment, firm performance, infrastructure, and policy over the next two decades."
     },
     {
       "id": "uchicago-global-observatory",
@@ -593,19 +566,19 @@
       "location": "Chicago, Illinois",
       "people": [
         {
-          "name": "James Evans",
-          "initials": "JE",
-          "role": "Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for James Evans",
-          "profileUrl": null
-        },
-        {
           "name": "Ian Foster",
           "initials": "IF",
           "role": "Co-Principal Investigator",
           "headshotUrl": null,
           "headshotAlt": "Headshot placeholder for Ian Foster",
+          "profileUrl": null
+        },
+        {
+          "name": "James Evans",
+          "initials": "JE",
+          "role": "Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for James Evans",
           "profileUrl": null
         },
         {
@@ -623,60 +596,6 @@
         "Ufuk Akcigit"
       ],
       "summary": "The University of Chicago team is creating a global observatory and virtual laboratory for science and technology. A chronologically trained language model will serve as a data-driven digital double of the global techno-scientific system, connecting research artifacts and metadata to measures of capability, production, and use and supporting simulated policy experiments and causal analysis."
-    },
-    {
-      "id": "macrocosm-energy-sector",
-      "awardId": "2403999",
-      "shortName": "Firm-level energy-system model",
-      "officialTitle": "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector",
-      "agreementType": "Cooperative Agreement",
-      "startDate": "2024-08-01",
-      "endDate": "2029-07-31",
-      "funding": {
-        "obligatedAmount": 2071590,
-        "estimatedTotalAmount": 4603600,
-        "currency": "USD",
-        "dataAsOf": "2026-07-20",
-        "dataAsOfLabel": "NSF Awards API snapshot · July 20, 2026"
-      },
-      "outcomes": [
-        "Capability",
-        "Production",
-        "Use"
-      ],
-      "linesOfEffort": [
-        "data-tools",
-        "models"
-      ],
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999",
-      "apiUrl": "https://api.nsf.gov/services/v1/awards.json?id=2403999",
-      "participantId": "macrocosm",
-      "organization": "Macrocosm",
-      "legalAwardeeName": "MACROCOSM, INC.",
-      "location": "Brooklyn, New York",
-      "people": [
-        {
-          "name": "James Farmer",
-          "initials": "JF",
-          "role": "Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for James Farmer",
-          "profileUrl": null
-        },
-        {
-          "name": "Daniel Eichelsdoerfer",
-          "initials": "DE",
-          "role": "Co-Principal Investigator",
-          "headshotUrl": null,
-          "headshotAlt": "Headshot placeholder for Daniel Eichelsdoerfer",
-          "profileUrl": null
-        }
-      ],
-      "pi": "James Farmer",
-      "coPIs": [
-        "Daniel Eichelsdoerfer"
-      ],
-      "summary": "Macrocosm is developing a data-driven, agent-based model of U.S. energy firms, their geolocated physical assets, and their interactions in local markets. The model is intended to explore feedbacks among technological improvement, investment, firm performance, infrastructure, and policy over the next two decades."
     },
     {
       "id": "insilicom-causal-knowledge-graphs",
@@ -721,6 +640,87 @@
       "pi": "Jinfeng Zhang",
       "coPIs": [],
       "summary": "Insilicom is expanding its iKraph biomedical knowledge graph with technology entities and directed relationships drawn from publications, patents, reports, Wikipedia, and public databases. The team will also create an AI-assisted, end-to-end toolkit that APTO teams can use to extract information and construct domain knowledge graphs, including a case study in advanced manufacturing for generic drugs."
+    },
+    {
+      "id": "northwestern-technology-outcomes",
+      "awardId": "2404035",
+      "shortName": "Measuring and accelerating outcomes",
+      "officialTitle": "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes",
+      "agreementType": "Cooperative Agreement",
+      "startDate": "2024-07-01",
+      "endDate": "2029-06-30",
+      "funding": {
+        "obligatedAmount": 7993116,
+        "estimatedTotalAmount": 19979400,
+        "currency": "USD",
+        "dataAsOf": "2026-07-20",
+        "dataAsOfLabel": "NSF Awards API snapshot · July 20, 2026"
+      },
+      "outcomes": [
+        "Capability",
+        "Production",
+        "Use"
+      ],
+      "linesOfEffort": [
+        "data-tools",
+        "models"
+      ],
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035",
+      "apiUrl": "https://api.nsf.gov/services/v1/awards.json?id=2404035",
+      "participantId": "northwestern",
+      "organization": "Northwestern University",
+      "legalAwardeeName": "Northwestern University at Chicago",
+      "location": "Evanston, Illinois",
+      "people": [
+        {
+          "name": "Alicia I. Loffler",
+          "initials": "AL",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Alicia I. Loffler",
+          "profileUrl": null
+        },
+        {
+          "name": "Benjamin Jones",
+          "initials": "BJ",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Benjamin Jones",
+          "profileUrl": null
+        },
+        {
+          "name": "Dashun Wang",
+          "initials": "DW",
+          "role": "Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Dashun Wang",
+          "profileUrl": null
+        },
+        {
+          "name": "Jian Cao",
+          "initials": "JC",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Jian Cao",
+          "profileUrl": null
+        },
+        {
+          "name": "Yian Yin",
+          "initials": "YY",
+          "role": "Co-Principal Investigator",
+          "headshotUrl": null,
+          "headshotAlt": "Headshot placeholder for Yian Yin",
+          "profileUrl": null
+        }
+      ],
+      "pi": "Dashun Wang",
+      "coPIs": [
+        "Alicia I. Loffler",
+        "Benjamin Jones",
+        "Jian Cao",
+        "Yian Yin"
+      ],
+      "summary": "Northwestern and its partners are building an integrated research-to-market data pipeline and predictive and causal models to measure, understand, predict, and accelerate technology outcomes. The work links university research and investment to disclosures, licensing, startups, and technology-specific measures across additive manufacturing, synthetic biology, advanced materials, AI algorithms, and therapeutics."
     },
     {
       "id": "aperture-problem-focused-analysis",
@@ -770,6 +770,153 @@
   ],
   "tools": [
     {
+      "id": "insilicom-causal-knowledge-graph",
+      "participantId": "insilicom",
+      "name": "Causal Technology Knowledge Graph",
+      "figure": {
+        "kind": "causal-graph",
+        "label": "Causal knowledge-graph mockup",
+        "alt": "Placeholder directed graph connecting technologies, problems, evidence, and organizations"
+      },
+      "status": "Concept only · not a released tool",
+      "isConceptOnly": true,
+      "demoVideoUrl": null,
+      "demoVideoLabel": "Demo video placeholder",
+      "toolUrl": null,
+      "toolLinkLabel": "Tool link coming soon",
+      "organizationId": "insilicom",
+      "description": "A concept explorer for navigating technologies, features, problems, methods, datasets, organizations, and their directed relationships.",
+      "figureLabel": "Causal knowledge-graph mockup",
+      "organizationUrl": "https://insilicom.com/",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403911"
+    },
+    {
+      "id": "macrocosm-energy-digital-twin",
+      "participantId": "macrocosm",
+      "name": "Energy System Digital Twin",
+      "figure": {
+        "kind": "agent-network",
+        "label": "Firm and asset network mockup",
+        "alt": "Placeholder network of energy firms, power plants, markets, and investment relationships"
+      },
+      "status": "Concept only · not a released tool",
+      "isConceptOnly": true,
+      "demoVideoUrl": null,
+      "demoVideoLabel": "Demo video placeholder",
+      "toolUrl": null,
+      "toolLinkLabel": "Tool link coming soon",
+      "organizationId": "macrocosm",
+      "description": "A concept view of firms, physical energy assets, local markets, investment decisions, and feedbacks in a spatially explicit U.S. model.",
+      "figureLabel": "Firm and asset network mockup",
+      "organizationUrl": "https://macrocosm.group/",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
+    },
+    {
+      "id": "insilicom-evidence-workbench",
+      "participantId": "insilicom",
+      "name": "Evidence Extraction Workbench",
+      "figure": {
+        "kind": "evidence-stream",
+        "label": "Information-extraction workflow mockup",
+        "alt": "Placeholder workflow turning articles and patents into reviewed entities and relations"
+      },
+      "status": "Concept only · not a released tool",
+      "isConceptOnly": true,
+      "demoVideoUrl": null,
+      "demoVideoLabel": "Demo video placeholder",
+      "toolUrl": null,
+      "toolLinkLabel": "Tool link coming soon",
+      "organizationId": "insilicom",
+      "description": "A concept end-to-end workspace for annotating text, reviewing AI-assisted extractions, and assembling domain-specific knowledge graphs.",
+      "figureLabel": "Information-extraction workflow mockup",
+      "organizationUrl": "https://insilicom.com/",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403911"
+    },
+    {
+      "id": "uchicago-global-observatory",
+      "participantId": "uchicago",
+      "name": "Global S&T Observatory",
+      "figure": {
+        "kind": "global-map",
+        "label": "Global observatory mockup",
+        "alt": "Placeholder world map linking research and technology signals among regions"
+      },
+      "status": "Concept only · not a released tool",
+      "isConceptOnly": true,
+      "demoVideoUrl": null,
+      "demoVideoLabel": "Demo video placeholder",
+      "toolUrl": null,
+      "toolLinkLabel": "Tool link coming soon",
+      "organizationId": "uchicago",
+      "description": "A concept map for exploring how research, patents, products, funding, workforce, and markets connect across the global technology system.",
+      "figureLabel": "Global observatory mockup",
+      "organizationUrl": "https://www.uchicago.edu/",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109"
+    },
+    {
+      "id": "aperture-leverage-point-finder",
+      "participantId": "aperture",
+      "name": "Leverage Point Finder",
+      "figure": {
+        "kind": "signal-matrix",
+        "label": "Opportunity signal matrix mockup",
+        "alt": "Placeholder matrix ranking technical problems by evidence, activity, and potential leverage"
+      },
+      "status": "Concept only · not a released tool",
+      "isConceptOnly": true,
+      "demoVideoUrl": null,
+      "demoVideoLabel": "Demo video placeholder",
+      "toolUrl": null,
+      "toolLinkLabel": "Tool link coming soon",
+      "organizationId": "aperture",
+      "description": "A concept matrix for comparing signals that may reveal high-value research questions, complementary partners, and investment leverage points.",
+      "figureLabel": "Opportunity signal matrix mockup",
+      "organizationUrl": "https://www.aperture.ai/",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
+    },
+    {
+      "id": "macrocosm-policy-investment-lab",
+      "participantId": "macrocosm",
+      "name": "Policy & Investment Scenario Lab",
+      "figure": {
+        "kind": "scenario-curves",
+        "label": "Energy scenario comparison mockup",
+        "alt": "Placeholder small-multiple charts comparing energy policy and investment scenarios"
+      },
+      "status": "Concept only · not a released tool",
+      "isConceptOnly": true,
+      "demoVideoUrl": null,
+      "demoVideoLabel": "Demo video placeholder",
+      "toolUrl": null,
+      "toolLinkLabel": "Tool link coming soon",
+      "organizationId": "macrocosm",
+      "description": "A concept simulator for comparing how policy and private-investment choices could influence energy technologies, firms, employment, and materials.",
+      "figureLabel": "Energy scenario comparison mockup",
+      "organizationUrl": "https://macrocosm.group/",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
+    },
+    {
+      "id": "aperture-problem-landscape",
+      "participantId": "aperture",
+      "name": "Problem Landscape Explorer",
+      "figure": {
+        "kind": "problem-landscape",
+        "label": "Problem-to-solution landscape mockup",
+        "alt": "Placeholder terrain connecting problem clusters to technologies and organizations"
+      },
+      "status": "Concept only · not a released tool",
+      "isConceptOnly": true,
+      "demoVideoUrl": null,
+      "demoVideoLabel": "Demo video placeholder",
+      "toolUrl": null,
+      "toolLinkLabel": "Tool link coming soon",
+      "organizationId": "aperture",
+      "description": "A concept landscape that organizes problems, technologies, and organizations so users can inspect unmet needs alongside proposed solutions.",
+      "figureLabel": "Problem-to-solution landscape mockup",
+      "organizationUrl": "https://www.aperture.ai/",
+      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
+    },
+    {
       "id": "northwestern-research-market-navigator",
       "participantId": "northwestern",
       "name": "Research-to-Market Navigator",
@@ -812,27 +959,6 @@
       "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035"
     },
     {
-      "id": "uchicago-global-observatory",
-      "participantId": "uchicago",
-      "name": "Global S&T Observatory",
-      "figure": {
-        "kind": "global-map",
-        "label": "Global observatory mockup",
-        "alt": "Placeholder world map linking research and technology signals among regions"
-      },
-      "status": "Concept only · not a released tool",
-      "isConceptOnly": true,
-      "demoVideoUrl": null,
-      "demoVideoLabel": "Demo video placeholder",
-      "toolUrl": null,
-      "toolLinkLabel": "Tool link coming soon",
-      "organizationId": "uchicago",
-      "description": "A concept map for exploring how research, patents, products, funding, workforce, and markets connect across the global technology system.",
-      "figureLabel": "Global observatory mockup",
-      "organizationUrl": "https://www.uchicago.edu/",
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109"
-    },
-    {
       "id": "uchicago-virtual-policy-lab",
       "participantId": "uchicago",
       "name": "Virtual Policy Laboratory",
@@ -852,141 +978,78 @@
       "figureLabel": "Policy experiment mockup",
       "organizationUrl": "https://www.uchicago.edu/",
       "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109"
-    },
-    {
-      "id": "macrocosm-energy-digital-twin",
-      "participantId": "macrocosm",
-      "name": "Energy System Digital Twin",
-      "figure": {
-        "kind": "agent-network",
-        "label": "Firm and asset network mockup",
-        "alt": "Placeholder network of energy firms, power plants, markets, and investment relationships"
-      },
-      "status": "Concept only · not a released tool",
-      "isConceptOnly": true,
-      "demoVideoUrl": null,
-      "demoVideoLabel": "Demo video placeholder",
-      "toolUrl": null,
-      "toolLinkLabel": "Tool link coming soon",
-      "organizationId": "macrocosm",
-      "description": "A concept view of firms, physical energy assets, local markets, investment decisions, and feedbacks in a spatially explicit U.S. model.",
-      "figureLabel": "Firm and asset network mockup",
-      "organizationUrl": "https://macrocosm.group/",
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
-    },
-    {
-      "id": "macrocosm-policy-investment-lab",
-      "participantId": "macrocosm",
-      "name": "Policy & Investment Scenario Lab",
-      "figure": {
-        "kind": "scenario-curves",
-        "label": "Energy scenario comparison mockup",
-        "alt": "Placeholder small-multiple charts comparing energy policy and investment scenarios"
-      },
-      "status": "Concept only · not a released tool",
-      "isConceptOnly": true,
-      "demoVideoUrl": null,
-      "demoVideoLabel": "Demo video placeholder",
-      "toolUrl": null,
-      "toolLinkLabel": "Tool link coming soon",
-      "organizationId": "macrocosm",
-      "description": "A concept simulator for comparing how policy and private-investment choices could influence energy technologies, firms, employment, and materials.",
-      "figureLabel": "Energy scenario comparison mockup",
-      "organizationUrl": "https://macrocosm.group/",
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999"
-    },
-    {
-      "id": "insilicom-causal-knowledge-graph",
-      "participantId": "insilicom",
-      "name": "Causal Technology Knowledge Graph",
-      "figure": {
-        "kind": "causal-graph",
-        "label": "Causal knowledge-graph mockup",
-        "alt": "Placeholder directed graph connecting technologies, problems, evidence, and organizations"
-      },
-      "status": "Concept only · not a released tool",
-      "isConceptOnly": true,
-      "demoVideoUrl": null,
-      "demoVideoLabel": "Demo video placeholder",
-      "toolUrl": null,
-      "toolLinkLabel": "Tool link coming soon",
-      "organizationId": "insilicom",
-      "description": "A concept explorer for navigating technologies, features, problems, methods, datasets, organizations, and their directed relationships.",
-      "figureLabel": "Causal knowledge-graph mockup",
-      "organizationUrl": "https://insilicom.com/",
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403911"
-    },
-    {
-      "id": "insilicom-evidence-workbench",
-      "participantId": "insilicom",
-      "name": "Evidence Extraction Workbench",
-      "figure": {
-        "kind": "evidence-stream",
-        "label": "Information-extraction workflow mockup",
-        "alt": "Placeholder workflow turning articles and patents into reviewed entities and relations"
-      },
-      "status": "Concept only · not a released tool",
-      "isConceptOnly": true,
-      "demoVideoUrl": null,
-      "demoVideoLabel": "Demo video placeholder",
-      "toolUrl": null,
-      "toolLinkLabel": "Tool link coming soon",
-      "organizationId": "insilicom",
-      "description": "A concept end-to-end workspace for annotating text, reviewing AI-assisted extractions, and assembling domain-specific knowledge graphs.",
-      "figureLabel": "Information-extraction workflow mockup",
-      "organizationUrl": "https://insilicom.com/",
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403911"
-    },
-    {
-      "id": "aperture-problem-landscape",
-      "participantId": "aperture",
-      "name": "Problem Landscape Explorer",
-      "figure": {
-        "kind": "problem-landscape",
-        "label": "Problem-to-solution landscape mockup",
-        "alt": "Placeholder terrain connecting problem clusters to technologies and organizations"
-      },
-      "status": "Concept only · not a released tool",
-      "isConceptOnly": true,
-      "demoVideoUrl": null,
-      "demoVideoLabel": "Demo video placeholder",
-      "toolUrl": null,
-      "toolLinkLabel": "Tool link coming soon",
-      "organizationId": "aperture",
-      "description": "A concept landscape that organizes problems, technologies, and organizations so users can inspect unmet needs alongside proposed solutions.",
-      "figureLabel": "Problem-to-solution landscape mockup",
-      "organizationUrl": "https://www.aperture.ai/",
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
-    },
-    {
-      "id": "aperture-leverage-point-finder",
-      "participantId": "aperture",
-      "name": "Leverage Point Finder",
-      "figure": {
-        "kind": "signal-matrix",
-        "label": "Opportunity signal matrix mockup",
-        "alt": "Placeholder matrix ranking technical problems by evidence, activity, and potential leverage"
-      },
-      "status": "Concept only · not a released tool",
-      "isConceptOnly": true,
-      "demoVideoUrl": null,
-      "demoVideoLabel": "Demo video placeholder",
-      "toolUrl": null,
-      "toolLinkLabel": "Tool link coming soon",
-      "organizationId": "aperture",
-      "description": "A concept matrix for comparing signals that may reveal high-value research questions, complementary partners, and investment leverage points.",
-      "figureLabel": "Opportunity signal matrix mockup",
-      "organizationUrl": "https://www.aperture.ai/",
-      "awardUrl": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082"
     }
   ],
   "sources": [
+    {
+      "id": "organization-aperture",
+      "label": "Aperture website",
+      "url": "https://www.aperture.ai/",
+      "detail": "Official website for Aperture.",
+      "kind": "organization"
+    },
+    {
+      "id": "organization-insilicom",
+      "label": "Insilicom website",
+      "url": "https://insilicom.com/",
+      "detail": "Official website for Insilicom.",
+      "kind": "organization"
+    },
+    {
+      "id": "organization-macrocosm",
+      "label": "Macrocosm website",
+      "url": "https://macrocosm.group/",
+      "detail": "Official website for Macrocosm.",
+      "kind": "organization"
+    },
+    {
+      "id": "organization-northwestern",
+      "label": "Northwestern University website",
+      "url": "https://www.northwestern.edu/",
+      "detail": "Official website for Northwestern University.",
+      "kind": "organization"
+    },
     {
       "id": "nsf-apto-solicitation",
       "label": "NSF 23-600: Assessing and Predicting Technology Outcomes",
       "url": "https://www.nsf.gov/funding/opportunities/apto-assessing-predicting-technology-outcomes/506195/nsf23-600/solicitation",
       "detail": "Official program purpose, lines of effort, outcome dimensions, technology areas, and access expectations.",
       "kind": "program"
+    },
+    {
+      "id": "nsf-award-2403911",
+      "label": "NSF Award 2403911",
+      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403911",
+      "detail": "APTO: Constructing causal knowledge graphs for assessing and predicting technology outcomes · official NSF award record.",
+      "kind": "award"
+    },
+    {
+      "id": "nsf-award-2403999",
+      "label": "NSF Award 2403999",
+      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999",
+      "detail": "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector · official NSF award record.",
+      "kind": "award"
+    },
+    {
+      "id": "nsf-award-2404035",
+      "label": "NSF Award 2404035",
+      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035",
+      "detail": "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes · official NSF award record.",
+      "kind": "award"
+    },
+    {
+      "id": "nsf-award-2404082",
+      "label": "NSF Award 2404082",
+      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082",
+      "detail": "APTO: Problem-Focused Analysis for Predicting Technology Outcomes and Leverage Points · official NSF award record.",
+      "kind": "award"
+    },
+    {
+      "id": "nsf-award-2404109",
+      "label": "NSF Award 2404109",
+      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109",
+      "detail": "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance · official NSF award record.",
+      "kind": "award"
     },
     {
       "id": "nsf-apto-award-search",
@@ -1017,73 +1080,10 @@
       "kind": "brand"
     },
     {
-      "id": "nsf-award-2404035",
-      "label": "NSF Award 2404035",
-      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404035",
-      "detail": "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes · official NSF award record.",
-      "kind": "award"
-    },
-    {
-      "id": "nsf-award-2404109",
-      "label": "NSF Award 2404109",
-      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404109",
-      "detail": "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance · official NSF award record.",
-      "kind": "award"
-    },
-    {
-      "id": "nsf-award-2403999",
-      "label": "NSF Award 2403999",
-      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403999",
-      "detail": "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector · official NSF award record.",
-      "kind": "award"
-    },
-    {
-      "id": "nsf-award-2403911",
-      "label": "NSF Award 2403911",
-      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2403911",
-      "detail": "APTO: Constructing causal knowledge graphs for assessing and predicting technology outcomes · official NSF award record.",
-      "kind": "award"
-    },
-    {
-      "id": "nsf-award-2404082",
-      "label": "NSF Award 2404082",
-      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2404082",
-      "detail": "APTO: Problem-Focused Analysis for Predicting Technology Outcomes and Leverage Points · official NSF award record.",
-      "kind": "award"
-    },
-    {
-      "id": "organization-northwestern",
-      "label": "Northwestern University website",
-      "url": "https://www.northwestern.edu/",
-      "detail": "Official website for Northwestern University.",
-      "kind": "organization"
-    },
-    {
       "id": "organization-uchicago",
       "label": "University of Chicago website",
       "url": "https://www.uchicago.edu/",
       "detail": "Official website for University of Chicago.",
-      "kind": "organization"
-    },
-    {
-      "id": "organization-macrocosm",
-      "label": "Macrocosm website",
-      "url": "https://macrocosm.group/",
-      "detail": "Official website for Macrocosm.",
-      "kind": "organization"
-    },
-    {
-      "id": "organization-insilicom",
-      "label": "Insilicom website",
-      "url": "https://insilicom.com/",
-      "detail": "Official website for Insilicom.",
-      "kind": "organization"
-    },
-    {
-      "id": "organization-aperture",
-      "label": "Aperture website",
-      "url": "https://www.aperture.ai/",
-      "detail": "Official website for Aperture.",
       "kind": "organization"
     }
   ]

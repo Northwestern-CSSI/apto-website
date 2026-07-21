@@ -1,7 +1,6 @@
 ---
 {
   "kind": "project",
-  "order": 5,
   "id": "aperture-problem-focused-analysis",
   "awardId": "2404082",
   "shortName": "Problem-focused technology analysis",

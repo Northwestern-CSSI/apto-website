@@ -1,7 +1,6 @@
 ---
 {
   "kind": "tool",
-  "order": 9,
   "id": "aperture-problem-landscape",
   "participantId": "aperture",
   "awardId": "2404082",

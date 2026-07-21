@@ -1,7 +1,6 @@
 ---
 {
   "kind": "tool",
-  "order": 7,
   "id": "insilicom-causal-knowledge-graph",
   "participantId": "insilicom",
   "awardId": "2403911",

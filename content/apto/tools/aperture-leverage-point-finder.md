@@ -1,7 +1,6 @@
 ---
 {
   "kind": "tool",
-  "order": 10,
   "id": "aperture-leverage-point-finder",
   "participantId": "aperture",
   "awardId": "2404082",

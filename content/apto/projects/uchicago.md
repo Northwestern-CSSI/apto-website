@@ -1,7 +1,6 @@
 ---
 {
   "kind": "project",
-  "order": 2,
   "id": "uchicago-global-observatory",
   "awardId": "2404109",
   "shortName": "Global observatory and virtual laboratory",

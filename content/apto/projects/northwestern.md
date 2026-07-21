@@ -1,7 +1,6 @@
 ---
 {
   "kind": "project",
-  "order": 1,
   "id": "northwestern-technology-outcomes",
   "awardId": "2404035",
   "shortName": "Measuring and accelerating outcomes",

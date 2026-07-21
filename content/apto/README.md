@@ -7,6 +7,8 @@ The three NSF-aligned APTO design concepts use this Markdown as their editable c
 
 The content inventory is intentionally fixed at one program, five project/participant files, and ten concept-tool files. Each participant must join to one NSF award and exactly two tools.
 
+The builder applies neutral alphabetical presentation automatically: participants by display name, projects by official title after the shared `APTO:` prefix, tools by tool name (including the tools embedded in participant records), and sources by visible label. Filenames and frontmatter do not contain ranking or sequence fields. Program outcomes and technology areas keep their source-defined order from the NSF solicitation.
+
 After editing, build the generated site data:
 
 ```sh

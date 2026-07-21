@@ -1,7 +1,6 @@
 ---
 {
   "kind": "project",
-  "order": 4,
   "id": "insilicom-causal-knowledge-graphs",
   "awardId": "2403911",
   "shortName": "Causal technology knowledge graphs",

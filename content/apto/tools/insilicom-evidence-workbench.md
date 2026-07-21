@@ -1,7 +1,6 @@
 ---
 {
   "kind": "tool",
-  "order": 8,
   "id": "insilicom-evidence-workbench",
   "participantId": "insilicom",
   "awardId": "2403911",

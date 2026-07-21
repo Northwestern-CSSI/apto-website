@@ -1,7 +1,6 @@
 ---
 {
   "kind": "tool",
-  "order": 5,
   "id": "macrocosm-energy-digital-twin",
   "participantId": "macrocosm",
   "awardId": "2403999",

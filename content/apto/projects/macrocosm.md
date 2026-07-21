@@ -1,7 +1,6 @@
 ---
 {
   "kind": "project",
-  "order": 3,
   "id": "macrocosm-energy-sector",
   "awardId": "2403999",
   "shortName": "Firm-level energy-system model",

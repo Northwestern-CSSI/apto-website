@@ -83,15 +83,6 @@ function requireArray(object, key, context) {
   return value;
 }
 
-function requireInteger(object, key, context) {
-  const value = object[key];
-  assert(
-    Number.isInteger(value),
-    `${context}.${key} must be an integer`,
-  );
-  return value;
-}
-
 function requireHttpsUrl(value, context) {
   let url;
   try {
@@ -130,6 +121,17 @@ function assertExactSet(values, expected, context) {
 
 function normalizeProse(value) {
   return value.replace(/\s+/g, " ").trim();
+}
+
+function compareAlphabetically(left, right) {
+  return (
+    left.localeCompare(right, "en", { sensitivity: "base" }) ||
+    left.localeCompare(right, "en")
+  );
+}
+
+function projectTitleSortKey(title) {
+  return title.replace(/^APTO:\s*/i, "");
 }
 
 function omitFields(object, fields) {
@@ -326,7 +328,6 @@ function validateProject(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
   assert(metadata.kind === "project", `${context}.kind must be “project”`);
-  const order = requireInteger(metadata, "order", context);
   const id = requireString(metadata, "id", context);
   const awardId = requireString(metadata, "awardId", context);
   assert(/^\d{7}$/.test(awardId), `${context}.awardId must contain seven digits`);
@@ -396,10 +397,13 @@ function validateProject(document) {
     `${context}.participant.accent must be a six-digit hex color`,
   );
 
-  const people = requireArray(metadata, "people", context);
-  assert(people.length > 0, `${context}.people must not be empty`);
-  people.forEach((person, index) =>
+  const peopleInput = requireArray(metadata, "people", context);
+  assert(peopleInput.length > 0, `${context}.people must not be empty`);
+  peopleInput.forEach((person, index) =>
     validatePerson(person, `${context}.people[${index}]`),
+  );
+  const people = [...peopleInput].sort((left, right) =>
+    compareAlphabetically(left.name, right.name),
   );
   assertUnique(people.map((person) => person.name), `${context}.people names`);
   const principalInvestigators = people.filter(
@@ -415,12 +419,10 @@ function validateProject(document) {
 
   const projectMetadata = omitFields(metadata, [
     "kind",
-    "order",
     "participant",
     "people",
   ]);
   return {
-    order,
     participant: {
       ...participant,
       awardId,
@@ -449,7 +451,6 @@ function validateTool(document, projectByParticipant) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
   assert(metadata.kind === "tool", `${context}.kind must be “tool”`);
-  const order = requireInteger(metadata, "order", context);
   requireString(metadata, "id", context);
   const participantId = requireString(metadata, "participantId", context);
   const awardId = requireString(metadata, "awardId", context);
@@ -482,9 +483,8 @@ function validateTool(document, projectByParticipant) {
   const description = sections.get("Description");
   assert(description, `${context} must contain a non-empty “## Description” section`);
 
-  const toolMetadata = omitFields(metadata, ["kind", "order", "awardId"]);
+  const toolMetadata = omitFields(metadata, ["kind", "awardId"]);
   return {
-    order,
     sourceFile: file,
     tool: {
       ...toolMetadata,
@@ -516,34 +516,23 @@ async function buildContent() {
     Promise.all(toolFiles.map(readMarkdown)),
   ]);
   const programRecord = validateProgram(programDocument);
-  const projectRecords = projectDocuments
-    .map(validateProject)
-    .sort((left, right) => left.order - right.order);
+  const projectRecords = projectDocuments.map(validateProject);
 
-  assertUnique(projectRecords.map((record) => record.order), "project orders");
   assertUnique(projectRecords.map((record) => record.id), "project ids");
   assertUnique(projectRecords.map((record) => record.awardId), "award ids");
   assertUnique(
     projectRecords.map((record) => record.participant.id),
     "participant ids",
   );
-  assert(
-    projectRecords.every((record, index) => record.order === index + 1),
-    "Project orders must be the consecutive integers 1 through 5",
-  );
-
   const projectByParticipant = new Map(
     projectRecords.map((record) => [record.participant.id, record]),
   );
   const toolRecords = toolDocuments
     .map((document) => validateTool(document, projectByParticipant))
-    .sort((left, right) => left.order - right.order);
-  assertUnique(toolRecords.map((record) => record.order), "tool orders");
+    .sort((left, right) =>
+      compareAlphabetically(left.tool.name, right.tool.name),
+    );
   assertUnique(toolRecords.map((record) => record.tool.id), "tool ids");
-  assert(
-    toolRecords.every((record, index) => record.order === index + 1),
-    "Tool orders must be the consecutive integers 1 through 10",
-  );
 
   for (const participantId of projectByParticipant.keys()) {
     const count = toolRecords.filter(
@@ -556,13 +545,24 @@ async function buildContent() {
   }
 
   const tools = toolRecords.map((record) => record.tool);
-  const participants = projectRecords.map((record) => ({
-    ...record.participant,
-    tools: tools.filter(
-      (tool) => tool.participantId === record.participant.id,
-    ),
-  }));
-  const projects = projectRecords.map((record) => record.project);
+  const participants = projectRecords
+    .map((record) => ({
+      ...record.participant,
+      tools: tools.filter(
+        (tool) => tool.participantId === record.participant.id,
+      ),
+    }))
+    .sort((left, right) =>
+      compareAlphabetically(left.displayName, right.displayName),
+    );
+  const projects = projectRecords
+    .map((record) => record.project)
+    .sort((left, right) =>
+      compareAlphabetically(
+        projectTitleSortKey(left.officialTitle),
+        projectTitleSortKey(right.officialTitle),
+      ),
+    );
   const awardSources = projects.map((project) => ({
     id: `nsf-award-${project.awardId}`,
     label: `NSF Award ${project.awardId}`,
@@ -581,14 +581,12 @@ async function buildContent() {
     ...programRecord.sources,
     ...awardSources,
     ...organizationSources,
-  ];
+  ].sort((left, right) => compareAlphabetically(left.label, right.label));
   assertUnique(sources.map((source) => source.id), "generated source ids");
 
-  const sourceFiles = [
-    programFile,
-    ...projectRecords.map((record) => record.sourceFile),
-    ...toolRecords.map((record) => record.sourceFile),
-  ].map(relativeFile);
+  const sourceFiles = [programFile, ...projectFiles, ...toolFiles]
+    .map(relativeFile)
+    .sort(compareAlphabetically);
 
   return {
     _generated: {
