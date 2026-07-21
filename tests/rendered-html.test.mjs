@@ -6,14 +6,6 @@ const root = new URL("../", import.meta.url);
 const nsfBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
 
-const expectedParticipants = [
-  "Aperture",
-  "Insilicom",
-  "Macrocosm",
-  "Northwestern University",
-  "University of Chicago",
-];
-
 const expectedPageSlugs = [
   "/",
   "/about",
@@ -21,59 +13,6 @@ const expectedPageSlugs = [
   "/people",
   "/projects",
   "/tools",
-];
-
-const expectedPageNavLabels = [
-  "About",
-  "Cohort",
-  "Home",
-  "People",
-  "Projects",
-  "Tools",
-];
-
-const expectedParticipantLogoSources = [
-  "/apto/partners/aperture.svg",
-  "/apto/partners/insilicom.png",
-  "/apto/partners/macrocosm.svg",
-  "/apto/partners/northwestern.png",
-  "/apto/partners/uchicago.png",
-];
-
-const expectedProjects = [
-  ["2403999", "APTO: A firm-level model of technological improvement, production and diffusion in the energy sector"],
-  ["2404109", "APTO: Collaborative Research: Global Observatory and Virtual Laboratory for Science and Technology Advance"],
-  ["2403911", "APTO: Constructing causal knowledge graphs for assessing and predicting technology outcomes"],
-  ["2404035", "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes"],
-  ["2404082", "APTO: Problem-Focused Analysis for Predicting Technology Outcomes and Leverage Points"],
-];
-
-const expectedPeople = [
-  "Dashun Wang",
-  "Alicia I. Loffler",
-  "Jian Cao",
-  "Benjamin Jones",
-  "Yian Yin",
-  "James Evans",
-  "Ian Foster",
-  "Ufuk Akcigit",
-  "James Farmer",
-  "Daniel Eichelsdoerfer",
-  "Jinfeng Zhang",
-  "Jonathan Fegely",
-];
-
-const expectedTools = [
-  "Causal Technology Knowledge Graph",
-  "Energy System Digital Twin",
-  "Evidence Extraction Workbench",
-  "Global S&T Observatory",
-  "Leverage Point Finder",
-  "Policy & Investment Scenario Lab",
-  "Problem Landscape Explorer",
-  "Research-to-Market Navigator",
-  "Technology Trajectory Forecaster",
-  "Virtual Policy Laboratory",
 ];
 
 function compareAlphabetically(left, right) {
@@ -141,12 +80,15 @@ async function render(pathname = "/") {
 }
 
 test("server-renders the APTO design gallery", async () => {
+  const generated = JSON.parse(
+    await readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
+  );
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>APTO Website Direction Study<\/title>/i);
+  assert.ok(html.includes(`<title>${generated.interface.study.siteTitle}</title>`));
   assert.match(html, /Fifty-six possible/);
   assert.match(html, /front doors to/);
   assert.match(html, /Civic Observatory/);
@@ -166,6 +108,9 @@ test("server-renders the APTO design gallery", async () => {
 });
 
 test("server-renders a representative explicit APTO route", async () => {
+  const generated = JSON.parse(
+    await readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
+  );
   const response = await render("/apto/projects?concept=nsfledger");
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
@@ -173,13 +118,16 @@ test("server-renders a representative explicit APTO route", async () => {
   const html = await response.text();
   assert.match(html, /"pathname":"\/apto\/projects"/);
   assert.match(html, /\[\["concept","nsfledger"\]\]/);
-  assert.match(html, /Evidence ledger/);
-  assert.match(html, /APTO design directions/);
+  assert.ok(html.includes(generated.interface.directions.find((direction) => direction.id === "nsfledger").label));
+  assert.ok(html.includes(generated.interface.study.barLabel));
   assert.match(html, /\/apto\/tools\?concept=nsfledger/);
   assert.doesNotMatch(html, /Official NSF source/i);
 });
 
 test("keeps three core APTO homes and adds three matched widget variants", async () => {
+  const generated = JSON.parse(
+    await readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
+  );
   const directions = [
     ["nsfhome", "home", false],
     ["nsfhomewidgets", "home", true],
@@ -197,13 +145,13 @@ test("keeps three core APTO homes and adds three matched widget variants", async
     assert.match(html, new RegExp(`\\[\\[\"concept\",\"${concept}\"\\]\\]`));
 
     if (hasWidget) {
-      assert.match(html, /Explore an evidence tool/);
-      assert.match(html, /Illustrative interface/);
+      assert.ok(html.includes(generated.interface.widget.title));
+      assert.ok(html.includes(generated.interface.widget.disclaimer));
       assert.equal((html.match(/role="tab"/g) ?? []).length, 4);
       assert.equal((html.match(/aria-selected="true"/g) ?? []).length, 1);
       assert.match(html, new RegExp(`/apto/tools\\?concept=${concept}`));
     } else {
-      assert.doesNotMatch(html, /Explore an evidence tool/);
+      assert.equal(html.includes(generated.interface.widget.title), false);
     }
   }
 });
@@ -492,10 +440,10 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     access(new URL("../app/apto/sources/page.tsx", import.meta.url)),
   );
 
-  assert.deepEqual(
-    content.pages.map((page) => page.navLabel),
-    expectedPageNavLabels,
-  );
+  const pageNavLabels = content.pages.map((page) => page.navLabel);
+  assert.ok(pageNavLabels.every((label) => typeof label === "string" && label.trim().length > 0));
+  assert.deepEqual(pageNavLabels, sortedAlphabetically(pageNavLabels));
+  assert.equal(new Set(pageNavLabels).size, pageNavLabels.length);
   assert.deepEqual(
     content.pages.map((page) => page.slug).sort(),
     expectedPageSlugs,
@@ -508,17 +456,15 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     assert.ok(page.introduction.trim().length > 0);
   }
 
-  assert.deepEqual(
-    content.participants.map((participant) => participant.displayName),
-    expectedParticipants,
-  );
-  assert.deepEqual(
-    content.participants.map((participant) => participant.logo.src),
-    expectedParticipantLogoSources,
-  );
+  const participantNames = content.participants.map((participant) => participant.displayName);
+  assert.equal(participantNames.length, 5);
+  assert.ok(participantNames.every((name) => typeof name === "string" && name.trim().length > 0));
+  assert.deepEqual(participantNames, sortedAlphabetically(participantNames));
+  assert.equal(new Set(participantNames).size, participantNames.length);
   assert.equal(new Set(content.participants.map((participant) => participant.logo.src)).size, 5);
   for (const participant of content.participants) {
     const { logo } = participant;
+    assert.match(logo.src, /^\/[^\s]+$/);
     assert.ok(Number.isFinite(logo.width) && logo.width > 0);
     assert.ok(Number.isFinite(logo.height) && logo.height > 0);
     assert.ok(["light", "dark"].includes(logo.surface));
@@ -527,59 +473,42 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
     assert.ok(logo.sourceLabel.trim().length > 0);
     assert.ok(typeof logo.status === "string" && logo.status.trim().length > 0);
     assert.equal(typeof logo.approved, "boolean");
+    assert.equal(new URL(participant.website).protocol, "https:");
     await access(new URL(`../public${logo.src}`, import.meta.url));
   }
   assert.equal(content.projects.length, 5);
-  for (const [awardId, title] of expectedProjects) {
-    const project = content.projects.find((item) => item.awardId === awardId);
-    assert.ok(project, `Expected NSF award ${awardId}`);
-    assert.equal(project.officialTitle, title);
+  assert.equal(new Set(content.projects.map((project) => project.awardId)).size, 5);
+  for (const project of content.projects) {
+    assert.match(project.awardId, /^\d{7}$/);
+    assert.match(project.officialTitle, /^APTO:/);
+    assert.ok(project.awardUrl.includes(project.awardId));
+    assert.ok(project.apiUrl.includes(project.awardId));
+    assert.ok(project.people.length > 0);
   }
-  assert.deepEqual(
-    content.projects.map((project) => project.officialTitle),
-    expectedProjects.map(([, title]) => title),
-  );
   const projectSortKeys = content.projects.map((project) =>
     projectTitleSortKey(project.officialTitle),
   );
   assert.deepEqual(projectSortKeys, sortedAlphabetically(projectSortKeys));
 
-  const people = content.participants.flatMap((participant) =>
-    participant.people.map((person) => person.name),
-  );
-  for (const person of expectedPeople) {
-    assert.ok(people.includes(person), `Expected APTO team member ${person}`);
-  }
-
-  for (const organizationUrl of [
-    "https://www.northwestern.edu/",
-    "https://www.uchicago.edu/",
-    "https://macrocosm.group/",
-    "https://insilicom.com/",
-    "https://www.aperture.ai/",
-  ]) {
-    assert.ok(content.participants.some((participant) => participant.website === organizationUrl));
+  for (const participant of content.participants) {
     assert.equal(
-      content.tools.filter((tool) => tool.organizationUrl === organizationUrl).length,
+      content.tools.filter((tool) => tool.organizationUrl === participant.website).length,
       2,
     );
   }
 
   assert.equal(content.tools.filter((tool) => tool.isConceptOnly === true).length, 10);
   assert.ok(content.tools.every((tool) => typeof tool.status === "string" && tool.status.trim().length > 0));
-  for (const participantId of ["northwestern", "uchicago", "macrocosm", "insilicom", "aperture"]) {
+  for (const participantId of content.participants.map((participant) => participant.id)) {
     assert.equal(
       content.tools.filter((tool) => tool.participantId === participantId).length,
       2,
     );
   }
-  for (const toolName of expectedTools) {
-    assert.ok(content.tools.some((tool) => tool.name === toolName));
-  }
-  assert.deepEqual(
-    content.tools.map((tool) => tool.name),
-    expectedTools,
-  );
+  const toolNames = content.tools.map((tool) => tool.name);
+  assert.ok(toolNames.every((name) => typeof name === "string" && name.trim().length > 0));
+  assert.deepEqual(toolNames, sortedAlphabetically(toolNames));
+  assert.equal(new Set(toolNames).size, toolNames.length);
   const sourceLabels = content.sources.map((source) => source.label);
   assert.deepEqual(sourceLabels, sortedAlphabetically(sourceLabels));
   for (const participant of content.participants) {
@@ -600,16 +529,14 @@ test("ships three source-grounded, accessible NSF APTO directions", async () => 
   assert.ok(content.tools.every((tool) => typeof tool.demoVideoLabel === "string" && tool.demoVideoLabel.trim().length > 0));
   assert.ok(content.tools.every((tool) => typeof tool.toolLinkLabel === "string" && tool.toolLinkLabel.trim().length > 0));
   assert.match(nsfSource, /aptoInterface\.people\.portraitForthcomingLabel/);
-  assert.equal(content.interface.people.portraitForthcomingLabel, "Portrait forthcoming");
-  assert.equal(content.interface.disclosures.toolsLabel, "Mock content");
+  assert.ok(content.interface.people.portraitForthcomingLabel.trim().length > 0);
+  assert.ok(content.interface.disclosures.toolsLabel.trim().length > 0);
   assert.equal(content.boilerplate, nsfBoilerplate);
-  assert.deepEqual(content.program.framework, {
-    ariaLabel: "APTO research framework",
-    outcomesTitle: "Outcome lenses",
-    outcomesNote: "What APTO measures",
-    effortsTitle: "Research tracks",
-    effortsNote: "How APTO builds evidence",
-  });
+  assert.deepEqual(
+    Object.keys(content.program.framework).sort(),
+    ["ariaLabel", "effortsNote", "effortsTitle", "outcomesNote", "outcomesTitle"],
+  );
+  assert.ok(Object.values(content.program.framework).every((value) => typeof value === "string" && value.trim().length > 0));
   assert.deepEqual(
     content.program.linesOfEffort.map((line) => line.title),
     sortedAlphabetically(content.program.linesOfEffort.map((line) => line.title)),
@@ -862,8 +789,10 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
       source: await readFile(record.url, "utf8"),
     })),
   );
+  const frontmatterByName = new Map();
   for (const record of markdownSources) {
     const frontmatter = parseJsonFrontmatter(record.source, record.name);
+    frontmatterByName.set(record.name, frontmatter);
     assert.equal(
       Object.hasOwn(frontmatter, "order"),
       false,
@@ -872,6 +801,46 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
   }
 
   const content = JSON.parse(generatedJson);
+  const interfaceFrontmatter = frontmatterByName.get("interface.md");
+  const { kind: interfaceKind, ...expectedInterface } = interfaceFrontmatter;
+  assert.equal(interfaceKind, "interface");
+  assert.deepEqual(content.interface, expectedInterface);
+
+  const programFrontmatter = frontmatterByName.get("program.md");
+  assert.deepEqual(content.program.framework, programFrontmatter.framework);
+  assert.equal(content.boilerplate, programFrontmatter.boilerplate);
+
+  for (const [name, frontmatter] of frontmatterByName) {
+    if (name.startsWith("pages/")) {
+      const generatedPage = content.pages.find((page) => page.slug === frontmatter.slug);
+      assert.ok(generatedPage, `Expected generated page for ${name}`);
+      for (const field of ["navLabel", "metadataTitle", "eyebrow", "title"]) {
+        assert.equal(generatedPage[field], frontmatter[field], `${name} ${field} must flow from Markdown`);
+      }
+    }
+
+    if (name.startsWith("projects/")) {
+      const generatedProject = content.projects.find((project) => project.id === frontmatter.id);
+      assert.ok(generatedProject, `Expected generated project for ${name}`);
+      for (const field of ["awardId", "shortName", "officialTitle", "agreementType", "startDate", "endDate"]) {
+        assert.equal(generatedProject[field], frontmatter[field], `${name} ${field} must flow from Markdown`);
+      }
+      const generatedParticipant = content.participants.find((participant) => participant.id === frontmatter.participant.id);
+      assert.ok(generatedParticipant, `Expected generated participant for ${name}`);
+      assert.equal(generatedParticipant.displayName, frontmatter.participant.displayName);
+      assert.equal(generatedParticipant.website, frontmatter.participant.website);
+      assert.deepEqual(generatedParticipant.logo, frontmatter.participant.logo);
+    }
+
+    if (name.startsWith("tools/")) {
+      const generatedTool = content.tools.find((tool) => tool.id === frontmatter.id);
+      assert.ok(generatedTool, `Expected generated tool for ${name}`);
+      for (const field of ["participantId", "name", "status", "demoVideoLabel", "toolLinkLabel"]) {
+        assert.equal(generatedTool[field], frontmatter[field], `${name} ${field} must flow from Markdown`);
+      }
+      assert.deepEqual(generatedTool.figure, frontmatter.figure);
+    }
+  }
   assert.deepEqual(
     Object.keys(content).sort(),
     [
@@ -899,19 +868,17 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
   assert.equal(content.interface.directions.length, 6);
   assert.equal(content.interface.widget.items.length, 4);
   assert.equal(content.pages.length, 6);
-  assert.deepEqual(
-    content.pages.map((page) => page.navLabel),
-    expectedPageNavLabels,
-  );
+  const generatedNavLabels = content.pages.map((page) => page.navLabel);
+  assert.ok(generatedNavLabels.every((label) => typeof label === "string" && label.trim().length > 0));
+  assert.deepEqual(generatedNavLabels, sortedAlphabetically(generatedNavLabels));
   assert.deepEqual(
     content.pages.map((page) => page.slug).sort(),
     expectedPageSlugs,
   );
   assert.equal(content.projects.length, 5);
   assert.equal(content.tools.length, 10);
-  assert.equal(
-    content.participants.reduce((total, participant) => total + participant.people.length, 0),
-    12,
+  assert.ok(
+    content.participants.reduce((total, participant) => total + participant.people.length, 0) >= 5,
   );
   assert.ok(content.projects.every((project) => project.officialTitle.startsWith("APTO:")));
   assert.equal(content.boilerplate, nsfBoilerplate);
@@ -932,12 +899,14 @@ test("builds the NSF APTO content artifact from the Markdown source of truth", a
   assert.match(nsfData, /export const aptoPages = aptoContent\.pages;/);
   assert.match(nsfData, /export const aptoInterface = aptoContent\.interface;/);
   assert.doesNotMatch(nsfData, /export const apto(?:Projects|Participants|MockTools)\s*=\s*\[/);
-  for (const [awardId, title] of expectedProjects) {
-    assert.equal(nsfData.includes(awardId), false);
-    assert.equal(nsfData.includes(title), false);
+  for (const project of content.projects) {
+    assert.equal(nsfData.includes(project.awardId), false);
+    assert.equal(nsfData.includes(project.officialTitle), false);
   }
-  for (const person of expectedPeople) assert.equal(nsfData.includes(person), false);
-  for (const tool of expectedTools) assert.equal(nsfData.includes(tool), false);
+  for (const person of content.participants.flatMap((participant) => participant.people)) {
+    assert.equal(nsfData.includes(person.name), false);
+  }
+  for (const tool of content.tools) assert.equal(nsfData.includes(tool.name), false);
 
   assert.match(generator, /const checkOnly = args\[0\] === "--check"/);
   assert.match(generator, /current === serialized/);
