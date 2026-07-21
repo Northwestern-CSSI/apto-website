@@ -153,7 +153,7 @@ function NsfProgramHeader({ id, activeSection }: { id: NsfAptoMockupId; activeSe
 function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
   const homeCopy = copyFor("home");
   const tone = direction === "network" ? "dark" : "light";
-  return <section className="nsf-program-hero" aria-labelledby={`${id}-title`}>
+  return <section className="nsf-program-hero has-partner-grid" aria-labelledby={`${id}-title`}>
     <div className="nsf-hero-copy">
       <p className="nsf-eyebrow">{homeCopy.eyebrow}</p>
       <h1 id={`${id}-title`}>{homeCopy.title}</h1>

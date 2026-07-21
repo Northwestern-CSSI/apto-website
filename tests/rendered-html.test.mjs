@@ -242,6 +242,7 @@ test("merges the program overview into home and replaces statistics with an inte
     const text = visibleText(html);
     assert.equal(countMatches(html, /class="nsf-hero-facts"/g), 0);
     assert.equal(countMatches(html, /class="nsf-hero-partners"/g), 1);
+    assert.match(html, /class="nsf-program-hero has-partner-grid"/);
     assert.ok(text.includes(content.program.description));
     assert.ok(text.includes(content.program.objectivesTitle));
     for (const objective of content.program.objectives) assert.ok(text.includes(objective));
