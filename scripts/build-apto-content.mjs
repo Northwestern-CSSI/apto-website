@@ -540,17 +540,22 @@ function validateInterface(document) {
   assert(study.socialImageSrc.startsWith("/apto/"), `${context}.study.socialImageSrc must begin with /apto/`);
 
   const primaryNavigation = requireArray(metadata, "primaryNavigation", context);
-  assert(primaryNavigation.length === 3, `${context}.primaryNavigation must contain three links`);
+  assert(primaryNavigation.length === 4, `${context}.primaryNavigation must contain four links`);
+  const primaryNavigationSections = primaryNavigation.map((item, index) => {
+    const itemContext = `${context}.primaryNavigation[${index}]`;
+    requireObject(item, itemContext);
+    assertExactKeys(item, ["label", "section"], itemContext);
+    requireString(item, "label", itemContext);
+    return requireString(item, "section", itemContext);
+  });
   assertExactSet(
-    primaryNavigation.map((item, index) => {
-      const itemContext = `${context}.primaryNavigation[${index}]`;
-      requireObject(item, itemContext);
-      assertExactKeys(item, ["label", "section"], itemContext);
-      requireString(item, "label", itemContext);
-      return requireString(item, "section", itemContext);
-    }),
-    new Set(["cohort", "projects", "tools"]),
+    primaryNavigationSections,
+    new Set(["home", "projects", "tools", "cohort"]),
     `${context}.primaryNavigation sections`,
+  );
+  assert(
+    primaryNavigationSections.join(",") === "home,projects,tools,cohort",
+    `${context}.primaryNavigation must be ordered Program, Projects, Tools, Cohort`,
   );
 
   const home = requireObject(metadata.home, `${context}.home`);

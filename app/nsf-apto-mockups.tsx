@@ -546,7 +546,10 @@ function NsfAcknowledgementFooter({ id }: { id: NsfAptoMockupId }) {
       </div>
       <div className="nsf-funder-copy"><strong>{aptoInterface.footer.disclaimerTitle}</strong><p>{aptoBoilerplate}</p></div>
     </div>
-    <nav aria-label={aptoInterface.accessibility.footerNavigationLabel}><a href={`#${id}-main`}>{aptoInterface.footer.backToTopLabel} ↑</a><a href={aptoHref("home", id)}>{aptoInterface.footer.homeLinkLabel}</a><a href={`${aptoHref("home", id)}#${id}-about`}>{aptoInterface.footer.programLinkLabel}</a></nav>
+    <nav aria-label={aptoInterface.accessibility.footerNavigationLabel}>
+      {aptoInterface.primaryNavigation.map((link) => <a key={link.section} href={aptoHref(link.section, id)}>{link.label}</a>)}
+      <a href={`#${id}-main`}>{aptoInterface.footer.backToTopLabel} ↑</a>
+    </nav>
   </footer>;
 }
 

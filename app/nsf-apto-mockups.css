@@ -2356,7 +2356,7 @@
   .nsf-tool-figure { grid-row: 1; min-height: 0; }
   .nsf-tool-copy { grid-row: 2; }
   .nsf-tool-figure > img { max-height: 220px; }
-  .nsf-program-header nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nsf-program-header nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .nsf-cohort-team,
   .nsf-program-leadership > div { grid-template-columns: 1fr; gap: 24px; }
 }

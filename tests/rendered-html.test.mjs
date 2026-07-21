@@ -161,10 +161,10 @@ test("preserves the dormant homepage widget without exposing it on public routes
 
 test("renders five canonical pages in two themes and preserves every published concept alias", async () => {
   const content = await generatedContent();
-  assert.equal(content.interface.primaryNavigation.length, 3);
+  assert.equal(content.interface.primaryNavigation.length, 4);
   assert.deepEqual(
-    content.interface.primaryNavigation.map((item) => item.label),
-    sortedAlphabetically(content.interface.primaryNavigation.map((item) => item.label)),
+    content.interface.primaryNavigation.map((item) => [item.label, item.section]),
+    [["Program", "home"], ["Projects", "projects"], ["Tools", "tools"], ["Cohort", "cohort"]],
   );
   assert.equal(content.interface.directions.length, 2);
   const generatedSlugs = new Set(content.pages.map((page) => page.slug));

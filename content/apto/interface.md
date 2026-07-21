@@ -15,9 +15,10 @@
     "themeChooserLabel": "Choose color theme"
   },
   "primaryNavigation": [
-    { "label": "Cohort", "section": "cohort" },
+    { "label": "Program", "section": "home" },
     { "label": "Projects", "section": "projects" },
-    { "label": "Tools", "section": "tools" }
+    { "label": "Tools", "section": "tools" },
+    { "label": "Cohort", "section": "cohort" }
   ],
   "home": {
     "primaryActionLabel": "Explore the projects",
@@ -33,9 +34,9 @@
     "ledgerVisualEyebrow": "APTO research portfolio",
     "ledgerVisualTitle": "Evidence for better technology decisions",
     "pathways": [
-      { "section": "cohort", "title": "Cohort", "description": "Participating organizations, program leadership, and the investigators leading each project." },
       { "section": "projects", "title": "Projects", "description": "The active APTO awards and the questions each team is pursuing." },
-      { "section": "tools", "title": "Tools", "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research." }
+      { "section": "tools", "title": "Tools", "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research." },
+      { "section": "cohort", "title": "Cohort", "description": "Participating organizations, program leadership, and the investigators leading each project." }
     ]
   },
   "common": {
