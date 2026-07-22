@@ -17,12 +17,12 @@
       "alt": "Layered evidence records converging into a directed causal knowledge graph"
     },
     {
-      "src": "/apto/tools/previews/insilicom-evidence-workbench.jpg",
-      "alt": "Evidence extraction workflow moving source records through structured review stages"
+      "src": "/apto/tools/atlas/insilicom-causal-competing-pathways.jpg",
+      "alt": "Two competing causal pathways linking technical features, mediators, and downstream outcomes"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-provenance.jpg",
-      "alt": "Reviewed document layers feeding traceable relationships into a causal technology network"
+      "src": "/apto/tools/atlas/insilicom-causal-counterfactual-branch.jpg",
+      "alt": "A causal system branching into alternative outcomes through different intermediate mechanisms"
     }
   ],
   "statusLabel": "Research preview",

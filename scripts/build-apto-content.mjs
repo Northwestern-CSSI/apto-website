@@ -972,6 +972,21 @@ async function validateToolFigureFiles(toolRecords) {
   );
 }
 
+function validateToolMediaInventory(toolRecords) {
+  const mediaPaths = toolRecords.flatMap((record) => {
+    const paths = [
+      record.tool.figure.src,
+      ...record.tool.galleryImages.map((image) => image.src),
+    ];
+    assert(
+      paths.length === 4,
+      `${relativeFile(record.sourceFile)} must provide exactly four Atlas media frames (figure.src plus three galleryImages)`,
+    );
+    return paths;
+  });
+  assertUnique(mediaPaths, "tool media paths across all tools");
+}
+
 async function validatePersonHeadshotFiles(personRecords) {
   await Promise.all(
     personRecords
@@ -1080,6 +1095,7 @@ async function buildContent() {
   });
 
   const toolRecords = toolDocuments.map(validateTool);
+  validateToolMediaInventory(toolRecords);
   await validateToolFigureFiles(toolRecords);
   assertUnique(toolRecords.map((record) => record.id), "tool ids");
   toolRecords.forEach((record) => {

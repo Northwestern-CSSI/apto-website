@@ -13,16 +13,16 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/insilicom-causal-evidence.jpg",
-      "alt": "Layered evidence records converging into a directed causal knowledge graph"
-    },
-    {
-      "src": "/apto/tools/previews/insilicom-causal-knowledge-graph.jpg",
-      "alt": "Directed technology graph linking evidence, methods, organizations, and technical outcomes"
-    },
-    {
       "src": "/apto/tools/atlas/insilicom-evidence-provenance.jpg",
       "alt": "Source documents passing review checkpoints before entering a provenance-aware knowledge graph"
+    },
+    {
+      "src": "/apto/tools/atlas/insilicom-evidence-review-layers.jpg",
+      "alt": "Source documents passing through extraction and review before becoming structured evidence"
+    },
+    {
+      "src": "/apto/tools/atlas/insilicom-evidence-verified-records.jpg",
+      "alt": "Verified claims and relationships retaining traceable connections to their original source documents"
     }
   ],
   "statusLabel": "Research preview",

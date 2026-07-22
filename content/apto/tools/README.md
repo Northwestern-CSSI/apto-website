@@ -119,7 +119,8 @@ translation-funnel
 `galleryImages` supplies the large, edge-to-edge imagery used by the APTO Atlas
 tool cards. Every tool must have exactly three entries. The Atlas card also
 uses the standard `figure` as a fourth visual layer and cycles continuously
-through all four frames.
+through all four frames. All four media paths must be unique to that tool; the
+builder rejects an image that is reused by another tool.
 
 - Store these files in `content/apto/assets/tools/atlas/` and reference them as
   `/apto/tools/atlas/filename.ext`.
@@ -130,6 +131,8 @@ through all four frames.
   The card supplies its title and description as accessible HTML.
 - Give every image specific alt text that explains its subject or information.
   Do not describe a purely decorative style, and do not copy the tool name.
+- Do not reuse another tool's preview or Atlas image. Distinct artwork keeps the
+  independently timed crossfades from revealing repeated frames across cards.
 - To replace provisional artwork, add the approved file, update the matching
   `src` and `alt` in the tool Markdown, remove the now-unused file, and run
   `npm run verify`.

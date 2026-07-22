@@ -17,12 +17,12 @@
       "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
     },
     {
-      "src": "/apto/tools/previews/uchicago-virtual-policy-lab.jpg",
-      "alt": "Policy experiment view comparing baseline and alternative technology-outcome scenarios"
+      "src": "/apto/tools/atlas/uchicago-global-signal-constellations.jpg",
+      "alt": "Global constellations of research, patent, funding, workforce, product, and market signals"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-policy-flows.jpg",
-      "alt": "Global science network crossed by funding, talent, and policy waves that produce alternative futures"
+      "src": "/apto/tools/atlas/uchicago-talent-knowledge-corridors.jpg",
+      "alt": "Knowledge, talent, and collaboration moving among changing regional science and technology clusters"
     }
   ],
   "statusLabel": "Research preview",

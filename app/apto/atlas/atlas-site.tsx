@@ -9,7 +9,7 @@ import Moon from "lucide-react/dist/esm/icons/moon.mjs";
 import Plus from "lucide-react/dist/esm/icons/plus.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
 import X from "lucide-react/dist/esm/icons/x.mjs";
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 import {
   aptoBoilerplate,
@@ -28,6 +28,107 @@ export type AtlasSection = "home" | "projects" | "tools" | "cohort";
 
 type Participant = (typeof aptoParticipants)[number];
 type Person = Participant["people"][number] | (typeof aptoProgram.programTeam)[number];
+
+type KenBurnsPlan = {
+  enterFadeMs: number;
+  holdMs: number;
+  exitFadeMs: number;
+  motionMs: number;
+  fromScale: number;
+  toScale: number;
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
+  originX: number;
+  originY: number;
+  easing: string;
+};
+
+type KenBurnsFrame = {
+  index: number;
+  cycle: number;
+  plan: KenBurnsPlan;
+};
+
+type KenBurnsState = {
+  current: KenBurnsFrame;
+  incoming: KenBurnsFrame | null;
+};
+
+const kenBurnsEasings = [
+  "cubic-bezier(.37,0,.63,1)",
+  "cubic-bezier(.45,.05,.25,1)",
+  "cubic-bezier(.25,.1,.25,1)",
+] as const;
+
+function hashString(value: string) {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function seededRandom(seed: number) {
+  let state = seed >>> 0;
+  return () => {
+    state += 0x6d2b79f5;
+    let value = state;
+    value = Math.imul(value ^ (value >>> 15), value | 1);
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function randomBetween(random: () => number, minimum: number, maximum: number) {
+  return minimum + random() * (maximum - minimum);
+}
+
+function makeKenBurnsPlan(toolId: string, index: number, cycle: number, enterFadeMs = 0): KenBurnsPlan {
+  const random = seededRandom(hashString(`${toolId}:${index}:${cycle}`));
+  const holdMs = Math.round(randomBetween(random, 11_500, 19_000));
+  const exitFadeMs = Math.round(randomBetween(random, 3_200, 5_200));
+  const lowScale = randomBetween(random, 1.08, 1.14);
+  const highScale = randomBetween(random, 1.2, 1.32);
+  const zoomsIn = random() >= .5;
+  const fromX = randomBetween(random, -3.5, 3.5);
+  const fromY = randomBetween(random, -3.5, 3.5);
+  const toX = randomBetween(random, -3.5, 3.5);
+  const toY = randomBetween(random, -3.5, 3.5);
+
+  return {
+    enterFadeMs,
+    holdMs,
+    exitFadeMs,
+    motionMs: enterFadeMs + holdMs + exitFadeMs,
+    fromScale: zoomsIn ? lowScale : highScale,
+    toScale: zoomsIn ? highScale : lowScale,
+    fromX,
+    fromY,
+    toX,
+    toY,
+    originX: randomBetween(random, 18, 82),
+    originY: randomBetween(random, 18, 82),
+    easing: kenBurnsEasings[Math.floor(random() * kenBurnsEasings.length)],
+  };
+}
+
+function kenBurnsStyle(plan: KenBurnsPlan) {
+  return {
+    "--atlas-kb-motion-ms": `${plan.motionMs}ms`,
+    "--atlas-kb-easing": plan.easing,
+    "--atlas-kb-from-scale": plan.fromScale.toFixed(4),
+    "--atlas-kb-to-scale": plan.toScale.toFixed(4),
+    "--atlas-kb-from-x": `${plan.fromX.toFixed(3)}%`,
+    "--atlas-kb-from-y": `${plan.fromY.toFixed(3)}%`,
+    "--atlas-kb-to-x": `${plan.toX.toFixed(3)}%`,
+    "--atlas-kb-to-y": `${plan.toY.toFixed(3)}%`,
+    "--atlas-kb-origin-x": `${plan.originX.toFixed(2)}%`,
+    "--atlas-kb-origin-y": `${plan.originY.toFixed(2)}%`,
+  } as CSSProperties;
+}
 
 const sectionSlugs: Record<AtlasSection, "\/" | "\/projects" | "\/tools" | "\/cohort"> = {
   home: "/",
@@ -67,17 +168,19 @@ function ParticipantLogo({ participant, eager = false, className = "" }: {
   className?: string;
 }) {
   return <span
-    className={`atlas-logo logo-${participant.id} asset-on-${participant.logo.surface} ${className}`.trim()}
+    className={`atlas-logo logo-${participant.id} logo-kind-${participant.logo.kind} asset-on-${participant.logo.surface} ${className}`.trim()}
     aria-hidden="true"
   >
-    <img
-      src={withDeploymentBase(participant.logo.src)}
-      alt=""
-      width={participant.logo.width}
-      height={participant.logo.height}
-      loading={eager ? "eager" : "lazy"}
-      decoding="async"
-    />
+    <span className="atlas-logo-canvas">
+      <img
+        src={withDeploymentBase(participant.logo.src)}
+        alt=""
+        width={participant.logo.width}
+        height={participant.logo.height}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+    </span>
   </span>;
 }
 
@@ -306,50 +409,127 @@ function ToolPoster({ tool, expanded, onToggle }: {
   const participant = participantFor(tool.participantId);
   const detailId = `atlas-tool-details-${tool.id}`;
   const media = [tool.galleryImages[0], { src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages.slice(1)];
-  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+  const cardRef = useRef<HTMLElement | null>(null);
+  const imageRefs = useRef<Array<HTMLImageElement | null>>([]);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isNearViewport, setIsNearViewport] = useState(true);
+  const [documentIsVisible, setDocumentIsVisible] = useState(true);
+  const [motion, setMotion] = useState<KenBurnsState>(() => ({
+    current: {
+      index: 0,
+      cycle: 0,
+      plan: makeKenBurnsPlan(tool.id, 0, 0),
+    },
+    incoming: null,
+  }));
+  const shouldAnimate = !prefersReducedMotion && isNearViewport && documentIsVisible;
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let intervalId: number | undefined;
-
-    const updateTimer = () => {
-      if (intervalId) window.clearInterval(intervalId);
-      intervalId = undefined;
-      if (reducedMotion.matches || media.length < 2) return;
-      intervalId = window.setInterval(() => {
-        setActiveMediaIndex((current) => (current + 1) % media.length);
-      }, 5200);
-    };
-
-    updateTimer();
-    reducedMotion.addEventListener("change", updateTimer);
+    const updatePreference = () => setPrefersReducedMotion(reducedMotion.matches);
+    updatePreference();
+    reducedMotion.addEventListener("change", updatePreference);
     return () => {
-      if (intervalId) window.clearInterval(intervalId);
-      reducedMotion.removeEventListener("change", updateTimer);
+      reducedMotion.removeEventListener("change", updatePreference);
     };
-  }, [media.length]);
+  }, []);
+
+  useEffect(() => {
+    const updateVisibility = () => setDocumentIsVisible(!document.hidden);
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsNearViewport(entry.isIntersecting),
+      { rootMargin: "260px 0px" },
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!shouldAnimate || motion.incoming || media.length < 2) return;
+    let cancelled = false;
+    const current = motion.current;
+    const nextIndex = (current.index + 1) % media.length;
+    const nextImage = imageRefs.current[nextIndex];
+    const decodePromise = nextImage?.decode().catch(() => undefined) ?? Promise.resolve();
+    const timeoutId = window.setTimeout(async () => {
+      await decodePromise;
+      if (cancelled) return;
+      const incoming: KenBurnsFrame = {
+        index: nextIndex,
+        cycle: current.cycle + 1,
+        plan: makeKenBurnsPlan(tool.id, nextIndex, current.cycle + 1, current.plan.exitFadeMs),
+      };
+      setMotion((latest) => {
+        if (latest.incoming || latest.current.index !== current.index || latest.current.cycle !== current.cycle) return latest;
+        return { current: latest.current, incoming };
+      });
+    }, current.plan.holdMs);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [media.length, motion, shouldAnimate, tool.id]);
+
+  useEffect(() => {
+    if (!shouldAnimate || !motion.incoming) return;
+    const incoming = motion.incoming;
+    const timeoutId = window.setTimeout(() => {
+      setMotion((latest) => latest.incoming === incoming
+        ? { current: incoming, incoming: null }
+        : latest);
+    }, motion.current.plan.exitFadeMs);
+    return () => window.clearTimeout(timeoutId);
+  }, [motion, shouldAnimate]);
 
   if (!participant) return null;
 
   return <article
+    ref={cardRef}
     className={`atlas-tool-card${expanded ? " is-expanded" : ""}`}
     data-gallery-count={media.length}
     style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
   >
-    <figure className="atlas-tool-media">
-      {media.map((image, index) => <img
-        key={`${image.src}-${index}`}
-        className={`${index === activeMediaIndex ? "is-active " : ""}motion-${index % 4}`.trim()}
-        data-gallery-index={index}
-        data-active={index === activeMediaIndex ? "true" : undefined}
-        src={withDeploymentBase(image.src)}
-        alt={index === 0 ? image.alt : ""}
-        aria-hidden={index === 0 ? undefined : "true"}
-        width={index === 0 ? "1536" : "1200"}
-        height={index === 0 ? "1024" : "800"}
-        loading="lazy"
-        decoding="async"
-      />)}
+    <figure
+      className="atlas-tool-media"
+      data-motion={shouldAnimate ? "running" : "paused"}
+      style={{ "--atlas-kb-crossfade-ms": `${motion.current.plan.exitFadeMs}ms` } as CSSProperties}
+    >
+      {media.map((image, index) => {
+        const isCurrent = index === motion.current.index;
+        const isIncoming = index === motion.incoming?.index;
+        const isLeaving = isCurrent && motion.incoming !== null;
+        const frame = isIncoming ? motion.incoming : isCurrent ? motion.current : null;
+        const className = [
+          isCurrent ? "is-current" : "",
+          isLeaving ? "is-leaving" : "",
+          isIncoming ? "is-incoming" : "",
+        ].filter(Boolean).join(" ");
+
+        return <img
+          ref={(node) => { imageRefs.current[index] = node; }}
+          key={`${image.src}-${index}`}
+          className={className}
+          data-gallery-index={index}
+          data-active={isIncoming || (isCurrent && !isLeaving) ? "true" : undefined}
+          src={withDeploymentBase(image.src)}
+          alt={index === 0 ? image.alt : ""}
+          aria-hidden={index === 0 ? undefined : "true"}
+          width={index === 0 ? "1536" : "1200"}
+          height={index === 0 ? "1024" : "800"}
+          loading="lazy"
+          decoding="async"
+          style={frame ? kenBurnsStyle(frame.plan) : undefined}
+        />;
+      })}
       <figcaption>{tool.figure.label}</figcaption>
     </figure>
     <div className="atlas-tool-shade" aria-hidden="true" />
@@ -370,9 +550,6 @@ function ToolPoster({ tool, expanded, onToggle }: {
         </div>
       </div>
       <div className="atlas-tool-panel-footer">
-        <span className="atlas-tool-progress" aria-hidden="true">
-          {media.map((image, index) => <i className={index === activeMediaIndex ? "is-active" : ""} key={`${image.src}-progress`} />)}
-        </span>
         <button
           className="atlas-tool-toggle"
           type="button"

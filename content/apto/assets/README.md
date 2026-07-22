@@ -50,7 +50,10 @@ entries.
   near the center. Atlas intentionally crops these images to fill responsive
   cards.
 - Supply three distinct gallery views. The card adds the tool's standard
-  `figure` as a fourth frame and cycles through all four with a slow pan.
+  `figure` as a fourth frame and cycles through all four with slow, independently
+  timed pans, focal shifts, zooms, and overlapping dissolves.
+- Keep every tool media path globally unique. Reusing a figure on another tool
+  is rejected during the content build.
 - Keep important information out of the crop edges and out of embedded text.
 - Treat the current generated Atlas artwork as provisional. When a project team
   supplies an approved figure, place it in this folder, update the tool

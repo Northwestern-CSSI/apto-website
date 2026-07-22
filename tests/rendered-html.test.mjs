@@ -522,6 +522,13 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
       assert.ok(text.includes(page.introduction));
       assert.ok(text.includes(content.boilerplate));
       assert.ok(markup.includes(`src="${content.interface.footer.nsfLogoSrc}"`));
+      const atlasLogoCount = countMatches(markup, /class="atlas-logo(?:\s|")/g);
+      assert.equal(
+        countMatches(markup, /class="atlas-logo-canvas"/g),
+        atlasLogoCount,
+        `${path} should contain every organization mark in a normalized inner canvas`,
+      );
+      if (section !== "tools") assert.ok(atlasLogoCount >= content.participants.length);
 
       const primaryNav = markup.match(new RegExp(
         `<nav[^>]*aria-label="${escapeRegex(content.interface.atlas.navigationLabel)}"[^>]*>([\\s\\S]*?)<\\/nav>`,
@@ -594,6 +601,18 @@ test("renders the Atlas tool gallery as ten accessible, Markdown-backed image po
   assert.equal(countMatches(markup, /aria-expanded="false"/g), content.tools.length);
   assert.equal(countMatches(markup, /aria-live="polite"/g), 1);
   assert.match(markup, /<fieldset[^>]*aria-label="[^"]+"/);
+  assert.doesNotMatch(markup, /<progress\b|role="progressbar"|atlas-tool-(?:progress|pagination|dots|indicator)/i);
+
+  const allToolMediaPaths = content.tools.flatMap((tool) => [
+    tool.figure.src,
+    ...tool.galleryImages.map((image) => image.src),
+  ]);
+  assert.equal(allToolMediaPaths.length, content.tools.length * 4);
+  assert.equal(
+    new Set(allToolMediaPaths).size,
+    allToolMediaPaths.length,
+    "Every Atlas media frame must be globally unique across tools",
+  );
 
   for (const tool of content.tools) {
     assert.equal(tool.galleryImages.length, 3, `${tool.name} needs three Atlas gallery images plus its standard figure`);
@@ -609,7 +628,20 @@ test("renders the Atlas tool gallery as ten accessible, Markdown-backed image po
     assert.ok(article.includes('data-gallery-count="4"'));
     assert.equal(countMatches(article, /data-gallery-index="[0-3]"/g), 4);
     assert.equal(countMatches(article, /data-active="true"/g), 1);
-    assert.equal(countMatches(article, /class="[^"]*is-active[^"]*motion-0"/g), 1);
+    assert.equal(countMatches(article, /class="is-current"/g), 1);
+    assert.equal(countMatches(article, /data-motion="running"/g), 1);
+    for (const property of [
+      "--atlas-kb-motion-ms",
+      "--atlas-kb-easing",
+      "--atlas-kb-from-scale",
+      "--atlas-kb-to-scale",
+      "--atlas-kb-from-x",
+      "--atlas-kb-from-y",
+      "--atlas-kb-to-x",
+      "--atlas-kb-to-y",
+      "--atlas-kb-origin-x",
+      "--atlas-kb-origin-y",
+    ]) assert.ok(article.includes(property), `${tool.name} should render deterministic ${property}`);
     assert.equal(countMatches(article, /<img\b/g), 4);
     assert.ok(panelStart >= 0, `${tool.name} should have a bottom information panel`);
     assert.ok(article.indexOf('class="atlas-tool-summary"', panelStart) > panelStart);
@@ -617,6 +649,7 @@ test("renders the Atlas tool gallery as ten accessible, Markdown-backed image po
     assert.ok(article.indexOf('class="atlas-tool-toggle"', panelStart) > panelStart);
     assert.ok(article.includes("loading=\"lazy\""));
     assert.ok(article.includes("decoding=\"async\""));
+    assert.doesNotMatch(article, /<progress\b|role="progressbar"|atlas-tool-(?:progress|pagination|dots|indicator)/i);
 
     for (const [index, image] of tool.galleryImages.entries()) {
       const renderedImage = article.match(new RegExp(`<img[^>]*src="${escapeRegex(image.src)}"[^>]*>`));
@@ -652,17 +685,38 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(source, /withDeploymentBase\(image\.src\)/);
   assert.match(source, /loading="lazy"/);
   assert.match(source, /matchMedia\("\(prefers-reduced-motion: reduce\)"\)/);
-  assert.match(source, /window\.setInterval/);
-  assert.match(source, /window\.clearInterval/);
+  assert.match(source, /function hashString\(value: string\)/);
+  assert.match(source, /function seededRandom\(seed: number\)/);
+  assert.match(source, /hashString\(`\$\{toolId\}:\$\{index\}:\$\{cycle\}`\)/);
+  assert.match(source, /randomBetween\(random, 11_500, 19_000\)/);
+  assert.match(source, /randomBetween\(random, 3_200, 5_200\)/);
+  assert.match(source, /const zoomsIn = random\(\) >= \.5/);
+  assert.match(source, /fromScale: zoomsIn \? lowScale : highScale/);
+  assert.match(source, /toScale: zoomsIn \? highScale : lowScale/);
+  assert.match(source, /incoming: KenBurnsFrame \| null/);
+  assert.match(source, /const isLeaving = isCurrent && motion\.incoming !== null/);
+  assert.match(source, /isLeaving \? "is-leaving"/);
+  assert.match(source, /isIncoming \? "is-incoming"/);
+  assert.match(source, /nextImage\?\.decode\(\)\.catch/);
+  assert.match(source, /window\.setTimeout/);
+  assert.match(source, /window\.clearTimeout/);
+  assert.match(source, /const shouldAnimate = !prefersReducedMotion && isNearViewport && documentIsVisible/);
+  assert.match(source, /let cancelled = false/);
+  assert.match(source, /if \(cancelled\) return/);
   assert.match(source, /data-gallery-count=\{media\.length\}/);
+  assert.doesNotMatch(source, /window\.(?:setInterval|clearInterval)/);
+  assert.doesNotMatch(source, /is-active[^\n]*motion-[0-3]|atlas-tool-(?:progress|pagination|dots|indicator)/i);
 
   assert.match(styles, /\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(styles, /@media \(max-width:\s*1180px\)[\s\S]*?\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(styles, /@media \(max-width:\s*719px\)[\s\S]*?\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*1fr/);
   assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*5\s*\/\s*6/);
-  assert.match(styles, /\.atlas-tool-media img\.is-active\s*\{[^}]*animation:\s*atlas-tool-ken-burns-a\s+6\.6s/);
-  assert.match(styles, /@keyframes atlas-tool-ken-burns-a/);
-  assert.match(styles, /@keyframes atlas-tool-ken-burns-d/);
+  assert.match(styles, /\.atlas-tool-media img\.is-current,[\s\S]*?\.atlas-tool-media img\.is-incoming\s*\{[^}]*animation-name:\s*atlas-tool-ken-burns[^}]*animation-duration:\s*var\(--atlas-kb-motion-ms[^}]*animation-iteration-count:\s*1/);
+  assert.match(styles, /\.atlas-tool-media img\s*\{[^}]*transition:\s*opacity var\(--atlas-kb-crossfade-ms/);
+  assert.match(styles, /\.atlas-tool-media img\.is-current\.is-leaving\s*\{[^}]*opacity:\s*0/);
+  assert.match(styles, /\.atlas-tool-media img\.is-incoming\s*\{[^}]*z-index:\s*2[^}]*opacity:\s*1/);
+  assert.match(styles, /@keyframes atlas-tool-ken-burns\s*\{[\s\S]*?--atlas-kb-from-scale[\s\S]*?--atlas-kb-to-scale/);
+  assert.doesNotMatch(styles, /6\.6s|\.atlas-tool-media img\.motion-[0-3]|atlas-tool-(?:progress|pagination|dots|indicator)/i);
   assert.match(styles, /\.atlas-tool-panel\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*0[^}]*height:\s*48%[^}]*backdrop-filter:\s*blur\(13px\)/);
   assert.match(styles, /\.atlas-tool-panel::before\s*\{[^}]*linear-gradient\(to top[^}]*backdrop-filter:\s*blur\(10px\)[^}]*mask-image:/);
   assert.doesNotMatch(styles, /\.atlas-tool-details\s*\{[^}]*top:\s*(?:70|80)px/);
@@ -681,6 +735,10 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(styles, /@media \(prefers-reduced-motion:\s*reduce\)/);
   assert.match(styles, /animation-iteration-count:\s*1\s*!important/);
   assert.match(styles, /\.atlas-tool-media img\s*\{[^}]*animation:\s*none\s*!important[^}]*transform:\s*none\s*!important/);
+  assert.match(source, /<span className="atlas-logo-canvas">/);
+  assert.match(styles, /\.atlas-logo-canvas\s*\{[^}]*display:\s*grid[^}]*place-items:\s*center[^}]*overflow:\s*hidden[^}]*background:\s*var\(--atlas-logo-canvas\)/);
+  assert.match(styles, /\.atlas-logo-canvas img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*object-position:\s*center[^}]*filter:\s*none[^}]*mix-blend-mode:\s*normal[^}]*transform:\s*none/);
+  assert.doesNotMatch(styles, /\.atlas-logo(?:-canvas)?\.logo-aperture|\.logo-aperture\s+(?:\.atlas-logo-canvas\s+)?img/);
   assert.match(styles, /@media \(forced-colors:\s*active\)/);
   assert.match(styles, /\.atlas-tool-card::after\s*\{[^}]*border:\s*2px solid CanvasText/);
   assert.match(styles, /\.atlas-header\s*\{[^}]*position:\s*sticky/);
@@ -1098,6 +1156,11 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(generator, /peopleFiles\.length > 0/);
   assert.match(generator, /projectFiles\.length > 0/);
   assert.match(generator, /toolFiles\.length > 0/);
+  assert.match(generator, /galleryImages\.length === 3/);
+  assert.match(generator, /function validateToolMediaInventory\(toolRecords\)/);
+  assert.match(generator, /paths\.length === 4/);
+  assert.match(generator, /assertUnique\(mediaPaths, "tool media paths across all tools"\)/);
+  assert.match(generator, /validateToolMediaInventory\(toolRecords\)/);
   assert.match(generator, /syncAssets\(content\.assetFiles, checkOnly\)/);
   assert.doesNotMatch(generator, /toolFiles\.length === \d+/);
   assert.doesNotMatch(generator, /must have exactly 2 tools|count === 2/);

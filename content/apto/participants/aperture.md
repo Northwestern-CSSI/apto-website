@@ -10,10 +10,10 @@
     "src": "/apto/partners/aperture.svg",
     "width": 200,
     "height": 200,
-    "surface": "dark",
+    "surface": "light",
     "kind": "symbol",
     "sourceUrl": "https://www.aperture.ai/assets/brand/favicon.svg",
-    "sourceLabel": "Aperture official website mark",
+    "sourceLabel": "Light-background adaptation of Aperture official website mark",
     "status": "approval-required",
     "approved": false
   },

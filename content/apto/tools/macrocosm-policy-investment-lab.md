@@ -13,16 +13,16 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/macrocosm-energy-system.jpg",
-      "alt": "Miniature energy system linking industrial facilities, renewables, storage, infrastructure, and regional flows"
-    },
-    {
-      "src": "/apto/tools/previews/macrocosm-energy-digital-twin.jpg",
-      "alt": "Firm and energy-asset network connecting facilities, markets, investment, and geography"
-    },
-    {
       "src": "/apto/tools/atlas/macrocosm-scenario-flows.jpg",
       "alt": "Investment pathways splitting toward several regional energy-system configurations"
+    },
+    {
+      "src": "/apto/tools/atlas/macrocosm-policy-scenario-ensemble.jpg",
+      "alt": "Four alternative policy and investment scenarios producing different regional energy-system configurations"
+    },
+    {
+      "src": "/apto/tools/atlas/macrocosm-investment-allocation-rivers.jpg",
+      "alt": "Investment streams allocated across energy technologies and leading to contrasting production and employment outcomes"
     }
   ],
   "statusLabel": "Research preview",

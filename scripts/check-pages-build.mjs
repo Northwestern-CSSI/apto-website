@@ -19,6 +19,12 @@ const atlasPages = [
 ];
 const escapedBasePath = basePath.slice(1).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const unprefixedPath = new RegExp(`(?:href|src)="\\/(?!${escapedBasePath}(?:\\/|"))`);
+const toolMediaPaths = content.tools.flatMap((tool) => {
+  const paths = [tool.figure.src, ...tool.galleryImages.map((image) => image.src)];
+  assert.equal(paths.length, 4, `${tool.name} needs exactly four Atlas media frames`);
+  return paths;
+});
+assert.equal(new Set(toolMediaPaths).size, toolMediaPaths.length, "Atlas tool media paths must be globally unique");
 
 for (const page of pages) {
   const html = await readFile(new URL(`../out/${page}`, import.meta.url), "utf8");
@@ -83,10 +89,13 @@ for (const page of atlasPages) {
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
   assert.ok(html.includes(`src="${basePath}/apto/`), `${page} needs base-path-safe Markdown-managed images`);
   assert.ok(html.includes(`${basePath}/apto/social/apto-atlas-social.png`), `${page} needs the Atlas social image`);
+  const atlasLogoCount = (html.match(/class="atlas-logo(?:\s|")/g) ?? []).length;
+  assert.equal((html.match(/class="atlas-logo-canvas"/g) ?? []).length, atlasLogoCount, `${page} needs a normalized canvas inside every Atlas logo`);
   if (page.endsWith("tools/index.html")) {
     assert.equal((html.match(/data-gallery-count="4"/g) ?? []).length, 10, `${page} needs four cycling frames for every tool`);
     assert.equal((html.match(/class="atlas-tool-panel"/g) ?? []).length, 10, `${page} needs a bottom information panel for every tool`);
     assert.equal((html.match(/class="atlas-tool-panel-footer"/g) ?? []).length, 10, `${page} needs View details inside every bottom panel`);
+    assert.doesNotMatch(html, /<progress\b|role="progressbar"|atlas-tool-(?:progress|pagination|dots|indicator)/i);
   }
   if (page === "atlas/index.html" || page === "apto/atlas/index.html") {
     const mosaic = html.match(/<section class="atlas-program-mosaic"[\s\S]*?<\/section>/)?.[0];

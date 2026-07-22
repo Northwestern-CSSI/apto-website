@@ -13,16 +13,16 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/uchicago-global-observatory.jpg",
-      "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
-    },
-    {
-      "src": "/apto/tools/previews/uchicago-global-observatory.jpg",
-      "alt": "World map connecting research, patent, product, funding, workforce, and market signals"
-    },
-    {
       "src": "/apto/tools/atlas/uchicago-policy-flows.jpg",
       "alt": "Policy waves passing through a connected global science system and separating into future trajectories"
+    },
+    {
+      "src": "/apto/tools/atlas/uchicago-policy-counterfactual-worlds.jpg",
+      "alt": "A global science system unfolding into four counterfactual policy outcomes"
+    },
+    {
+      "src": "/apto/tools/atlas/uchicago-policy-mechanism-pathways.jpg",
+      "alt": "Policy mechanisms passing through a global science network to produce different technology outcomes"
     }
   ],
   "statusLabel": "Research preview",

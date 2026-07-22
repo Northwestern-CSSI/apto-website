@@ -13,16 +13,16 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/aperture-problem-landscape.jpg",
-      "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
-    },
-    {
-      "src": "/apto/tools/previews/aperture-problem-landscape.jpg",
-      "alt": "Problem clusters arranged across an evidence landscape with gaps and adjacent solution areas"
-    },
-    {
       "src": "/apto/tools/atlas/aperture-decision-signals.jpg",
       "alt": "High-leverage opportunities illuminated where evidence pathways converge across a layered decision landscape"
+    },
+    {
+      "src": "/apto/tools/atlas/aperture-leverage-evidence-radar.jpg",
+      "alt": "Candidate interventions across an evidence landscape, with the strongest leverage points highlighted where multiple signals converge"
+    },
+    {
+      "src": "/apto/tools/atlas/aperture-leverage-intervention-ripple.jpg",
+      "alt": "A selected leverage point propagating effects through connected technical, organizational, and investment systems"
     }
   ],
   "statusLabel": "Research preview",
