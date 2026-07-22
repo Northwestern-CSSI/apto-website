@@ -38,14 +38,12 @@
   --story-cohort-bg:
     radial-gradient(circle at 84% 10%,rgba(0,117,141,.11),transparent 32%),
     linear-gradient(155deg,#eef3f2,#f8f5ed 58%,#e7f0f2);
-  --story-cohort-fade: #eef3f2;
   --story-cohort-surface: rgba(255,255,255,.68);
   --story-cohort-person: rgba(0,86,153,.065);
   --story-cohort-ink: #002554;
   --story-cohort-copy: #465f70;
   --story-cohort-muted: #607786;
   --story-cohort-art-opacity: .13;
-  --story-cohort-art-back-opacity: .07;
   --story-cohort-art-filter: saturate(.6) brightness(1.12);
   --story-footer-bg: #e3ecef;
   --story-footer-ink: #002554;
@@ -98,14 +96,12 @@
   --story-cohort-bg:
     radial-gradient(circle at 82% 8%,rgba(78,195,224,.1),transparent 30%),
     linear-gradient(150deg,#03111f,#071d32 58%,#09243d);
-  --story-cohort-fade: #03111f;
   --story-cohort-surface: rgba(10,34,56,.78);
   --story-cohort-person: rgba(0,0,0,.16);
   --story-cohort-ink: #f6fafd;
   --story-cohort-copy: #bfd1dc;
   --story-cohort-muted: #adc4d1;
   --story-cohort-art-opacity: .21;
-  --story-cohort-art-back-opacity: .12;
   --story-cohort-art-filter: saturate(.88) brightness(.82);
   --story-footer-bg: #020b15;
   --story-footer-ink: #f5fafd;
@@ -647,7 +643,6 @@
   grid-template-columns: auto minmax(0,1fr);
   align-items: center;
   gap: 16px;
-  animation: story-project-caption-in .34s cubic-bezier(.2,.7,.2,1) both;
 }
 .story-project-stage-active .story-participant-logo { width: 106px; height: 54px; }
 .story-project-stage-active .story-participant-logo.logo-kind-symbol { width: 54px; }
@@ -655,10 +650,6 @@
 .story-project-stage-active-inner > div > span { display: block; }
 .story-project-stage-active-inner > div > strong { margin-bottom: 4px; color: var(--story-projects-ink); font-size: .92rem; }
 .story-project-stage-active-inner > div > span { color: var(--story-projects-copy); font-size: .75rem; }
-@keyframes story-project-caption-in {
-  from { opacity: 0; transform: translate3d(0,8px,0); }
-  to { opacity: 1; transform: translate3d(0,0,0); }
-}
 .story-project-chapters { display: grid; gap: 18px; }
 .story-project-chapter {
   min-height: min(690px,78svh);
@@ -798,16 +789,21 @@
 }
 .story-cohort-art {
   position: absolute;
-  height: min(860px,70vw);
+  z-index: 0;
+  top: clamp(-110px,-5vw,-54px);
+  left: -6vw;
+  width: calc(100% + 12vw);
+  height: clamp(680px,72vw,1120px);
   opacity: var(--story-cohort-art-opacity);
   filter: var(--story-cohort-art-filter);
-  transform: translate3d(0,var(--story-shift,0),0);
+  -webkit-mask-image: radial-gradient(ellipse 94% 82% at 62% 34%,#000 0%,rgb(0 0 0 / 78%) 54%,transparent 90%);
+  mask-image: radial-gradient(ellipse 94% 82% at 62% 34%,#000 0%,rgb(0 0 0 / 78%) 54%,transparent 90%);
+  transform: translate3d(0,var(--story-shift,0),0) scale(1.025);
+  transform-origin: center top;
+  will-change: transform;
   pointer-events: none;
 }
-.story-cohort-art.is-back { inset: 4% 34% auto -8%; opacity: var(--story-cohort-art-back-opacity); transform: translate3d(0,var(--story-shift-soft,0),0) scale(1.12); }
-.story-cohort-art.is-front { inset: -8% -5% auto 36%; }
-.story-cohort-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg,var(--story-cohort-fade) 0%,transparent 45%),linear-gradient(0deg,var(--story-cohort-fade) 0%,transparent 50%); }
-.story-cohort-art img { width: 100%; height: 100%; object-fit: cover; }
+.story-cohort-art img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .story-cohort .story-section-heading { position: relative; z-index: 2; }
 .story-cohort .story-section-heading h2 { color: var(--story-cohort-ink); }
 .story-cohort .story-section-heading > span { color: var(--story-cohort-copy); }
@@ -821,15 +817,23 @@
 }
 .story-program-team {
   margin-bottom: clamp(54px,7vw,94px);
-  padding: 30px 34px;
+  padding: 18px clamp(8px,2vw,24px);
   display: grid;
   grid-template-columns: minmax(210px,.35fr) minmax(0,.65fr);
   gap: 34px;
   align-items: center;
-  background: color-mix(in srgb,var(--story-cohort-surface) 84%,var(--story-teal) 8%);
+  background: transparent;
 }
 .story-program-team h3 { margin: 0; color: var(--story-cohort-ink); font-size: 1.25rem; }
-.story-program-team > div { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.story-program-team > div {
+  width: 100%;
+  max-width: 720px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,320px));
+  justify-content: end;
+  justify-self: end;
+  gap: 14px;
+}
 .story-cohort-directory { display: grid; gap: 18px; }
 .story-cohort-group {
   padding: clamp(28px,4vw,54px);
@@ -882,16 +886,11 @@
 .story-footer-links a { min-height: 44px; display: inline-flex; align-items: center; color: var(--story-footer-ink); font-size: .72rem; font-weight: 800; }
 
 .apto-story.is-motion-ready [data-story-reveal] {
-  opacity: 0;
-  transform: translate3d(0,24px,0);
-  transition: opacity .52s cubic-bezier(.2,.7,.2,1),transform .52s cubic-bezier(.2,.7,.2,1);
-  transition-delay: var(--story-reveal-delay,0ms);
+  opacity: var(--story-reveal-opacity,1);
+  transform: translate3d(var(--story-reveal-x,0px),var(--story-reveal-y,0px),0);
+  transition: none;
+  will-change: opacity,transform;
 }
-.apto-story.is-motion-ready [data-story-reveal="heading"] { transform: none; }
-.apto-story.is-motion-ready [data-story-reveal="left"] { transform: translate3d(-16px,0,0); }
-.apto-story.is-motion-ready [data-story-reveal="right"] { transform: translate3d(16px,0,0); }
-.apto-story.is-motion-ready [data-story-reveal="media"] { transform: translate3d(0,14px,0); }
-.apto-story.is-motion-ready [data-story-reveal].is-visible { opacity: 1; transform: translate3d(0,0,0); }
 
 @media (max-width: 1180px) {
   .story-header { grid-template-columns: minmax(190px,1fr) auto minmax(150px,1fr); gap: 12px; padding-inline: 22px; }
@@ -960,6 +959,7 @@
   .story-project-chapter { min-height: auto; }
   .story-tool-grid { grid-template-columns: 1fr; }
   .story-program-team { grid-template-columns: 1fr; }
+  .story-program-team > div { max-width: 680px; justify-self: stretch; }
   .story-footer { grid-template-columns: 1fr; }
   .story-footer-links { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
 }

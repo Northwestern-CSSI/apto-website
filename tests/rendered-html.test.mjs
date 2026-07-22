@@ -291,6 +291,8 @@ test("renders one shared, content-complete long-scroll story at both public rout
     assert.equal(countMatches(markup, /class="story-project-chapter"/g), content.projects.length);
     assert.equal(countMatches(markup, /class="story-tool"/g), content.tools.length);
     assert.equal(countMatches(markup, /class="story-cohort-group"/g), content.participants.length);
+    assert.equal(countMatches(markup, /class="story-cohort-art"/g), 1, "Cohort art should be one seamless full-width field");
+    assert.doesNotMatch(markup, /story-cohort-art is-(?:front|back)/);
     const expectedLogoCount = content.projects.length + content.participants.length + 1;
     assert.equal(countMatches(markup, /class="story-participant-logo\b/g), expectedLogoCount);
     assert.equal(countMatches(markup, /class="story-logo-canvas"/g), expectedLogoCount);
@@ -391,10 +393,16 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(source, /useAptoTheme\("light"\)/);
   assert.match(source, /role="switch"/);
   assert.match(source, /aria-current=\{activeSection === section \? "location" : undefined\}/);
-  assert.match(source, /new IntersectionObserver/);
+  assert.doesNotMatch(source, /new IntersectionObserver/);
+  assert.doesNotMatch(source, /\.unobserve\(/);
   assert.match(source, /requestAnimationFrame\(updateScrollState\)/);
   assert.match(source, /addEventListener\("scroll", handleScroll, \{ passive: true \}\)/);
   assert.match(source, /prefers-reduced-motion: reduce/);
+  assert.match(source, /data-story-reveal-order=\{index\}/);
+  assert.match(source, /linearProgress \* linearProgress \* \(3 - 2 \* linearProgress\)/);
+  assert.match(source, /classList\.toggle\("is-visible", progress >= 0\.995\)/);
+  assert.match(source, /window\.visualViewport\?\.addEventListener\("resize", handleScroll\)/);
+  assert.match(source, /new ResizeObserver\(handleScroll\)/);
   assert.match(source, /querySelectorAll<HTMLElement>\("\[data-story-parallax\]"\)/);
   assert.match(source, /if \(!reduceMotion\) \{[\s\S]*?parallaxElements\.forEach/);
   for (const property of [
@@ -403,6 +411,10 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
     "--story-shift-reverse",
     "--story-local-progress",
     "--story-scale",
+    "--story-reveal-progress",
+    "--story-reveal-opacity",
+    "--story-reveal-x",
+    "--story-reveal-y",
   ]) assert.ok(source.includes(`setProperty("${property}"`), `Story scroll state should update ${property}`);
   assert.match(source, /withDeploymentBase\(tool\.figure\.src\)/);
   assert.match(source, /withDeploymentBase\(aptoInterface\.story\.cohortArtSrc\)/);
@@ -461,6 +473,11 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-map-pin\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/);
   assert.match(styles, /\.story-map-pin-label\s*\{[^}]*color:\s*var\(--story-map-label-ink\)[^}]*background:\s*var\(--story-map-label-bg\)/);
   assert.match(styles, /\.story-cohort\s*\{[^}]*color:\s*var\(--story-cohort-ink\)[^}]*background:\s*var\(--story-cohort-bg\)/);
+  assert.match(styles, /\.story-cohort-art\s*\{[^}]*width:\s*calc\(100% \+ 12vw\)[^}]*mask-image:\s*radial-gradient/);
+  assert.doesNotMatch(styles, /\.story-cohort-art\.is-(?:front|back)\s*\{/);
+  assert.doesNotMatch(styles, /\.story-cohort-art::after\s*\{/);
+  assert.match(styles, /\.story-program-team\s*\{[^}]*background:\s*transparent/);
+  assert.match(styles, /\.story-program-team\s*>\s*div\s*\{[^}]*repeat\(auto-fit,minmax\(260px,320px\)\)/);
   assert.match(styles, /\.story-cohort-group\s*\{[^}]*var\(--story-cohort-surface\)/);
   assert.match(styles, /\.story-person\s*\{[^}]*background:\s*var\(--story-cohort-person\)/);
   assert.match(styles, /\.story-footer\s*\{[^}]*color:\s*var\(--story-footer-ink\)[^}]*background:\s*var\(--story-footer-bg\)/);
@@ -472,6 +489,8 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-project-stage-active-inner\s*>\s*div\s*>\s*strong,[\s\S]*?\.story-project-stage-active-inner\s*>\s*div\s*>\s*span\s*\{\s*display:\s*block/);
   assert.doesNotMatch(styles, /\.story-project-stage-active\s+strong,\s*\.story-project-stage-active\s+span\s*\{/);
   assert.doesNotMatch(styles, /\.story-participant-logo\.logo-(?:aperture|macrocosm|northwestern|uchicago)[^{]*\{[^}]*filter:/);
+  assert.match(styles, /\.apto-story\.is-motion-ready \[data-story-reveal\]\s*\{[^}]*opacity:\s*var\(--story-reveal-opacity,1\)[^}]*translate3d\(var\(--story-reveal-x,0px\),var\(--story-reveal-y,0px\),0\)[^}]*transition:\s*none/);
+  assert.doesNotMatch(styles, /story-project-caption-in/);
   assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-map\s*\{[^}]*width:\s*100%[^}]*max-width:\s*100%/);
   assert.match(styles, /@media \(max-width:\s*620px\)[\s\S]*?\.story-project-stage\s*\{[^}]*position:\s*relative[^}]*top:\s*auto/);
 

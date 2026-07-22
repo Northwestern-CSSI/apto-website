@@ -104,33 +104,35 @@ function useStoryExperience(
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const supportsObserver = "IntersectionObserver" in window;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reduceMotion = motionPreference.matches;
     const revealElements = [...root.querySelectorAll<HTMLElement>("[data-story-reveal]")];
-    let revealObserver: IntersectionObserver | undefined;
-
-    if (!reduceMotion && supportsObserver) {
-      root.classList.add("is-motion-ready");
-      revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          (entry.target as HTMLElement).classList.add("is-visible");
-          revealObserver?.unobserve(entry.target);
-        });
-      }, { rootMargin: "0px 0px -4% 0px", threshold: 0.04 });
-      revealElements.forEach((element) => revealObserver?.observe(element));
-    } else {
-      revealElements.forEach((element) => element.classList.add("is-visible"));
-    }
-
     const sectionElements = [...root.querySelectorAll<HTMLElement>("[data-story-section]")];
     const projectElements = [...root.querySelectorAll<HTMLElement>("[data-project-id]")];
     const parallaxElements = [...root.querySelectorAll<HTMLElement>("[data-story-parallax]")];
+    const revealVectors: Record<string, readonly [number, number]> = {
+      heading: [0, 0],
+      left: [-18, 0],
+      right: [18, 0],
+      media: [0, 16],
+      up: [0, 26],
+    };
+    const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
+    const documentTop = (element: HTMLElement) => {
+      let top = 0;
+      let current: HTMLElement | null = element;
+      while (current) {
+        top += current.offsetTop;
+        current = current.offsetParent as HTMLElement | null;
+      }
+      return top;
+    };
     let frame = 0;
     const updateScrollState = () => {
       frame = 0;
       const headerHeight = Number.parseFloat(getComputedStyle(root).getPropertyValue("--story-header-height")) || 72;
-      const sectionLine = headerHeight + window.innerHeight * 0.2;
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      const sectionLine = headerHeight + viewportHeight * 0.2;
       let nextSection: StorySection = "program";
       sectionElements.forEach((element) => {
         const candidate = element.dataset.storySection as StorySection | undefined;
@@ -140,7 +142,7 @@ function useStoryExperience(
       });
       setActiveSection(nextSection);
 
-      const projectLine = headerHeight + window.innerHeight * 0.34;
+      const projectLine = headerHeight + viewportHeight * 0.34;
       const nearestProject = projectElements
         .map((element) => ({ element, distance: Math.abs(element.getBoundingClientRect().top - projectLine) }))
         .sort((left, right) => left.distance - right.distance)[0]?.element;
@@ -148,33 +150,73 @@ function useStoryExperience(
       if (projectId) setActiveProject(projectId);
 
       if (!reduceMotion) {
+        const revealStart = viewportHeight * 0.92;
+        const revealEnd = Math.max(headerHeight + 24, viewportHeight * 0.59);
+        const revealDistance = Math.max(1, revealStart - revealEnd);
+        revealElements.forEach((element) => {
+          const screenTop = documentTop(element) - window.scrollY;
+          const order = Number(element.dataset.storyRevealOrder ?? "0");
+          const stagger = Number.isFinite(order) ? order * 18 : 0;
+          const linearProgress = clamp01((revealStart - screenTop - stagger) / revealDistance);
+          const progress = linearProgress * linearProgress * (3 - 2 * linearProgress);
+          const [baseX, baseY] = revealVectors[element.dataset.storyReveal ?? "up"] ?? revealVectors.up;
+          const remaining = 1 - progress;
+          element.style.setProperty("--story-reveal-progress", progress.toFixed(4));
+          element.style.setProperty("--story-reveal-opacity", progress.toFixed(4));
+          element.style.setProperty("--story-reveal-x", `${(baseX * remaining).toFixed(2)}px`);
+          element.style.setProperty("--story-reveal-y", `${(baseY * remaining).toFixed(2)}px`);
+          element.classList.toggle("is-visible", progress >= 0.995);
+        });
+
         parallaxElements.forEach((element) => {
           const rect = element.getBoundingClientRect();
-          const centerDelta = rect.top + rect.height / 2 - window.innerHeight / 2;
+          const centerDelta = rect.top + rect.height / 2 - viewportHeight / 2;
           const speed = Number(element.dataset.storyParallax ?? "0.06");
           const shift = Math.max(-48, Math.min(48, -centerDelta * speed));
-          const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight + rect.height)));
+          const progress = clamp01((viewportHeight - rect.top) / (viewportHeight + rect.height));
           element.style.setProperty("--story-shift", `${shift.toFixed(2)}px`);
           element.style.setProperty("--story-shift-soft", `${(shift * .38).toFixed(2)}px`);
           element.style.setProperty("--story-shift-reverse", `${(-shift * .68).toFixed(2)}px`);
           element.style.setProperty("--story-local-progress", progress.toFixed(4));
           element.style.setProperty("--story-scale", (1.035 + progress * .04).toFixed(4));
         });
+      } else {
+        revealElements.forEach((element) => {
+          element.style.setProperty("--story-reveal-progress", "1");
+          element.style.setProperty("--story-reveal-opacity", "1");
+          element.style.setProperty("--story-reveal-x", "0px");
+          element.style.setProperty("--story-reveal-y", "0px");
+          element.classList.add("is-visible");
+        });
       }
     };
     const handleScroll = () => {
       if (!frame) frame = window.requestAnimationFrame(updateScrollState);
     };
+    const handleMotionPreference = (event: MediaQueryListEvent) => {
+      reduceMotion = event.matches;
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      updateScrollState();
+      root.classList.toggle("is-motion-ready", !reduceMotion);
+    };
     // Scrollspy remains functional when motion is reduced; only decorative
     // transforms are omitted in that preference.
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
+    window.visualViewport?.addEventListener("resize", handleScroll);
+    motionPreference.addEventListener("change", handleMotionPreference);
+    const resizeObserver = "ResizeObserver" in window ? new ResizeObserver(handleScroll) : undefined;
+    resizeObserver?.observe(root);
     updateScrollState();
+    root.classList.toggle("is-motion-ready", !reduceMotion);
 
     return () => {
-      revealObserver?.disconnect();
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
+      window.visualViewport?.removeEventListener("resize", handleScroll);
+      motionPreference.removeEventListener("change", handleMotionPreference);
+      resizeObserver?.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
       root.classList.remove("is-motion-ready");
     };
@@ -287,7 +329,7 @@ function ProgramStory() {
       <ul>{aptoProgram.objectives.map((objective, index) => <li
         key={objective}
         data-story-reveal="right"
-        style={{ "--story-reveal-delay": `${index * 70}ms` } as CSSProperties}
+        data-story-reveal-order={index}
       >{objective}</li>)}</ul>
     </div>
     <div className="story-framework" aria-label={aptoProgram.framework.ariaLabel}>
@@ -468,10 +510,7 @@ function StoryPerson({ person }: { person: AptoPerson | (typeof aptoProgram.prog
 function CohortStory() {
   const cohort = pageCopy("/cohort");
   return <section className="story-section story-cohort" id="story-cohort" data-story-section="cohort" aria-labelledby="story-cohort-title">
-    <div className="story-cohort-art is-back" data-story-parallax="-0.014" aria-hidden="true">
-      <img src={withDeploymentBase(aptoInterface.story.cohortArtSrc)} alt="" width="1400" height="900" loading="lazy" decoding="async" />
-    </div>
-    <div className="story-cohort-art is-front" data-story-parallax="0.026" aria-hidden="true">
+    <div className="story-cohort-art" data-story-parallax="-0.018" aria-hidden="true">
       <img src={withDeploymentBase(aptoInterface.story.cohortArtSrc)} alt="" width="1400" height="900" loading="lazy" decoding="async" />
     </div>
     <header className="story-section-heading" data-story-reveal="heading">
