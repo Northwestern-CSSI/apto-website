@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/uchicago-global-observatory.jpg",
       "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
+    },
+    {
+      "src": "/apto/tools/previews/uchicago-virtual-policy-lab.jpg",
+      "alt": "Policy experiment view comparing baseline and alternative technology-outcome scenarios"
+    },
+    {
+      "src": "/apto/tools/atlas/uchicago-policy-flows.jpg",
+      "alt": "Global science network crossed by funding, talent, and policy waves that produce alternative futures"
     }
   ],
   "statusLabel": "Research preview",

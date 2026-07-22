@@ -9,7 +9,7 @@ automatically; no source-code list or counter needs to be updated.
 2. Set `id` to the same kebab-case value.
 3. Set `participantId` to an ID from `../participants/`.
 4. Add the tool figure under `../assets/`, preferably in `../assets/tools/`.
-5. Add one to three image-led Atlas visuals under
+5. Add exactly three image-led Atlas visuals under
    `../assets/tools/atlas/` and reference them in `galleryImages`.
 6. Complete the description and use case.
 7. Run `npm run verify` from the repository root.
@@ -38,6 +38,10 @@ automatically; no source-code list or counter needs to be updated.
     {
       "src": "/apto/tools/atlas/example-technology-explorer-detail.jpg",
       "alt": "Detailed view of the highlighted cluster and its strongest neighboring connections"
+    },
+    {
+      "src": "/apto/tools/atlas/example-technology-explorer-scenario.jpg",
+      "alt": "Alternative scenario showing how the highlighted cluster may develop over time"
     }
   ],
   "statusLabel": "Research preview",
@@ -72,7 +76,7 @@ The H1 must exactly match `name`. The body must contain exactly
 | `figure.src` | `/apto/…` path matching an image under `content/apto/assets/` |
 | `figure.label` | Short visible caption |
 | `figure.alt` | Meaningful description of the visual information |
-| `galleryImages` | One to three `{ "src", "alt" }` entries for the Atlas tool card |
+| `galleryImages` | Exactly three `{ "src", "alt" }` entries; the standard tool figure provides the fourth cycling frame |
 | `galleryImages[].src` | `/apto/tools/atlas/…` path matching an image under `content/apto/assets/tools/atlas/` |
 | `galleryImages[].alt` | Meaningful alternative text for that image; entries must not repeat one another |
 | `statusLabel` | Short public status such as `Research preview` |
@@ -113,10 +117,9 @@ translation-funnel
 ## Atlas gallery images
 
 `galleryImages` supplies the large, edge-to-edge imagery used by the APTO Atlas
-tool cards. Every tool must have between one and three entries. The Atlas card
-also uses the standard `figure` as a supporting visual layer, so one gallery
-image is sufficient; two or three distinct gallery images make the hover and
-expanded transitions richer.
+tool cards. Every tool must have exactly three entries. The Atlas card also
+uses the standard `figure` as a fourth visual layer and cycles continuously
+through all four frames.
 
 - Store these files in `content/apto/assets/tools/atlas/` and reference them as
   `/apto/tools/atlas/filename.ext`.

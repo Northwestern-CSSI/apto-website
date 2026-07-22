@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/macrocosm-energy-system.jpg",
       "alt": "Miniature energy system linking industrial facilities, renewables, storage, infrastructure, and regional flows"
+    },
+    {
+      "src": "/apto/tools/previews/macrocosm-energy-digital-twin.jpg",
+      "alt": "Firm and energy-asset network connecting facilities, markets, investment, and geography"
+    },
+    {
+      "src": "/apto/tools/atlas/macrocosm-scenario-flows.jpg",
+      "alt": "Investment pathways splitting toward several regional energy-system configurations"
     }
   ],
   "statusLabel": "Research preview",

@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/uchicago-global-observatory.jpg",
       "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
+    },
+    {
+      "src": "/apto/tools/previews/uchicago-global-observatory.jpg",
+      "alt": "World map connecting research, patent, product, funding, workforce, and market signals"
+    },
+    {
+      "src": "/apto/tools/atlas/uchicago-policy-flows.jpg",
+      "alt": "Policy waves passing through a connected global science system and separating into future trajectories"
     }
   ],
   "statusLabel": "Research preview",

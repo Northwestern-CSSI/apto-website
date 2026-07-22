@@ -9,7 +9,7 @@ import Moon from "lucide-react/dist/esm/icons/moon.mjs";
 import Plus from "lucide-react/dist/esm/icons/plus.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
 import X from "lucide-react/dist/esm/icons/x.mjs";
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 
 import {
   aptoBoilerplate,
@@ -313,17 +313,44 @@ function ToolPoster({ tool, expanded, onToggle }: {
   onToggle: () => void;
 }) {
   const participant = participantFor(tool.participantId);
-  if (!participant) return null;
   const detailId = `atlas-tool-details-${tool.id}`;
   const media = [tool.galleryImages[0], { src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages.slice(1)];
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let intervalId: number | undefined;
+
+    const updateTimer = () => {
+      if (intervalId) window.clearInterval(intervalId);
+      intervalId = undefined;
+      if (reducedMotion.matches || media.length < 2) return;
+      intervalId = window.setInterval(() => {
+        setActiveMediaIndex((current) => (current + 1) % media.length);
+      }, 5200);
+    };
+
+    updateTimer();
+    reducedMotion.addEventListener("change", updateTimer);
+    return () => {
+      if (intervalId) window.clearInterval(intervalId);
+      reducedMotion.removeEventListener("change", updateTimer);
+    };
+  }, [media.length]);
+
+  if (!participant) return null;
 
   return <article
     className={`atlas-tool-card${expanded ? " is-expanded" : ""}`}
+    data-gallery-count={media.length}
     style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
   >
     <figure className="atlas-tool-media">
       {media.map((image, index) => <img
         key={`${image.src}-${index}`}
+        className={`${index === activeMediaIndex ? "is-active " : ""}motion-${index % 4}`.trim()}
+        data-gallery-index={index}
+        data-active={index === activeMediaIndex ? "true" : undefined}
         src={withDeploymentBase(image.src)}
         alt={index === 0 ? image.alt : ""}
         aria-hidden={index === 0 ? undefined : "true"}
@@ -335,30 +362,39 @@ function ToolPoster({ tool, expanded, onToggle }: {
       <figcaption>{tool.figure.label}</figcaption>
     </figure>
     <div className="atlas-tool-shade" aria-hidden="true" />
-    <div className="atlas-tool-summary">
-      <p>{participant.displayName} <span>{tool.statusLabel}</span></p>
-      <h2>{tool.name}</h2>
-      <p className="atlas-tool-description">{tool.description}</p>
+    <div className="atlas-tool-panel">
+      <div className="atlas-tool-copy">
+        <div className="atlas-tool-summary">
+          <p>{participant.displayName} <span>{tool.statusLabel}</span></p>
+          <h2>{tool.name}</h2>
+          <p className="atlas-tool-description">{tool.description}</p>
+        </div>
+        <div className="atlas-tool-details" id={detailId}>
+          <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
+          <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
+          {(tool.demoVideoUrl || tool.toolUrl) && <nav aria-label={`${tool.name} links`}>
+            {tool.demoVideoUrl && <ExternalLink href={tool.demoVideoUrl}>{aptoInterface.tools.watchDemoLabel}</ExternalLink>}
+            {tool.toolUrl && <ExternalLink href={tool.toolUrl}>{aptoInterface.tools.openToolLabel}</ExternalLink>}
+          </nav>}
+        </div>
+      </div>
+      <div className="atlas-tool-panel-footer">
+        <span className="atlas-tool-progress" aria-hidden="true">
+          {media.map((image, index) => <i className={index === activeMediaIndex ? "is-active" : ""} key={`${image.src}-progress`} />)}
+        </span>
+        <button
+          className="atlas-tool-toggle"
+          type="button"
+          aria-expanded={expanded}
+          aria-controls={detailId}
+          aria-label={`${expanded ? aptoInterface.atlas.closeDetailsLabel : aptoInterface.atlas.toolDetailsLabel}: ${tool.name}`}
+          onClick={onToggle}
+        >
+          {expanded ? <X aria-hidden="true" focusable="false" /> : <Plus aria-hidden="true" focusable="false" />}
+          <span>{expanded ? aptoInterface.atlas.closeDetailsLabel : aptoInterface.atlas.toolDetailsLabel}</span>
+        </button>
+      </div>
     </div>
-    <div className="atlas-tool-details" id={detailId}>
-      <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
-      <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
-      {(tool.demoVideoUrl || tool.toolUrl) && <nav aria-label={`${tool.name} links`}>
-        {tool.demoVideoUrl && <ExternalLink href={tool.demoVideoUrl}>{aptoInterface.tools.watchDemoLabel}</ExternalLink>}
-        {tool.toolUrl && <ExternalLink href={tool.toolUrl}>{aptoInterface.tools.openToolLabel}</ExternalLink>}
-      </nav>}
-    </div>
-    <button
-      className="atlas-tool-toggle"
-      type="button"
-      aria-expanded={expanded}
-      aria-controls={detailId}
-      aria-label={`${expanded ? aptoInterface.atlas.closeDetailsLabel : aptoInterface.atlas.toolDetailsLabel}: ${tool.name}`}
-      onClick={onToggle}
-    >
-      {expanded ? <X aria-hidden="true" focusable="false" /> : <Plus aria-hidden="true" focusable="false" />}
-      <span>{expanded ? aptoInterface.atlas.closeDetailsLabel : aptoInterface.atlas.toolDetailsLabel}</span>
-    </button>
   </article>;
 }
 

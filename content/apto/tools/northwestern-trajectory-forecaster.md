@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/northwestern-technology-trajectories.jpg",
       "alt": "Science and technology clusters branching through evidence stages into multiple market and societal trajectories"
+    },
+    {
+      "src": "/apto/tools/previews/northwestern-research-market-navigator.jpg",
+      "alt": "Research investments flowing through invention, licensing, company formation, and downstream use"
+    },
+    {
+      "src": "/apto/tools/atlas/northwestern-translation-trajectories.jpg",
+      "alt": "Technology evidence streams passing analytical stages before dividing into several forecast futures"
     }
   ],
   "statusLabel": "Research preview",

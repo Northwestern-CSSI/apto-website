@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/aperture-problem-landscape.jpg",
       "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
+    },
+    {
+      "src": "/apto/tools/previews/aperture-problem-landscape.jpg",
+      "alt": "Problem clusters arranged across an evidence landscape with gaps and adjacent solution areas"
+    },
+    {
+      "src": "/apto/tools/atlas/aperture-decision-signals.jpg",
+      "alt": "High-leverage opportunities illuminated where evidence pathways converge across a layered decision landscape"
     }
   ],
   "statusLabel": "Research preview",

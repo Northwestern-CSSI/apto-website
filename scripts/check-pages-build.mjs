@@ -83,6 +83,11 @@ for (const page of atlasPages) {
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
   assert.ok(html.includes(`src="${basePath}/apto/`), `${page} needs base-path-safe Markdown-managed images`);
   assert.ok(html.includes(`${basePath}/apto/social/apto-atlas-social.png`), `${page} needs the Atlas social image`);
+  if (page.endsWith("tools/index.html")) {
+    assert.equal((html.match(/data-gallery-count="4"/g) ?? []).length, 10, `${page} needs four cycling frames for every tool`);
+    assert.equal((html.match(/class="atlas-tool-panel"/g) ?? []).length, 10, `${page} needs a bottom information panel for every tool`);
+    assert.equal((html.match(/class="atlas-tool-panel-footer"/g) ?? []).length, 10, `${page} needs View details inside every bottom panel`);
+  }
   assert.ok(!html.includes(`${basePath}${basePath}`), `${page} must not duplicate the deployment base path`);
   assert.ok(html.includes(`${basePath}/_next/`), `${page} needs base-path-safe framework assets`);
   assert.doesNotMatch(html, unprefixedPath);

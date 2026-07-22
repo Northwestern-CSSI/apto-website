@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/northwestern-technology-trajectories.jpg",
       "alt": "Science and technology clusters branching through evidence stages into multiple market and societal trajectories"
+    },
+    {
+      "src": "/apto/tools/previews/northwestern-trajectory-forecaster.jpg",
+      "alt": "Observed and projected technology trajectories displayed with alternative paths and uncertainty"
+    },
+    {
+      "src": "/apto/tools/atlas/northwestern-translation-trajectories.jpg",
+      "alt": "Research clusters moving through translation stages before branching into market and societal applications"
     }
   ],
   "statusLabel": "Research preview",

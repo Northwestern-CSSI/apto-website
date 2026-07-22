@@ -583,12 +583,25 @@ test("renders the Atlas tool gallery as ten accessible, Markdown-backed image po
   assert.match(markup, /<fieldset[^>]*aria-label="[^"]+"/);
 
   for (const tool of content.tools) {
-    assert.ok(tool.galleryImages.length >= 1, `${tool.name} needs at least one gallery image`);
+    assert.equal(tool.galleryImages.length, 3, `${tool.name} needs three Atlas gallery images plus its standard figure`);
+    assert.equal(new Set(tool.galleryImages.map((image) => image.src)).size, 3, `${tool.name} gallery images must be distinct`);
+    assert.equal(new Set(tool.galleryImages.map((image) => image.alt)).size, 3, `${tool.name} gallery descriptions must be distinct`);
+    assert.ok(!tool.galleryImages.some((image) => image.src === tool.figure.src), `${tool.name} gallery must not repeat its standard figure`);
     const article = articles.find((candidate) => visibleText(candidate).includes(tool.name));
     assert.ok(article, `${tool.name} should render as an Atlas poster`);
     const detailsId = `atlas-tool-details-${tool.id}`;
+    const panelStart = article.indexOf('class="atlas-tool-panel"');
     assert.ok(article.includes(`id="${detailsId}"`));
     assert.ok(article.includes(`aria-controls="${detailsId}"`));
+    assert.ok(article.includes('data-gallery-count="4"'));
+    assert.equal(countMatches(article, /data-gallery-index="[0-3]"/g), 4);
+    assert.equal(countMatches(article, /data-active="true"/g), 1);
+    assert.equal(countMatches(article, /class="[^"]*is-active[^"]*motion-0"/g), 1);
+    assert.equal(countMatches(article, /<img\b/g), 4);
+    assert.ok(panelStart >= 0, `${tool.name} should have a bottom information panel`);
+    assert.ok(article.indexOf('class="atlas-tool-summary"', panelStart) > panelStart);
+    assert.ok(article.indexOf('class="atlas-tool-details"', panelStart) > panelStart);
+    assert.ok(article.indexOf('class="atlas-tool-toggle"', panelStart) > panelStart);
     assert.ok(article.includes("loading=\"lazy\""));
     assert.ok(article.includes("decoding=\"async\""));
 
@@ -625,12 +638,22 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(source, /aria-controls=\{detailId\}/);
   assert.match(source, /withDeploymentBase\(image\.src\)/);
   assert.match(source, /loading="lazy"/);
+  assert.match(source, /matchMedia\("\(prefers-reduced-motion: reduce\)"\)/);
+  assert.match(source, /window\.setInterval/);
+  assert.match(source, /window\.clearInterval/);
+  assert.match(source, /data-gallery-count=\{media\.length\}/);
 
   assert.match(styles, /\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(styles, /@media \(max-width:\s*1180px\)[\s\S]*?\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(styles, /@media \(max-width:\s*719px\)[\s\S]*?\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*1fr/);
   assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*5\s*\/\s*6/);
-  assert.match(styles, /\.atlas-tool-media img\s*\{[^}]*transition:[^;}]*transform\s+6\.8s/);
+  assert.match(styles, /\.atlas-tool-media img\.is-active\s*\{[^}]*animation:\s*atlas-tool-ken-burns-a\s+6\.6s/);
+  assert.match(styles, /@keyframes atlas-tool-ken-burns-a/);
+  assert.match(styles, /@keyframes atlas-tool-ken-burns-d/);
+  assert.match(styles, /\.atlas-tool-panel\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*0[^}]*height:\s*48%[^}]*backdrop-filter:\s*blur\(13px\)/);
+  assert.match(styles, /\.atlas-tool-panel::before\s*\{[^}]*linear-gradient\(to top[^}]*backdrop-filter:\s*blur\(10px\)[^}]*mask-image:/);
+  assert.doesNotMatch(styles, /\.atlas-tool-details\s*\{[^}]*top:\s*(?:70|80)px/);
+  assert.match(styles, /\.atlas-tool-panel-footer\s*\{[^}]*display:\s*flex/);
   assert.doesNotMatch(styles, /animation(?:-name)?:\s*[^;]*infinite/i);
   assert.doesNotMatch(styles, /animation-iteration-count:\s*infinite/i);
   assert.doesNotMatch(styles, /\.atlas-tool-card(?::hover|:focus-within|\.is-expanded)\s*\{[^}]*(?:transform|scale|width|height)\s*:/);
@@ -638,7 +661,7 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(styles, /\[data-apto-theme="dark"\] \.apto-atlas\s*\{[^}]*color-scheme:\s*dark/);
   assert.match(styles, /@media \(prefers-reduced-motion:\s*reduce\)/);
   assert.match(styles, /animation-iteration-count:\s*1\s*!important/);
-  assert.match(styles, /\.atlas-tool-media img,[\s\S]*?transform:\s*none\s*!important/);
+  assert.match(styles, /\.atlas-tool-media img\s*\{[^}]*animation:\s*none\s*!important[^}]*transform:\s*none\s*!important/);
   assert.match(styles, /@media \(forced-colors:\s*active\)/);
   assert.match(styles, /\.atlas-tool-card::after\s*\{[^}]*border:\s*2px solid CanvasText/);
   assert.match(styles, /\.atlas-header\s*\{[^}]*position:\s*sticky/);

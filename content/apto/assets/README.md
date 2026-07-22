@@ -43,15 +43,14 @@ responsive `object-fit: cover` cropping.
 
 The APTO Atlas presentation uses image-led tool cards. Their source artwork
 lives in `tools/atlas/` and is referenced from each tool record through a
-required `galleryImages` array containing one to three `{ "src", "alt" }`
+required `galleryImages` array containing exactly three `{ "src", "alt" }`
 entries.
 
 - Prefer a landscape composition around 1536 × 1024 pixels with the focal area
   near the center. Atlas intentionally crops these images to fill responsive
   cards.
-- A tool can begin with one gallery image. Add a second or third distinct view
-  only when it improves the hover and expanded transition rather than repeating
-  the same visual.
+- Supply three distinct gallery views. The card adds the tool's standard
+  `figure` as a fourth frame and cycles through all four with a slow pan.
 - Keep important information out of the crop edges and out of embedded text.
 - Treat the current generated Atlas artwork as provisional. When a project team
   supplies an approved figure, place it in this folder, update the tool

@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/aperture-problem-landscape.jpg",
       "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
+    },
+    {
+      "src": "/apto/tools/previews/aperture-leverage-point-finder.jpg",
+      "alt": "Opportunity matrix comparing technical needs by evidence, activity, and potential leverage"
+    },
+    {
+      "src": "/apto/tools/atlas/aperture-decision-signals.jpg",
+      "alt": "Layered problem domains connected to a small set of promising intervention points"
     }
   ],
   "statusLabel": "Research preview",

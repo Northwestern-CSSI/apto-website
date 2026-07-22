@@ -903,7 +903,7 @@ function validateTool(document) {
   requireString(figure, "label", `${context}.figure`);
   requireString(figure, "alt", `${context}.figure`);
   const galleryImages = requireArray(metadata, "galleryImages", context);
-  assert(galleryImages.length > 0 && galleryImages.length <= 3, `${context}.galleryImages must contain one to three images`);
+  assert(galleryImages.length === 3, `${context}.galleryImages must contain exactly three images so every Atlas tool has four cycling frames`);
   galleryImages.forEach((image, index) => {
     const imageContext = `${context}.galleryImages[${index}]`;
     requireObject(image, imageContext);
@@ -912,6 +912,9 @@ function validateTool(document) {
     assert(imageSrc.startsWith("/apto/"), `${imageContext}.src must begin with /apto/`);
     requireString(image, "alt", imageContext);
   });
+  assert(new Set(galleryImages.map((image) => image.src)).size === galleryImages.length, `${context}.galleryImages sources must be unique`);
+  assert(new Set(galleryImages.map((image) => image.alt)).size === galleryImages.length, `${context}.galleryImages descriptions must be unique`);
+  assert(!galleryImages.some((image) => image.src === figureSrc), `${context}.galleryImages must not repeat figure.src`);
   requireString(metadata, "statusLabel", context);
   requireOptionalHttpsUrl(metadata.demoVideoUrl, `${context}.demoVideoUrl`);
   requireOptionalHttpsUrl(metadata.toolUrl, `${context}.toolUrl`);

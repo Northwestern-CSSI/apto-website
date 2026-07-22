@@ -15,6 +15,14 @@
     {
       "src": "/apto/tools/atlas/insilicom-causal-evidence.jpg",
       "alt": "Layered evidence records converging into a directed causal knowledge graph"
+    },
+    {
+      "src": "/apto/tools/previews/insilicom-evidence-workbench.jpg",
+      "alt": "Evidence extraction workflow moving source records through structured review stages"
+    },
+    {
+      "src": "/apto/tools/atlas/insilicom-evidence-provenance.jpg",
+      "alt": "Reviewed document layers feeding traceable relationships into a causal technology network"
     }
   ],
   "statusLabel": "Research preview",
