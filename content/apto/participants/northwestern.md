@@ -23,7 +23,3 @@
 ---
 
 # Northwestern University
-
-## Description
-
-Northwestern University leads APTO research connecting science and technology investment with invention, licensing, company formation, and downstream outcomes. The team combines large-scale data, causal analysis, and predictive models across several technology domains.

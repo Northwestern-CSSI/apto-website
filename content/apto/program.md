@@ -2,12 +2,8 @@
 {
   "kind": "program",
   "id": "apto",
-  "eyebrow": "APTO program · Research, models, and open tools",
   "name": "Assessing and Predicting Technology Outcomes",
   "acronym": "APTO",
-  "title": "Evidence for better technology decisions",
-  "shortSummary": "APTO supports a cohort of projects building data, tools, and generalizable models to understand how science and technology investments contribute to national outcomes.",
-  "cohortDescription": "Five participating organizations bring complementary approaches to measuring, modeling, and anticipating technology outcomes.",
   "objectivesTitle": "What APTO is designed to do",
   "objectives": [
     "Build generalizable, empirically grounded models for assessing and predicting changes in technology capability, production, and use.",
@@ -15,28 +11,6 @@
     "Connect historical evidence with possible future states so research and development decisions can be made with greater clarity."
   ],
   "lastVerified": "2026-07-20",
-  "stats": [
-    {
-      "metric": "projects",
-      "label": "research projects",
-      "detail": "Active APTO awards across the cohort"
-    },
-    {
-      "metric": "participants",
-      "label": "participating organizations",
-      "detail": "Universities and companies working across the program"
-    },
-    {
-      "metric": "tools",
-      "label": "research tools",
-      "detail": "Exploration, modeling, and evidence interfaces"
-    },
-    {
-      "metric": "investigators",
-      "label": "named investigators",
-      "detail": "Principal and co-principal investigators across the cohort"
-    }
-  ],
   "framework": {
     "ariaLabel": "APTO research framework",
     "outcomesTitle": "Outcome lenses",

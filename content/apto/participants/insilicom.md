@@ -23,7 +23,3 @@
 ---
 
 # Insilicom
-
-## Description
-
-Insilicom builds knowledge systems that turn scientific and technical evidence into structured, explorable relationships. Its APTO work connects publications, patents, databases, problems, and organizations through causal technology knowledge graphs.

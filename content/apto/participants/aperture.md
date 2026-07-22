@@ -23,7 +23,3 @@
 ---
 
 # Aperture
-
-## Description
-
-Aperture develops intelligence tools that connect technical problems with relevant technologies, evidence, and organizations. Its APTO work focuses on recognizing promising opportunities and leverage points across complex research and innovation landscapes.

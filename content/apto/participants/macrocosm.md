@@ -23,7 +23,3 @@
 ---
 
 # Macrocosm
-
-## Description
-
-Macrocosm develops data-rich models of economic and technological systems. Its APTO work represents U.S. energy firms, physical assets, markets, investment choices, and policy feedbacks within a spatially explicit simulation environment.

@@ -27,6 +27,7 @@ const baseline = {
 };
 const nsfBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
+const imageExtensions = new Set([".avif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 
 function compareAlphabetically(left, right) {
   return (
@@ -99,7 +100,7 @@ function maxPixelValueFor(styles, property) {
 
 async function markdownFileNames(directory) {
   return (await readdir(directory, { withFileTypes: true }))
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".md") && entry.name.toLowerCase() !== "readme.md")
     .map((entry) => entry.name)
     .sort(compareAlphabetically);
 }
@@ -111,6 +112,13 @@ async function filesRecursively(directory) {
     return entry.isDirectory() ? filesRecursively(child) : [child];
   }));
   return nested.flat().sort((left, right) => left.href.localeCompare(right.href, "en"));
+}
+
+async function imageFilesRecursively(directory) {
+  return (await filesRecursively(directory)).filter((file) => {
+    const pathname = file.pathname.toLowerCase();
+    return [...imageExtensions].some((extension) => pathname.endsWith(extension));
+  });
 }
 
 let workerModule;
@@ -142,7 +150,7 @@ async function render(pathname = "/") {
 
 async function generatedContent() {
   return JSON.parse(
-    await readFile(new URL("../app/nsf-apto-content.generated.json", import.meta.url), "utf8"),
+    await readFile(new URL("../app/apto/content.generated.json", import.meta.url), "utf8"),
   );
 }
 
@@ -338,7 +346,7 @@ test("renders five alphabetical native project accordions and a labelled awardee
 test("renders Markdown-sourced tools with two AND-able filter groups and useful copy", async () => {
   const [content, source, toolFiles] = await Promise.all([
     generatedContent(),
-    readFile(new URL("../app/nsf-apto-mockups.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/site.tsx", import.meta.url), "utf8"),
     markdownFileNames(new URL("tools/", contentRoot)),
   ]);
   assert.ok(content.tools.length >= baseline.tools);
@@ -408,14 +416,14 @@ test("combines program leadership, organizations, and project teams on the cohor
 });
 
 test("builds a flexible Markdown inventory, copies content assets, and preserves accessibility essentials", async () => {
-  const [content, generator, dataSource, mockupSource, routeSource, themeSource, styles, rootLayout] = await Promise.all([
+  const [content, generator, dataSource, siteSource, routeSource, themeSource, styles, rootLayout] = await Promise.all([
     generatedContent(),
     readFile(new URL("../scripts/build-apto-content.mjs", import.meta.url), "utf8"),
-    readFile(new URL("../app/nsf-apto-data.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/nsf-apto-mockups.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/content.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/site.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/_route-page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/theme.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/nsf-apto-mockups.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/site.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
   ]);
   const directories = {
@@ -425,9 +433,15 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     projects: await markdownFileNames(new URL("projects/", contentRoot)),
     tools: await markdownFileNames(new URL("tools/", contentRoot)),
   };
-  const assets = await filesRecursively(new URL("assets/", contentRoot));
+  const allAssetFiles = await filesRecursively(new URL("assets/", contentRoot));
+  const assets = await imageFilesRecursively(new URL("assets/", contentRoot));
 
   assert.deepEqual(directories.pages, ["about.md", "cohort.md", "home.md", "projects.md", "tools.md"]);
+  assert.ok(allAssetFiles.some((file) => file.pathname.endsWith("/README.md")));
+  for (const directory of Object.keys(directories)) {
+    const entries = await readdir(new URL(`${directory}/`, contentRoot));
+    assert.ok(entries.includes("README.md"), `${directory} needs an authoring guide`);
+  }
   assert.ok(directories.participants.length >= baseline.participants);
   assert.ok(directories.people.length >= baseline.people);
   assert.ok(directories.projects.length >= baseline.projects);
@@ -442,6 +456,23 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   );
   assert.ok(content._generated.schemaVersion >= 7);
   assert.equal(content.boilerplate, nsfBoilerplate);
+  assert.equal(content._generated.generatedFrom.some((filename) => filename.endsWith("/README.md")), false);
+
+  const referencedAssetPaths = new Set([
+    content.interface.study.socialImageSrc,
+    content.interface.footer.nsfLogoSrc,
+    content.interface.projects.map.imageUrl,
+    ...content.participants.map((participant) => participant.logo.src),
+    ...content.program.programTeam.map((person) => person.headshotUrl).filter(Boolean),
+    ...content.participants.flatMap((participant) => (
+      participant.people.map((person) => person.headshotUrl).filter(Boolean)
+    )),
+    ...content.tools.map((tool) => tool.figure.src),
+  ].map((publicPath) => publicPath.replace(/^\/apto\//, "")));
+  const sourceAssetPaths = new Set(assets.map((file) => (
+    decodeURIComponent(file.pathname.slice(new URL("assets/", contentRoot).pathname.length))
+  )));
+  assert.deepEqual(sourceAssetPaths, referencedAssetPaths, "Every source image must be referenced by live content");
 
   const allPeople = [
     ...content.program.programTeam,
@@ -465,6 +496,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   }
   const publicAssets = await filesRecursively(new URL("../public/apto/", import.meta.url));
   assert.equal(publicAssets.length, assets.length, "Generated public assets must not retain deleted source images");
+  assert.equal(publicAssets.some((file) => file.pathname.endsWith("/README.md")), false);
 
   const records = [];
   for (const [directory, names] of Object.entries(directories)) {
@@ -486,18 +518,17 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   for (const record of records.filter((item) => item.directory === "tools")) {
     assert.ok(content.tools.some((tool) => tool.id === record.metadata.id));
   }
+  for (const record of records) {
+    assert.equal(record.name, `${record.metadata.id}.md`, `${record.directory}/${record.name} must match its record id`);
+  }
 
   for (const participant of content.participants) {
     assert.ok(participant.people.length > 0);
-    assert.ok(participant.tools.length > 0);
-    assert.ok(participant.projectIds.length > 0);
+    assert.ok(content.projects.some((project) => project.participantId === participant.id));
+    assert.ok(content.tools.some((tool) => tool.participantId === participant.id));
     assert.deepEqual(
       participant.people.map((person) => person.name),
       sortedAlphabetically(participant.people.map((person) => person.name)),
-    );
-    assert.deepEqual(
-      participant.tools.map((tool) => tool.name),
-      sortedAlphabetically(participant.tools.map((tool) => tool.name)),
     );
   }
   assert.deepEqual(
@@ -508,6 +539,10 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     content.tools.map((tool) => tool.name),
     sortedAlphabetically(content.tools.map((tool) => tool.name)),
   );
+  assert.deepEqual(
+    content.projects.map((project) => project.shortName),
+    sortedAlphabetically(content.projects.map((project) => project.shortName)),
+  );
 
   assert.match(generator, /const participantDirectory = path\.join\(contentDirectory, "participants"\)/);
   assert.match(generator, /const peopleDirectory = path\.join\(contentDirectory, "people"\)/);
@@ -515,6 +550,9 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(generator, /path\.relative\(assetDirectory, assetFile\)/);
   assert.match(generator, /fileStatus\.isFile\(\)/);
   assert.match(generator, /allowedImageExtensions/);
+  assert.match(generator, /entry\.name\.toLowerCase\(\) !== "readme\.md"/);
+  assert.match(generator, /assertEveryAssetIsReferenced/);
+  assert.match(generator, /requireOptionalLocalImage/);
   assert.match(generator, /participantFiles\.length > 0/);
   assert.match(generator, /peopleFiles\.length > 0/);
   assert.match(generator, /projectFiles\.length > 0/);
@@ -522,10 +560,10 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(generator, /syncAssets\(content\.assetFiles, checkOnly\)/);
   assert.doesNotMatch(generator, /toolFiles\.length === \d+/);
   assert.doesNotMatch(generator, /must have exactly 2 tools|count === 2/);
-  assert.match(dataSource, /import generatedContent from "\.\/nsf-apto-content\.generated\.json"/);
+  assert.match(dataSource, /import generatedContent from "\.\/content\.generated\.json"/);
   assert.doesNotMatch(dataSource, /export const apto(?:Projects|Participants|MockTools)\s*=\s*\[/);
 
-  assert.match(routeSource, /<NsfAptoPage section=\{section\} \/>/);
+  assert.match(routeSource, /<AptoSitePage section=\{section\} \/>/);
   assert.doesNotMatch(routeSource, /conceptFromSearchParams|directionFor/);
   assert.match(themeSource, /window\.localStorage\.getItem\(storageKey\)/);
   assert.match(themeSource, /window\.sessionStorage\.getItem\(sessionKey\)/);
@@ -537,13 +575,14 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(rootLayout, /<html lang="en" suppressHydrationWarning>/);
   assert.match(rootLayout, /template: `%s \| \$\{title\}`/);
   assert.match(rootLayout, /id="apto-theme-bootstrap"/);
-  assert.match(mockupSource, /role="switch"/);
-  assert.match(mockupSource, /aria-checked=\{theme === "dark"\}/);
-  assert.match(mockupSource, /preference\.addEventListener\("change", handlePreferenceChange\)/);
-  assert.match(mockupSource, /preference\.removeEventListener\("change", handlePreferenceChange\)/);
-  assert.match(mockupSource, /window\.addEventListener\("storage", handleStorage\)/);
-  assert.match(mockupSource, /window\.history\.replaceState/);
-  assert.doesNotMatch(mockupSource, /tone-\$\{tone\}/);
+  assert.match(siteSource, /role="switch"/);
+  assert.match(siteSource, /aria-checked=\{theme === "dark"\}/);
+  assert.match(siteSource, /preference\.addEventListener\("change", handlePreferenceChange\)/);
+  assert.match(siteSource, /preference\.removeEventListener\("change", handlePreferenceChange\)/);
+  assert.match(siteSource, /window\.addEventListener\("storage", handleStorage\)/);
+  assert.match(siteSource, /window\.history\.replaceState/);
+  assert.match(siteSource, /withDeploymentBase\(person\.headshotUrl\)/);
+  assert.doesNotMatch(siteSource, /tone-\$\{tone\}/);
 
   assert.match(styles, /\.nsf-apto :focus-visible/);
   assert.match(styles, /\.nsf-skip-link:focus/);
@@ -562,11 +601,11 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\.nsf-section-intro \.nsf-section-intro-description\s*\{[^}]*text-align:\s*left/);
   assert.match(styles, /\.nsf-cohort-group::before\s*\{[^}]*background:\s*var\(--cohort-accent\)/);
   assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
-  assert.match(mockupSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
-  assert.match(mockupSource, /!rootRef\.current\?\.contains\(target\)/);
-  assert.match(mockupSource, /document\.removeEventListener\("pointerdown", handlePointerDown\)/);
-  assert.match(mockupSource, /event\.key !== "Escape"/);
-  assert.match(mockupSource, /triggerRef\.current\?\.focus\(\)/);
+  assert.match(siteSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
+  assert.match(siteSource, /!rootRef\.current\?\.contains\(target\)/);
+  assert.match(siteSource, /document\.removeEventListener\("pointerdown", handlePointerDown\)/);
+  assert.match(siteSource, /event\.key !== "Escape"/);
+  assert.match(siteSource, /triggerRef\.current\?\.focus\(\)/);
   const headingRule = styles.match(/\.nsf-hero-copy h1\s*\{([^}]*)\}/);
   assert.ok(headingRule, "Expected a compact homepage heading rule");
   assert.ok(maxPixelValueFor(headingRule[1], "font-size") <= 44);

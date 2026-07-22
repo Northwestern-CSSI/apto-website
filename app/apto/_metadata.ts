@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { aptoPages, type AptoPageSlug } from "../nsf-apto-data";
+import { aptoPages, type AptoPageSlug } from "./content";
 
 export function metadataFor(slug: AptoPageSlug): Metadata {
   const page = aptoPages.find((candidate) => candidate.slug === slug);

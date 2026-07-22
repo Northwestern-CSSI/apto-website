@@ -11,12 +11,12 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import {
   aptoBoilerplate,
   aptoInterface,
-  aptoMockTools,
   aptoPages,
   aptoParticipants,
   aptoProgram,
   aptoProjects,
-} from "./nsf-apto-data";
+  aptoTools,
+} from "./content";
 import {
   APTO_LEGACY_THEME_SESSION_KEY,
   APTO_THEME_STORAGE_KEY,
@@ -26,18 +26,18 @@ import {
   preferredAptoTheme,
   storedAptoTheme,
   type AptoTheme,
-} from "./apto/theme";
-import { aptoRoute, withDeploymentBase } from "./apto/paths";
+} from "./theme";
+import { aptoRoute, withDeploymentBase } from "./paths";
 
-export type NsfAptoSection = "home" | "about" | "cohort" | "projects" | "tools";
+export type AptoSection = "home" | "about" | "cohort" | "projects" | "tools";
 
 type AptoProject = (typeof aptoProjects)[number];
 type AptoParticipant = (typeof aptoParticipants)[number];
-type AptoTool = (typeof aptoMockTools)[number];
+type AptoTool = (typeof aptoTools)[number];
 type AptoPerson = AptoProject["people"][number];
 type AptoProgramPerson = (typeof aptoProgram.programTeam)[number];
 
-const sectionPath: Record<NsfAptoSection, string> = {
+const sectionPath: Record<AptoSection, string> = {
   home: "",
   about: "about",
   cohort: "cohort",
@@ -45,7 +45,7 @@ const sectionPath: Record<NsfAptoSection, string> = {
   tools: "tools",
 };
 
-const pageSlug: Record<NsfAptoSection, string> = {
+const pageSlug: Record<AptoSection, string> = {
   home: "/",
   about: "/about",
   cohort: "/cohort",
@@ -53,12 +53,12 @@ const pageSlug: Record<NsfAptoSection, string> = {
   tools: "/tools",
 };
 
-function aptoHref(section: NsfAptoSection) {
+function aptoHref(section: AptoSection) {
   const path = sectionPath[section];
   return aptoRoute(path);
 }
 
-function copyFor(section: NsfAptoSection) {
+function copyFor(section: AptoSection) {
   const page = aptoPages.find((candidate) => candidate.slug === pageSlug[section]);
   if (!page) throw new Error(`Missing Markdown page content for ${section}`);
   return page;
@@ -185,7 +185,7 @@ function NsfThemeSwitch({ theme, onToggle }: { theme: AptoTheme; onToggle: () =>
       role="switch"
       aria-checked={theme === "dark"}
       aria-label={`${aptoInterface.study.themeChooserLabel}: ${darkLabel}`}
-      title={`Use ${nextLabel}`}
+      title={`${aptoInterface.study.themeSwitchActionPrefix} ${nextLabel}`}
       onClick={onToggle}
     >
       <span className="nsf-theme-switch-track" aria-hidden="true">
@@ -199,7 +199,7 @@ function NsfThemeSwitch({ theme, onToggle }: { theme: AptoTheme; onToggle: () =>
 }
 
 function NsfProgramHeader({ activeSection, theme, onToggle, showThemeSwitch = true }: {
-  activeSection: NsfAptoSection;
+  activeSection: AptoSection;
   theme: AptoTheme;
   onToggle: () => void;
   showThemeSwitch?: boolean;
@@ -402,11 +402,11 @@ function AwardeeMapCluster({ id, group, x, y }: { id: string; group: AwardeeMapE
       type="button"
       aria-expanded={open}
       aria-controls={panelId}
-      aria-label={`${group.length} nearby APTO project locations: ${names}`}
+      aria-label={`${group.length} ${aptoInterface.projects.map.nearbyLocationsLabel}: ${names}`}
       onClick={() => setOpen((value) => !value)}
     ><span aria-hidden="true">{group.length}</span></button>
     <div id={panelId} hidden={!open} aria-labelledby={titleId}>
-      <strong id={titleId}>{group.length} nearby projects</strong>
+      <strong id={titleId}>{group.length} {aptoInterface.projects.map.nearbyProjectsLabel}</strong>
       {group.map(({ participant, project }) => <a
         href={`#nsf-award-${project.awardId}`}
         key={participant.id}
@@ -472,7 +472,7 @@ function AwardeeMap({ id }: { id: string }) {
 
 function ProjectsSection({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const copy = copyFor("projects");
-  const projects = [...aptoProjects].sort((a, b) => a.shortName.localeCompare(b.shortName));
+  const projects = aptoProjects;
   return <section className="nsf-projects-section" id={`${id}-projects`} aria-labelledby={`${id}-projects-title`}>
     <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-projects-title`} pageHeading={pageHeading} />
     <div className="nsf-projects-layout">
@@ -519,7 +519,7 @@ function ToolCard({ tool }: { tool: AptoTool }) {
       <header className="nsf-tool-heading">
         <div className="nsf-tool-context">
           {participant && <ParticipantMark participant={participant} size="compact" />}
-          <p><strong>{participant?.displayName ?? tool.organizationId}</strong><span aria-hidden="true"> · </span><span>{tool.statusLabel}</span></p>
+          <p><strong>{participant?.displayName ?? tool.participantId}</strong><span aria-hidden="true"> · </span><span>{tool.statusLabel}</span></p>
         </div>
         <h2>{tool.name}</h2>
       </header>
@@ -551,7 +551,7 @@ function ToolsSection({ id, pageHeading = false }: { id: string; pageHeading?: b
     { id: "all", label: aptoInterface.tools.allCategoriesLabel },
     ...aptoProgram.outcomes.map((outcome) => ({ id: outcome.name, label: outcome.name })),
   ];
-  const tools = aptoMockTools.filter((tool) => (
+  const tools = aptoTools.filter((tool) => (
     (participant === "all" || tool.participantId === participant)
     && (category === "all" || tool.categories.includes(category as (typeof tool.categories)[number]))
   ));
@@ -572,7 +572,7 @@ function ToolsSection({ id, pageHeading = false }: { id: string; pageHeading?: b
 function PersonCard({ person }: { person: AptoPerson | AptoProgramPerson }) {
   return <article className="nsf-person-card">
     {person.headshotUrl
-      ? <img src={person.headshotUrl} alt={person.headshotAlt} />
+      ? <img src={withDeploymentBase(person.headshotUrl)} alt={person.headshotAlt} />
       : <div className="nsf-headshot-placeholder" aria-hidden="true"><span>{person.initials}</span></div>}
     <div>
       <h3>{person.name}</h3>
@@ -629,7 +629,7 @@ function NsfAcknowledgementFooter({ id }: { id: string }) {
   </footer>;
 }
 
-function NsfSectionBody({ id, section }: { id: string; section: NsfAptoSection }) {
+function AptoSectionBody({ id, section }: { id: string; section: AptoSection }) {
   switch (section) {
     case "home": return <HomePage id={id} />;
     case "about": return <ProgramOverview id={id} pageHeading />;
@@ -639,13 +639,13 @@ function NsfSectionBody({ id, section }: { id: string; section: NsfAptoSection }
   }
 }
 
-export function NsfAptoPage({ section }: { section: NsfAptoSection }) {
+export function AptoSitePage({ section }: { section: AptoSection }) {
   const instanceId = "apto";
   const { theme, toggleTheme } = useAptoTheme(true, "light");
   return <div className="concept concept-apto nsf-apto is-routed">
     <a className="nsf-skip-link" href={`#${instanceId}-main`}>{aptoInterface.accessibility.skipLinkLabel}</a>
     <NsfProgramHeader activeSection={section} theme={theme} onToggle={toggleTheme} />
-    <main id={`${instanceId}-main`} tabIndex={-1}><NsfSectionBody id={instanceId} section={section} /></main>
+    <main id={`${instanceId}-main`} tabIndex={-1}><AptoSectionBody id={instanceId} section={section} /></main>
     <NsfAcknowledgementFooter id={instanceId} />
   </div>;
 }

@@ -1,9 +1,8 @@
-import generatedContent from "./nsf-apto-content.generated.json";
+import generatedContent from "./content.generated.json";
 
 // IDs are intentionally open strings: adding a Markdown record must not
 // require a TypeScript edit.
 export type AptoParticipantId = string;
-export type AptoParticipantKind = "University" | "Company";
 export type AptoOutcome = "Capability" | "Production" | "Use";
 export type AptoLineOfEffortId = "models" | "data-tools";
 
@@ -13,10 +12,6 @@ export type AptoParticipantLogo = {
   height: number;
   surface: "dark" | "light";
   kind: "symbol" | "wordmark";
-  sourceUrl: string;
-  sourceLabel: string;
-  status: string;
-  approved: boolean;
 };
 
 export type AptoPersonRole =
@@ -56,8 +51,6 @@ export type AptoFigureKind =
 export type AptoTool = {
   id: string;
   participantId: AptoParticipantId;
-  organizationId: AptoParticipantId;
-  organizationName: string;
   name: string;
   categories: AptoOutcome[];
   description: string;
@@ -68,30 +61,20 @@ export type AptoTool = {
     label: string;
     alt: string;
   };
-  figureLabel: string;
   statusLabel: string;
   demoVideoUrl: string | null;
   toolUrl: string | null;
-  organizationUrl: string;
 };
-
-// Kept as an export alias while existing page imports migrate to AptoTool.
-export type AptoMockTool = AptoTool;
 
 export type AptoParticipant = {
   id: AptoParticipantId;
   displayName: string;
-  name: string;
-  kind: AptoParticipantKind;
   location: string;
   website: string;
   logo: AptoParticipantLogo;
   accent: string;
   mapPosition: { x: number; y: number };
-  description: string;
   people: AptoPerson[];
-  tools: AptoTool[];
-  projectIds: string[];
 };
 
 export type AptoProject = {
@@ -106,15 +89,7 @@ export type AptoProject = {
   organization: string;
   location: string;
   people: AptoPerson[];
-  pi: string;
-  coPIs: string[];
   summary: string;
-};
-
-export type AptoProgramStat = {
-  value: string;
-  label: string;
-  detail: string;
 };
 
 export type AptoProgramLineOfEffort = {
@@ -124,17 +99,11 @@ export type AptoProgramLineOfEffort = {
 };
 
 export type AptoProgram = {
-  eyebrow: string;
   name: string;
   acronym: "APTO";
-  title: string;
-  shortSummary: string;
   description: string;
-  cohortDescription: string;
   objectivesTitle: string;
   objectives: string[];
-  lastVerified: string;
-  stats: AptoProgramStat[];
   programTeam: AptoProgramPerson[];
   framework: {
     ariaLabel: string;
@@ -159,29 +128,26 @@ export type AptoPageSlug =
 
 export type AptoPage = {
   slug: AptoPageSlug;
-  navLabel: string;
   metadataTitle: string;
   eyebrow: string;
   title: string;
   introduction: string;
 };
 
-export type AptoInterfaceSection = "about" | "cohort" | "projects" | "tools";
+export type AptoInterfaceSection = "home" | "cohort" | "projects" | "tools";
 
 export type AptoInterfaceContent = {
   directions: Array<{
     id: "nsfhome" | "nsfnetwork";
     label: string;
-    note: string;
   }>;
   study: {
     siteTitle: string;
     siteDescription: string;
     socialImageSrc: string;
     socialImageAlt: string;
-    galleryLabel: string;
-    barLabel: string;
     themeChooserLabel: string;
+    themeSwitchActionPrefix: string;
   };
   primaryNavigation: Array<{
     label: string;
@@ -190,16 +156,9 @@ export type AptoInterfaceContent = {
   home: {
     primaryActionLabel: string;
     secondaryActionLabel: string;
-    outcomeVisualNote: string;
     cohortEyebrow: string;
     cohortTitle: string;
     cohortLinkLabel: string;
-    logoDisclosure: string;
-    networkCoreLabel: string;
-    networkVisualAlt: string;
-    networkVisualCaption: string;
-    ledgerVisualEyebrow: string;
-    ledgerVisualTitle: string;
     pathways: Array<{
       section: AptoInterfaceSection;
       title: string;
@@ -208,7 +167,6 @@ export type AptoInterfaceContent = {
   };
   common: {
     organizationWebsiteLabel: string;
-    participantWebsiteLabel: string;
   };
   accessibility: {
     skipLinkLabel: string;
@@ -216,16 +174,13 @@ export type AptoInterfaceContent = {
     footerNavigationLabel: string;
     homePathwaysLabel: string;
     projectInvestigatorsLabel: string;
-    projectMapLabel: string;
     toolFiltersLabel: string;
   };
   projects: {
-    ledgerTitle: string;
     awardLabel: string;
     awardedPrefix: string;
     dateStatusSeparator: string;
     expandLabel: string;
-    collapseLabel: string;
     map: {
       eyebrow: string;
       title: string;
@@ -233,12 +188,11 @@ export type AptoInterfaceContent = {
       caption: string;
       imageUrl: string;
       imageAlt: string;
-      sourceUrl: string;
-      sourceLabel: string;
+      nearbyLocationsLabel: string;
+      nearbyProjectsLabel: string;
     };
   };
   tools: {
-    registerTitle: string;
     allOrganizationsLabel: string;
     allCategoriesLabel: string;
     organizationFilterLabel: string;
@@ -254,51 +208,22 @@ export type AptoInterfaceContent = {
     emptyDescription: string;
     watchDemoLabel: string;
     openToolLabel: string;
-    statusLabel: string;
   };
   people: {
     programTeamEyebrow: string;
     programTeamTitle: string;
-    projectProfileLabel: string;
-    portraitForthcomingLabel: string;
     viewProfileLabel: string;
-  };
-  cohort: {
-    prominentTitle: string;
-    markStatusSuffix: string;
-    peopleTitle: string;
-    projectLabel: string;
-  };
-  disclosures: {
-    cohort: string;
   };
   footer: {
     supportTitle: string;
     supportDescription: string;
     disclaimerTitle: string;
     backToTopLabel: string;
-    homeLinkLabel: string;
-    programLinkLabel: string;
     nsfWebsiteUrl: string;
     nsfLogoSrc: string;
     nsfWebsiteAriaLabel: string;
     nsfLogoAlt: string;
   };
-};
-
-export type AptoSourceKind =
-  | "program"
-  | "award-search"
-  | "award"
-  | "brand"
-  | "organization";
-
-export type AptoSource = {
-  id: string;
-  label: string;
-  url: string;
-  detail: string;
-  kind: AptoSourceKind;
 };
 
 export type AptoContentBuild = {
@@ -319,7 +244,6 @@ type AptoGeneratedContent = {
   participants: AptoParticipant[];
   projects: AptoProject[];
   tools: AptoTool[];
-  sources: AptoSource[];
 };
 
 // The browser-facing records are generated from content/apto/**/*.md. Keeping
@@ -327,7 +251,6 @@ type AptoGeneratedContent = {
 // join content files themselves.
 const aptoContent = generatedContent as unknown as AptoGeneratedContent;
 
-export const aptoContentBuild = aptoContent._generated;
 export const aptoProgram = aptoContent.program;
 export const aptoInterface = aptoContent.interface;
 export const aptoPages = aptoContent.pages;
@@ -335,5 +258,3 @@ export const aptoBoilerplate = aptoContent.boilerplate;
 export const aptoParticipants = aptoContent.participants;
 export const aptoProjects = aptoContent.projects;
 export const aptoTools = aptoContent.tools;
-export const aptoMockTools = aptoContent.tools;
-export const aptoSources = aptoContent.sources;

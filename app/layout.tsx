@@ -1,20 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Open_Sans } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { aptoThemeBootstrap } from "./apto/theme";
 import { withDeploymentBase } from "./apto/paths";
-import { aptoInterface } from "./nsf-apto-data";
+import { aptoInterface } from "./apto/content";
 import "./globals.css";
-import "./nsf-apto-mockups.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "./apto/site.css";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -68,7 +58,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${openSans.variable} antialiased`}
+        className={`${openSans.variable} antialiased`}
       >
         {children}
       </body>

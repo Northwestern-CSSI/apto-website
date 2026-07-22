@@ -6,7 +6,7 @@ body {
   margin: 0;
   color: #102f4d;
   background: #f8f5ee;
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-family: var(--font-open-sans), "Open Sans", Arial, sans-serif;
 }
 button,
 input,

@@ -2,7 +2,6 @@
 {
   "kind": "page",
   "slug": "/cohort",
-  "navLabel": "Cohort",
   "metadataTitle": "Cohort",
   "eyebrow": "APTO cohort",
   "title": "The teams behind APTO"

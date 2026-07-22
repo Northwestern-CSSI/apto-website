@@ -2,7 +2,6 @@
 {
   "kind": "page",
   "slug": "/tools",
-  "navLabel": "Tools",
   "metadataTitle": "Tools",
   "eyebrow": "Research tools",
   "title": "Tools for exploring technology outcomes"

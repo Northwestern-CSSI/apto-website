@@ -22,7 +22,7 @@ const participantDirectory = path.join(contentDirectory, "participants");
 const peopleDirectory = path.join(contentDirectory, "people");
 const projectDirectory = path.join(contentDirectory, "projects");
 const toolDirectory = path.join(contentDirectory, "tools");
-const outputFile = path.join(rootDirectory, "app", "nsf-apto-content.generated.json");
+const outputFile = path.join(rootDirectory, "app", "apto", "content.generated.json");
 
 const expectedBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
@@ -56,12 +56,6 @@ const allowedPersonRoles = new Set([
   "Program Manager",
   "Principal Investigator",
   "Co-Principal Investigator",
-]);
-const allowedProgramStatMetrics = new Set([
-  "investigators",
-  "participants",
-  "projects",
-  "tools",
 ]);
 const expectedDirectionIds = new Set(["nsfhome", "nsfnetwork"]);
 const expectedPages = new Map([
@@ -146,6 +140,14 @@ function requireOptionalHttpsUrl(value, context) {
   return value;
 }
 
+function requireOptionalLocalImage(value, context) {
+  assert(value === null || typeof value === "string", `${context} must be null or a string`);
+  if (value !== null) {
+    assert(value.startsWith("/apto/"), `${context} must reference an image in content/apto/assets using an /apto/ path`);
+  }
+  return value;
+}
+
 function requireIsoDate(value, context) {
   assert(
     /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(`${value}T00:00:00Z`)),
@@ -174,6 +176,11 @@ function assertExactKeys(object, expected, context) {
   assertExactSet(Object.keys(object), new Set(expected), `${context} fields`);
 }
 
+function assertRecordIdMatchesFilename(file, id, context) {
+  assert(/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id), `${context}.id must use lowercase kebab-case`);
+  assert(path.basename(file, ".md") === id, `${context}.id must match its filename`);
+}
+
 function requireStringKeys(value, keys, context) {
   const object = requireObject(value, context);
   assertExactKeys(object, keys, context);
@@ -190,10 +197,6 @@ function compareAlphabetically(left, right) {
     left.localeCompare(right, "en", { sensitivity: "base" }) ||
     left.localeCompare(right, "en")
   );
-}
-
-function projectTitleSortKey(title) {
-  return title.replace(/^APTO:\s*/i, "");
 }
 
 function omitFields(object, fields) {
@@ -251,7 +254,11 @@ async function readMarkdown(file) {
 async function markdownFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   return entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
+    .filter((entry) => (
+      entry.isFile()
+      && entry.name.endsWith(".md")
+      && entry.name.toLowerCase() !== "readme.md"
+    ))
     .map((entry) => path.join(directory, entry.name))
     .sort((left, right) => left.localeCompare(right, "en"));
 }
@@ -265,6 +272,12 @@ async function filesRecursively(directory) {
     }),
   );
   return nested.flat().sort((left, right) => left.localeCompare(right, "en"));
+}
+
+async function imageFilesRecursively(directory) {
+  return (await filesRecursively(directory)).filter((file) => (
+    allowedImageExtensions.has(path.extname(file).toLowerCase())
+  ));
 }
 
 function assetSourceForPublicPath(publicPath, context) {
@@ -370,7 +383,7 @@ function validatePage(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
   assert(metadata.kind === "page", `${context}.kind must be “page”`);
-  assertExactKeys(metadata, ["kind", "slug", "navLabel", "metadataTitle", "eyebrow", "title"], `${context} frontmatter`);
+  assertExactKeys(metadata, ["kind", "slug", "metadataTitle", "eyebrow", "title"], `${context} frontmatter`);
   const id = path.basename(file, ".md");
   const expected = expectedPages.get(id);
   assert(expected, `${context} filename is not a supported routed page`);
@@ -385,7 +398,6 @@ function validatePage(document) {
     id,
     page: {
       slug,
-      navLabel: requireString(metadata, "navLabel", context),
       metadataTitle: requireString(metadata, "metadataTitle", context),
       eyebrow: requireString(metadata, "eyebrow", context),
       title,
@@ -402,16 +414,11 @@ function validateProgram(document) {
     [
       "kind",
       "id",
-      "eyebrow",
       "name",
       "acronym",
-      "title",
-      "shortSummary",
-      "cohortDescription",
       "objectivesTitle",
       "objectives",
       "lastVerified",
-      "stats",
       "framework",
       "outcomes",
       "linesOfEffort",
@@ -422,27 +429,14 @@ function validateProgram(document) {
   );
   assert(metadata.kind === "program", `${context}.kind must be “program”`);
   requireString(metadata, "id", context);
-  requireString(metadata, "eyebrow", context);
   const name = requireString(metadata, "name", context);
   assert(h1 === name, `${context} H1 must match frontmatter name`);
   assert(metadata.acronym === "APTO", `${context}.acronym must be “APTO”`);
-  for (const key of ["title", "shortSummary", "cohortDescription", "objectivesTitle"]) requireString(metadata, key, context);
+  requireString(metadata, "objectivesTitle", context);
   const objectives = requireArray(metadata, "objectives", context);
   assert(objectives.length > 0, `${context}.objectives must not be empty`);
   objectives.forEach((objective, index) => requireStringValue(objective, `${context}.objectives[${index}]`));
   requireIsoDate(requireString(metadata, "lastVerified", context), `${context}.lastVerified`);
-
-  const stats = requireArray(metadata, "stats", context);
-  assert(stats.length > 0, `${context}.stats must not be empty`);
-  stats.forEach((stat, index) => {
-    const statContext = `${context}.stats[${index}]`;
-    requireObject(stat, statContext);
-    assertExactKeys(stat, ["metric", "label", "detail"], statContext);
-    const metric = requireString(stat, "metric", statContext);
-    assert(allowedProgramStatMetrics.has(metric), `${statContext}.metric is not supported`);
-    for (const key of ["label", "detail"]) requireString(stat, key, statContext);
-  });
-  assertExactSet(stats.map((stat) => stat.metric), allowedProgramStatMetrics, `${context}.stats metrics`);
 
   const framework = requireStringKeys(
     metadata.framework,
@@ -495,7 +489,6 @@ function validateProgram(document) {
   return {
     program: { ...program, framework, description: normalizeProse(description) },
     boilerplate: metadata.boilerplate,
-    sources,
   };
 }
 
@@ -516,8 +509,6 @@ function validateInterface(document) {
       "projects",
       "tools",
       "people",
-      "cohort",
-      "disclosures",
       "footer",
     ],
     `${context} frontmatter`,
@@ -530,9 +521,8 @@ function validateInterface(document) {
     directions.map((direction, index) => {
       const directionContext = `${context}.directions[${index}]`;
       requireObject(direction, directionContext);
-      assertExactKeys(direction, ["id", "label", "note"], directionContext);
+      assertExactKeys(direction, ["id", "label"], directionContext);
       requireString(direction, "label", directionContext);
-      requireString(direction, "note", directionContext);
       return requireString(direction, "id", directionContext);
     }),
     expectedDirectionIds,
@@ -546,9 +536,8 @@ function validateInterface(document) {
       "siteDescription",
       "socialImageSrc",
       "socialImageAlt",
-      "galleryLabel",
-      "barLabel",
       "themeChooserLabel",
+      "themeSwitchActionPrefix",
     ],
     `${context}.study`,
   );
@@ -577,23 +566,18 @@ function validateInterface(document) {
   const homeStrings = [
     "primaryActionLabel",
     "secondaryActionLabel",
-    "outcomeVisualNote",
     "cohortEyebrow",
     "cohortTitle",
     "cohortLinkLabel",
-    "logoDisclosure",
-    "networkCoreLabel",
-    "networkVisualAlt",
-    "networkVisualCaption",
-    "ledgerVisualEyebrow",
-    "ledgerVisualTitle",
   ];
+  assertExactKeys(home, [...homeStrings, "pathways"], `${context}.home`);
   for (const key of homeStrings) requireString(home, key, `${context}.home`);
   const pathways = requireArray(home, "pathways", `${context}.home`);
   assertExactSet(
     pathways.map((pathway, index) => {
       const pathwayContext = `${context}.home.pathways[${index}]`;
       requireObject(pathway, pathwayContext);
+      assertExactKeys(pathway, ["section", "title", "description"], pathwayContext);
       for (const key of ["title", "description"]) requireString(pathway, key, pathwayContext);
       return requireString(pathway, "section", pathwayContext);
     }),
@@ -601,7 +585,7 @@ function validateInterface(document) {
     `${context}.home.pathways sections`,
   );
 
-  requireStringKeys(metadata.common, ["organizationWebsiteLabel", "participantWebsiteLabel"], `${context}.common`);
+  requireStringKeys(metadata.common, ["organizationWebsiteLabel"], `${context}.common`);
   requireStringKeys(
     metadata.accessibility,
     [
@@ -610,7 +594,6 @@ function validateInterface(document) {
       "footerNavigationLabel",
       "homePathwaysLabel",
       "projectInvestigatorsLabel",
-      "projectMapLabel",
       "toolFiltersLabel",
     ],
     `${context}.accessibility`,
@@ -618,22 +601,20 @@ function validateInterface(document) {
 
   const projects = requireObject(metadata.projects, `${context}.projects`);
   const projectStringKeys = [
-    "ledgerTitle",
     "awardLabel",
     "awardedPrefix",
     "dateStatusSeparator",
     "expandLabel",
-    "collapseLabel",
   ];
   assertExactKeys(projects, [...projectStringKeys, "map"], `${context}.projects`);
   for (const key of projectStringKeys) requireString(projects, key, `${context}.projects`);
   const map = requireObject(projects.map, `${context}.projects.map`);
   assertExactKeys(
     map,
-    ["eyebrow", "title", "description", "caption", "imageUrl", "imageAlt", "sourceUrl", "sourceLabel"],
+    ["eyebrow", "title", "description", "caption", "imageUrl", "imageAlt", "sourceUrl", "sourceLabel", "nearbyLocationsLabel", "nearbyProjectsLabel"],
     `${context}.projects.map`,
   );
-  for (const key of ["eyebrow", "title", "description", "caption", "imageUrl", "sourceUrl", "sourceLabel"]) {
+  for (const key of ["eyebrow", "title", "description", "caption", "imageUrl", "sourceUrl", "sourceLabel", "nearbyLocationsLabel", "nearbyProjectsLabel"]) {
     requireString(map, key, `${context}.projects.map`);
   }
   requireStringValue(map.imageAlt, `${context}.projects.map.imageAlt`, { allowEmpty: true });
@@ -643,7 +624,6 @@ function validateInterface(document) {
   requireStringKeys(
     metadata.tools,
     [
-      "registerTitle",
       "allOrganizationsLabel",
       "allCategoriesLabel",
       "organizationFilterLabel",
@@ -659,21 +639,14 @@ function validateInterface(document) {
       "emptyDescription",
       "watchDemoLabel",
       "openToolLabel",
-      "statusLabel",
     ],
     `${context}.tools`,
   );
   requireStringKeys(
     metadata.people,
-    ["programTeamEyebrow", "programTeamTitle", "projectProfileLabel", "portraitForthcomingLabel", "viewProfileLabel"],
+    ["programTeamEyebrow", "programTeamTitle", "viewProfileLabel"],
     `${context}.people`,
   );
-  requireStringKeys(
-    metadata.cohort,
-    ["prominentTitle", "markStatusSuffix", "peopleTitle", "projectLabel"],
-    `${context}.cohort`,
-  );
-  requireStringKeys(metadata.disclosures, ["cohort"], `${context}.disclosures`);
   const footer = requireStringKeys(
     metadata.footer,
     [
@@ -681,8 +654,6 @@ function validateInterface(document) {
       "supportDescription",
       "disclaimerTitle",
       "backToTopLabel",
-      "homeLinkLabel",
-      "programLinkLabel",
       "nsfWebsiteUrl",
       "nsfLogoSrc",
       "nsfWebsiteAriaLabel",
@@ -692,7 +663,13 @@ function validateInterface(document) {
   );
   requireHttpsUrl(footer.nsfWebsiteUrl, `${context}.footer.nsfWebsiteUrl`);
   assert(footer.nsfLogoSrc.startsWith("/"), `${context}.footer.nsfLogoSrc must be a root-relative asset path`);
-  return omitFields(metadata, ["kind"]);
+  return {
+    ...omitFields(metadata, ["kind"]),
+    projects: {
+      ...projects,
+      map: omitFields(map, ["sourceUrl", "sourceLabel"]),
+    },
+  };
 }
 
 function validateParticipant(document) {
@@ -715,6 +692,7 @@ function validateParticipant(document) {
   );
   assert(metadata.kind === "participant", `${context}.kind must be “participant”`);
   const id = requireString(metadata, "id", context);
+  assertRecordIdMatchesFilename(file, id, context);
   const displayName = requireString(metadata, "displayName", context);
   assert(h1 === displayName, `${context} H1 must match displayName`);
   const organizationType = requireString(metadata, "organizationType", context);
@@ -727,22 +705,17 @@ function validateParticipant(document) {
   assertExactKeys(mapPosition, ["x", "y"], `${context}.mapPosition`);
   requirePercentage(mapPosition, "x", `${context}.mapPosition`);
   requirePercentage(mapPosition, "y", `${context}.mapPosition`);
-  assert(sections.size === 1 && sections.has("Description"), `${context} must contain exactly one “## Description” section`);
-  const description = sections.get("Description");
-  assert(description, `${context} must contain a non-empty “## Description” section`);
+  assert(sections.size === 0, `${context} does not support H2 sections`);
   return {
     sourceFile: file,
     participant: {
       id,
       displayName,
-      name: displayName,
-      kind: organizationType,
       location: metadata.location,
       website: metadata.website,
-      logo,
+      logo: omitFields(logo, ["sourceUrl", "sourceLabel", "status", "approved"]),
       accent: metadata.accent,
       mapPosition,
-      description: normalizeProse(description),
     },
   };
 }
@@ -767,7 +740,8 @@ function validatePerson(document) {
     `${context} frontmatter`,
   );
   assert(metadata.kind === "person", `${context}.kind must be “person”`);
-  requireString(metadata, "id", context);
+  const id = requireString(metadata, "id", context);
+  assertRecordIdMatchesFilename(file, id, context);
   const name = requireString(metadata, "name", context);
   assert(h1 === name, `${context} H1 must match name`);
   assert(sections.size === 0, `${context} does not support H2 sections`);
@@ -782,9 +756,10 @@ function validatePerson(document) {
   );
   assert(metadata.organization === null || typeof metadata.organization === "string", `${context}.organization must be null or a string`);
   if (role === "Program Manager") requireString(metadata, "organization", context);
+  else assert(metadata.organization === null, `${context}.organization must be null for investigators`);
   requireString(metadata, "initials", context);
   requireString(metadata, "headshotAlt", context);
-  requireOptionalHttpsUrl(metadata.headshotUrl, `${context}.headshotUrl`);
+  requireOptionalLocalImage(metadata.headshotUrl, `${context}.headshotUrl`);
   requireOptionalHttpsUrl(metadata.profileUrl, `${context}.profileUrl`);
   return { sourceFile: file, person: omitFields(metadata, ["kind"]) };
 }
@@ -809,6 +784,7 @@ function validateProject(document) {
   );
   assert(metadata.kind === "project", `${context}.kind must be “project”`);
   const id = requireString(metadata, "id", context);
+  assertRecordIdMatchesFilename(file, id, context);
   const participantId = requireString(metadata, "participantId", context);
   const awardId = requireString(metadata, "awardId", context);
   assert(/^\d{7}$/.test(awardId), `${context}.awardId must contain seven digits`);
@@ -854,6 +830,7 @@ function validateTool(document) {
   );
   assert(metadata.kind === "tool", `${context}.kind must be “tool”`);
   const id = requireString(metadata, "id", context);
+  assertRecordIdMatchesFilename(file, id, context);
   const participantId = requireString(metadata, "participantId", context);
   const name = requireString(metadata, "name", context);
   assert(h1 === name, `${context} H1 must match name`);
@@ -883,10 +860,8 @@ function validateTool(document) {
     sourceFile: file,
     tool: {
       ...omitFields(metadata, ["kind"]),
-      organizationId: participantId,
       description: normalizeProse(description),
       useCase: normalizeProse(useCase),
-      figureLabel: figure.label,
     },
     id,
     participantId,
@@ -911,6 +886,30 @@ async function validateToolFigureFiles(toolRecords) {
   );
 }
 
+async function validatePersonHeadshotFiles(personRecords) {
+  await Promise.all(
+    personRecords
+      .filter((record) => record.person.headshotUrl !== null)
+      .map((record) => validateImageAsset(
+        record.person.headshotUrl,
+        `${relativeFile(record.sourceFile)}.headshotUrl`,
+      )),
+  );
+}
+
+function assertEveryAssetIsReferenced(assetFiles, publicPaths) {
+  const referencedFiles = new Set(publicPaths.map((publicPath) => assetSourceForPublicPath(
+    publicPath,
+    `asset reference ${publicPath}`,
+  )));
+  for (const assetFile of assetFiles) {
+    assert(
+      referencedFiles.has(assetFile),
+      `${relativeFile(assetFile)} is not referenced by live APTO content; remove it or add a content reference`,
+    );
+  }
+}
+
 async function buildContent() {
   const programFile = path.join(contentDirectory, "program.md");
   const [pageFiles, participantFiles, peopleFiles, projectFiles, toolFiles, assetFiles] = await Promise.all([
@@ -919,7 +918,7 @@ async function buildContent() {
     markdownFiles(peopleDirectory),
     markdownFiles(projectDirectory),
     markdownFiles(toolDirectory),
-    filesRecursively(assetDirectory),
+    imageFilesRecursively(assetDirectory),
   ]);
   assert(pageFiles.length === expectedPages.size, `Expected exactly ${expectedPages.size} routed page Markdown files; found ${pageFiles.length}`);
   assert(participantFiles.length > 0, "At least one participant Markdown file is required");
@@ -963,7 +962,7 @@ async function buildContent() {
   assertUnique(pageRecords.map((record) => record.page.slug), "routed page slugs");
   const pages = pageRecords
     .map((record) => record.page)
-    .sort((left, right) => compareAlphabetically(left.navLabel, right.navLabel));
+    .sort((left, right) => compareAlphabetically(left.slug, right.slug));
 
   const participantRecords = participantDocuments.map(validateParticipant);
   await validateParticipantLogoFiles(participantRecords);
@@ -971,6 +970,7 @@ async function buildContent() {
   const participantById = new Map(participantRecords.map((record) => [record.participant.id, record]));
 
   const personRecords = peopleDocuments.map(validatePerson);
+  await validatePersonHeadshotFiles(personRecords);
   assertUnique(personRecords.map((record) => record.person.id), "person ids");
   assertUnique(personRecords.map((record) => record.person.name), "person names");
   personRecords.forEach((record) => {
@@ -993,6 +993,17 @@ async function buildContent() {
     assert(participantById.has(record.participantId), `${relativeFile(record.sourceFile)}.participantId does not join to a participant`);
   });
 
+  assertEveryAssetIsReferenced(assetFiles, [
+    interfaceRecord.study.socialImageSrc,
+    interfaceRecord.footer.nsfLogoSrc,
+    interfaceRecord.projects.map.imageUrl,
+    ...participantRecords.map((record) => record.participant.logo.src),
+    ...personRecords
+      .map((record) => record.person.headshotUrl)
+      .filter((headshotUrl) => headshotUrl !== null),
+    ...toolRecords.map((record) => record.tool.figure.src),
+  ]);
+
   for (const [participantId, record] of participantById.entries()) {
     const investigators = personRecords.filter((personRecord) => personRecord.person.participantId === participantId);
     assert(investigators.length > 0, `Participant “${participantId}” must have at least one person Markdown record`);
@@ -1012,14 +1023,7 @@ async function buildContent() {
   assert(programTeam.length > 0, "At least one program leadership person Markdown record is required");
 
   const tools = toolRecords
-    .map((record) => {
-      const participant = participantById.get(record.participantId).participant;
-      return {
-        ...record.tool,
-        organizationUrl: participant.website,
-        organizationName: participant.displayName,
-      };
-    })
+    .map((record) => record.tool)
     .sort((left, right) => compareAlphabetically(left.name, right.name));
 
   const participants = participantRecords
@@ -1034,10 +1038,6 @@ async function buildContent() {
       return {
         ...record.participant,
         people,
-        tools: tools.filter((tool) => tool.participantId === record.participant.id),
-        projectIds: projectRecords
-          .filter((projectRecord) => projectRecord.participantId === record.participant.id)
-          .map((projectRecord) => projectRecord.id),
       };
     })
     .sort((left, right) => compareAlphabetically(left.displayName, right.displayName));
@@ -1052,40 +1052,14 @@ async function buildContent() {
           organization: participant.displayName,
         }))
         .sort((left, right) => compareAlphabetically(left.name, right.name));
-      const principalInvestigator = people.find((person) => person.role === "Principal Investigator");
       return {
         ...record.project,
         organization: participant.displayName,
         location: participant.location,
         people,
-        pi: principalInvestigator.name,
-        coPIs: people
-          .filter((person) => person.role === "Co-Principal Investigator")
-          .map((person) => person.name),
       };
     })
-    .sort((left, right) =>
-      compareAlphabetically(projectTitleSortKey(left.officialTitle), projectTitleSortKey(right.officialTitle)),
-    );
-
-  const awardSources = projects.map((project) => ({
-    id: `nsf-award-${project.awardId}`,
-    label: `NSF award ${project.awardId}`,
-    url: project.awardUrl,
-    detail: `${project.officialTitle} · NSF award record.`,
-    kind: "award",
-  }));
-  const organizationSources = participants.map((participant) => ({
-    id: `organization-${participant.id}`,
-    label: `${participant.displayName} website`,
-    url: participant.website,
-    detail: `Official website for ${participant.displayName}.`,
-    kind: "organization",
-  }));
-  const sources = [...programRecord.sources, ...awardSources, ...organizationSources].sort(
-    (left, right) => compareAlphabetically(left.label, right.label),
-  );
-  assertUnique(sources.map((source) => source.id), "generated source ids");
+    .sort((left, right) => compareAlphabetically(left.shortName, right.shortName));
 
   const sourceFiles = [
     programFile,
@@ -1100,34 +1074,22 @@ async function buildContent() {
     .map(relativeFile)
     .sort(compareAlphabetically);
 
-  const statValues = {
-    investigators: personRecords.filter((record) => record.person.participantId !== null).length,
-    participants: participants.length,
-    projects: projects.length,
-    tools: tools.length,
-  };
-  const programStats = programRecord.program.stats.map(({ metric, ...stat }) => ({
-    value: String(statValues[metric]),
-    ...stat,
-  }));
-
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 7,
+      schemaVersion: 10,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,
       dataAsOf: programRecord.program.lastVerified,
     },
-    program: { ...programRecord.program, stats: programStats, programTeam },
+    program: { ...omitFields(programRecord.program, ["lastVerified"]), programTeam },
     interface: interfaceRecord,
     pages,
     boilerplate: programRecord.boilerplate,
     participants,
     projects,
     tools,
-    sources,
     assetFiles,
   };
 }

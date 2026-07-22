@@ -23,7 +23,3 @@
 ---
 
 # University of Chicago
-
-## Description
-
-The University of Chicago team is developing a global observatory and virtual laboratory for studying how science and technology evolve. Its APTO research links research artifacts, institutions, policy choices, and technology outcomes across time and geography.

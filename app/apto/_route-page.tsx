@@ -1,12 +1,12 @@
 import {
-  NsfAptoPage,
-  type NsfAptoSection,
-} from "../nsf-apto-mockups";
+  AptoSitePage,
+  type AptoSection,
+} from "./site";
 
 export function AptoRoutePage({
   section,
 }: {
-  section: NsfAptoSection;
+  section: AptoSection;
 }) {
-  return <NsfAptoPage section={section} />;
+  return <AptoSitePage section={section} />;
 }

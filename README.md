@@ -1,30 +1,42 @@
 # APTO website
 
-The public website for the National Science Foundation’s Assessing and
-Predicting Technology Outcomes (APTO) program. The repository contains one
-responsive design with coordinated NSF-informed light and deep-navy themes.
+The public website for the National Science Foundation’s **Assessing and
+Predicting Technology Outcomes (APTO)** program. It contains one responsive
+design with coordinated light and deep-navy themes.
 
-The primary pages are Program, Projects, Tools, and Cohort. They are published
-at the repository root on GitHub Pages and under `/apto` on the existing Sites
-deployment. The `/apto/about` and `/apto/people` routes remain only as backward-
-compatible aliases.
+- Website: <https://filipinascimento.github.io/apto-website/>
+- Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/apto>
+- Main pages: Program, Projects, Tools, and Cohort
+
+## Edit website content
+
+Start with the **[APTO content guide](content/apto/README.md)**. Website text,
+organizations, people, projects, tools, logos, headshots, and figures all live
+under `content/apto/`.
+
+Common tasks:
+
+- [Add or edit a tool](content/apto/tools/README.md)
+- [Add or edit a project](content/apto/projects/README.md)
+- [Add or edit a person](content/apto/people/README.md)
+- [Add or edit an organization](content/apto/participants/README.md)
+- [Edit page titles and introductions](content/apto/pages/README.md)
+- [Add figures, logos, or headshots](content/apto/assets/README.md)
+
+Content records use Markdown with strict JSON frontmatter. The content builder
+validates the records, joins their relationships, presents entries
+alphabetically, generates `app/apto/content.generated.json`, and copies only
+referenced images to the generated `public/apto/` directory. Never edit either
+generated, Git-ignored location by hand.
 
 ## Publishing
 
-Every push to `main` runs the website checks and builds a static GitHub Pages
-artifact. After GitHub Pages is enabled once in **Settings → Pages → Source →
-GitHub Actions**, publishing is automatic at:
+A pull request runs all website checks. Every push to `main` also builds and
+publishes GitHub Pages automatically; no local compilation or manual upload is
+required.
 
-`https://filipinascimento.github.io/apto-website/`
-
-No local compilation is required for publishing. Because this repository is
-private, the GitHub account or organization must support Pages for private
-repositories; alternatively, the repository can be made public. The deployed
-Pages website itself is public.
-
-The existing Sites deployment remains available at:
-
-[apto-design-study.moondark.chatgpt.site/apto](https://apto-design-study.moondark.chatgpt.site/apto)
+The moondark APTO deployment is a separate hosting target and is not changed by
+the GitHub Pages workflow.
 
 ## Local development
 
@@ -35,13 +47,10 @@ npm ci
 npm run dev
 ```
 
-Run the production checks with:
+After changing content or code, run the complete validation suite:
 
 ```bash
-npm run content:build
-npm run lint
-npm run typecheck
-npm test
+npm run verify
 ```
 
 To reproduce the GitHub Pages export locally:
@@ -56,39 +65,28 @@ npm run build:pages
 NEXT_PUBLIC_BASE_PATH=/apto-website npm run check:pages
 ```
 
-## Markdown and image workflow
+## Repository structure
 
-`content/apto/` is the source of truth:
+| Path | Purpose |
+| --- | --- |
+| `content/apto/` | Editable website content and source images |
+| `app/apto/` | Shared APTO components, theme, styles, and generated content |
+| `app/{projects,tools,cohort}/` | Root routes used by GitHub Pages |
+| `app/apto/{projects,tools,cohort}/` | `/apto` routes used by the existing deployment |
+| `scripts/` | Content generation and Pages verification |
+| `tests/` | Content, routing, interaction, and accessibility regressions |
+| `.github/workflows/` | Pull-request checks and automatic Pages publishing |
+| `.openai/`, `build/`, `worker/`, `vite.config.ts` | Existing Sites deployment support |
 
-- `participants/*.md` — one participating organization per file
-- `people/*.md` — one program or project-team member per file
-- `projects/*.md` — one project per file
-- `tools/*.md` — one tool per file, including its figure path and alt text
-- `pages/*.md` — page titles, metadata, and introductions
-- `program.md` — program description, objectives, framework, and acknowledgement
-- `interface.md` — navigation, labels, filters, map, and footer
-- `assets/` — all public images, organization marks, NSF mark, map, and social image
-
-To add a tool, add one Markdown file to `content/apto/tools/` and place its
-image in `content/apto/assets/`. Then run:
-
-```bash
-npm run content:build
-npm run content:check
-```
-
-The builder validates and alphabetizes records, joins relationships, generates
-`app/nsf-apto-content.generated.json`, and copies images to `public/apto/`.
-Generated JSON and public image copies should not be edited directly. See
-`content/apto/README.md` for the record schema.
-
-The disabled future homepage widget remains isolated in `app/apto/_future/`
-and `content/apto/future/`; it is not rendered by any public route.
+The `/apto/about` and `/apto/people` routes are small compatibility aliases for
+previously shared links. The disabled homepage widget remains isolated under
+`app/apto/_future/` and `content/apto/future/` for possible future use; no live
+page imports it.
 
 ## Accessibility
 
-The shared site uses semantic landmarks, one page heading, native expandable
-project panels, keyboard-operable filters, visible focus, 44-pixel control
-targets, responsive reflow, reduced-motion support, forced-colors treatments,
-text alternatives, and redundant text navigation for the project map.
-Automated regressions live in `tests/rendered-html.test.mjs`.
+The shared design uses semantic landmarks, a single page heading, native
+expandable project panels, keyboard-operable filters and map controls, visible
+focus, responsive reflow, reduced-motion support, forced-colors treatments,
+and text alternatives. Automated checks support ongoing accessibility work but
+do not replace expert review with assistive technologies.
