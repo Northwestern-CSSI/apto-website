@@ -717,8 +717,8 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(styles, /\.atlas-tool-media img\.is-incoming\s*\{[^}]*z-index:\s*2[^}]*opacity:\s*1/);
   assert.match(styles, /@keyframes atlas-tool-ken-burns\s*\{[\s\S]*?--atlas-kb-from-scale[\s\S]*?--atlas-kb-to-scale/);
   assert.doesNotMatch(styles, /6\.6s|\.atlas-tool-media img\.motion-[0-3]|atlas-tool-(?:progress|pagination|dots|indicator)/i);
-  assert.match(styles, /\.atlas-tool-panel\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*0[^}]*height:\s*48%[^}]*backdrop-filter:\s*blur\(13px\)/);
-  assert.match(styles, /\.atlas-tool-panel::before\s*\{[^}]*linear-gradient\(to top[^}]*backdrop-filter:\s*blur\(10px\)[^}]*mask-image:/);
+  assert.match(styles, /\.atlas-tool-panel\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*0[^}]*height:\s*48%[^}]*backdrop-filter:\s*blur\(6px\)/);
+  assert.match(styles, /\.atlas-tool-panel::before\s*\{[^}]*linear-gradient\(to top[^}]*backdrop-filter:\s*blur\(3px\)[^}]*mask-image:/);
   assert.doesNotMatch(styles, /\.atlas-tool-details\s*\{[^}]*top:\s*(?:70|80)px/);
   assert.match(styles, /\.atlas-tool-panel-footer\s*\{[^}]*display:\s*flex/);
   assert.match(styles, /\.atlas-program-mosaic\s*\{[^}]*grid-template-columns:\s*repeat\(5,\s*minmax\(0,\s*1fr\)\)/);
