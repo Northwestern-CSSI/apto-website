@@ -463,6 +463,8 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     ]);
     assert.deepEqual(publicBytes, sourceBytes, `${relative} must be copied from content assets`);
   }
+  const publicAssets = await filesRecursively(new URL("../public/apto/", import.meta.url));
+  assert.equal(publicAssets.length, assets.length, "Generated public assets must not retain deleted source images");
 
   const records = [];
   for (const [directory, names] of Object.entries(directories)) {

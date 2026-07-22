@@ -8,7 +8,7 @@
  * adding a record only requires adding a Markdown file in the relevant folder.
  */
 
-import { copyFile, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -294,6 +294,9 @@ async function validateImageAsset(publicPath, context) {
 }
 
 async function syncAssets(assetFiles, checkOnly) {
+  if (!checkOnly) {
+    await rm(publicAssetDirectory, { recursive: true, force: true });
+  }
   for (const sourceFile of assetFiles) {
     const relativeAsset = path.relative(assetDirectory, sourceFile);
     const destinationFile = path.join(publicAssetDirectory, relativeAsset);
@@ -318,6 +321,18 @@ async function syncAssets(assetFiles, checkOnly) {
     }
     await mkdir(path.dirname(destinationFile), { recursive: true });
     await copyFile(sourceFile, destinationFile);
+  }
+
+  if (checkOnly) {
+    const publicFiles = await filesRecursively(publicAssetDirectory);
+    const expectedFiles = new Set(assetFiles.map((sourceFile) => (
+      path.join(publicAssetDirectory, path.relative(assetDirectory, sourceFile))
+    )));
+    const staleFiles = publicFiles.filter((file) => !expectedFiles.has(file));
+    assert(
+      staleFiles.length === 0,
+      `${relativeFile(publicAssetDirectory)} contains stale generated assets. Run: node scripts/build-apto-content.mjs`,
+    );
   }
 }
 
