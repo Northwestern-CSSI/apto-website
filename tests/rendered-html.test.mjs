@@ -733,6 +733,14 @@ test("combines program leadership, organizations, and project teams on the cohor
     for (const participant of content.participants) {
       assert.ok(text.includes(participant.displayName));
       assert.ok(text.includes(participant.location));
+      assert.match(
+        html,
+        new RegExp(
+          `class="nsf-participant-mark[^"]*logo-${escapeRegex(participant.id)}[^"]*"[\\s\\S]*?` +
+          `<img src="${escapeRegex(participant.logo.src)}" width="${participant.logo.width}" height="${participant.logo.height}" alt=""`,
+        ),
+        `${participant.displayName} should render its content-managed logo at the declared intrinsic dimensions`,
+      );
       assert.ok(participant.people.length > 0, `${participant.displayName} must have a project team`);
       for (const person of participant.people) {
         assert.ok(text.includes(person.name), `${participant.displayName} should include ${person.name}`);
@@ -936,10 +944,24 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\.nsf-tool-figure\s*\{[^}]*align-self:\s*start/);
   assert.doesNotMatch(styles, /\.nsf-tool-image-frame > img,[^}]*object-fit:\s*contain/);
   assert.match(styles, /\.nsf-section-intro \.nsf-section-intro-description\s*\{[^}]*text-align:\s*left/);
-  assert.doesNotMatch(styles, /\.nsf-(?:program-leadership|cohort-group)::before/);
-  assert.match(styles, /Cohort chapters use common regions and whitespace, never decorative edge bars/);
+  assert.match(
+    styles,
+    /\.nsf-program-leadership::before,[\s\S]*?\.nsf-cohort-group::after\s*\{[^}]*content:\s*none !important;[^}]*display:\s*none !important;/,
+  );
+  assert.match(
+    styles,
+    /\.nsf-program-leadership,[\s\S]*?\.nsf-apto-network \.nsf-cohort-group\s*\{[^}]*isolation:\s*isolate[^}]*background:\s*radial-gradient[^}]*border:\s*0[^}]*border-inline:\s*0[^}]*box-shadow:\s*none/,
+  );
   assert.match(styles, /\.nsf-cohort-directory\s*\{[^}]*gap:\s*clamp\(34px,\s*5vw,\s*64px\)/);
-  assert.match(styles, /\.nsf-cohort-group-header \.nsf-participant-mark\.is-feature img\s*\{[^}]*max-height:\s*62px/);
+  assert.match(
+    styles,
+    /\.nsf-cohort-group-header \.nsf-participant-mark\.is-feature\s*\{[^}]*height:\s*104px[^}]*overflow:\s*visible/,
+  );
+  assert.match(
+    styles,
+    /\.nsf-cohort-group-header \.nsf-participant-mark\.is-feature img\s*\{[^}]*width:\s*auto[^}]*height:\s*auto[^}]*max-width:\s*100%[^}]*max-height:\s*70px[^}]*object-fit:\s*contain[^}]*object-position:\s*center/,
+  );
+  assert.doesNotMatch(styles, /\.nsf-cohort-group-header \.nsf-participant-mark\.logo-(?:aperture|insilicom|macrocosm)/);
   assert.match(styles, /\.nsf-participant-mark\.logo-aperture\.is-directory img\s*\{[^}]*max-width:\s*48px/);
   assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
   assert.match(siteSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);

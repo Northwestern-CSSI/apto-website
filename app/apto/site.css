@@ -1740,42 +1740,48 @@
 .nsf-participant-mark.logo-aperture.is-directory img { max-width: 48px; max-height: 48px; }
 .nsf-participant-mark.logo-aperture.is-compact img { max-width: 26px; max-height: 26px; }
 
-/* Cohort chapters use common regions and whitespace, never decorative edge bars. */
+/* Cohort chapters use proximity, whitespace, and an edge-free ambient wash. */
 .nsf-program-leadership,
 .nsf-cohort-group,
 .nsf-apto-network .nsf-program-leadership,
 .nsf-apto-network .nsf-cohort-group {
   position: relative;
+  isolation: isolate;
   padding: clamp(30px, 4vw, 50px);
   display: grid;
   grid-template-columns: minmax(250px, 330px) minmax(0, 1fr);
   align-items: start;
   gap: clamp(34px, 5vw, 72px);
   overflow: visible;
-  background: linear-gradient(
-    110deg,
-    color-mix(in srgb, var(--nsf-blue) 4%, var(--nsf-paper)) 0%,
-    color-mix(in srgb, var(--nsf-blue) 1.5%, var(--nsf-paper)) 58%,
-    transparent 100%
+  background: radial-gradient(
+    ellipse 90% 135% at 4% 8%,
+    color-mix(in srgb, var(--nsf-blue) 7%, transparent),
+    transparent 68%
   );
   border: 0;
+  border-inline: 0;
   border-radius: 0;
   box-shadow: none;
 }
+.nsf-program-leadership::before,
+.nsf-program-leadership::after,
+.nsf-cohort-group::before,
+.nsf-cohort-group::after {
+  content: none !important;
+  display: none !important;
+}
 .nsf-program-leadership {
-  background: linear-gradient(
-    110deg,
-    color-mix(in srgb, var(--nsf-teal) 8%, var(--nsf-paper)) 0%,
-    color-mix(in srgb, var(--nsf-blue) 2%, var(--nsf-paper)) 68%,
-    transparent 100%
+  background: radial-gradient(
+    ellipse 90% 135% at 4% 8%,
+    color-mix(in srgb, var(--nsf-teal) 9%, transparent),
+    transparent 68%
   );
 }
 .nsf-cohort-group:nth-child(even) {
-  background: linear-gradient(
-    250deg,
-    color-mix(in srgb, var(--nsf-blue) 4%, var(--nsf-paper)) 0%,
-    color-mix(in srgb, var(--nsf-blue) 1.5%, var(--nsf-paper)) 58%,
-    transparent 100%
+  background: radial-gradient(
+    ellipse 90% 135% at 96% 8%,
+    color-mix(in srgb, var(--nsf-blue) 7%, transparent),
+    transparent 68%
   );
 }
 .nsf-program-leadership { margin: 0 0 clamp(42px, 5vw, 60px); }
@@ -1821,26 +1827,23 @@
 }
 .nsf-cohort-group-header .nsf-participant-mark.is-feature {
   width: min(100%, 240px);
-  height: 92px;
-  padding: 14px 18px;
-  overflow: hidden;
+  height: 104px;
+  padding: 16px 20px;
+  overflow: visible;
   background: var(--nsf-logo-plate-background);
-  border: 1px solid var(--nsf-line);
-  border-radius: 7px;
+  border: 1px solid color-mix(in srgb, var(--nsf-line) 72%, transparent);
+  border-radius: 10px;
   box-shadow: none;
 }
 .nsf-cohort-group-header .nsf-participant-mark.is-feature img {
   width: auto;
   height: auto;
-  max-width: 202px;
-  max-height: 62px;
+  max-width: 100%;
+  max-height: 70px;
+  display: block;
   object-fit: contain;
   object-position: center;
 }
-.nsf-cohort-group-header .nsf-participant-mark.logo-aperture.is-feature { padding: 12px; }
-.nsf-cohort-group-header .nsf-participant-mark.logo-aperture.is-feature img { max-width: 64px; max-height: 64px; }
-.nsf-cohort-group-header .nsf-participant-mark.logo-insilicom.is-feature img { max-width: min(100%, 158px); }
-.nsf-cohort-group-header .nsf-participant-mark.logo-macrocosm.is-feature img { max-width: 142px; max-height: 62px; }
 .nsf-cohort-identity-copy { min-width: 0; }
 .nsf-cohort-group-header .nsf-cohort-identity-copy > span { margin-top: 5px; }
 .nsf-cohort-group-header .nsf-cohort-website {
@@ -1887,10 +1890,10 @@
 .nsf-program-leadership .nsf-headshot-placeholder { border-color: var(--nsf-blue); }
 .nsf-apto-network .nsf-program-leadership,
 .nsf-apto-network .nsf-cohort-group {
-  background: linear-gradient(110deg, #09223d 0%, rgb(9 34 61 / 48%) 64%, transparent 100%);
+  background: radial-gradient(ellipse 90% 135% at 4% 8%, rgb(78 195 224 / 10%), transparent 68%);
 }
 .nsf-apto-network .nsf-cohort-group:nth-child(even) {
-  background: linear-gradient(250deg, #09223d 0%, rgb(9 34 61 / 48%) 64%, transparent 100%);
+  background: radial-gradient(ellipse 90% 135% at 96% 8%, rgb(78 195 224 / 10%), transparent 68%);
 }
 .nsf-apto-network .nsf-cohort-group .nsf-headshot-placeholder,
 .nsf-apto-network .nsf-program-leadership .nsf-headshot-placeholder { border-color: var(--nsf-light-blue); }
@@ -2076,6 +2079,12 @@
   }
   .nsf-cohort-team,
   .nsf-program-leadership > div { grid-template-columns: 1fr; }
+  .nsf-cohort-group-header .nsf-participant-mark.is-feature {
+    width: min(100%, 220px);
+    height: 92px;
+    padding: 14px 18px;
+  }
+  .nsf-cohort-group-header .nsf-participant-mark.is-feature img { max-height: 64px; }
   .nsf-filter-groups,
   .nsf-apto-network .nsf-filter-groups { grid-template-columns: 1fr; }
   .nsf-filter-status { grid-column: auto; }
