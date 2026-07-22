@@ -24,10 +24,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - id: pages
-        uses: actions/configure-pages@v6
       - name: Verify website
         run: npm run verify
+      - id: pages
+        uses: actions/configure-pages@v6
       - name: Build static website
         env:
           GITHUB_PAGES: "true"
