@@ -1,16 +1,19 @@
 # APTO website
 
 The public website for the National Science Foundation’s **Assessing and
-Predicting Technology Outcomes (APTO)** program. It contains two complementary
-responsive presentations—the compact directory and the long-scroll APTO
-Continuum—built from the same Markdown content and coordinated light and
-deep-navy themes.
+Predicting Technology Outcomes (APTO)** program. It contains three
+complementary responsive presentations—the compact directory, the long-scroll
+APTO Continuum, and the image-led APTO Atlas gallery—built from the same
+Markdown content and coordinated light and deep-navy themes.
 
 - Website: <https://filipinascimento.github.io/apto-website/>
 - Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/apto>
 - Main pages: Program, Projects, Tools, and Cohort
 - Alternate long-scroll presentation: `/story` on GitHub Pages and
   `/apto/story` on the existing APTO deployment
+- Alternate gallery presentation: `/atlas` on GitHub Pages and `/apto/atlas`
+  on the existing APTO deployment, with matching `/projects`, `/tools`, and
+  `/cohort` subpages
 
 ## Edit website content
 
@@ -30,14 +33,17 @@ Common tasks:
 Content records use Markdown with strict JSON frontmatter. The content builder
 validates the records, joins their relationships, presents entries
 alphabetically, generates `app/apto/content.generated.json`, and copies only
-referenced images to the generated `public/apto/` directory. Never edit either
-generated, Git-ignored location by hand.
+referenced images to the generated `public/apto/` directory. This one content
+set feeds all three presentations. Never edit either generated, Git-ignored
+location by hand.
 
 ## Publishing
 
-A pull request runs all website checks. Every push to `main` also builds and
-publishes GitHub Pages automatically; no local compilation or manual upload is
-required.
+A pull request runs all website checks. After a pull request is merged, every
+push to `main` also builds and publishes GitHub Pages automatically. No manual
+compilation or upload is required; GitHub Actions generates the content,
+exports the site with the repository base path, checks the exported routes and
+assets, and publishes the result.
 
 The moondark APTO deployment is a separate hosting target and is not changed by
 the GitHub Pages workflow.
@@ -75,8 +81,8 @@ NEXT_PUBLIC_BASE_PATH=/apto-website npm run check:pages
 | --- | --- |
 | `content/apto/` | Editable website content and source images |
 | `app/apto/` | Shared APTO components, theme, styles, and generated content |
-| `app/{projects,tools,cohort,story}/` | Root routes used by GitHub Pages |
-| `app/apto/{projects,tools,cohort,story}/` | `/apto` routes used by the existing deployment |
+| `app/{projects,tools,cohort,story,atlas}/` | Root routes used by GitHub Pages |
+| `app/apto/{projects,tools,cohort,story,atlas}/` | `/apto` routes used by the existing deployment |
 | `scripts/` | Content generation and Pages verification |
 | `tests/` | Content, routing, interaction, and accessibility regressions |
 | `.github/workflows/` | Pull-request checks and automatic Pages publishing |

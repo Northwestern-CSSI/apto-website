@@ -11,6 +11,12 @@
     "label": "Firm and energy-asset network",
     "alt": "Network of energy firms, physical assets, markets, investment relationships, and geographic connections"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/macrocosm-energy-system.jpg",
+      "alt": "Miniature energy system linking industrial facilities, renewables, storage, infrastructure, and regional flows"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

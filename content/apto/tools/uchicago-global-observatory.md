@@ -11,6 +11,12 @@
     "label": "Global science and technology observatory",
     "alt": "World map connecting research, patent, product, funding, workforce, and market signals among regions"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/uchicago-global-observatory.jpg",
+      "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

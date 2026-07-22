@@ -49,6 +49,26 @@
     "programLeadershipLabel": "Program leadership",
     "supportedByLabel": "Supported by the U.S. National Science Foundation"
   },
+  "atlas": {
+    "viewLabel": "APTO Atlas",
+    "socialImageSrc": "/apto/social/apto-atlas-social.png",
+    "socialImageAlt": "A dark-blue scientific atlas connecting technology landscapes, evidence networks, energy systems, trajectories, and observatories.",
+    "directoryLabel": "Directory",
+    "continuumLabel": "Continuum",
+    "navigationLabel": "APTO Atlas pages",
+    "viewNavigationLabel": "Choose APTO presentation",
+    "programMosaicLabel": "Research landscapes from across the APTO portfolio",
+    "objectivesLabel": "Program objectives",
+    "participantsLabel": "Participating organizations",
+    "projectsMapLabel": "Project locations",
+    "projectPortfolioLabel": "Research portfolio",
+    "toolCollectionLabel": "Tool gallery",
+    "toolDetailsLabel": "View details",
+    "closeDetailsLabel": "Close details",
+    "cohortIndexLabel": "Organization index",
+    "programLeadershipLabel": "Program leadership",
+    "supportedByLabel": "Supported by the U.S. National Science Foundation"
+  },
   "common": {
     "organizationWebsiteLabel": "Organization website"
   },

@@ -11,6 +11,12 @@
     "label": "Problem-to-solution landscape",
     "alt": "Landscape connecting clusters of technical problems with technologies and organizations"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/aperture-problem-landscape.jpg",
+      "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

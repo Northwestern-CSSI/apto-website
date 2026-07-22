@@ -14,6 +14,7 @@ The public path mirrors the location beneath this folder:
 | Source file | Markdown reference |
 | --- | --- |
 | `assets/tools/example.webp` | `/apto/tools/example.webp` |
+| `assets/tools/atlas/example.jpg` | `/apto/tools/atlas/example.jpg` |
 | `assets/headshots/jane-doe.webp` | `/apto/headshots/jane-doe.webp` |
 | `assets/partners/example.svg` | `/apto/partners/example.svg` |
 
@@ -35,6 +36,30 @@ Use lowercase kebab-case filenames. Supported extensions are `.avif`, `.jpeg`,
 The current generic science-map, model, prediction, and network images are live
 figures reused across the initial set of tools. Replace them with approved,
 tool-specific figures as project teams provide them.
+
+## Atlas tool gallery
+
+The APTO Atlas presentation uses image-led tool cards. Their source artwork
+lives in `tools/atlas/` and is referenced from each tool record through a
+required `galleryImages` array containing one to three `{ "src", "alt" }`
+entries.
+
+- Prefer a landscape composition around 1536 × 1024 pixels with the focal area
+  near the center. Atlas intentionally crops these images to fill responsive
+  cards.
+- A tool can begin with one gallery image. Add a second or third distinct view
+  only when it improves the hover and expanded transition rather than repeating
+  the same visual.
+- Keep important information out of the crop edges and out of embedded text.
+- Treat the current generated Atlas artwork as provisional. When a project team
+  supplies an approved figure, place it in this folder, update the tool
+  Markdown reference and alt text, and remove the replaced file so it does not
+  fail the unused-asset check.
+- Optimize files before commit and verify their rights, factual accuracy, and
+  appearance in both themes.
+
+See [Adding or editing tools](../tools/README.md) for the complete frontmatter
+template and replacement steps.
 
 ## Headshots
 
@@ -83,6 +108,9 @@ disclaimer are maintained in `../program.md`.
 - `og-apto-continuum.png` is the dedicated preview for the long-scroll APTO
   Continuum presentation. Its abstract imagery intentionally contains no
   embedded text, marks, or data claims.
+- The Atlas social preview is referenced by `atlas.socialImageSrc` in
+  `../interface.md`. Keep it at 1200 × 630 pixels and free of embedded claims or
+  organization marks unless their use has been approved.
 
 ## Before publishing an image
 

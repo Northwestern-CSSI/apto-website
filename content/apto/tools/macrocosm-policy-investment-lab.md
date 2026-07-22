@@ -11,6 +11,12 @@
     "label": "Energy scenario comparison",
     "alt": "Small-multiple charts comparing energy technology, policy, and investment scenarios over time"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/macrocosm-energy-system.jpg",
+      "alt": "Miniature energy system linking industrial facilities, renewables, storage, infrastructure, and regional flows"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

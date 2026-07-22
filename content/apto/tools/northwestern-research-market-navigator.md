@@ -11,6 +11,12 @@
     "label": "Research-to-market pathway",
     "alt": "Pathway from research investment through invention, licensing, company formation, and technology use"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/northwestern-technology-trajectories.jpg",
+      "alt": "Science and technology clusters branching through evidence stages into multiple market and societal trajectories"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

@@ -61,6 +61,10 @@ export type AptoTool = {
     label: string;
     alt: string;
   };
+  galleryImages: Array<{
+    src: string;
+    alt: string;
+  }>;
   statusLabel: string;
   demoVideoUrl: string | null;
   toolUrl: string | null;
@@ -180,6 +184,26 @@ export type AptoInterfaceContent = {
     projectStageTitle: string;
     projectStageDescription: string;
     toolCollectionLabel: string;
+    programLeadershipLabel: string;
+    supportedByLabel: string;
+  };
+  atlas: {
+    viewLabel: string;
+    socialImageSrc: string;
+    socialImageAlt: string;
+    directoryLabel: string;
+    continuumLabel: string;
+    navigationLabel: string;
+    viewNavigationLabel: string;
+    programMosaicLabel: string;
+    objectivesLabel: string;
+    participantsLabel: string;
+    projectsMapLabel: string;
+    projectPortfolioLabel: string;
+    toolCollectionLabel: string;
+    toolDetailsLabel: string;
+    closeDetailsLabel: string;
+    cohortIndexLabel: string;
     programLeadershipLabel: string;
     supportedByLabel: string;
   };

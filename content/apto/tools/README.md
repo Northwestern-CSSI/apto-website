@@ -9,8 +9,10 @@ automatically; no source-code list or counter needs to be updated.
 2. Set `id` to the same kebab-case value.
 3. Set `participantId` to an ID from `../participants/`.
 4. Add the tool figure under `../assets/`, preferably in `../assets/tools/`.
-5. Complete the description and use case.
-6. Run `npm run verify` from the repository root.
+5. Add one to three image-led Atlas visuals under
+   `../assets/tools/atlas/` and reference them in `galleryImages`.
+6. Complete the description and use case.
+7. Run `npm run verify` from the repository root.
 
 ## Complete template
 
@@ -28,6 +30,16 @@ automatically; no source-code list or counter needs to be updated.
     "label": "Technology landscape",
     "alt": "Map of related research areas with an emerging cluster highlighted"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/example-technology-explorer.jpg",
+      "alt": "Layered research landscape connecting established fields with an emerging cluster"
+    },
+    {
+      "src": "/apto/tools/atlas/example-technology-explorer-detail.jpg",
+      "alt": "Detailed view of the highlighted cluster and its strongest neighboring connections"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null
@@ -60,6 +72,9 @@ The H1 must exactly match `name`. The body must contain exactly
 | `figure.src` | `/apto/…` path matching an image under `content/apto/assets/` |
 | `figure.label` | Short visible caption |
 | `figure.alt` | Meaningful description of the visual information |
+| `galleryImages` | One to three `{ "src", "alt" }` entries for the Atlas tool card |
+| `galleryImages[].src` | `/apto/tools/atlas/…` path matching an image under `content/apto/assets/tools/atlas/` |
+| `galleryImages[].alt` | Meaningful alternative text for that image; entries must not repeat one another |
 | `statusLabel` | Short public status such as `Research preview` |
 | `demoVideoUrl` | Full HTTPS URL or `null` |
 | `toolUrl` | Full HTTPS URL or `null` |
@@ -90,6 +105,29 @@ translation-funnel
 - Use `figure.alt` to explain what the image communicates, not merely repeat
   the caption. Do not place essential information only inside the image.
 - The layout uses `object-fit: contain`, so the complete figure remains visible.
+
+## Atlas gallery images
+
+`galleryImages` supplies the large, edge-to-edge imagery used by the APTO Atlas
+tool cards. Every tool must have between one and three entries. The Atlas card
+also uses the standard `figure` as a supporting visual layer, so one gallery
+image is sufficient; two or three distinct gallery images make the hover and
+expanded transitions richer.
+
+- Store these files in `content/apto/assets/tools/atlas/` and reference them as
+  `/apto/tools/atlas/filename.ext`.
+- Prefer a landscape image around 1536 × 1024 pixels. Atlas crops with
+  `object-fit: cover`, so keep the focal subject near the center and leave safe
+  space around important details.
+- Avoid embedded interface labels, unsupported data claims, and essential text.
+  The card supplies its title and description as accessible HTML.
+- Give every image specific alt text that explains its subject or information.
+  Do not describe a purely decorative style, and do not copy the tool name.
+- To replace provisional artwork, add the approved file, update the matching
+  `src` and `alt` in the tool Markdown, remove the now-unused file, and run
+  `npm run verify`.
+- Large JPEG, PNG, or WebP files should be optimized before commit. Confirm
+  publication rights and review the crop in both light and dark themes.
 
 See [Images and figures](../assets/README.md) for paths, accessibility, rights,
 and optimization guidance.

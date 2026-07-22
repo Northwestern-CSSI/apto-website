@@ -4,6 +4,16 @@ import { readFile } from "node:fs/promises";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/apto-website";
 const pages = ["index.html", "projects/index.html", "tools/index.html", "cohort/index.html"];
 const storyPages = ["story/index.html", "apto/story/index.html"];
+const atlasPages = [
+  "atlas/index.html",
+  "atlas/projects/index.html",
+  "atlas/tools/index.html",
+  "atlas/cohort/index.html",
+  "apto/atlas/index.html",
+  "apto/atlas/projects/index.html",
+  "apto/atlas/tools/index.html",
+  "apto/atlas/cohort/index.html",
+];
 const escapedBasePath = basePath.slice(1).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const unprefixedPath = new RegExp(`(?:href|src)="\\/(?!${escapedBasePath}(?:\\/|"))`);
 
@@ -35,4 +45,21 @@ for (const page of storyPages) {
   assert.doesNotMatch(html, unprefixedPath);
 }
 
-console.log(`Verified the directory and long-scroll APTO sites under ${basePath}.`);
+for (const page of atlasPages) {
+  const html = await readFile(new URL(`../out/${page}`, import.meta.url), "utf8");
+  assert.match(html, /class="apto-atlas"/);
+  assert.match(html, /class="atlas-header"/);
+  assert.match(html, /class="atlas-skip-link" href="#atlas-main"/);
+  assert.ok(html.includes(`href="${basePath}/atlas"`), `${page} needs a base-path-safe Atlas Program link`);
+  assert.ok(html.includes(`href="${basePath}/atlas/projects"`), `${page} needs a base-path-safe Atlas Projects link`);
+  assert.ok(html.includes(`href="${basePath}/atlas/tools"`), `${page} needs a base-path-safe Atlas Tools link`);
+  assert.ok(html.includes(`href="${basePath}/atlas/cohort"`), `${page} needs a base-path-safe Atlas Cohort link`);
+  assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
+  assert.ok(html.includes(`src="${basePath}/apto/`), `${page} needs base-path-safe Markdown-managed images`);
+  assert.ok(html.includes(`${basePath}/apto/social/apto-atlas-social.png`), `${page} needs the Atlas social image`);
+  assert.ok(!html.includes(`${basePath}${basePath}`), `${page} must not duplicate the deployment base path`);
+  assert.ok(html.includes(`${basePath}/_next/`), `${page} needs base-path-safe framework assets`);
+  assert.doesNotMatch(html, unprefixedPath);
+}
+
+console.log(`Verified the directory, long-scroll, and Atlas APTO sites under ${basePath}.`);

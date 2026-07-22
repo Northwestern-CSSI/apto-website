@@ -11,6 +11,12 @@
     "label": "Causal technology graph",
     "alt": "Directed graph connecting technologies, problems, evidence, methods, and organizations"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/insilicom-causal-evidence.jpg",
+      "alt": "Layered evidence records converging into a directed causal knowledge graph"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

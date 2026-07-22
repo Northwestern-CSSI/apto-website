@@ -11,6 +11,12 @@
     "label": "Evidence extraction workflow",
     "alt": "Workflow that turns articles and patents into reviewed entities, relationships, and evidence records"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/insilicom-causal-evidence.jpg",
+      "alt": "Layered evidence records converging into a directed causal knowledge graph"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

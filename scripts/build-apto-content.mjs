@@ -505,6 +505,7 @@ function validateInterface(document) {
       "primaryNavigation",
       "home",
       "story",
+      "atlas",
       "common",
       "accessibility",
       "projects",
@@ -610,6 +611,32 @@ function validateInterface(document) {
   );
   assert(metadata.story.socialImageSrc.startsWith("/apto/"), `${context}.story.socialImageSrc must begin with /apto/`);
   assert(metadata.story.cohortArtSrc.startsWith("/apto/"), `${context}.story.cohortArtSrc must begin with /apto/`);
+
+  requireStringKeys(
+    metadata.atlas,
+    [
+      "viewLabel",
+      "socialImageSrc",
+      "socialImageAlt",
+      "directoryLabel",
+      "continuumLabel",
+      "navigationLabel",
+      "viewNavigationLabel",
+      "programMosaicLabel",
+      "objectivesLabel",
+      "participantsLabel",
+      "projectsMapLabel",
+      "projectPortfolioLabel",
+      "toolCollectionLabel",
+      "toolDetailsLabel",
+      "closeDetailsLabel",
+      "cohortIndexLabel",
+      "programLeadershipLabel",
+      "supportedByLabel",
+    ],
+    `${context}.atlas`,
+  );
+  assert(metadata.atlas.socialImageSrc.startsWith("/apto/"), `${context}.atlas.socialImageSrc must begin with /apto/`);
 
   requireStringKeys(metadata.common, ["organizationWebsiteLabel"], `${context}.common`);
   requireStringKeys(
@@ -848,6 +875,7 @@ function validateTool(document) {
       "name",
       "categories",
       "figure",
+      "galleryImages",
       "statusLabel",
       "demoVideoUrl",
       "toolUrl",
@@ -874,6 +902,16 @@ function validateTool(document) {
   assert(figureSrc.startsWith("/apto/"), `${context}.figure.src must begin with /apto/`);
   requireString(figure, "label", `${context}.figure`);
   requireString(figure, "alt", `${context}.figure`);
+  const galleryImages = requireArray(metadata, "galleryImages", context);
+  assert(galleryImages.length > 0 && galleryImages.length <= 3, `${context}.galleryImages must contain one to three images`);
+  galleryImages.forEach((image, index) => {
+    const imageContext = `${context}.galleryImages[${index}]`;
+    requireObject(image, imageContext);
+    assertExactKeys(image, ["src", "alt"], imageContext);
+    const imageSrc = requireString(image, "src", imageContext);
+    assert(imageSrc.startsWith("/apto/"), `${imageContext}.src must begin with /apto/`);
+    requireString(image, "alt", imageContext);
+  });
   requireString(metadata, "statusLabel", context);
   requireOptionalHttpsUrl(metadata.demoVideoUrl, `${context}.demoVideoUrl`);
   requireOptionalHttpsUrl(metadata.toolUrl, `${context}.toolUrl`);
@@ -905,10 +943,16 @@ async function validateParticipantLogoFiles(participantRecords) {
 
 async function validateToolFigureFiles(toolRecords) {
   await Promise.all(
-    toolRecords.map((record) => validateImageAsset(
-      record.tool.figure.src,
-      `${relativeFile(record.sourceFile)}.figure.src`,
-    )),
+    toolRecords.flatMap((record) => [
+      validateImageAsset(
+        record.tool.figure.src,
+        `${relativeFile(record.sourceFile)}.figure.src`,
+      ),
+      ...record.tool.galleryImages.map((image, index) => validateImageAsset(
+        image.src,
+        `${relativeFile(record.sourceFile)}.galleryImages[${index}].src`,
+      )),
+    ]),
   );
 }
 
@@ -977,6 +1021,7 @@ async function buildContent() {
     [interfaceRecord.study.socialImageSrc, "study.socialImageSrc"],
     [interfaceRecord.story.socialImageSrc, "story.socialImageSrc"],
     [interfaceRecord.story.cohortArtSrc, "story.cohortArtSrc"],
+    [interfaceRecord.atlas.socialImageSrc, "atlas.socialImageSrc"],
     [interfaceRecord.footer.nsfLogoSrc, "footer.nsfLogoSrc"],
     [interfaceRecord.projects.map.imageUrl, "projects.map.imageUrl"],
   ]) {
@@ -1025,6 +1070,7 @@ async function buildContent() {
     interfaceRecord.study.socialImageSrc,
     interfaceRecord.story.socialImageSrc,
     interfaceRecord.story.cohortArtSrc,
+    interfaceRecord.atlas.socialImageSrc,
     interfaceRecord.footer.nsfLogoSrc,
     interfaceRecord.projects.map.imageUrl,
     ...participantRecords.map((record) => record.participant.logo.src),
@@ -1032,6 +1078,7 @@ async function buildContent() {
       .map((record) => record.person.headshotUrl)
       .filter((headshotUrl) => headshotUrl !== null),
     ...toolRecords.map((record) => record.tool.figure.src),
+    ...toolRecords.flatMap((record) => record.tool.galleryImages.map((image) => image.src)),
   ]);
 
   for (const [participantId, record] of participantById.entries()) {
@@ -1107,7 +1154,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 12,
+      schemaVersion: 13,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

@@ -18,6 +18,12 @@ const legacyConceptAliases = [
   "nsfnetwork",
   "nsfnetworkwidgets",
 ];
+const atlasPages = [
+  ["", "home", "/"],
+  ["/projects", "projects", "/projects"],
+  ["/tools", "tools", "/tools"],
+  ["/cohort", "cohort", "/cohort"],
+];
 const baseline = {
   assets: 12,
   participants: 5,
@@ -102,6 +108,20 @@ function storyAptoMarkup(html) {
     if (depth === 0) return html.slice(start, divTags.lastIndex);
   }
   assert.fail("Shared long-scroll APTO root did not close");
+}
+
+function atlasAptoMarkup(html) {
+  const marker = '<div class="apto-atlas"';
+  const start = html.indexOf(marker);
+  assert.ok(start >= 0, "Expected the shared APTO Atlas root");
+  const divTags = /<\/?div\b[^>]*>/gi;
+  divTags.lastIndex = start;
+  let depth = 0;
+  for (let match = divTags.exec(html); match; match = divTags.exec(html)) {
+    depth += match[0].startsWith("</") ? -1 : 1;
+    if (depth === 0) return html.slice(start, divTags.lastIndex);
+  }
+  assert.fail("Shared APTO Atlas root did not close");
 }
 
 function maxPixelValueFor(styles, property) {
@@ -309,6 +329,162 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /min-height:\s*44px/);
   assert.doesNotMatch(styles, /scroll-snap-type/);
   assert.doesNotMatch(styles, /animation:[^;]*infinite/);
+});
+
+test("renders one shared, content-complete APTO Atlas page tree at both route families", async () => {
+  const content = await generatedContent();
+  const routeBase = process.env.NEXT_PUBLIC_APTO_ROUTE_BASE ?? "/apto";
+  const expectedNavigation = ["/atlas", "/atlas/projects", "/atlas/tools", "/atlas/cohort"]
+    .map((path) => `${routeBase}${path}` || "/");
+
+  for (const [suffix, section, slug] of atlasPages) {
+    let sharedMarkup;
+    for (const prefix of ["/atlas", "/apto/atlas"]) {
+      const path = `${prefix}${suffix}`;
+      const response = await render(path);
+      assert.equal(response.status, 200, `${path} should render`);
+      assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+      const html = await response.text();
+      const markup = atlasAptoMarkup(html);
+      const text = visibleText(markup);
+      const page = content.pages.find((candidate) => candidate.slug === slug);
+
+      assert.ok(page, `Missing generated page for ${slug}`);
+      sharedMarkup ??= markup;
+      assert.equal(markup, sharedMarkup, `${path} must use the shared Atlas component tree`);
+      assert.equal(countMatches(markup, /<main\b/g), 1);
+      assert.equal(countMatches(markup, /<h1\b/g), 1);
+      assert.equal(countMatches(markup, /role="switch"/g), 1);
+      assert.match(markup, /class="atlas-skip-link" href="#atlas-main"/);
+      assert.match(markup, /<header class="atlas-header"/);
+      assert.match(markup, /<main[^>]*id="atlas-main"[^>]*tabindex="-1"/i);
+      assert.ok(text.includes(page.eyebrow));
+      assert.ok(text.includes(page.title));
+      assert.ok(text.includes(page.introduction));
+      assert.ok(text.includes(content.boilerplate));
+      assert.ok(markup.includes(`src="${content.interface.footer.nsfLogoSrc}"`));
+
+      const primaryNav = markup.match(new RegExp(
+        `<nav[^>]*aria-label="${escapeRegex(content.interface.atlas.navigationLabel)}"[^>]*>([\\s\\S]*?)<\\/nav>`,
+      ));
+      assert.ok(primaryNav, `${path} should label the Atlas primary navigation`);
+      assert.deepEqual(
+        [...primaryNav[1].matchAll(/href="([^"]+)"/g)].map((match) => match[1]),
+        expectedNavigation,
+      );
+      assert.equal(countMatches(primaryNav[1], /aria-current="page"/g), 1);
+      assert.match(primaryNav[1], new RegExp(
+        `href="${escapeRegex(expectedNavigation[atlasPages.findIndex((candidate) => candidate[1] === section)])}" aria-current="page"`,
+      ));
+
+      if (section === "home") {
+        assert.ok(text.includes(content.program.description));
+        for (const objective of content.program.objectives) assert.ok(text.includes(objective));
+        assert.equal(countMatches(markup, /class="atlas-organization-index"/g), 1);
+      } else if (section === "projects") {
+        assert.equal(countMatches(markup, /<details class="atlas-project-folio"/g), content.projects.length);
+        assert.equal(countMatches(markup, /class="atlas-map-pin"/g), content.projects.length);
+        for (const project of content.projects) {
+          assert.ok(text.includes(project.shortName));
+          assert.ok(text.includes(project.summary));
+          assert.ok(markup.includes(`id="atlas-project-${project.id}"`));
+        }
+      } else if (section === "tools") {
+        assert.equal(countMatches(markup, /<article class="atlas-tool-card/g), content.tools.length);
+        assert.equal(countMatches(markup, /<select\b/g), 2);
+        for (const tool of content.tools) {
+          assert.ok(text.includes(tool.name));
+          assert.ok(text.includes(tool.description));
+          assert.ok(text.includes(tool.useCase));
+        }
+      } else {
+        assert.equal(countMatches(markup, /<article class="atlas-team-chapter/g), content.participants.length);
+        assert.ok(text.includes("Rebecca Chmiel"));
+        for (const participant of content.participants) {
+          assert.ok(text.includes(participant.displayName));
+          for (const person of participant.people) assert.ok(text.includes(person.name));
+        }
+      }
+    }
+  }
+});
+
+test("renders the Atlas tool gallery as ten accessible, Markdown-backed image posters", async () => {
+  const content = await generatedContent();
+  const response = await render("/atlas/tools");
+  assert.equal(response.status, 200);
+  const markup = atlasAptoMarkup(await response.text());
+  const articles = markup.match(/<article class="atlas-tool-card[\s\S]*?<\/article>/g) ?? [];
+
+  assert.equal(content.tools.length, 10, "The current APTO release should expose ten tools");
+  assert.equal(articles.length, content.tools.length);
+  assert.equal(countMatches(markup, /class="atlas-tool-toggle"/g), content.tools.length);
+  assert.equal(countMatches(markup, /aria-expanded="false"/g), content.tools.length);
+  assert.equal(countMatches(markup, /aria-live="polite"/g), 1);
+  assert.match(markup, /<fieldset[^>]*aria-label="[^"]+"/);
+
+  for (const tool of content.tools) {
+    assert.ok(tool.galleryImages.length >= 1, `${tool.name} needs at least one gallery image`);
+    const article = articles.find((candidate) => visibleText(candidate).includes(tool.name));
+    assert.ok(article, `${tool.name} should render as an Atlas poster`);
+    const detailsId = `atlas-tool-details-${tool.id}`;
+    assert.ok(article.includes(`id="${detailsId}"`));
+    assert.ok(article.includes(`aria-controls="${detailsId}"`));
+    assert.ok(article.includes("loading=\"lazy\""));
+    assert.ok(article.includes("decoding=\"async\""));
+
+    for (const [index, image] of tool.galleryImages.entries()) {
+      const renderedImage = article.match(new RegExp(`<img[^>]*src="${escapeRegex(image.src)}"[^>]*>`));
+      assert.ok(renderedImage, `${tool.name} should render gallery image ${image.src}`);
+      assert.match(renderedImage[0], /loading="lazy"/);
+      assert.match(renderedImage[0], /decoding="async"/);
+      if (index === 0) assert.ok(renderedImage[0].includes(`alt="${image.alt}"`));
+    }
+
+    const supportingFigure = article.match(new RegExp(`<img[^>]*src="${escapeRegex(tool.figure.src)}"[^>]*>`));
+    assert.ok(supportingFigure, `${tool.name} should include its supporting tool figure`);
+    assert.match(supportingFigure[0], /aria-hidden="true"/);
+    assert.match(supportingFigure[0], /alt=""/);
+  }
+});
+
+test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply dark", async () => {
+  const [source, styles, layout, route, nestedRoute] = await Promise.all([
+    readFile(new URL("../app/apto/atlas/atlas-site.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/atlas/tools/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/atlas/tools/page.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(route, /<AtlasSitePage section="tools" \/>/);
+  assert.match(nestedRoute, /<AtlasSitePage section="tools" \/>/);
+  assert.match(layout, /import "\.\/apto\/atlas\/atlas-site\.css"/);
+  assert.match(source, /useAptoTheme\("light"\)/);
+  assert.match(source, /role="switch"/);
+  assert.match(source, /aria-expanded=\{expanded\}/);
+  assert.match(source, /aria-controls=\{detailId\}/);
+  assert.match(source, /withDeploymentBase\(image\.src\)/);
+  assert.match(source, /loading="lazy"/);
+
+  assert.match(styles, /\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(styles, /@media \(max-width:\s*1180px\)[\s\S]*?\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(styles, /@media \(max-width:\s*719px\)[\s\S]*?\.atlas-tool-grid\s*\{[^}]*grid-template-columns:\s*1fr/);
+  assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*5\s*\/\s*6/);
+  assert.match(styles, /\.atlas-tool-media img\s*\{[^}]*transition:[^;}]*transform\s+6\.8s/);
+  assert.doesNotMatch(styles, /animation(?:-name)?:\s*[^;]*infinite/i);
+  assert.doesNotMatch(styles, /animation-iteration-count:\s*infinite/i);
+  assert.doesNotMatch(styles, /\.atlas-tool-card(?::hover|:focus-within|\.is-expanded)\s*\{[^}]*(?:transform|scale|width|height)\s*:/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.apto-atlas\s*\{[^}]*--atlas-canvas:\s*#020c16/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.apto-atlas\s*\{[^}]*color-scheme:\s*dark/);
+  assert.match(styles, /@media \(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(styles, /animation-iteration-count:\s*1\s*!important/);
+  assert.match(styles, /\.atlas-tool-media img,[\s\S]*?transform:\s*none\s*!important/);
+  assert.match(styles, /@media \(forced-colors:\s*active\)/);
+  assert.match(styles, /\.atlas-tool-card::after\s*\{[^}]*border:\s*2px solid CanvasText/);
+  assert.match(styles, /\.atlas-header\s*\{[^}]*position:\s*sticky/);
+  assert.match(styles, /\.atlas-skip-link:focus/);
+  assert.match(styles, /min-height:\s*44px/);
 });
 
 test("preserves the dormant homepage widget without exposing it on public routes", async () => {
@@ -607,6 +783,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   const referencedAssetPaths = new Set([
     content.interface.study.socialImageSrc,
     content.interface.story.socialImageSrc,
+    content.interface.atlas.socialImageSrc,
     content.interface.footer.nsfLogoSrc,
     content.interface.projects.map.imageUrl,
     ...content.participants.map((participant) => participant.logo.src),
@@ -615,6 +792,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
       participant.people.map((person) => person.headshotUrl).filter(Boolean)
     )),
     ...content.tools.map((tool) => tool.figure.src),
+    ...content.tools.flatMap((tool) => tool.galleryImages.map((image) => image.src)),
   ].map((publicPath) => publicPath.replace(/^\/apto\//, "")));
   const sourceAssetPaths = new Set(assets.map((file) => (
     decodeURIComponent(file.pathname.slice(new URL("assets/", contentRoot).pathname.length))

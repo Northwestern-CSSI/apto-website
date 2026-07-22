@@ -11,6 +11,12 @@
     "label": "Multi-technology trajectory forecast",
     "alt": "Chart comparing several technology trajectories with observed values and uncertainty bands"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/northwestern-technology-trajectories.jpg",
+      "alt": "Science and technology clusters branching through evidence stages into multiple market and societal trajectories"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

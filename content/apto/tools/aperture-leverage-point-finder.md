@@ -11,6 +11,12 @@
     "label": "Opportunity signal matrix",
     "alt": "Matrix comparing technical problems by evidence strength, activity, and potential leverage"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/aperture-problem-landscape.jpg",
+      "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null

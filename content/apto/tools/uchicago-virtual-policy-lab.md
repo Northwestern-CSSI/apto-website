@@ -11,6 +11,12 @@
     "label": "Policy experiment comparison",
     "alt": "Chart comparing baseline and alternative policy scenarios for technology outcomes over time"
   },
+  "galleryImages": [
+    {
+      "src": "/apto/tools/atlas/uchicago-global-observatory.jpg",
+      "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
+    }
+  ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null
