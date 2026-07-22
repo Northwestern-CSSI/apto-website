@@ -62,6 +62,14 @@ entries.
 See [Adding or editing tools](../tools/README.md) for the complete frontmatter
 template and replacement steps.
 
+## Atlas landing gallery
+
+The five equal-weight landing visuals are selected in `../program.md` through
+`landingGallery`. Use project-idea imagery without organization names, logos,
+or embedded labels so the landing composition does not imply preference among
+participants. All five images are cropped responsively and receive a slow,
+continuous pan; keep important details away from every edge.
+
 ## Headshots
 
 - Use a consistent square crop around 800 × 800 pixels.

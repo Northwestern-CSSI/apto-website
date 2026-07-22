@@ -108,6 +108,10 @@ export type AptoProgram = {
   description: string;
   objectivesTitle: string;
   objectives: string[];
+  landingGallery: Array<{
+    src: string;
+    alt: string;
+  }>;
   programTeam: AptoProgramPerson[];
   framework: {
     ariaLabel: string;

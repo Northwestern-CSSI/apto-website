@@ -21,7 +21,7 @@ content, so one edit updates both presentations.
 | Website content | Source |
 | --- | --- |
 | Homepage title and introduction | `pages/home.md` |
-| Program description, objectives, framework, NSF language, sources | `program.md` |
+| Program description, objectives, landing gallery, framework, NSF language, sources | `program.md` |
 | Projects-page introduction | `pages/projects.md` |
 | Individual projects | `projects/*.md` |
 | Tools-page introduction | `pages/tools.md` |
@@ -114,6 +114,8 @@ legal permission, brand approval, or whether remote links remain live.
 - `interface.md` owns shared labels and navigation. The visible top navigation
   must remain Program, Projects, Tools, Cohort. Its `story` block contains the
   labels used only by the alternate long-scroll presentation.
-- `program.md` owns substantive program language and the exact NSF disclaimer.
+- `program.md` owns substantive program language, the Atlas landing gallery,
+  and the exact NSF disclaimer. Keep the five `landingGallery` visuals free of
+  organization names and marks; they receive equal space on the landing page.
 - `future/` preserves approved-but-disabled interface work. Its homepage widget
   is not included in the public site and should remain disabled until approved.

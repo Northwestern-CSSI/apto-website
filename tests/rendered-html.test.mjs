@@ -540,6 +540,19 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
         assert.ok(text.includes(content.program.description));
         for (const objective of content.program.objectives) assert.ok(text.includes(objective));
         assert.equal(countMatches(markup, /class="atlas-organization-index"/g), 1);
+        const mosaic = markup.match(/<section class="atlas-program-mosaic"[\s\S]*?<\/section>/)?.[0];
+        assert.ok(mosaic, `${path} should render the program visual gallery`);
+        assert.equal(content.program.landingGallery.length, 5);
+        assert.equal(countMatches(mosaic, /data-program-visual="true"/g), content.program.landingGallery.length);
+        assert.equal(countMatches(mosaic, /<figcaption\b/g), 0);
+        assert.equal(visibleText(mosaic), "", "The program gallery should contain imagery without organization labels");
+        for (const participant of content.participants) {
+          assert.ok(!mosaic.includes(participant.displayName), `${path} must not label a preferred organization in the program gallery`);
+        }
+        for (const image of content.program.landingGallery) {
+          assert.ok(mosaic.includes(`src="${image.src}"`), `${path} should render ${image.src}`);
+          assert.ok(mosaic.includes(`alt="${image.alt}"`), `${path} should render the Markdown-managed image description`);
+        }
       } else if (section === "projects") {
         assert.equal(countMatches(markup, /<details class="atlas-project-folio"/g), content.projects.length);
         assert.equal(countMatches(markup, /class="atlas-map-pin"/g), content.projects.length);
@@ -654,8 +667,14 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(styles, /\.atlas-tool-panel::before\s*\{[^}]*linear-gradient\(to top[^}]*backdrop-filter:\s*blur\(10px\)[^}]*mask-image:/);
   assert.doesNotMatch(styles, /\.atlas-tool-details\s*\{[^}]*top:\s*(?:70|80)px/);
   assert.match(styles, /\.atlas-tool-panel-footer\s*\{[^}]*display:\s*flex/);
-  assert.doesNotMatch(styles, /animation(?:-name)?:\s*[^;]*infinite/i);
-  assert.doesNotMatch(styles, /animation-iteration-count:\s*infinite/i);
+  assert.match(styles, /\.atlas-program-mosaic\s*\{[^}]*grid-template-columns:\s*repeat\(5,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(styles, /\.atlas-program-mosaic img\s*\{[^}]*animation:\s*atlas-program-ken-burns-a\s+18s[^;]*infinite alternate/);
+  assert.match(styles, /\.atlas-program-mosaic img\.motion-5\s*\{[^}]*animation-name:\s*atlas-program-ken-burns-e[^}]*animation-delay:\s*-16s/);
+  assert.match(styles, /@keyframes atlas-program-ken-burns-a/);
+  assert.match(styles, /@keyframes atlas-program-ken-burns-e/);
+  assert.doesNotMatch(styles, /\.atlas-program-mosaic figure:hover img/);
+  assert.doesNotMatch(styles, /\.atlas-program-mosaic figure\.is-1/);
+  assert.doesNotMatch(styles, /\.atlas-tool-(?:card|media|panel)[^{]*\{[^}]*animation(?:-name)?:\s*[^;]*infinite/i);
   assert.doesNotMatch(styles, /\.atlas-tool-card(?::hover|:focus-within|\.is-expanded)\s*\{[^}]*(?:transform|scale|width|height)\s*:/);
   assert.match(styles, /\[data-apto-theme="dark"\] \.apto-atlas\s*\{[^}]*--atlas-canvas:\s*#020c16/);
   assert.match(styles, /\[data-apto-theme="dark"\] \.apto-atlas\s*\{[^}]*color-scheme:\s*dark/);

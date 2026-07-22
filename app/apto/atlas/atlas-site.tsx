@@ -19,7 +19,6 @@ import {
   aptoProgram,
   aptoProjects,
   aptoTools,
-  type AptoTool,
 } from "../content";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
@@ -155,28 +154,20 @@ function OrganizationIndex({ labelledBy }: { labelledBy: string }) {
 }
 
 function ProgramPage() {
-  const mosaicTools = [
-    "aperture-problem-landscape",
-    "macrocosm-energy-digital-twin",
-    "uchicago-global-observatory",
-  ].map((id) => aptoTools.find((tool) => tool.id === id)).filter((tool): tool is AptoTool => Boolean(tool));
-
   return <main className="atlas-main atlas-program" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-home-title">
     <PageIntroduction section="home" />
     <section className="atlas-program-mosaic" aria-label={aptoInterface.atlas.programMosaicLabel}>
-      {mosaicTools.map((tool, index) => <figure key={tool.id} className={`is-${index + 1}`}>
+      {aptoProgram.landingGallery.map((image, index) => <figure key={image.src} data-program-visual="true">
         <img
-          src={withDeploymentBase(tool.galleryImages[0].src)}
-          alt={tool.galleryImages[0].alt}
+          className={`motion-${index + 1}`}
+          src={withDeploymentBase(image.src)}
+          alt={image.alt}
           width="1536"
           height="1024"
-          loading={index === 0 ? "eager" : "lazy"}
+          loading="eager"
           decoding="async"
-          fetchPriority={index === 0 ? "high" : undefined}
         />
-        <figcaption>{participantFor(tool.participantId)?.displayName}<span>{tool.name}</span></figcaption>
       </figure>)}
-      <a className="atlas-mosaic-link" href={atlasRoute("tools")}>Explore the tool gallery <span aria-hidden="true">→</span></a>
     </section>
 
     <section className="atlas-program-description" aria-labelledby="atlas-program-description-title">

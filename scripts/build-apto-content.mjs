@@ -418,6 +418,7 @@ function validateProgram(document) {
       "acronym",
       "objectivesTitle",
       "objectives",
+      "landingGallery",
       "lastVerified",
       "framework",
       "outcomes",
@@ -436,6 +437,18 @@ function validateProgram(document) {
   const objectives = requireArray(metadata, "objectives", context);
   assert(objectives.length > 0, `${context}.objectives must not be empty`);
   objectives.forEach((objective, index) => requireStringValue(objective, `${context}.objectives[${index}]`));
+  const landingGallery = requireArray(metadata, "landingGallery", context);
+  assert(landingGallery.length === 5, `${context}.landingGallery must contain five equally presented program visuals`);
+  landingGallery.forEach((image, index) => {
+    const imageContext = `${context}.landingGallery[${index}]`;
+    requireObject(image, imageContext);
+    assertExactKeys(image, ["src", "alt"], imageContext);
+    const imageSrc = requireString(image, "src", imageContext);
+    assert(imageSrc.startsWith("/apto/"), `${imageContext}.src must begin with /apto/`);
+    requireString(image, "alt", imageContext);
+  });
+  assertUnique(landingGallery.map((image) => image.src), `${context}.landingGallery sources`);
+  assertUnique(landingGallery.map((image) => image.alt), `${context}.landingGallery descriptions`);
   requireIsoDate(requireString(metadata, "lastVerified", context), `${context}.lastVerified`);
 
   const framework = requireStringKeys(
@@ -1019,6 +1032,10 @@ async function buildContent() {
   ]);
 
   const programRecord = validateProgram(programDocument);
+  await Promise.all(programRecord.program.landingGallery.map((image, index) => validateImageAsset(
+    image.src,
+    `${relativeFile(programFile)}.landingGallery[${index}].src`,
+  )));
   const interfaceRecord = validateInterface(interfaceDocument);
   for (const [publicPath, field] of [
     [interfaceRecord.study.socialImageSrc, "study.socialImageSrc"],
@@ -1076,6 +1093,7 @@ async function buildContent() {
     interfaceRecord.atlas.socialImageSrc,
     interfaceRecord.footer.nsfLogoSrc,
     interfaceRecord.projects.map.imageUrl,
+    ...programRecord.program.landingGallery.map((image) => image.src),
     ...participantRecords.map((record) => record.participant.logo.src),
     ...personRecords
       .map((record) => record.person.headshotUrl)
@@ -1157,7 +1175,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 13,
+      schemaVersion: 14,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

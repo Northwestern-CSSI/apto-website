@@ -88,6 +88,18 @@ for (const page of atlasPages) {
     assert.equal((html.match(/class="atlas-tool-panel"/g) ?? []).length, 10, `${page} needs a bottom information panel for every tool`);
     assert.equal((html.match(/class="atlas-tool-panel-footer"/g) ?? []).length, 10, `${page} needs View details inside every bottom panel`);
   }
+  if (page === "atlas/index.html" || page === "apto/atlas/index.html") {
+    const mosaic = html.match(/<section class="atlas-program-mosaic"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(mosaic, `${page} needs the Atlas program visual gallery`);
+    assert.equal((mosaic.match(/data-program-visual="true"/g) ?? []).length, content.program.landingGallery.length, `${page} needs every equal-weight program visual`);
+    assert.equal((mosaic.match(/<figcaption\b/g) ?? []).length, 0, `${page} must not label organizations in the program gallery`);
+    for (const participant of content.participants) {
+      assert.ok(!mosaic.includes(participant.displayName), `${page} must not give ${participant.displayName} a labeled landing-page position`);
+    }
+    for (const image of content.program.landingGallery) {
+      assert.ok(mosaic.includes(`src="${basePath}${image.src}"`), `${page} needs base-path-safe program visual ${image.src}`);
+    }
+  }
   assert.ok(!html.includes(`${basePath}${basePath}`), `${page} must not duplicate the deployment base path`);
   assert.ok(html.includes(`${basePath}/_next/`), `${page} needs base-path-safe framework assets`);
   assert.doesNotMatch(html, unprefixedPath);

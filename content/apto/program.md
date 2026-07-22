@@ -10,6 +10,28 @@
     "Develop data sets, measurement approaches, and practical tools that make technology-outcome evidence easier to assemble, test, and apply.",
     "Connect historical evidence with possible future states so research and development decisions can be made with greater clarity."
   ],
+  "landingGallery": [
+    {
+      "src": "/apto/tools/atlas/aperture-decision-signals.jpg",
+      "alt": "Layered technology problem fields connected to a small set of promising intervention points"
+    },
+    {
+      "src": "/apto/tools/atlas/insilicom-evidence-provenance.jpg",
+      "alt": "Evidence records flowing into a traceable network of technology relationships"
+    },
+    {
+      "src": "/apto/tools/atlas/macrocosm-scenario-flows.jpg",
+      "alt": "Interconnected energy infrastructure and scenario flows across an industrial system"
+    },
+    {
+      "src": "/apto/tools/atlas/northwestern-translation-trajectories.jpg",
+      "alt": "Technology trajectories moving from research signals toward practical outcomes"
+    },
+    {
+      "src": "/apto/tools/atlas/uchicago-policy-flows.jpg",
+      "alt": "Global science and technology signals moving through an evidence observatory"
+    }
+  ],
   "lastVerified": "2026-07-20",
   "framework": {
     "ariaLabel": "APTO research framework",
