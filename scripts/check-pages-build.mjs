@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/apto-website";
+const content = JSON.parse(
+  await readFile(new URL("../app/apto/content.generated.json", import.meta.url), "utf8"),
+);
 const pages = ["index.html", "projects/index.html", "tools/index.html", "cohort/index.html"];
 const storyPages = ["story/index.html", "apto/story/index.html"];
 const atlasPages = [
@@ -44,6 +47,19 @@ for (const page of storyPages) {
   assert.equal((html.match(/class="story-map-location(?:\s|\")/g) ?? []).length, 4, `${page} needs four distinct map locations`);
   assert.equal((html.match(/class="story-map-pin(?:\s|\")/g) ?? []).length, 5, `${page} needs one map link for every project`);
   assert.equal((html.match(/href="#story-project-/g) ?? []).length, 5, `${page} needs five map destinations`);
+  const expectedLogoCount = content.projects.length + content.participants.length + 1;
+  assert.equal((html.match(/class="story-participant-logo\b/g) ?? []).length, expectedLogoCount, `${page} needs every project and cohort logo`);
+  assert.equal((html.match(/class="story-logo-canvas"/g) ?? []).length, expectedLogoCount, `${page} needs a contained canvas for every logo`);
+  for (const participant of content.participants) {
+    assert.ok(
+      html.includes(`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} asset-on-${participant.logo.surface}`),
+      `${page} needs ${participant.displayName}'s logo geometry and surface metadata`,
+    );
+    assert.ok(
+      html.includes(`src="${basePath}${participant.logo.src}"`),
+      `${page} needs ${participant.displayName}'s base-path-safe logo`,
+    );
+  }
   assert.match(html, /class="story-map-location is-cluster"[^>]*role="group"[^>]*aria-label="2 nearby APTO project locations:/);
   assert.match(html, /<img[^>]*src="[^"]*\/apto\/us-map\.svg"[^>]*width="959"[^>]*height="593"/);
   const parallaxSpeeds = [...html.matchAll(/data-story-parallax="(-?[\d.]+)"/g)].map((match) => Number(match[1]));

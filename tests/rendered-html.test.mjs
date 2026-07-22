@@ -291,6 +291,9 @@ test("renders one shared, content-complete long-scroll story at both public rout
     assert.equal(countMatches(markup, /class="story-project-chapter"/g), content.projects.length);
     assert.equal(countMatches(markup, /class="story-tool"/g), content.tools.length);
     assert.equal(countMatches(markup, /class="story-cohort-group"/g), content.participants.length);
+    const expectedLogoCount = content.projects.length + content.participants.length + 1;
+    assert.equal(countMatches(markup, /class="story-participant-logo\b/g), expectedLogoCount);
+    assert.equal(countMatches(markup, /class="story-logo-canvas"/g), expectedLogoCount);
     const projectMapStart = markup.indexOf('<div class="story-map"');
     const projectMapEnd = markup.indexOf('<div class="story-project-stage-active"', projectMapStart);
     assert.ok(projectMapStart >= 0 && projectMapEnd > projectMapStart, "The story should include the keyboard-operable project map");
@@ -346,6 +349,13 @@ test("renders one shared, content-complete long-scroll story at both public rout
       assert.ok(text.includes(participant.displayName));
       assert.ok(text.includes(participant.location));
       assert.ok(markup.includes(`href="${participant.website}"`));
+      assert.ok(
+        markup.includes(
+          `story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} asset-on-${participant.logo.surface}`,
+        ),
+        `${participant.displayName} should preserve its content-managed logo geometry and surface`,
+      );
+      assert.ok(markup.includes(`src="${participant.logo.src}"`));
       for (const person of participant.people) {
         assert.ok(text.includes(person.name));
         assert.ok(text.includes(person.role));
@@ -430,6 +440,11 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
     "--story-footer-bg",
     "--story-footer-ink",
     "--story-footer-copy",
+    "--story-logo-shell",
+    "--story-logo-line",
+    "--story-logo-shadow",
+    "--story-logo-canvas-light",
+    "--story-logo-canvas-dark",
   ];
   for (const token of themedSectionTokens) {
     const lightValue = customPropertyValue(lightTheme, token);
@@ -449,6 +464,14 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-cohort-group\s*\{[^}]*var\(--story-cohort-surface\)/);
   assert.match(styles, /\.story-person\s*\{[^}]*background:\s*var\(--story-cohort-person\)/);
   assert.match(styles, /\.story-footer\s*\{[^}]*color:\s*var\(--story-footer-ink\)[^}]*background:\s*var\(--story-footer-bg\)/);
+  assert.match(styles, /\.story-participant-logo\.asset-on-dark\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-dark\)/);
+  assert.match(styles, /\.story-participant-logo\.asset-on-light\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-light\)/);
+  assert.match(styles, /\.story-logo-canvas\s*\{[^}]*display:\s*grid[^}]*overflow:\s*hidden[^}]*background:\s*var\(--story-logo-canvas\)/);
+  assert.match(styles, /\.story-logo-canvas img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*object-position:\s*center[^}]*filter:\s*none[^}]*mix-blend-mode:\s*normal/);
+  assert.match(styles, /\.story-participant-logo\.logo-kind-symbol\s*\{[^}]*width:\s*70px[^}]*aspect-ratio:\s*1/);
+  assert.match(styles, /\.story-project-stage-active-inner\s*>\s*div\s*>\s*strong,[\s\S]*?\.story-project-stage-active-inner\s*>\s*div\s*>\s*span\s*\{\s*display:\s*block/);
+  assert.doesNotMatch(styles, /\.story-project-stage-active\s+strong,\s*\.story-project-stage-active\s+span\s*\{/);
+  assert.doesNotMatch(styles, /\.story-participant-logo\.logo-(?:aperture|macrocosm|northwestern|uchicago)[^{]*\{[^}]*filter:/);
   assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-map\s*\{[^}]*width:\s*100%[^}]*max-width:\s*100%/);
   assert.match(styles, /@media \(max-width:\s*620px\)[\s\S]*?\.story-project-stage\s*\{[^}]*position:\s*relative[^}]*top:\s*auto/);
 
