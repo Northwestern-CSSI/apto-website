@@ -82,6 +82,12 @@ function countMatches(value, pattern) {
   return (value.match(pattern) ?? []).length;
 }
 
+function customPropertyValue(declarations, property) {
+  const match = declarations.match(new RegExp(`${escapeRegex(property)}\\s*:\\s*([\\s\\S]*?);`));
+  assert.ok(match, `Expected ${property} to be defined`);
+  return match[1].replace(/\s+/g, " ").trim();
+}
+
 function routedAptoMarkup(html) {
   const marker = '<div class="concept concept-apto nsf-apto is-routed">';
   const start = html.indexOf(marker);
@@ -203,6 +209,46 @@ test("renders the selected APTO design at the repository root", async () => {
 test("renders one shared, content-complete long-scroll story at both public routes", async () => {
   const content = await generatedContent();
   const expectedSections = ["program", "projects", "tools", "cohort"];
+  const participantsById = new Map(content.participants.map((participant) => [participant.id, participant]));
+  const expectedMapBounds = {
+    aperture: { x: [70, 78], y: [30, 42] },
+    insilicom: { x: [68, 78], y: [70, 84] },
+    macrocosm: { x: [83, 92], y: [27, 40] },
+    northwestern: { x: [60, 68], y: [30, 42] },
+    uchicago: { x: [60, 68], y: [30, 42] },
+  };
+
+  for (const [participantId, bounds] of Object.entries(expectedMapBounds)) {
+    const participant = participantsById.get(participantId);
+    assert.ok(participant, `Missing map participant ${participantId}`);
+    assert.ok(
+      participant.mapPosition.x >= bounds.x[0] && participant.mapPosition.x <= bounds.x[1],
+      `${participant.displayName} must remain in its expected east-west map region`,
+    );
+    assert.ok(
+      participant.mapPosition.y >= bounds.y[0] && participant.mapPosition.y <= bounds.y[1],
+      `${participant.displayName} must remain in its expected north-south map region`,
+    );
+  }
+
+  const nearbyPairs = content.participants.flatMap((participant, index) => (
+    content.participants.slice(index + 1).flatMap((candidate) => (
+      Math.hypot(
+        participant.mapPosition.x - candidate.mapPosition.x,
+        participant.mapPosition.y - candidate.mapPosition.y,
+      ) < 2
+        ? [[participant.id, candidate.id].sort()]
+        : []
+    ))
+  ));
+  assert.deepEqual(nearbyPairs, [["northwestern", "uchicago"]]);
+  assert.ok(participantsById.get("northwestern").mapPosition.x < participantsById.get("aperture").mapPosition.x);
+  assert.ok(participantsById.get("aperture").mapPosition.x < participantsById.get("macrocosm").mapPosition.x);
+  assert.ok(
+    participantsById.get("insilicom").mapPosition.y
+      > Math.max(...content.participants.filter((participant) => participant.id !== "insilicom").map((participant) => participant.mapPosition.y)),
+    "Tallahassee must remain the southernmost project location",
+  );
   let sharedMarkup;
 
   for (const path of ["/story", "/apto/story"]) {
@@ -245,15 +291,41 @@ test("renders one shared, content-complete long-scroll story at both public rout
     assert.equal(countMatches(markup, /class="story-project-chapter"/g), content.projects.length);
     assert.equal(countMatches(markup, /class="story-tool"/g), content.tools.length);
     assert.equal(countMatches(markup, /class="story-cohort-group"/g), content.participants.length);
-    const projectMap = markup.match(/<div class="story-map">([\s\S]*?)<\/div>/);
-    assert.ok(projectMap, "The story should include the keyboard-operable project map");
-    assert.equal(countMatches(projectMap[1], /href="#story-project-/g), content.projects.length);
-    assert.doesNotMatch(projectMap[1], /tabindex="-1"/i);
+    const projectMapStart = markup.indexOf('<div class="story-map"');
+    const projectMapEnd = markup.indexOf('<div class="story-project-stage-active"', projectMapStart);
+    assert.ok(projectMapStart >= 0 && projectMapEnd > projectMapStart, "The story should include the keyboard-operable project map");
+    const projectMap = markup.slice(projectMapStart, projectMapEnd);
+    assert.equal(countMatches(projectMap, /class="story-map-location(?:\s|\")/g), 4);
+    assert.equal(countMatches(projectMap, /class="story-map-pin(?:\s|\")/g), content.projects.length);
+    assert.equal(countMatches(projectMap, /href="#story-project-/g), content.projects.length);
+    assert.doesNotMatch(projectMap, /tabindex="-1"/i);
+    assert.match(projectMap, /<img[^>]*width="959"[^>]*height="593"[^>]*loading="lazy"[^>]*decoding="async"/);
+
+    const chicagoCluster = projectMap.match(/<div class="story-map-location is-cluster"[^>]*>[\s\S]*?<\/div>/);
+    assert.ok(chicagoCluster, "The two Chicago-area projects should render as one labelled map location");
+    assert.match(chicagoCluster[0], /role="group"/);
+    assert.match(chicagoCluster[0], /aria-label="2 nearby APTO project locations:/);
+    assert.equal(countMatches(chicagoCluster[0], /class="story-map-pin(?:\s|\")/g), 2);
+    assert.ok(chicagoCluster[0].includes("Northwestern University, Evanston, Illinois"));
+    assert.ok(chicagoCluster[0].includes("University of Chicago, Chicago, Illinois"));
     for (const project of content.projects) {
       assert.ok(text.includes(project.shortName));
       assert.ok(text.includes(project.summary));
       assert.ok(markup.includes(`id="story-project-${project.id}"`));
-      assert.ok(projectMap[1].includes(`aria-label="${project.organization}: ${project.shortName}"`));
+      assert.ok(projectMap.includes(`aria-label="${project.organization}: ${project.shortName}"`));
+    }
+
+    const parallaxSpeeds = [...markup.matchAll(/data-story-parallax="(-?[\d.]+)"/g)]
+      .map((match) => Number(match[1]));
+    assert.ok(parallaxSpeeds.length >= 8, `${path} should expose a layered scroll experience`);
+    assert.ok(new Set(parallaxSpeeds).size >= 6, `${path} should use several distinct parallax depths`);
+    assert.ok(parallaxSpeeds.some((speed) => speed < 0), `${path} should include a counter-moving layer`);
+    assert.ok(parallaxSpeeds.every((speed) => Number.isFinite(speed) && Math.abs(speed) <= 0.1));
+    for (const [index, section] of expectedSections.entries()) {
+      const start = markup.indexOf(`id="story-${section}"`);
+      const next = expectedSections[index + 1];
+      const end = next ? markup.indexOf(`id="story-${next}"`, start) : markup.length;
+      assert.match(markup.slice(start, end), /data-story-parallax="-?[\d.]+"/, `${section} needs a scroll-reactive visual`);
     }
 
     const toolArticles = markup.match(/<article class="story-tool"[\s\S]*?<\/article>/g) ?? [];
@@ -311,7 +383,17 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(source, /aria-current=\{activeSection === section \? "location" : undefined\}/);
   assert.match(source, /new IntersectionObserver/);
   assert.match(source, /requestAnimationFrame\(updateScrollState\)/);
+  assert.match(source, /addEventListener\("scroll", handleScroll, \{ passive: true \}\)/);
   assert.match(source, /prefers-reduced-motion: reduce/);
+  assert.match(source, /querySelectorAll<HTMLElement>\("\[data-story-parallax\]"\)/);
+  assert.match(source, /if \(!reduceMotion\) \{[\s\S]*?parallaxElements\.forEach/);
+  for (const property of [
+    "--story-shift",
+    "--story-shift-soft",
+    "--story-shift-reverse",
+    "--story-local-progress",
+    "--story-scale",
+  ]) assert.ok(source.includes(`setProperty("${property}"`), `Story scroll state should update ${property}`);
   assert.match(source, /withDeploymentBase\(tool\.figure\.src\)/);
   assert.match(source, /withDeploymentBase\(aptoInterface\.story\.cohortArtSrc\)/);
   assert.match(source, /loading="lazy"/);
@@ -323,7 +405,61 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /scroll-margin-top:/);
   assert.doesNotMatch(styles, /content-visibility:\s*auto/, "Anchor positions should not depend on estimated off-screen layout");
   assert.match(styles, /\[data-apto-theme="dark"\] \.apto-story/);
-  assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
+  const lightTheme = styles.match(/^\.apto-story\s*\{([\s\S]*?)^\}/m)?.[1];
+  const darkTheme = styles.match(/^\[data-apto-theme="dark"\] \.apto-story,\s*\n\.nsf-apto-network \.apto-story\s*\{([\s\S]*?)^\}/m)?.[1];
+  assert.ok(lightTheme, "The Story needs a complete light palette");
+  assert.ok(darkTheme, "The Story needs a complete dark palette");
+  const themedSectionTokens = [
+    "--story-header-bg",
+    "--story-header-ink",
+    "--story-header-copy",
+    "--story-projects-bg",
+    "--story-projects-surface",
+    "--story-projects-ink",
+    "--story-projects-copy",
+    "--story-map-bg",
+    "--story-map-filter",
+    "--story-map-opacity",
+    "--story-map-label-bg",
+    "--story-map-label-ink",
+    "--story-cohort-bg",
+    "--story-cohort-surface",
+    "--story-cohort-person",
+    "--story-cohort-ink",
+    "--story-cohort-copy",
+    "--story-footer-bg",
+    "--story-footer-ink",
+    "--story-footer-copy",
+  ];
+  for (const token of themedSectionTokens) {
+    const lightValue = customPropertyValue(lightTheme, token);
+    const darkValue = customPropertyValue(darkTheme, token);
+    assert.notEqual(lightValue, darkValue, `${token} must visibly distinguish light and dark themes`);
+  }
+
+  assert.match(styles, /\.story-header\s*\{[^}]*color:\s*var\(--story-header-ink\)[^}]*background:\s*var\(--story-header-bg\)/);
+  assert.match(styles, /\.story-projects\s*\{[^}]*color:\s*var\(--story-projects-ink\)[^}]*background:\s*var\(--story-projects-bg\)/);
+  assert.match(styles, /\.story-project-chapter\s*\{[^}]*var\(--story-projects-surface\)/);
+  assert.match(styles, /\.story-map\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593[^}]*background:\s*var\(--story-map-bg\)/);
+  assert.doesNotMatch(styles.match(/\.story-map\s*\{([^}]*)\}/)?.[1] ?? "", /clip-path/);
+  assert.match(styles, /\.story-map-world\s*>\s*img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*opacity:\s*var\(--story-map-opacity\)[^}]*filter:\s*var\(--story-map-filter\)/);
+  assert.match(styles, /\.story-map-pin\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/);
+  assert.match(styles, /\.story-map-pin-label\s*\{[^}]*color:\s*var\(--story-map-label-ink\)[^}]*background:\s*var\(--story-map-label-bg\)/);
+  assert.match(styles, /\.story-cohort\s*\{[^}]*color:\s*var\(--story-cohort-ink\)[^}]*background:\s*var\(--story-cohort-bg\)/);
+  assert.match(styles, /\.story-cohort-group\s*\{[^}]*var\(--story-cohort-surface\)/);
+  assert.match(styles, /\.story-person\s*\{[^}]*background:\s*var\(--story-cohort-person\)/);
+  assert.match(styles, /\.story-footer\s*\{[^}]*color:\s*var\(--story-footer-ink\)[^}]*background:\s*var\(--story-footer-bg\)/);
+  assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-map\s*\{[^}]*width:\s*100%[^}]*max-width:\s*100%/);
+  assert.match(styles, /@media \(max-width:\s*620px\)[\s\S]*?\.story-project-stage\s*\{[^}]*position:\s*relative[^}]*top:\s*auto/);
+
+  const reducedMotionStart = styles.indexOf("@media (prefers-reduced-motion: reduce)");
+  const reducedMotionEnd = styles.indexOf("@media (forced-colors: active)", reducedMotionStart);
+  assert.ok(reducedMotionStart >= 0 && reducedMotionEnd > reducedMotionStart);
+  const reducedMotion = styles.slice(reducedMotionStart, reducedMotionEnd);
+  assert.match(reducedMotion, /animation:\s*none\s*!important/);
+  assert.match(reducedMotion, /transition:\s*none\s*!important/);
+  assert.match(reducedMotion, /\.apto-story\.is-motion-ready \[data-story-reveal\]\s*\{[^}]*opacity:\s*1[^}]*transform:\s*none/);
+  assert.match(reducedMotion, /\.apto-story \[data-story-parallax\],[\s\S]*?\.story-map-world,[\s\S]*?\.story-tool figure img,[\s\S]*?transform:\s*none\s*!important/);
   assert.match(styles, /@media \(forced-colors: active\)/);
   assert.match(styles, /\.story-skip-link:focus/);
   assert.match(styles, /min-height:\s*44px/);

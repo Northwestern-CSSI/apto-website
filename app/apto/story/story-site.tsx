@@ -23,6 +23,7 @@ import { useAptoTheme } from "../use-apto-theme";
 type StorySection = "program" | "projects" | "tools" | "cohort";
 type AptoParticipant = (typeof aptoParticipants)[number];
 type AptoPerson = AptoParticipant["people"][number];
+type StoryMapEntry = { participant: AptoParticipant; project: (typeof aptoProjects)[number] };
 
 const storySections: StorySection[] = ["program", "projects", "tools", "cohort"];
 
@@ -35,6 +36,23 @@ function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/cohort") {
 function participantFor(id: string) {
   return aptoParticipants.find((participant) => participant.id === id);
 }
+
+function groupNearbyStoryProjects(entries: StoryMapEntry[]) {
+  return entries.reduce<StoryMapEntry[][]>((groups, entry) => {
+    const nearby = groups.find((group) => group.some((candidate) => Math.hypot(
+      candidate.participant.mapPosition.x - entry.participant.mapPosition.x,
+      candidate.participant.mapPosition.y - entry.participant.mapPosition.y,
+    ) < 2));
+    if (nearby) nearby.push(entry);
+    else groups.push([entry]);
+    return groups;
+  }, []);
+}
+
+const storyMapGroups = groupNearbyStoryProjects(aptoProjects.flatMap((project) => {
+  const participant = participantFor(project.participantId);
+  return participant ? [{ participant, project }] : [];
+}));
 
 function ParticipantLogo({ participant, eager = false }: { participant: AptoParticipant; eager?: boolean }) {
   return <span className={`story-participant-logo logo-${participant.id} asset-on-${participant.logo.surface}`} aria-hidden="true">
@@ -130,7 +148,12 @@ function useStoryExperience(
           const centerDelta = rect.top + rect.height / 2 - window.innerHeight / 2;
           const speed = Number(element.dataset.storyParallax ?? "0.06");
           const shift = Math.max(-48, Math.min(48, -centerDelta * speed));
+          const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight + rect.height)));
           element.style.setProperty("--story-shift", `${shift.toFixed(2)}px`);
+          element.style.setProperty("--story-shift-soft", `${(shift * .38).toFixed(2)}px`);
+          element.style.setProperty("--story-shift-reverse", `${(-shift * .68).toFixed(2)}px`);
+          element.style.setProperty("--story-local-progress", progress.toFixed(4));
+          element.style.setProperty("--story-scale", (1.035 + progress * .04).toFixed(4));
         });
       }
     };
@@ -187,8 +210,9 @@ function StoryHeader({ activeSection, theme, onToggle }: {
 function StoryHero() {
   const home = pageCopy("/");
   const heroTool = aptoTools.find((tool) => tool.figure.kind === "knowledge-map") ?? aptoTools[0];
+  const heroDetail = heroTool.galleryImages[0];
   return <section className="story-hero" id="story-top" aria-labelledby="story-title">
-    <div className="story-hero-copy" data-story-reveal>
+    <div className="story-hero-copy" data-story-reveal="heading">
       <p className="story-kicker">{home.eyebrow}</p>
       <h1 id="story-title">{home.title}</h1>
       <p>{home.introduction}</p>
@@ -197,9 +221,10 @@ function StoryHero() {
         <span aria-hidden="true">↓</span>
       </a>
     </div>
-    <figure className="story-hero-visual" data-story-reveal>
-      <div className="story-hero-image" data-story-parallax="0.045">
+    <figure className="story-hero-visual" data-story-reveal="media" data-story-parallax="0.038">
+      <div className="story-hero-image">
         <img
+          className="story-hero-primary"
           src={withDeploymentBase(heroTool.figure.src)}
           alt={heroTool.figure.alt}
           width="1200"
@@ -207,32 +232,65 @@ function StoryHero() {
           decoding="async"
           fetchPriority="high"
         />
+        {heroDetail && <span className="story-hero-detail" aria-hidden="true">
+          <img src={withDeploymentBase(heroDetail.src)} alt="" width="1536" height="1024" decoding="async" />
+        </span>}
       </div>
-      <span className="story-orbit is-one" aria-hidden="true" />
-      <span className="story-orbit is-two" aria-hidden="true" />
       <figcaption><span>{aptoInterface.story.viewLabel}</span>{heroTool.figure.label}</figcaption>
     </figure>
   </section>;
 }
 
+function OutcomePanorama() {
+  const usedTools = new Set<string>();
+  const lenses = aptoProgram.outcomes.map((outcome) => {
+    const tool = aptoTools.find((candidate) => candidate.categories.includes(outcome.name) && !usedTools.has(candidate.id))
+      ?? aptoTools.find((candidate) => candidate.categories.includes(outcome.name));
+    if (tool) usedTools.add(tool.id);
+    return { outcome, tool };
+  });
+
+  return <div className="story-outcome-panorama" data-story-reveal="media">
+    {lenses.map(({ outcome, tool }, index) => <figure
+      key={outcome.name}
+      data-story-parallax={(.012 + index * .006).toFixed(3)}
+    >
+      {tool && <img
+        src={withDeploymentBase(tool.galleryImages[0]?.src ?? tool.figure.src)}
+        alt=""
+        width="1536"
+        height="1024"
+        loading="lazy"
+        decoding="async"
+      />}
+      <figcaption><strong>{outcome.name}</strong><span>{outcome.description}</span></figcaption>
+    </figure>)}
+  </div>;
+}
+
 function ProgramStory() {
   const about = pageCopy("/about");
   return <section className="story-section story-program" id="story-program" data-story-section="program" aria-labelledby="story-program-title">
-    <header className="story-section-heading" data-story-reveal>
+    <header className="story-section-heading" data-story-reveal="heading">
       <p>{aptoInterface.story.programLabel}</p>
       <h2 id="story-program-title">{about.title}</h2>
       <span>{aptoProgram.description}</span>
     </header>
-    <div className="story-objectives" data-story-reveal>
-      <h3>{aptoProgram.objectivesTitle}</h3>
-      <ul>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
+    <OutcomePanorama />
+    <div className="story-objectives">
+      <h3 data-story-reveal="left">{aptoProgram.objectivesTitle}</h3>
+      <ul>{aptoProgram.objectives.map((objective, index) => <li
+        key={objective}
+        data-story-reveal="right"
+        style={{ "--story-reveal-delay": `${index * 70}ms` } as CSSProperties}
+      >{objective}</li>)}</ul>
     </div>
     <div className="story-framework" aria-label={aptoProgram.framework.ariaLabel}>
-      <section data-story-reveal>
+      <section data-story-reveal="left">
         <header><p>{aptoProgram.framework.outcomesTitle}</p><span>{aptoProgram.framework.outcomesNote}</span></header>
         <dl>{aptoProgram.outcomes.map((outcome) => <div key={outcome.name}><dt>{outcome.name}</dt><dd>{outcome.description}</dd></div>)}</dl>
       </section>
-      <section data-story-reveal>
+      <section data-story-reveal="right">
         <header><p>{aptoProgram.framework.effortsTitle}</p><span>{aptoProgram.framework.effortsNote}</span></header>
         <dl>{aptoProgram.linesOfEffort.map((effort) => <div key={effort.id}><dt>{effort.title}</dt><dd>{effort.description}</dd></div>)}</dl>
       </section>
@@ -243,29 +301,74 @@ function ProgramStory() {
 function StoryProjectStage({ activeProject }: { activeProject: string }) {
   const current = aptoProjects.find((project) => project.id === activeProject) ?? aptoProjects[0];
   const participant = participantFor(current.participantId);
+  const focusX = participant?.mapPosition.x ?? 50;
+  const focusY = participant?.mapPosition.y ?? 50;
+  const panX = Math.max(-2.4, Math.min(2.4, (50 - focusX) * .07));
+  const panY = Math.max(-1.6, Math.min(1.6, (50 - focusY) * .055));
   return <aside className="story-project-stage" aria-label={aptoInterface.story.projectStageTitle}>
     <div className="story-project-stage-copy">
       <p>{aptoInterface.story.projectsLabel}</p>
       <h3>{aptoInterface.story.projectStageTitle}</h3>
       <span>{aptoInterface.story.projectStageDescription}</span>
     </div>
-    <div className="story-map">
-      <img src={withDeploymentBase(aptoInterface.projects.map.imageUrl)} alt="" width="959" height="593" loading="lazy" />
-      {aptoProjects.map((project) => {
-        const projectParticipant = participantFor(project.participantId);
-        if (!projectParticipant) return null;
-        return <a
-          key={project.id}
-          className={activeProject === project.id ? "is-active" : undefined}
-          href={`#story-project-${project.id}`}
-          aria-label={`${projectParticipant.displayName}: ${project.shortName}`}
-          style={{ left: `${projectParticipant.mapPosition.x}%`, top: `${projectParticipant.mapPosition.y}%`, "--project-accent": projectParticipant.accent } as CSSProperties}
-        ><span>{projectParticipant.displayName}</span></a>;
-      })}
+    <div
+      className="story-map"
+      style={{
+        "--story-map-focus-x": `${focusX}%`,
+        "--story-map-focus-y": `${focusY}%`,
+        "--story-map-active-accent": participant?.accent ?? "var(--story-teal)",
+      } as CSSProperties}
+    >
+      <div
+        className="story-map-world"
+        data-story-parallax="0.002"
+        style={{ "--story-map-pan-x": `${panX}%`, "--story-map-pan-y": `${panY}%` } as CSSProperties}
+      >
+        <img src={withDeploymentBase(aptoInterface.projects.map.imageUrl)} alt="" width="959" height="593" loading="lazy" decoding="async" />
+        {storyMapGroups.map((group) => {
+          const x = group.reduce((total, entry) => total + entry.participant.mapPosition.x, 0) / group.length;
+          const y = group.reduce((total, entry) => total + entry.participant.mapPosition.y, 0) / group.length;
+          const names = group.map(({ participant: member }) => `${member.displayName}, ${member.location}`).join("; ");
+          return <div
+            className={`story-map-location${group.length > 1 ? " is-cluster" : ""}${x > 82 ? " is-east" : ""}`}
+            key={group.map(({ participant: member }) => member.id).join("-")}
+            role={group.length > 1 ? "group" : undefined}
+            aria-label={group.length > 1 ? `${group.length} ${aptoInterface.projects.map.nearbyLocationsLabel}: ${names}` : undefined}
+            style={{ left: `${x}%`, top: `${y}%` } as CSSProperties}
+          >
+            {group.map(({ participant: member, project }, index) => {
+              const angle = group.length > 1 ? -Math.PI / 2 + (index * Math.PI * 2) / group.length : 0;
+              const radius = group.length > 1 ? 18 : 0;
+              const offsetX = Math.cos(angle) * radius;
+              const offsetY = Math.sin(angle) * radius;
+              const active = activeProject === project.id;
+              return <a
+                key={project.id}
+                className={`story-map-pin${active ? " is-active" : ""}`}
+                href={`#story-project-${project.id}`}
+                aria-label={`${member.displayName}: ${project.shortName}`}
+                aria-current={active ? "location" : undefined}
+                style={{
+                  "--project-accent": member.accent,
+                  "--story-pin-x": `${offsetX.toFixed(1)}px`,
+                  "--story-pin-y": `${offsetY.toFixed(1)}px`,
+                } as CSSProperties}
+              ><span className="story-map-pin-dot" aria-hidden="true" /><span className="story-map-pin-label" aria-hidden="true">{member.displayName}</span></a>;
+            })}
+          </div>;
+        })}
+      </div>
     </div>
-    <div className="story-project-stage-active" style={{ "--project-accent": participant?.accent ?? "var(--story-teal)" } as CSSProperties}>
-      {participant && <ParticipantLogo participant={participant} />}
-      <div><strong>{current.shortName}</strong><span>{current.location}</span></div>
+    <div
+      className="story-project-stage-active"
+      style={{ "--project-accent": participant?.accent ?? "var(--story-teal)" } as CSSProperties}
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <div className="story-project-stage-active-inner" key={current.id}>
+        {participant && <ParticipantLogo participant={participant} />}
+        <div><strong>{current.shortName}</strong><span>{current.location}</span></div>
+      </div>
     </div>
   </aside>;
 }
@@ -273,7 +376,7 @@ function StoryProjectStage({ activeProject }: { activeProject: string }) {
 function ProjectsStory({ activeProject }: { activeProject: string }) {
   const projects = pageCopy("/projects");
   return <section className="story-section story-projects" id="story-projects" data-story-section="projects" aria-labelledby="story-projects-title">
-    <header className="story-section-heading" data-story-reveal>
+    <header className="story-section-heading" data-story-reveal="heading">
       <p>{aptoInterface.story.projectsLabel}</p>
       <h2 id="story-projects-title">{projects.title}</h2>
       <span>{projects.introduction}</span>
@@ -288,7 +391,7 @@ function ProjectsStory({ activeProject }: { activeProject: string }) {
             id={`story-project-${project.id}`}
             key={project.id}
             data-project-id={project.id}
-            data-story-reveal
+            data-story-reveal="up"
             style={{ "--project-accent": participant?.accent ?? "var(--story-teal)" } as CSSProperties}
           >
             <header>
@@ -313,17 +416,17 @@ function ProjectsStory({ activeProject }: { activeProject: string }) {
 function ToolsStory() {
   const tools = pageCopy("/tools");
   return <section className="story-section story-tools" id="story-tools" data-story-section="tools" aria-labelledby="story-tools-title">
-    <header className="story-section-heading" data-story-reveal>
+    <header className="story-section-heading" data-story-reveal="heading">
       <p>{aptoInterface.story.toolsLabel}</p>
       <h2 id="story-tools-title">{tools.title}</h2>
       <span>{tools.introduction}</span>
     </header>
-    <p className="story-tools-count" data-story-reveal>{aptoTools.length} {aptoInterface.story.toolCollectionLabel}</p>
+    <p className="story-tools-count" data-story-reveal="heading">{aptoTools.length} {aptoInterface.story.toolCollectionLabel}</p>
     <div className="story-tool-grid">
-      {aptoTools.map((tool) => {
+      {aptoTools.map((tool, index) => {
         const participant = participantFor(tool.participantId);
-        return <article className="story-tool" key={tool.id} data-story-reveal>
-          <figure>
+        return <article className="story-tool" key={tool.id} data-story-reveal="media">
+          <figure data-story-parallax={(.01 + index % 3 * .004).toFixed(3)}>
             <img src={withDeploymentBase(tool.figure.src)} alt={tool.figure.alt} width="900" height="600" loading="lazy" decoding="async" />
             <figcaption>{tool.figure.label}</figcaption>
           </figure>
@@ -360,15 +463,18 @@ function StoryPerson({ person }: { person: AptoPerson | (typeof aptoProgram.prog
 function CohortStory() {
   const cohort = pageCopy("/cohort");
   return <section className="story-section story-cohort" id="story-cohort" data-story-section="cohort" aria-labelledby="story-cohort-title">
-    <div className="story-cohort-art" data-story-parallax="0.028" aria-hidden="true">
+    <div className="story-cohort-art is-back" data-story-parallax="-0.014" aria-hidden="true">
       <img src={withDeploymentBase(aptoInterface.story.cohortArtSrc)} alt="" width="1400" height="900" loading="lazy" decoding="async" />
     </div>
-    <header className="story-section-heading" data-story-reveal>
+    <div className="story-cohort-art is-front" data-story-parallax="0.026" aria-hidden="true">
+      <img src={withDeploymentBase(aptoInterface.story.cohortArtSrc)} alt="" width="1400" height="900" loading="lazy" decoding="async" />
+    </div>
+    <header className="story-section-heading" data-story-reveal="heading">
       <p>{aptoInterface.story.cohortLabel}</p>
       <h2 id="story-cohort-title">{cohort.title}</h2>
       <span>{cohort.introduction}</span>
     </header>
-    <section className="story-program-team" aria-labelledby="story-program-team-title" data-story-reveal>
+    <section className="story-program-team" aria-labelledby="story-program-team-title" data-story-reveal="up">
       <h3 id="story-program-team-title">{aptoInterface.story.programLeadershipLabel}</h3>
       <div>{aptoProgram.programTeam.map((person) => <StoryPerson person={person} key={person.id} />)}</div>
     </section>
@@ -376,7 +482,7 @@ function CohortStory() {
       {aptoParticipants.map((participant) => <article
         className="story-cohort-group"
         key={participant.id}
-        data-story-reveal
+        data-story-reveal="up"
         style={{ "--participant-accent": participant.accent } as CSSProperties}
       >
         <header>

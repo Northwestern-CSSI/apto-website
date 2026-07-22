@@ -38,8 +38,18 @@ for (const page of storyPages) {
     assert.ok(html.includes(`id="story-${section}"`), `${page} needs its ${section} section`);
   }
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
+  assert.ok(html.includes(`src="${basePath}/apto/us-map.svg"`), `${page} needs its base-path-safe project map`);
   assert.ok(html.includes(`src="${basePath}/apto/`), `${page} needs base-path-safe content-managed images`);
   assert.ok(html.includes(`${basePath}/apto/og-apto-continuum.png`), `${page} needs the Continuum social image`);
+  assert.equal((html.match(/class="story-map-location(?:\s|\")/g) ?? []).length, 4, `${page} needs four distinct map locations`);
+  assert.equal((html.match(/class="story-map-pin(?:\s|\")/g) ?? []).length, 5, `${page} needs one map link for every project`);
+  assert.equal((html.match(/href="#story-project-/g) ?? []).length, 5, `${page} needs five map destinations`);
+  assert.match(html, /class="story-map-location is-cluster"[^>]*role="group"[^>]*aria-label="2 nearby APTO project locations:/);
+  assert.match(html, /<img[^>]*src="[^"]*\/apto\/us-map\.svg"[^>]*width="959"[^>]*height="593"/);
+  const parallaxSpeeds = [...html.matchAll(/data-story-parallax="(-?[\d.]+)"/g)].map((match) => Number(match[1]));
+  assert.ok(parallaxSpeeds.length >= 8, `${page} needs layered scroll visuals`);
+  assert.ok(new Set(parallaxSpeeds).size >= 6, `${page} needs varied parallax depths`);
+  assert.ok(parallaxSpeeds.some((speed) => speed < 0), `${page} needs a counter-moving parallax layer`);
   assert.ok(!html.includes(`${basePath}${basePath}`), `${page} must not duplicate the deployment base path`);
   assert.ok(html.includes(`${basePath}/_next/`), `${page} needs base-path-safe framework assets`);
   assert.doesNotMatch(html, unprefixedPath);
