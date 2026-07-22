@@ -14,6 +14,16 @@ import {
   aptoProgram,
   aptoProjects,
 } from "./nsf-apto-data";
+import {
+  APTO_LEGACY_THEME_SESSION_KEY,
+  APTO_THEME_STORAGE_KEY,
+  applyAptoTheme,
+  isAptoTheme,
+  legacyAptoTheme,
+  preferredAptoTheme,
+  storedAptoTheme,
+  type AptoTheme,
+} from "./apto/theme";
 
 export type NsfAptoMockupId =
   | "nsfhome"
@@ -50,9 +60,9 @@ const pageSlug: Record<NsfAptoSection, string> = {
 const directionFor = (id: NsfAptoMockupId): NsfDirection => id.startsWith("nsfnetwork") ? "network" : "home";
 const canonicalId = (id: NsfAptoMockupId): NsfAptoMockupId => directionFor(id) === "network" ? "nsfnetwork" : "nsfhome";
 
-function aptoHref(section: NsfAptoSection, id: NsfAptoMockupId) {
+function aptoHref(section: NsfAptoSection) {
   const path = sectionPath[section];
-  return `/apto${path ? `/${path}` : ""}?concept=${canonicalId(id)}`;
+  return `/apto${path ? `/${path}` : ""}`;
 }
 
 function copyFor(section: NsfAptoSection) {
@@ -95,44 +105,117 @@ function ExternalLink({ href, children, className }: { href: string; children: R
 function ParticipantMark({
   participant,
   size = "directory",
-  tone,
 }: {
   participant: AptoParticipant;
   size?: "compact" | "directory" | "feature";
-  tone: "light" | "dark";
 }) {
   const logo = participant.logo;
   return <span
-    className={`nsf-participant-mark is-${size} is-${logo.kind} tone-${tone} asset-on-${logo.surface} logo-${participant.id}`}
+    className={`nsf-participant-mark is-${size} is-${logo.kind} asset-on-${logo.surface} logo-${participant.id}`}
     aria-hidden="true"
   >
     <img src={logo.src} width={logo.width} height={logo.height} alt="" />
   </span>;
 }
 
-function NsfThemeSwitch({ id, section }: { id: NsfAptoMockupId; section: NsfAptoSection }) {
-  const current = directionFor(id);
+function useAptoTheme(enabled: boolean, initialTheme: AptoTheme) {
+  const [theme, setTheme] = useState<AptoTheme>(initialTheme);
+
+  useEffect(() => {
+    if (!enabled) return;
+    let active = true;
+    const rootTheme = document.documentElement.dataset.aptoTheme;
+    const resolvedTheme = isAptoTheme(rootTheme)
+      ? rootTheme
+      : storedAptoTheme() ?? legacyAptoTheme() ?? preferredAptoTheme();
+    applyAptoTheme(resolvedTheme);
+    queueMicrotask(() => {
+      if (active) setTheme(resolvedTheme);
+    });
+
+    const preference = window.matchMedia("(prefers-color-scheme: dark)");
+    const handlePreferenceChange = (event: MediaQueryListEvent) => {
+      if (storedAptoTheme() || legacyAptoTheme()) return;
+      const nextTheme = event.matches ? "dark" : "light";
+      applyAptoTheme(nextTheme);
+      setTheme(nextTheme);
+    };
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== APTO_THEME_STORAGE_KEY) return;
+      const nextTheme = isAptoTheme(event.newValue)
+        ? event.newValue
+        : legacyAptoTheme() ?? preferredAptoTheme();
+      applyAptoTheme(nextTheme);
+      setTheme(nextTheme);
+    };
+    preference.addEventListener("change", handlePreferenceChange);
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      active = false;
+      preference.removeEventListener("change", handlePreferenceChange);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [enabled]);
+
+  const toggleTheme = () => {
+    if (!enabled) return;
+    const rootTheme = document.documentElement.dataset.aptoTheme;
+    const currentTheme = isAptoTheme(rootTheme) ? rootTheme : theme;
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    try {
+      window.localStorage.setItem(APTO_THEME_STORAGE_KEY, nextTheme);
+    } catch {}
+    try {
+      window.sessionStorage.removeItem(APTO_LEGACY_THEME_SESSION_KEY);
+    } catch {}
+    applyAptoTheme(nextTheme);
+    setTheme(nextTheme);
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("concept")) {
+      url.searchParams.delete("concept");
+      window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    }
+  };
+
+  return { theme, toggleTheme };
+}
+
+function NsfThemeSwitch({ theme, onToggle }: { theme: AptoTheme; onToggle: () => void }) {
   const lightLabel = aptoInterface.directions.find((direction) => direction.id === "nsfhome")?.label;
   const darkLabel = aptoInterface.directions.find((direction) => direction.id === "nsfnetwork")?.label;
   if (!lightLabel || !darkLabel) throw new Error("Missing APTO theme labels in Markdown content");
-  return <nav className="nsf-theme-switch" aria-label={aptoInterface.study.themeChooserLabel}>
-    <a href={aptoHref(section, "nsfhome")} aria-current={current === "home" ? "true" : undefined}>
-      <Sun aria-hidden="true" focusable="false" />
-      <span>{lightLabel}</span>
-    </a>
-    <a href={aptoHref(section, "nsfnetwork")} aria-current={current === "network" ? "true" : undefined}>
-      <Moon aria-hidden="true" focusable="false" />
-      <span>{darkLabel}</span>
-    </a>
-  </nav>;
+  const nextLabel = theme === "dark" ? lightLabel : darkLabel;
+  return <div className="nsf-theme-switch">
+    <button
+      type="button"
+      role="switch"
+      aria-checked={theme === "dark"}
+      aria-label={`${aptoInterface.study.themeChooserLabel}: ${darkLabel}`}
+      title={`Use ${nextLabel}`}
+      onClick={onToggle}
+    >
+      <span className="nsf-theme-switch-track" aria-hidden="true">
+        <span className="nsf-theme-switch-thumb">
+          <Sun className="is-sun" focusable="false" />
+          <Moon className="is-moon" focusable="false" />
+        </span>
+      </span>
+    </button>
+  </div>;
 }
 
-function NsfProgramHeader({ id, activeSection }: { id: NsfAptoMockupId; activeSection: NsfAptoSection }) {
+function NsfProgramHeader({ activeSection, theme, onToggle, showThemeSwitch = true }: {
+  activeSection: NsfAptoSection;
+  theme: AptoTheme;
+  onToggle: () => void;
+  showThemeSwitch?: boolean;
+}) {
   return <header className="nsf-program-header">
     <div className="nsf-program-brand">
       <a
         className="nsf-apto-wordmark"
-        href={aptoHref("home", id)}
+        href={aptoHref("home")}
         aria-current={activeSection === "home" ? "page" : undefined}
       >
         <strong>{aptoProgram.acronym}</strong>
@@ -142,36 +225,35 @@ function NsfProgramHeader({ id, activeSection }: { id: NsfAptoMockupId; activeSe
     <nav aria-label={aptoInterface.accessibility.primaryNavigationLabel}>
       {aptoInterface.primaryNavigation.map((link) => <a
         key={link.section}
-        href={aptoHref(link.section, id)}
+        href={aptoHref(link.section)}
         aria-current={activeSection === link.section ? "page" : undefined}
       >{link.label}</a>)}
     </nav>
-    <NsfThemeSwitch id={id} section={activeSection} />
+    {showThemeSwitch && <NsfThemeSwitch theme={theme} onToggle={onToggle} />}
   </header>;
 }
 
-function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
+function CompactProgramHero({ id }: { id: string }) {
   const homeCopy = copyFor("home");
-  const tone = direction === "network" ? "dark" : "light";
   return <section className="nsf-program-hero has-partner-grid" aria-labelledby={`${id}-title`}>
     <div className="nsf-hero-copy">
       <p className="nsf-eyebrow">{homeCopy.eyebrow}</p>
       <h1 id={`${id}-title`}>{homeCopy.title}</h1>
       <p className="nsf-hero-summary">{homeCopy.introduction}</p>
       <div className="nsf-hero-actions">
-        <a className="nsf-primary-action" href={aptoHref("projects", id)}>{aptoInterface.home.primaryActionLabel} <span aria-hidden="true">→</span></a>
-        <a href={`${aptoHref("home", id)}#${id}-about`}>{aptoInterface.home.secondaryActionLabel} <span aria-hidden="true">↓</span></a>
+        <a className="nsf-primary-action" href={aptoHref("projects")}>{aptoInterface.home.primaryActionLabel} <span aria-hidden="true">→</span></a>
+        <a href={`${aptoHref("home")}#${id}-about`}>{aptoInterface.home.secondaryActionLabel} <span aria-hidden="true">↓</span></a>
       </div>
     </div>
     <aside className="nsf-hero-partners" aria-labelledby={`${id}-hero-partners-title`}>
       <header>
         <p id={`${id}-hero-partners-title`}>{aptoInterface.home.cohortEyebrow}</p>
-        <a href={aptoHref("cohort", id)}>{aptoInterface.home.cohortLinkLabel} <span aria-hidden="true">→</span></a>
+        <a href={aptoHref("cohort")}>{aptoInterface.home.cohortLinkLabel} <span aria-hidden="true">→</span></a>
       </header>
       <ul>
         {aptoParticipants.map((participant) => <li key={participant.id}>
-          <a href={`${aptoHref("cohort", id)}#participant-${participant.id}`}>
-            <ParticipantMark participant={participant} size="compact" tone={tone} />
+          <a href={`${aptoHref("cohort")}#participant-${participant.id}`}>
+            <ParticipantMark participant={participant} size="compact" />
             <span>{participant.displayName}</span>
           </a>
         </li>)}
@@ -180,20 +262,20 @@ function CompactProgramHero({ id, direction }: { id: NsfAptoMockupId; direction:
   </section>;
 }
 
-function HomePathways({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
-  return <nav className={`nsf-home-pathways is-${direction}`} aria-label={aptoInterface.accessibility.homePathwaysLabel}>
-    {aptoInterface.home.pathways.map((pathway) => <a key={pathway.section} href={aptoHref(pathway.section, id)}>
+function HomePathways() {
+  return <nav className="nsf-home-pathways" aria-label={aptoInterface.accessibility.homePathwaysLabel}>
+    {aptoInterface.home.pathways.map((pathway) => <a key={pathway.section} href={aptoHref(pathway.section)}>
       <span><strong>{pathway.title}</strong><small>{pathway.description}</small></span>
       <i aria-hidden="true">↗</i>
     </a>)}
   </nav>;
 }
 
-function HomePage({ id, direction }: { id: NsfAptoMockupId; direction: NsfDirection }) {
+function HomePage({ id }: { id: string }) {
   return <>
-    <CompactProgramHero id={id} direction={direction} />
+    <CompactProgramHero id={id} />
     <ProgramOverview id={id} />
-    <HomePathways id={id} direction={direction} />
+    <HomePathways />
   </>;
 }
 
@@ -205,7 +287,7 @@ function SectionIntro({ eyebrow, title, description, id, pageHeading = false }: 
   </header>;
 }
 
-function ProgramOverview({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
+function ProgramOverview({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const copy = copyFor("about");
   return <section className="nsf-program-overview" id={`${id}-about`} aria-labelledby={`${id}-about-title`}>
     <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={pageHeading ? copy.introduction : aptoProgram.description} id={`${id}-about-title`} pageHeading={pageHeading} />
@@ -241,13 +323,13 @@ function ProjectPeopleList({ people }: { people: readonly AptoPerson[] }) {
   </ul>;
 }
 
-function ProjectAccordionItem({ project, tone }: { project: AptoProject; tone: "light" | "dark" }) {
+function ProjectAccordionItem({ project }: { project: AptoProject }) {
   const participant = participantFor(project.participantId);
   return <details className="nsf-project-accordion" id={`nsf-award-${project.awardId}`}>
     <summary className="nsf-project-summary">
       {participant
-        ? <ParticipantMark participant={participant} size="directory" tone={tone} />
-        : <span className={`nsf-participant-mark is-directory is-fallback tone-${tone}`} aria-hidden="true">{participantMonogram(project.organization)}</span>}
+        ? <ParticipantMark participant={participant} size="directory" />
+        : <span className="nsf-participant-mark is-directory is-fallback" aria-hidden="true">{participantMonogram(project.organization)}</span>}
       <span className="nsf-project-summary-copy">
         <span className="nsf-project-context">{project.organization} <span aria-hidden="true">·</span> {project.location}</span>
         <h2>{project.shortName}</h2>
@@ -288,7 +370,7 @@ function groupNearbyMapEntries(entries: AwardeeMapEntry[]) {
   }, []);
 }
 
-function AwardeeMapCluster({ id, group, x, y }: { id: NsfAptoMockupId; group: AwardeeMapEntry[]; x: number; y: number }) {
+function AwardeeMapCluster({ id, group, x, y }: { id: string; group: AwardeeMapEntry[]; x: number; y: number }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -344,7 +426,7 @@ function AwardeeMapCluster({ id, group, x, y }: { id: NsfAptoMockupId; group: Aw
   </div>;
 }
 
-function AwardeeMap({ id, tone }: { id: NsfAptoMockupId; tone: "light" | "dark" }) {
+function AwardeeMap({ id }: { id: string }) {
   const map = aptoInterface.projects.map;
   const entries = aptoParticipants.flatMap((participant) => {
     const project = projectForParticipant(participant.id);
@@ -386,7 +468,7 @@ function AwardeeMap({ id, tone }: { id: NsfAptoMockupId; tone: "light" | "dark" 
         const project = projectForParticipant(participant.id);
         return project ? <li key={participant.id}>
           <a href={`#nsf-award-${project.awardId}`} onClick={() => revealProject(project.awardId)}>
-            <ParticipantMark participant={participant} size="compact" tone={tone} />
+            <ParticipantMark participant={participant} size="compact" />
             <span><strong>{participant.displayName}</strong><small>{participant.location}</small></span>
           </a>
         </li> : null;
@@ -395,17 +477,16 @@ function AwardeeMap({ id, tone }: { id: NsfAptoMockupId; tone: "light" | "dark" 
   </aside>;
 }
 
-function ProjectsSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
+function ProjectsSection({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const copy = copyFor("projects");
-  const tone = directionFor(id) === "network" ? "dark" : "light";
   const projects = [...aptoProjects].sort((a, b) => a.shortName.localeCompare(b.shortName));
   return <section className="nsf-projects-section" id={`${id}-projects`} aria-labelledby={`${id}-projects-title`}>
     <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-projects-title`} pageHeading={pageHeading} />
     <div className="nsf-projects-layout">
       <div className="nsf-project-ledger" id={`${id}-project-list`}>
-        {projects.map((project) => <ProjectAccordionItem key={project.awardId} project={project} tone={tone} />)}
+        {projects.map((project) => <ProjectAccordionItem key={project.awardId} project={project} />)}
       </div>
-      <AwardeeMap id={id} tone={tone} />
+      <AwardeeMap id={id} />
     </div>
   </section>;
 }
@@ -438,13 +519,13 @@ function FilterSelect({ value, onChange, controls, title, label, options }: {
   </label>;
 }
 
-function ToolCard({ tool, tone }: { tool: AptoTool; tone: "light" | "dark" }) {
+function ToolCard({ tool }: { tool: AptoTool }) {
   const participant = participantFor(tool.participantId);
   return <article className="nsf-tool-card">
     <div className="nsf-tool-copy">
       <header className="nsf-tool-heading">
         <div className="nsf-tool-context">
-          {participant && <ParticipantMark participant={participant} size="compact" tone={tone} />}
+          {participant && <ParticipantMark participant={participant} size="compact" />}
           <p><strong>{participant?.displayName ?? tool.organizationId}</strong><span aria-hidden="true"> · </span><span>{tool.statusLabel}</span></p>
         </div>
         <h2>{tool.name}</h2>
@@ -464,10 +545,9 @@ function ToolCard({ tool, tone }: { tool: AptoTool; tone: "light" | "dark" }) {
   </article>;
 }
 
-function ToolsSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
+function ToolsSection({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const [participant, setParticipant] = useState("all");
   const [category, setCategory] = useState("all");
-  const tone = directionFor(id) === "network" ? "dark" : "light";
   const listId = `${id}-tool-list`;
   const copy = copyFor("tools");
   const organizationOptions = [
@@ -491,7 +571,7 @@ function ToolsSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHe
       <p className="nsf-filter-status" aria-live="polite">{aptoInterface.tools.showingPrefix} {tools.length} {tools.length === 1 ? aptoInterface.tools.toolSingular : aptoInterface.tools.toolPlural}</p>
     </div>
     {tools.length > 0
-      ? <div className="nsf-tool-grid" id={listId}>{tools.map((tool) => <ToolCard key={tool.id} tool={tool} tone={tone} />)}</div>
+      ? <div className="nsf-tool-grid" id={listId}>{tools.map((tool) => <ToolCard key={tool.id} tool={tool} />)}</div>
       : <div className="nsf-tool-empty" id={listId}><h2>{aptoInterface.tools.emptyTitle}</h2><p>{aptoInterface.tools.emptyDescription}</p></div>}
   </section>;
 }
@@ -509,9 +589,8 @@ function PersonCard({ person }: { person: AptoPerson | AptoProgramPerson }) {
   </article>;
 }
 
-function CohortPeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId; pageHeading?: boolean }) {
+function CohortPeopleSection({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const copy = copyFor("cohort");
-  const tone = directionFor(id) === "network" ? "dark" : "light";
   return <section className="nsf-cohort-people" id={`${id}-cohort`} aria-labelledby={`${id}-cohort-title`}>
     <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-cohort-title`} pageHeading={pageHeading} />
     <section className="nsf-program-leadership" aria-labelledby={`${id}-program-leadership-title`}>
@@ -523,7 +602,7 @@ function CohortPeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId;
         const project = projectForParticipant(participant.id);
         return <section className="nsf-cohort-group" id={`participant-${participant.id}`} key={participant.id} aria-labelledby={`${id}-cohort-${participant.id}`}>
           <header className="nsf-cohort-group-header">
-            <ParticipantMark participant={participant} size="feature" tone={tone} />
+            <ParticipantMark participant={participant} size="feature" />
             <div><p>{participant.location}</p><h2 id={`${id}-cohort-${participant.id}`}>{participant.displayName}</h2>{project && <span>{project.shortName}</span>}</div>
             <ExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</ExternalLink>
           </header>
@@ -534,7 +613,7 @@ function CohortPeopleSection({ id, pageHeading = false }: { id: NsfAptoMockupId;
   </section>;
 }
 
-function NsfAcknowledgementFooter({ id }: { id: NsfAptoMockupId }) {
+function NsfAcknowledgementFooter({ id }: { id: string }) {
   return <footer className="nsf-program-footer">
     <div className="nsf-footer-brand"><div><strong>{aptoProgram.acronym}</strong><span>{aptoProgram.name}</span></div></div>
     <div className="nsf-acknowledgement">
@@ -547,15 +626,15 @@ function NsfAcknowledgementFooter({ id }: { id: NsfAptoMockupId }) {
       <div className="nsf-funder-copy"><strong>{aptoInterface.footer.disclaimerTitle}</strong><p>{aptoBoilerplate}</p></div>
     </div>
     <nav aria-label={aptoInterface.accessibility.footerNavigationLabel}>
-      {aptoInterface.primaryNavigation.map((link) => <a key={link.section} href={aptoHref(link.section, id)}>{link.label}</a>)}
+      {aptoInterface.primaryNavigation.map((link) => <a key={link.section} href={aptoHref(link.section)}>{link.label}</a>)}
       <a href={`#${id}-main`}>{aptoInterface.footer.backToTopLabel} ↑</a>
     </nav>
   </footer>;
 }
 
-function NsfSectionBody({ id, section, direction }: { id: NsfAptoMockupId; section: NsfAptoSection; direction: NsfDirection }) {
+function NsfSectionBody({ id, section }: { id: string; section: NsfAptoSection }) {
   switch (section) {
-    case "home": return <HomePage id={id} direction={direction} />;
+    case "home": return <HomePage id={id} />;
     case "about": return <ProgramOverview id={id} pageHeading />;
     case "cohort": return <CohortPeopleSection id={id} pageHeading />;
     case "projects": return <ProjectsSection id={id} pageHeading />;
@@ -563,13 +642,18 @@ function NsfSectionBody({ id, section, direction }: { id: NsfAptoMockupId; secti
   }
 }
 
-export function NsfAptoPage({ id, section, embedded = false }: { id: NsfAptoMockupId; section: NsfAptoSection; embedded?: boolean }) {
-  const direction = directionFor(id);
-  return <div className={`concept concept-${canonicalId(id)} nsf-apto nsf-apto-${direction} ${embedded ? "is-embedded" : "is-routed"}`}>
-    {!embedded && <a className="nsf-skip-link" href={`#${id}-main`}>{aptoInterface.accessibility.skipLinkLabel}</a>}
-    <NsfProgramHeader id={id} activeSection={section} />
-    <main id={`${id}-main`} tabIndex={-1}><NsfSectionBody id={id} section={section} direction={direction} /></main>
-    <NsfAcknowledgementFooter id={id} />
+export function NsfAptoPage({ id, section, embedded = false }: { id?: NsfAptoMockupId; section: NsfAptoSection; embedded?: boolean }) {
+  const instanceId = embedded && id ? canonicalId(id) : "apto";
+  const initialTheme: AptoTheme = embedded && id && directionFor(id) === "network" ? "dark" : "light";
+  const { theme, toggleTheme } = useAptoTheme(!embedded, initialTheme);
+  const className = embedded && id
+    ? `concept concept-${canonicalId(id)} nsf-apto nsf-apto-${directionFor(id)} is-embedded`
+    : "concept concept-apto nsf-apto is-routed";
+  return <div className={className}>
+    {!embedded && <a className="nsf-skip-link" href={`#${instanceId}-main`}>{aptoInterface.accessibility.skipLinkLabel}</a>}
+    <NsfProgramHeader activeSection={section} theme={theme} onToggle={toggleTheme} showThemeSwitch={!embedded} />
+    <main id={`${instanceId}-main`} tabIndex={-1}><NsfSectionBody id={instanceId} section={section} /></main>
+    <NsfAcknowledgementFooter id={instanceId} />
   </div>;
 }
 
@@ -578,7 +662,7 @@ export function NsfAptoMockup({ id }: { id: NsfAptoMockupId }) {
     const match = window.location.hash.match(/^#(nsfhome(?:widgets)?|nsfledger(?:widgets)?|nsfnetwork(?:widgets)?)-(about|cohort|participants|people|projects|sources|tools)$/);
     if (!match || match[1] !== id) return;
     const legacySection = ["participants", "people"].includes(match[2]) ? "cohort" : match[2] === "sources" ? "home" : match[2];
-    window.location.replace(aptoHref(legacySection as NsfAptoSection, id));
+    window.location.replace(aptoHref(legacySection as NsfAptoSection));
   }, [id]);
   return <NsfAptoPage id={id} section="home" embedded />;
 }

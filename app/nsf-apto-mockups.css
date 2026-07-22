@@ -435,6 +435,9 @@
 .nsf-framework-items dd { max-width: 42ch; margin-top: 10px; color: var(--nsf-framework-muted); font-size: .93rem; line-height: 1.62; text-wrap: pretty; }
 .nsf-projects-section { background: #f2f7f9; }
 .nsf-participant-mark {
+  --nsf-logo-plate-background: #fff;
+  --nsf-logo-plate-border: #99a7ba;
+  --nsf-logo-plate-shadow: 0 1px 0 rgba(0, 37, 84, .05);
   min-width: 0;
   display: grid;
   place-items: center;
@@ -444,12 +447,12 @@
   border-radius: 10px;
   box-shadow: var(--nsf-logo-plate-shadow);
 }
-.nsf-participant-mark.tone-light {
+.nsf-apto-home .nsf-participant-mark {
   --nsf-logo-plate-background: #fff;
   --nsf-logo-plate-border: #99a7ba;
   --nsf-logo-plate-shadow: 0 1px 0 rgba(0, 37, 84, .05);
 }
-.nsf-participant-mark.tone-dark {
+.nsf-apto-network .nsf-participant-mark {
   --nsf-logo-plate-background: var(--nsf-dark-blue);
   --nsf-logo-plate-border: #99a7ba;
   --nsf-logo-plate-shadow: 0 1px 0 rgba(255, 255, 255, .08);
@@ -458,24 +461,24 @@
 .nsf-participant-mark.is-directory { width: 148px; height: 72px; padding: 10px 13px; }
 .nsf-participant-mark.is-feature { width: 148px; height: 82px; padding: 11px 13px; }
 .nsf-participant-mark img { max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; object-fit: contain; }
-.nsf-participant-mark.tone-light.logo-macrocosm img {
+.nsf-apto-home .nsf-participant-mark.logo-macrocosm img {
   filter: brightness(0) saturate(100%) invert(14%) sepia(47%) saturate(1915%) hue-rotate(178deg) brightness(84%) contrast(105%);
 }
-.nsf-participant-mark.tone-light.logo-aperture img {
+.nsf-apto-home .nsf-participant-mark.logo-aperture img {
   filter: invert(1) grayscale(1) contrast(4);
   mix-blend-mode: multiply;
 }
-.nsf-participant-mark.tone-dark.logo-uchicago img {
+.nsf-apto-network .nsf-participant-mark.logo-uchicago img {
   filter: grayscale(1) brightness(0) invert(1);
 }
-.nsf-participant-mark.tone-dark.logo-northwestern img {
+.nsf-apto-network .nsf-participant-mark.logo-northwestern img {
   filter: invert(1) grayscale(1) brightness(3);
   mix-blend-mode: screen;
 }
 .nsf-participant-mark.is-symbol img { max-width: 52px; max-height: 52px; }
 .nsf-participant-mark.is-compact.is-symbol img { max-width: 34px; max-height: 34px; }
 .nsf-participant-mark.is-fallback { color: var(--nsf-dark-blue); font-size: .8rem; font-weight: 800; }
-.nsf-participant-mark.tone-dark.is-fallback { color: #fff; }
+.nsf-apto-network .nsf-participant-mark.is-fallback { color: #fff; }
 .nsf-filter { margin-bottom: 0; display: flex; flex-wrap: wrap; gap: 8px; overflow: visible; padding: 0; border: 0; scrollbar-width: thin; }
 .nsf-filter button { min-width: max-content; min-height: 44px; padding: 0 15px; color: var(--nsf-muted); background: var(--nsf-soft-surface); border: 1px solid var(--nsf-line); border-radius: 999px; font-size: .82rem; font-weight: 700; }
 .nsf-filter button:hover { color: var(--nsf-dark-blue); background: #e8f0f5; }
@@ -748,7 +751,8 @@
 .nsf-apto-ledger .nsf-widget-composite { border-radius: 0; }
 
 /* Organization-first network */
-.nsf-apto-network {
+.nsf-apto-network,
+.nsf-apto-network .nsf-apto {
   --nsf-dark-blue: #05182c;
   --nsf-network-canvas: #010914;
   --nsf-network-surface: #04172a;
@@ -931,7 +935,8 @@
 .nsf-apto-network .nsf-program-footer { background: #010712; }
 
 /* First-version visual system: a curved light interface and its dark-core peer. */
-.nsf-apto-home {
+.nsf-apto-home,
+.nsf-apto-home .nsf-apto {
   --nsf-soft-surface: #eef4f8;
   --nsf-raised-surface: #fff;
   background: #f7fafc;
@@ -1251,7 +1256,8 @@
 .nsf-apto-ledger .nsf-ledger-detail { border-left: 0; }
 
 /* Dark core: the same information architecture on a genuinely deep navy canvas. */
-.nsf-apto-network {
+.nsf-apto-network,
+.nsf-apto-network .nsf-apto {
   --nsf-dark-blue: #010914;
   --nsf-network-canvas: #010914;
   --nsf-network-surface: #04172a;
@@ -1578,7 +1584,8 @@
 }
 
 /* Editorial first version: option-two structure with restrained curvature. */
-.nsf-apto-home {
+.nsf-apto-home,
+.nsf-apto-home .nsf-apto {
   --nsf-paper: #f8f5ee;
   --nsf-soft-surface: #f3eee3;
   --nsf-raised-surface: #fffdf8;
@@ -1952,7 +1959,8 @@
   border-radius: 0;
 }
 .nsf-tool-categories li::before { content: "·"; margin-right: 7px; color: var(--nsf-teal); }
-.nsf-apto-network { --nsf-soft-shadow: none; }
+.nsf-apto-network,
+.nsf-apto-network .nsf-apto { --nsf-soft-shadow: none; }
 
 @media (max-width: 1120px) {
   .nsf-awardee-map,
@@ -2372,4 +2380,90 @@
   .nsf-filter-select select,
   .nsf-tool-figure > img { background: Canvas; border-color: CanvasText; box-shadow: none; }
   .nsf-awardee-map-cluster > button { forced-color-adjust: none; }
+}
+
+/* One shared page structure with a compact, persistent appearance control. */
+:root[data-apto-theme] .nsf-apto .nsf-theme-switch {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+}
+:root[data-apto-theme] .nsf-apto .nsf-theme-switch button {
+  position: relative;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  cursor: pointer;
+}
+:root[data-apto-theme] .nsf-apto .nsf-theme-switch button:hover {
+  color: inherit;
+  background: rgba(255, 255, 255, .08);
+}
+:root[data-apto-theme] .nsf-apto .nsf-theme-switch button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 0;
+  box-shadow: 0 0 0 2px var(--nsf-gold);
+}
+.nsf-theme-switch-track {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  display: block;
+  background: #0b4169;
+  border: 1px solid #6f8ca2;
+  border-radius: 999px;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.nsf-theme-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  color: #002554;
+  background: var(--nsf-gold);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .28);
+  transition: transform 160ms cubic-bezier(.2, .7, .2, 1);
+}
+.nsf-theme-switch-thumb svg {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transition: opacity 120ms ease;
+}
+.nsf-theme-switch-thumb .is-moon { opacity: 0; }
+:root[data-apto-theme="dark"] .nsf-theme-switch-thumb { transform: translateX(16px); }
+:root[data-apto-theme="dark"] .nsf-theme-switch-thumb .is-sun { opacity: 0; }
+:root[data-apto-theme="dark"] .nsf-theme-switch-thumb .is-moon { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nsf-theme-switch-track,
+  .nsf-theme-switch-thumb,
+  .nsf-theme-switch-thumb svg { transition: none; }
+}
+
+@media (forced-colors: active) {
+  :root[data-apto-theme] .nsf-apto .nsf-theme-switch { background: transparent; border: 0; }
+  :root[data-apto-theme] .nsf-apto .nsf-theme-switch-track { background: Canvas; border-color: ButtonText; }
+  :root[data-apto-theme] .nsf-apto .nsf-theme-switch-thumb { color: Canvas; background: ButtonText; box-shadow: none; }
+  :root[data-apto-theme="dark"] .nsf-apto .nsf-theme-switch-thumb { color: HighlightText; background: Highlight; }
+  :root[data-apto-theme] .nsf-apto .nsf-theme-switch button:focus-visible { outline-color: Highlight; box-shadow: none; }
 }

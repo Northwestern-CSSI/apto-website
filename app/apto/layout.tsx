@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { aptoProgram } from "../nsf-apto-data";
+import { aptoThemeBootstrap } from "./theme";
 
 export const metadata: Metadata = {
   title: {
@@ -11,5 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default function AptoLayout({ children }: { children: ReactNode }) {
-  return children;
+  return <>
+    <script
+      id="apto-theme-bootstrap"
+      dangerouslySetInnerHTML={{ __html: aptoThemeBootstrap }}
+    />
+    {children}
+  </>;
 }

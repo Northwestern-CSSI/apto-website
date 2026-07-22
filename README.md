@@ -12,9 +12,12 @@ The public pages are:
 - `/apto/tools` — compact tool catalog filtered by organization and outcome area
 - `/apto/cohort` — participating organizations, program leadership, and teams
 
-The legacy `/apto/people` route displays the combined cohort page. Previously
-published `concept` links remain compatible: light/editorial variants resolve
-to the merged light site, and network variants resolve to the dark site.
+The legacy `/apto/people` route displays the combined cohort page. Light and
+dark appearances use one shared page structure. On a first visit the site
+follows the browser or operating-system preference; the compact header switch
+stores an explicit user override. Previously published `concept` links remain
+compatible as one-tab theme hints without creating a separate version of any
+page.
 
 ## Requirements
 

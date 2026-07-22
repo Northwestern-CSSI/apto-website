@@ -11,12 +11,12 @@ const canonicalPages = [
   ["/tools", "/tools", "tools"],
 ];
 const legacyConceptAliases = [
-  ["nsfhome", "home", "nsfhome"],
-  ["nsfhomewidgets", "home", "nsfhome"],
-  ["nsfledger", "home", "nsfhome"],
-  ["nsfledgerwidgets", "home", "nsfhome"],
-  ["nsfnetwork", "network", "nsfnetwork"],
-  ["nsfnetworkwidgets", "network", "nsfnetwork"],
+  "nsfhome",
+  "nsfhomewidgets",
+  "nsfledger",
+  "nsfledgerwidgets",
+  "nsfnetwork",
+  "nsfnetworkwidgets",
 ];
 const baseline = {
   assets: 16,
@@ -73,6 +73,20 @@ function escapeRegex(value) {
 
 function countMatches(value, pattern) {
   return (value.match(pattern) ?? []).length;
+}
+
+function routedAptoMarkup(html) {
+  const marker = '<div class="concept concept-apto nsf-apto is-routed">';
+  const start = html.indexOf(marker);
+  assert.ok(start >= 0, "Expected the shared routed APTO root");
+  const divTags = /<\/?div\b[^>]*>/gi;
+  divTags.lastIndex = start;
+  let depth = 0;
+  for (let match = divTags.exec(html); match; match = divTags.exec(html)) {
+    depth += match[0].startsWith("</") ? -1 : 1;
+    if (depth === 0) return html.slice(start, divTags.lastIndex);
+  }
+  assert.fail("Shared routed APTO root did not close");
 }
 
 function maxPixelValueFor(styles, property) {
@@ -159,7 +173,7 @@ test("preserves the dormant homepage widget without exposing it on public routes
   assert.equal(countMatches(html, /role="tab"/g), 0);
 });
 
-test("renders five canonical pages in two themes and preserves every published concept alias", async () => {
+test("renders one shared page structure, supports both themes, and preserves every published concept alias", async () => {
   const content = await generatedContent();
   assert.equal(content.interface.primaryNavigation.length, 4);
   assert.deepEqual(
@@ -171,22 +185,33 @@ test("renders five canonical pages in two themes and preserves every published c
   for (const [, slug] of canonicalPages) assert.ok(generatedSlugs.has(slug));
   assert.equal(generatedSlugs.has("/people"), false, "/people is a route alias, not a sixth content page");
 
-  for (const [concept, theme, canonicalConcept] of legacyConceptAliases) {
+  let aliasMarkup;
+  for (const concept of legacyConceptAliases) {
     const response = await render(`/apto?concept=${concept}`);
     assert.equal(response.status, 200, `${concept} should render`);
     const html = await response.text();
-    assert.match(html, new RegExp(`concept-${canonicalConcept}\\b`));
-    assert.match(html, new RegExp(`nsf-apto-${theme}\\b`));
+    const markup = routedAptoMarkup(html);
+    assert.match(markup, /concept-apto\b/);
+    assert.doesNotMatch(markup, /nsf-apto-(?:home|network)\b/);
+    assert.doesNotMatch(markup, /tone-(?:light|dark)\b/);
+    assert.doesNotMatch(markup, /href="[^"]*\?concept=/);
+    assert.equal(countMatches(markup, /role="switch"/g), 1);
+    assert.equal(countMatches(markup, /class="nsf-theme-switch"/g), 1);
+    assert.match(markup, /id="apto-main"/);
+    aliasMarkup ??= markup;
+    assert.equal(markup, aliasMarkup, `${concept} must use the identical routed component tree`);
     assert.equal(countMatches(html, /class="nsf-hero-widget(?:\s|")/g), 0, `${concept} home should not show a tool widget`);
     assert.equal(countMatches(html, /role="tab"/g), 0);
   }
 
   for (const [route, slug, section] of canonicalPages) {
-    for (const [concept, theme] of [["nsfhome", "home"], ["nsfnetwork", "network"]]) {
+    let sharedMarkup;
+    for (const concept of ["nsfhome", "nsfnetwork"]) {
       const response = await render(`/apto${route}?concept=${concept}`);
-      assert.equal(response.status, 200, `${section} ${theme} should render`);
+      assert.equal(response.status, 200, `${section} ${concept} should render`);
       assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
       const html = await response.text();
+      const markup = routedAptoMarkup(html);
       const text = visibleText(html);
       const page = content.pages.find((candidate) => candidate.slug === slug);
       assert.ok(page, `Missing generated page for ${slug}`);
@@ -194,7 +219,10 @@ test("renders five canonical pages in two themes and preserves every published c
       assert.equal(countMatches(html, /<main\b/g), 1);
       assert.equal(countMatches(html, /<h1\b/g), 1);
       assert.match(html, /class="nsf-skip-link"/);
-      assert.match(html, new RegExp(`nsf-apto-${theme}\\b`));
+      assert.equal(countMatches(markup, /role="switch"/g), 1);
+      assert.doesNotMatch(markup, /href="[^"]*\?concept=/);
+      sharedMarkup ??= markup;
+      assert.equal(markup, sharedMarkup, `${section} light and dark URLs must share exact markup`);
 
       const primaryNav = html.match(new RegExp(
         `<nav[^>]*aria-label="${escapeRegex(content.interface.accessibility.primaryNavigationLabel)}"[^>]*>([\\s\\S]*?)<\\/nav>`,
@@ -229,7 +257,7 @@ test("renders five canonical pages in two themes and preserves every published c
   const peopleAlias = await render("/apto/people?concept=nsfnetworkwidgets");
   assert.equal(peopleAlias.status, 200);
   const peopleHtml = await peopleAlias.text();
-  assert.match(peopleHtml, /concept-nsfnetwork\b/);
+  assert.match(peopleHtml, /concept-apto\b/);
   assert.match(peopleHtml, /class="nsf-cohort-people\b/);
 });
 
@@ -379,12 +407,13 @@ test("combines program leadership, organizations, and project teams on the cohor
 });
 
 test("builds a flexible Markdown inventory, copies content assets, and preserves accessibility essentials", async () => {
-  const [content, generator, dataSource, mockupSource, routeSource, styles, rootLayout, aptoLayout] = await Promise.all([
+  const [content, generator, dataSource, mockupSource, routeSource, themeSource, styles, rootLayout, aptoLayout] = await Promise.all([
     generatedContent(),
     readFile(new URL("../scripts/build-apto-content.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-data.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-mockups.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/_route-page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/theme.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-mockups.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/layout.tsx", import.meta.url), "utf8"),
@@ -494,11 +523,25 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(dataSource, /import generatedContent from "\.\/nsf-apto-content\.generated\.json"/);
   assert.doesNotMatch(dataSource, /export const apto(?:Projects|Participants|MockTools)\s*=\s*\[/);
 
-  assert.match(routeSource, /concept\.startsWith\("nsfnetwork"\) \? "nsfnetwork" : "nsfhome"/);
-  assert.match(routeSource, /"nsfledger"/);
-  assert.match(routeSource, /"nsfhomewidgets"/);
+  assert.match(routeSource, /<NsfAptoPage section=\{section\} \/>/);
+  assert.doesNotMatch(routeSource, /conceptFromSearchParams|directionFor/);
+  assert.match(themeSource, /window\.localStorage\.getItem\(storageKey\)/);
+  assert.match(themeSource, /window\.sessionStorage\.getItem\(sessionKey\)/);
+  assert.match(themeSource, /nsfnetwork\(\?:widgets\)\?/);
+  assert.match(themeSource, /nsfhome\|nsfledger/);
+  assert.match(themeSource, /prefers-color-scheme: dark/);
+  assert.match(themeSource, /storedTheme \|\| queryTheme \|\| sessionTheme/);
   assert.match(rootLayout, /aptoInterface\.study/);
+  assert.match(rootLayout, /<html lang="en" suppressHydrationWarning>/);
   assert.match(aptoLayout, /template: `%s \| \$\{aptoProgram\.acronym\}`/);
+  assert.match(aptoLayout, /id="apto-theme-bootstrap"/);
+  assert.match(mockupSource, /role="switch"/);
+  assert.match(mockupSource, /aria-checked=\{theme === "dark"\}/);
+  assert.match(mockupSource, /preference\.addEventListener\("change", handlePreferenceChange\)/);
+  assert.match(mockupSource, /preference\.removeEventListener\("change", handlePreferenceChange\)/);
+  assert.match(mockupSource, /window\.addEventListener\("storage", handleStorage\)/);
+  assert.match(mockupSource, /window\.history\.replaceState/);
+  assert.doesNotMatch(mockupSource, /tone-\$\{tone\}/);
 
   assert.match(styles, /\.nsf-apto :focus-visible/);
   assert.match(styles, /\.nsf-skip-link:focus/);
@@ -507,6 +550,11 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /@media \(forced-colors: active\)/);
   assert.match(styles, /forced-color-adjust/);
   assert.match(styles, /color-scheme:\s*dark/);
+  assert.match(styles, /\.nsf-apto-network,\s*\.nsf-apto-network \.nsf-apto\s*\{[^}]*--nsf-paper:/);
+  assert.match(styles, /\.nsf-apto-home,\s*\.nsf-apto-home \.nsf-apto\s*\{[^}]*--nsf-paper:/);
+  assert.match(styles, /\.nsf-theme-switch-track\s*\{[^}]*width:\s*38px[^}]*height:\s*22px/);
+  assert.match(styles, /\.nsf-theme-switch button\s*\{[^}]*min-width:\s*44px[^}]*min-height:\s*44px/);
+  assert.match(styles, /data-apto-theme="dark"[^\n]*\.nsf-theme-switch-thumb[^\n]*translateX\(16px\)/);
   assert.match(styles, /\.nsf-awardee-map-plot\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593/);
   assert.match(styles, /\.nsf-cohort-identity > span:last-child small\s*\{[^}]*max-height:\s*none/);
   assert.match(styles, /\.nsf-tool-figure > img\s*\{[^}]*object-fit:\s*cover/);
