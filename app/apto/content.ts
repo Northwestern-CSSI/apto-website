@@ -165,6 +165,24 @@ export type AptoInterfaceContent = {
       description: string;
     }>;
   };
+  story: {
+    viewLabel: string;
+    socialImageSrc: string;
+    socialImageAlt: string;
+    cohortArtSrc: string;
+    directoryLabel: string;
+    navigationLabel: string;
+    scrollPrompt: string;
+    programLabel: string;
+    projectsLabel: string;
+    toolsLabel: string;
+    cohortLabel: string;
+    projectStageTitle: string;
+    projectStageDescription: string;
+    toolCollectionLabel: string;
+    programLeadershipLabel: string;
+    supportedByLabel: string;
+  };
   common: {
     organizationWebsiteLabel: string;
   };

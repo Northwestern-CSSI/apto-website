@@ -504,6 +504,7 @@ function validateInterface(document) {
       "study",
       "primaryNavigation",
       "home",
+      "story",
       "common",
       "accessibility",
       "projects",
@@ -584,6 +585,31 @@ function validateInterface(document) {
     new Set(["cohort", "projects", "tools"]),
     `${context}.home.pathways sections`,
   );
+
+  requireStringKeys(
+    metadata.story,
+    [
+      "viewLabel",
+      "socialImageSrc",
+      "socialImageAlt",
+      "cohortArtSrc",
+      "directoryLabel",
+      "navigationLabel",
+      "scrollPrompt",
+      "programLabel",
+      "projectsLabel",
+      "toolsLabel",
+      "cohortLabel",
+      "projectStageTitle",
+      "projectStageDescription",
+      "toolCollectionLabel",
+      "programLeadershipLabel",
+      "supportedByLabel",
+    ],
+    `${context}.story`,
+  );
+  assert(metadata.story.socialImageSrc.startsWith("/apto/"), `${context}.story.socialImageSrc must begin with /apto/`);
+  assert(metadata.story.cohortArtSrc.startsWith("/apto/"), `${context}.story.cohortArtSrc must begin with /apto/`);
 
   requireStringKeys(metadata.common, ["organizationWebsiteLabel"], `${context}.common`);
   requireStringKeys(
@@ -949,6 +975,8 @@ async function buildContent() {
   const interfaceRecord = validateInterface(interfaceDocument);
   for (const [publicPath, field] of [
     [interfaceRecord.study.socialImageSrc, "study.socialImageSrc"],
+    [interfaceRecord.story.socialImageSrc, "story.socialImageSrc"],
+    [interfaceRecord.story.cohortArtSrc, "story.cohortArtSrc"],
     [interfaceRecord.footer.nsfLogoSrc, "footer.nsfLogoSrc"],
     [interfaceRecord.projects.map.imageUrl, "projects.map.imageUrl"],
   ]) {
@@ -995,6 +1023,8 @@ async function buildContent() {
 
   assertEveryAssetIsReferenced(assetFiles, [
     interfaceRecord.study.socialImageSrc,
+    interfaceRecord.story.socialImageSrc,
+    interfaceRecord.story.cohortArtSrc,
     interfaceRecord.footer.nsfLogoSrc,
     interfaceRecord.projects.map.imageUrl,
     ...participantRecords.map((record) => record.participant.logo.src),
@@ -1077,7 +1107,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 10,
+      schemaVersion: 12,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

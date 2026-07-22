@@ -80,6 +80,9 @@ disclaimer are maintained in `../program.md`.
 - `og-apto.png` is the social preview image. Keep social replacements at
   1200 × 630 pixels and ensure important text remains legible in small link
   previews.
+- `og-apto-continuum.png` is the dedicated preview for the long-scroll APTO
+  Continuum presentation. Its abstract imagery intentionally contains no
+  embedded text, marks, or data claims.
 
 ## Before publishing an image
 

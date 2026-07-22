@@ -1,12 +1,16 @@
 # APTO website
 
 The public website for the National Science Foundation’s **Assessing and
-Predicting Technology Outcomes (APTO)** program. It contains one responsive
-design with coordinated light and deep-navy themes.
+Predicting Technology Outcomes (APTO)** program. It contains two complementary
+responsive presentations—the compact directory and the long-scroll APTO
+Continuum—built from the same Markdown content and coordinated light and
+deep-navy themes.
 
 - Website: <https://filipinascimento.github.io/apto-website/>
 - Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/apto>
 - Main pages: Program, Projects, Tools, and Cohort
+- Alternate long-scroll presentation: `/story` on GitHub Pages and
+  `/apto/story` on the existing APTO deployment
 
 ## Edit website content
 
@@ -71,8 +75,8 @@ NEXT_PUBLIC_BASE_PATH=/apto-website npm run check:pages
 | --- | --- |
 | `content/apto/` | Editable website content and source images |
 | `app/apto/` | Shared APTO components, theme, styles, and generated content |
-| `app/{projects,tools,cohort}/` | Root routes used by GitHub Pages |
-| `app/apto/{projects,tools,cohort}/` | `/apto` routes used by the existing deployment |
+| `app/{projects,tools,cohort,story}/` | Root routes used by GitHub Pages |
+| `app/apto/{projects,tools,cohort,story}/` | `/apto` routes used by the existing deployment |
 | `scripts/` | Content generation and Pages verification |
 | `tests/` | Content, routing, interaction, and accessibility regressions |
 | `.github/workflows/` | Pull-request checks and automatic Pages publishing |

@@ -31,6 +31,24 @@
       { "section": "cohort", "title": "Cohort", "description": "Participating organizations, program leadership, and the investigators leading each project." }
     ]
   },
+  "story": {
+    "viewLabel": "APTO Continuum",
+    "socialImageSrc": "/apto/og-apto-continuum.png",
+    "socialImageAlt": "An abstract evidence landscape connecting technology clusters and development trajectories.",
+    "cohortArtSrc": "/apto/nsf-network-art.avif",
+    "directoryLabel": "Directory view",
+    "navigationLabel": "APTO story sections",
+    "scrollPrompt": "Scroll to explore",
+    "programLabel": "Program",
+    "projectsLabel": "Research portfolio",
+    "toolsLabel": "Exploration tools",
+    "cohortLabel": "People and organizations",
+    "projectStageTitle": "Five projects, one evidence base",
+    "projectStageDescription": "Project locations respond as you move through the portfolio.",
+    "toolCollectionLabel": "Research tools in development",
+    "programLeadershipLabel": "Program leadership",
+    "supportedByLabel": "Supported by the U.S. National Science Foundation"
+  },
   "common": {
     "organizationWebsiteLabel": "Organization website"
   },

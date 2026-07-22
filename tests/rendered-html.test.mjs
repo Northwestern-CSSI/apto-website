@@ -90,6 +90,20 @@ function routedAptoMarkup(html) {
   assert.fail("Shared routed APTO root did not close");
 }
 
+function storyAptoMarkup(html) {
+  const marker = '<div class="apto-story"';
+  const start = html.indexOf(marker);
+  assert.ok(start >= 0, "Expected the shared long-scroll APTO root");
+  const divTags = /<\/?div\b[^>]*>/gi;
+  divTags.lastIndex = start;
+  let depth = 0;
+  for (let match = divTags.exec(html); match; match = divTags.exec(html)) {
+    depth += match[0].startsWith("</") ? -1 : 1;
+    if (depth === 0) return html.slice(start, divTags.lastIndex);
+  }
+  assert.fail("Shared long-scroll APTO root did not close");
+}
+
 function maxPixelValueFor(styles, property) {
   const match = styles.match(new RegExp(`${property}\\s*:\\s*([^;]+);`));
   assert.ok(match, `Expected ${property} declaration`);
@@ -164,6 +178,137 @@ test("renders the selected APTO design at the repository root", async () => {
   const html = await response.text();
   assert.match(html, /class="concept concept-apto nsf-apto is-routed"/);
   assert.match(html, /class="nsf-program-hero has-partner-grid"/);
+});
+
+test("renders one shared, content-complete long-scroll story at both public routes", async () => {
+  const content = await generatedContent();
+  const expectedSections = ["program", "projects", "tools", "cohort"];
+  let sharedMarkup;
+
+  for (const path of ["/story", "/apto/story"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200, `${path} should render`);
+    assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+    const html = await response.text();
+    const markup = storyAptoMarkup(html);
+    const text = visibleText(markup);
+
+    sharedMarkup ??= markup;
+    assert.equal(markup, sharedMarkup, `${path} must use the same long-scroll component tree`);
+    assert.equal(countMatches(markup, /<main\b/g), 1);
+    assert.equal(countMatches(markup, /<h1\b/g), 1);
+    assert.equal(countMatches(markup, /role="switch"/g), 1);
+    assert.match(markup, /class="story-skip-link" href="#story-main"/);
+    assert.match(markup, /<header class="story-header"/);
+    assert.match(markup, /<main id="story-main" tabindex="-1">/i);
+
+    const primaryNav = markup.match(new RegExp(
+      `<nav[^>]*aria-label="${escapeRegex(content.interface.story.navigationLabel)}"[^>]*>([\\s\\S]*?)<\\/nav>`,
+    ));
+    assert.ok(primaryNav, `${path} should label the sticky story navigation`);
+    assert.deepEqual(
+      [...primaryNav[1].matchAll(/href="([^"]+)"/g)].map((match) => match[1]),
+      expectedSections.map((section) => `#story-${section}`),
+    );
+    assert.equal(countMatches(primaryNav[1], /aria-current="location"/g), 1);
+    assert.match(primaryNav[1], /href="#story-program" aria-current="location"/);
+
+    for (const section of expectedSections) {
+      assert.equal(countMatches(markup, new RegExp(`id="story-${section}"`, "g")), 1);
+      assert.match(markup, new RegExp(`id="story-${section}"[^>]*data-story-section="${section}"`));
+    }
+
+    assert.ok(text.includes(content.program.description));
+    assert.ok(text.includes(content.program.objectivesTitle));
+    for (const objective of content.program.objectives) assert.ok(text.includes(objective));
+
+    assert.equal(countMatches(markup, /class="story-project-chapter"/g), content.projects.length);
+    assert.equal(countMatches(markup, /class="story-tool"/g), content.tools.length);
+    assert.equal(countMatches(markup, /class="story-cohort-group"/g), content.participants.length);
+    const projectMap = markup.match(/<div class="story-map">([\s\S]*?)<\/div>/);
+    assert.ok(projectMap, "The story should include the keyboard-operable project map");
+    assert.equal(countMatches(projectMap[1], /href="#story-project-/g), content.projects.length);
+    assert.doesNotMatch(projectMap[1], /tabindex="-1"/i);
+    for (const project of content.projects) {
+      assert.ok(text.includes(project.shortName));
+      assert.ok(text.includes(project.summary));
+      assert.ok(markup.includes(`id="story-project-${project.id}"`));
+      assert.ok(projectMap[1].includes(`aria-label="${project.organization}: ${project.shortName}"`));
+    }
+
+    const toolArticles = markup.match(/<article class="story-tool"[\s\S]*?<\/article>/g) ?? [];
+    assert.equal(toolArticles.length, content.tools.length);
+    for (const tool of content.tools) {
+      const article = toolArticles.find((candidate) => visibleText(candidate).includes(tool.name));
+      assert.ok(article, `${tool.name} should render in the story tool collection`);
+      assert.ok(visibleText(article).includes(tool.description));
+      assert.ok(visibleText(article).includes(tool.useCase));
+      const figure = article.match(new RegExp(`<img[^>]*src="${escapeRegex(tool.figure.src)}"[^>]*>`));
+      assert.ok(figure, `${tool.name} should render its Markdown-managed figure`);
+      assert.match(figure[0], /loading="lazy"/);
+      assert.match(figure[0], /decoding="async"/);
+      assert.ok(figure[0].includes(`alt="${tool.figure.alt}"`));
+    }
+
+    for (const participant of content.participants) {
+      assert.ok(text.includes(participant.displayName));
+      assert.ok(text.includes(participant.location));
+      assert.ok(markup.includes(`href="${participant.website}"`));
+      for (const person of participant.people) {
+        assert.ok(text.includes(person.name));
+        assert.ok(text.includes(person.role));
+      }
+    }
+    for (const person of content.program.programTeam) {
+      assert.ok(text.includes(person.name));
+      assert.ok(text.includes(person.role));
+    }
+    assert.ok(text.includes("Rebecca Chmiel"));
+    assert.ok(text.includes(content.boilerplate));
+    assert.ok(markup.includes(`src="${content.interface.footer.nsfLogoSrc}"`));
+
+    const heroImage = markup.match(/<div class="story-hero-image"[^>]*>[\s\S]*?<img\b[^>]*>/);
+    assert.ok(heroImage, "The story hero should render its featured Markdown-managed figure");
+    assert.match(heroImage[0], /fetch[Pp]riority="high"/);
+    assert.doesNotMatch(heroImage[0], /loading="lazy"/);
+  }
+});
+
+test("implements the story as an accessible, theme-aware progressive scroll experience", async () => {
+  const [source, styles, layout, storyRoute, nestedStoryRoute] = await Promise.all([
+    readFile(new URL("../app/apto/story/story-site.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/story/story-site.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/story/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/story/page.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(storyRoute, /<AptoStoryPage \/>/);
+  assert.match(nestedStoryRoute, /<AptoStoryPage \/>/);
+  assert.match(layout, /import "\.\/apto\/story\/story-site\.css"/);
+  assert.match(source, /useAptoTheme\("light"\)/);
+  assert.match(source, /role="switch"/);
+  assert.match(source, /aria-current=\{activeSection === section \? "location" : undefined\}/);
+  assert.match(source, /new IntersectionObserver/);
+  assert.match(source, /requestAnimationFrame\(updateScrollState\)/);
+  assert.match(source, /prefers-reduced-motion: reduce/);
+  assert.match(source, /withDeploymentBase\(tool\.figure\.src\)/);
+  assert.match(source, /withDeploymentBase\(aptoInterface\.story\.cohortArtSrc\)/);
+  assert.match(source, /loading="lazy"/);
+  assert.match(source, /fetchPriority="high"/);
+  assert.doesNotMatch(source, /(?:wheel|touchmove)[\s\S]{0,100}preventDefault/);
+
+  assert.match(styles, /\.story-header\s*\{[\s\S]*?position:\s*sticky/);
+  assert.match(styles, /\.story-project-stage\s*\{[\s\S]*?position:\s*sticky/);
+  assert.match(styles, /scroll-margin-top:/);
+  assert.doesNotMatch(styles, /content-visibility:\s*auto/, "Anchor positions should not depend on estimated off-screen layout");
+  assert.match(styles, /\[data-apto-theme="dark"\] \.apto-story/);
+  assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(styles, /@media \(forced-colors: active\)/);
+  assert.match(styles, /\.story-skip-link:focus/);
+  assert.match(styles, /min-height:\s*44px/);
+  assert.doesNotMatch(styles, /scroll-snap-type/);
+  assert.doesNotMatch(styles, /animation:[^;]*infinite/);
 });
 
 test("preserves the dormant homepage widget without exposing it on public routes", async () => {
@@ -416,13 +561,14 @@ test("combines program leadership, organizations, and project teams on the cohor
 });
 
 test("builds a flexible Markdown inventory, copies content assets, and preserves accessibility essentials", async () => {
-  const [content, generator, dataSource, siteSource, routeSource, themeSource, styles, rootLayout] = await Promise.all([
+  const [content, generator, dataSource, siteSource, routeSource, themeSource, themeHookSource, styles, rootLayout] = await Promise.all([
     generatedContent(),
     readFile(new URL("../scripts/build-apto-content.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/site.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/_route-page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/theme.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/apto/use-apto-theme.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/apto/site.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
   ]);
@@ -460,6 +606,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
 
   const referencedAssetPaths = new Set([
     content.interface.study.socialImageSrc,
+    content.interface.story.socialImageSrc,
     content.interface.footer.nsfLogoSrc,
     content.interface.projects.map.imageUrl,
     ...content.participants.map((participant) => participant.logo.src),
@@ -577,10 +724,12 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(rootLayout, /id="apto-theme-bootstrap"/);
   assert.match(siteSource, /role="switch"/);
   assert.match(siteSource, /aria-checked=\{theme === "dark"\}/);
-  assert.match(siteSource, /preference\.addEventListener\("change", handlePreferenceChange\)/);
-  assert.match(siteSource, /preference\.removeEventListener\("change", handlePreferenceChange\)/);
-  assert.match(siteSource, /window\.addEventListener\("storage", handleStorage\)/);
-  assert.match(siteSource, /window\.history\.replaceState/);
+  assert.match(siteSource, /useAptoTheme\("light"\)/);
+  assert.match(themeHookSource, /preference\.addEventListener\("change", handlePreferenceChange\)/);
+  assert.match(themeHookSource, /preference\.removeEventListener\("change", handlePreferenceChange\)/);
+  assert.match(themeHookSource, /window\.addEventListener\("storage", handleStorage\)/);
+  assert.match(themeHookSource, /window\.removeEventListener\("storage", handleStorage\)/);
+  assert.match(themeHookSource, /window\.history\.replaceState/);
   assert.match(siteSource, /withDeploymentBase\(person\.headshotUrl\)/);
   assert.doesNotMatch(siteSource, /tone-\$\{tone\}/);
 

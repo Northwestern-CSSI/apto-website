@@ -5,6 +5,7 @@ import { withDeploymentBase } from "./apto/paths";
 import { aptoInterface } from "./apto/content";
 import "./globals.css";
 import "./apto/site.css";
+import "./apto/story/story-site.css";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",

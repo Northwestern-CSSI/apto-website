@@ -17,16 +17,8 @@ import {
   aptoProjects,
   aptoTools,
 } from "./content";
-import {
-  APTO_LEGACY_THEME_SESSION_KEY,
-  APTO_THEME_STORAGE_KEY,
-  applyAptoTheme,
-  isAptoTheme,
-  legacyAptoTheme,
-  preferredAptoTheme,
-  storedAptoTheme,
-  type AptoTheme,
-} from "./theme";
+import type { AptoTheme } from "./theme";
+import { useAptoTheme } from "./use-apto-theme";
 import { aptoRoute, withDeploymentBase } from "./paths";
 
 export type AptoSection = "home" | "about" | "cohort" | "projects" | "tools";
@@ -109,69 +101,6 @@ function ParticipantMark({
   >
     <img src={withDeploymentBase(logo.src)} width={logo.width} height={logo.height} alt="" />
   </span>;
-}
-
-function useAptoTheme(enabled: boolean, initialTheme: AptoTheme) {
-  const [theme, setTheme] = useState<AptoTheme>(initialTheme);
-
-  useEffect(() => {
-    if (!enabled) return;
-    let active = true;
-    const rootTheme = document.documentElement.dataset.aptoTheme;
-    const resolvedTheme = isAptoTheme(rootTheme)
-      ? rootTheme
-      : storedAptoTheme() ?? legacyAptoTheme() ?? preferredAptoTheme();
-    applyAptoTheme(resolvedTheme);
-    queueMicrotask(() => {
-      if (active) setTheme(resolvedTheme);
-    });
-
-    const preference = window.matchMedia("(prefers-color-scheme: dark)");
-    const handlePreferenceChange = (event: MediaQueryListEvent) => {
-      if (storedAptoTheme() || legacyAptoTheme()) return;
-      const nextTheme = event.matches ? "dark" : "light";
-      applyAptoTheme(nextTheme);
-      setTheme(nextTheme);
-    };
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key !== APTO_THEME_STORAGE_KEY) return;
-      const nextTheme = isAptoTheme(event.newValue)
-        ? event.newValue
-        : legacyAptoTheme() ?? preferredAptoTheme();
-      applyAptoTheme(nextTheme);
-      setTheme(nextTheme);
-    };
-    preference.addEventListener("change", handlePreferenceChange);
-    window.addEventListener("storage", handleStorage);
-    return () => {
-      active = false;
-      preference.removeEventListener("change", handlePreferenceChange);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [enabled]);
-
-  const toggleTheme = () => {
-    if (!enabled) return;
-    const rootTheme = document.documentElement.dataset.aptoTheme;
-    const currentTheme = isAptoTheme(rootTheme) ? rootTheme : theme;
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-    try {
-      window.localStorage.setItem(APTO_THEME_STORAGE_KEY, nextTheme);
-    } catch {}
-    try {
-      window.sessionStorage.removeItem(APTO_LEGACY_THEME_SESSION_KEY);
-    } catch {}
-    applyAptoTheme(nextTheme);
-    setTheme(nextTheme);
-
-    const url = new URL(window.location.href);
-    if (url.searchParams.has("concept")) {
-      url.searchParams.delete("concept");
-      window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
-    }
-  };
-
-  return { theme, toggleTheme };
 }
 
 function NsfThemeSwitch({ theme, onToggle }: { theme: AptoTheme; onToggle: () => void }) {
@@ -641,7 +570,7 @@ function AptoSectionBody({ id, section }: { id: string; section: AptoSection }) 
 
 export function AptoSitePage({ section }: { section: AptoSection }) {
   const instanceId = "apto";
-  const { theme, toggleTheme } = useAptoTheme(true, "light");
+  const { theme, toggleTheme } = useAptoTheme("light");
   return <div className="concept concept-apto nsf-apto is-routed">
     <a className="nsf-skip-link" href={`#${instanceId}-main`}>{aptoInterface.accessibility.skipLinkLabel}</a>
     <NsfProgramHeader activeSection={section} theme={theme} onToggle={toggleTheme} />

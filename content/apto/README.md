@@ -2,6 +2,8 @@
 
 This folder is the source of truth for the APTO website. Most updates require
 editing only Markdown and images here—no React, TypeScript, or CSS changes.
+The compact directory and long-scroll APTO Continuum read the same generated
+content, so one edit updates both presentations.
 
 ## Quick workflow
 
@@ -110,7 +112,8 @@ legal permission, brand approval, or whether remote links remain live.
 ## Special files
 
 - `interface.md` owns shared labels and navigation. The visible top navigation
-  must remain Program, Projects, Tools, Cohort.
+  must remain Program, Projects, Tools, Cohort. Its `story` block contains the
+  labels used only by the alternate long-scroll presentation.
 - `program.md` owns substantive program language and the exact NSF disclaimer.
 - `future/` preserves approved-but-disabled interface work. Its homepage widget
   is not included in the public site and should remain disabled until approved.
