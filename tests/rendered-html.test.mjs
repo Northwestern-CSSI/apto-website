@@ -719,6 +719,7 @@ test("combines program leadership, organizations, and project teams on the cohor
     assert.ok(text.includes("Rebecca Chmiel"));
     assert.match(html, /class="nsf-program-leadership"/);
     assert.match(html, /class="nsf-cohort-directory"/);
+    assert.doesNotMatch(html, /--cohort-accent/, "Cohort hierarchy must not depend on decorative participant edge colors");
 
     for (const person of content.program.programTeam) {
       assert.ok(text.includes(person.name));
@@ -926,7 +927,11 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\.nsf-awardee-map-plot\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593/);
   assert.match(styles, /\.nsf-tool-figure > img,[\s\S]*?object-fit:\s*contain/);
   assert.match(styles, /\.nsf-section-intro \.nsf-section-intro-description\s*\{[^}]*text-align:\s*left/);
-  assert.match(styles, /\.nsf-cohort-group::before\s*\{[^}]*background:\s*var\(--cohort-accent\)/);
+  assert.doesNotMatch(styles, /\.nsf-(?:program-leadership|cohort-group)::before/);
+  assert.match(styles, /Cohort chapters use common regions and whitespace, never decorative edge bars/);
+  assert.match(styles, /\.nsf-cohort-directory\s*\{[^}]*gap:\s*clamp\(34px,\s*5vw,\s*64px\)/);
+  assert.match(styles, /\.nsf-cohort-group-header \.nsf-participant-mark\.is-feature img\s*\{[^}]*max-height:\s*62px/);
+  assert.match(styles, /\.nsf-participant-mark\.logo-aperture\.is-directory img\s*\{[^}]*max-width:\s*48px/);
   assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
   assert.match(siteSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
   assert.match(siteSource, /!rootRef\.current\?\.contains\(target\)/);

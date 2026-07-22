@@ -515,7 +515,7 @@ function CohortPeopleSection({ id, pageHeading = false }: { id: string; pageHead
   const copy = copyFor("cohort");
   return <section className="nsf-cohort-people" id={`${id}-cohort`} aria-labelledby={`${id}-cohort-title`}>
     <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-cohort-title`} pageHeading={pageHeading} />
-    <section className="nsf-program-leadership" style={{ "--cohort-accent": "var(--nsf-teal)" } as CSSProperties} aria-labelledby={`${id}-program-leadership-title`}>
+    <section className="nsf-program-leadership" aria-labelledby={`${id}-program-leadership-title`}>
       <header><p>{aptoInterface.people.programTeamEyebrow}</p><h2 id={`${id}-program-leadership-title`}>{aptoInterface.people.programTeamTitle}</h2></header>
       <div>{aptoProgram.programTeam.map((person) => <PersonCard key={person.name} person={person} />)}</div>
     </section>
@@ -526,7 +526,7 @@ function CohortPeopleSection({ id, pageHeading = false }: { id: string; pageHead
     <div className="nsf-cohort-directory">
       {aptoParticipants.map((participant) => {
         const project = projectForParticipant(participant.id);
-        return <section className="nsf-cohort-group" style={{ "--cohort-accent": participant.accent } as CSSProperties} id={`participant-${participant.id}`} key={participant.id} aria-labelledby={`${id}-cohort-${participant.id}`}>
+        return <section className="nsf-cohort-group" id={`participant-${participant.id}`} key={participant.id} aria-labelledby={`${id}-cohort-${participant.id}`}>
           <header className="nsf-cohort-group-header">
             <ParticipantMark participant={participant} size="feature" />
             <div className="nsf-cohort-identity-copy"><p>{participant.location}</p><h2 id={`${id}-cohort-${participant.id}`}>{participant.displayName}</h2>{project && <span>{project.shortName}</span>}</div>
