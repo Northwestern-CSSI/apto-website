@@ -681,6 +681,10 @@ test("renders Markdown-sourced tools with two AND-able filter groups and useful 
   assert.equal(countMatches(html, /<select\b/g), 2);
   assert.equal(countMatches(html, /<select[^>]*aria-controls="[^"]+"/g), 2);
   assert.equal(countMatches(html, /class="nsf-tool-card"/g), content.tools.length);
+  assert.equal(countMatches(html, /class="nsf-tool-image-frame"/g), content.tools.length);
+
+  const figureSources = content.tools.map((tool) => tool.figure.src);
+  assert.equal(new Set(figureSources).size, content.tools.length, "Every tool needs a distinct original-design figure");
 
   for (const category of ["Capability", "Production", "Use"]) assert.ok(text.includes(category));
   for (const tool of content.tools) {
@@ -693,6 +697,7 @@ test("renders Markdown-sourced tools with two AND-able filter groups and useful 
     assert.ok(text.includes(tool.useCase));
     assert.ok(html.includes(`src="${tool.figure.src}"`));
     assert.ok(html.includes(`alt="${tool.figure.alt}"`));
+    assert.match(tool.figure.src, new RegExp(`/tools/previews/${tool.id}\\.(?:avif|jpe?g|png|webp)$`));
   }
 
   assert.match(
@@ -784,6 +789,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   const referencedAssetPaths = new Set([
     content.interface.study.socialImageSrc,
     content.interface.story.socialImageSrc,
+    content.interface.story.cohortArtSrc,
     content.interface.atlas.socialImageSrc,
     content.interface.footer.nsfLogoSrc,
     content.interface.projects.map.imageUrl,
@@ -925,7 +931,10 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\.nsf-theme-switch button\s*\{[^}]*min-width:\s*44px[^}]*min-height:\s*44px/);
   assert.match(styles, /data-apto-theme="dark"[^\n]*\.nsf-theme-switch-thumb[^\n]*translateX\(16px\)/);
   assert.match(styles, /\.nsf-awardee-map-plot\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593/);
-  assert.match(styles, /\.nsf-tool-figure > img,[\s\S]*?object-fit:\s*contain/);
+  assert.match(styles, /\.nsf-tool-image-frame\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*10[^}]*overflow:\s*hidden/);
+  assert.match(styles, /\.nsf-tool-image-frame > img,[\s\S]*?padding:\s*0[^}]*object-fit:\s*cover[^}]*object-position:\s*center/);
+  assert.match(styles, /\.nsf-tool-figure\s*\{[^}]*align-self:\s*start/);
+  assert.doesNotMatch(styles, /\.nsf-tool-image-frame > img,[^}]*object-fit:\s*contain/);
   assert.match(styles, /\.nsf-section-intro \.nsf-section-intro-description\s*\{[^}]*text-align:\s*left/);
   assert.doesNotMatch(styles, /\.nsf-(?:program-leadership|cohort-group)::before/);
   assert.match(styles, /Cohort chapters use common regions and whitespace, never decorative edge bars/);

@@ -1912,43 +1912,121 @@
 }
 .nsf-apto-network .nsf-filter-groups { background: rgb(78 195 224 / 7%); }
 .nsf-tool-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(38px, 4.5vw, 62px) clamp(40px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(48px, 5.5vw, 76px);
 }
 .nsf-tool-card,
 .nsf-apto-network .nsf-tool-card,
 .nsf-tool-card:last-child {
   padding: 0;
-  grid-template-columns: minmax(0, .9fr) minmax(240px, 1.1fr);
-  align-items: stretch;
-  gap: clamp(22px, 2.4vw, 32px);
+  grid-template-columns: minmax(0, .92fr) minmax(380px, 1.08fr);
+  align-items: start;
+  gap: clamp(34px, 4.5vw, 68px);
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
 }
-.nsf-tool-figure { min-height: 0; align-self: stretch; }
-.nsf-tool-figure > img,
-.nsf-apto-network .nsf-tool-figure > img {
+.nsf-tool-copy {
+  --nsf-tool-copy-indent: 78px;
+  min-width: 0;
+  padding: clamp(4px, 1vw, 14px) 0 0;
+  align-self: start;
+}
+.nsf-tool-heading {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+.nsf-tool-heading .nsf-participant-mark {
+  width: 64px;
+  height: 46px;
+  padding: 6px 8px;
+  align-self: start;
+}
+.nsf-tool-title-group { min-width: 0; }
+.nsf-tool-context {
+  margin: 0;
+  display: block;
+  color: var(--nsf-tools-muted);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+.nsf-tool-context strong { color: var(--nsf-tools-ink); }
+.nsf-tool-context span:last-child { font-style: italic; }
+.nsf-tool-heading h2,
+.nsf-tool-card h2 {
+  max-width: 28ch;
+  margin: 6px 0 0;
+  font-size: clamp(1.3rem, 2vw, 1.85rem);
+  line-height: 1.12;
+}
+.nsf-tool-copy > .nsf-tool-description,
+.nsf-tool-copy > .nsf-tool-use-case,
+.nsf-tool-categories,
+.nsf-tool-copy > footer { margin-left: var(--nsf-tool-copy-indent); }
+.nsf-tool-description {
+  max-width: 58ch;
+  margin-top: 18px !important;
+  font-size: .94rem;
+  line-height: 1.62;
+}
+.nsf-tool-use-case {
+  max-width: 60ch;
+  margin-top: 13px !important;
+  font-size: .81rem;
+  line-height: 1.55;
+}
+.nsf-tool-categories { margin-top: 14px; margin-bottom: 10px; }
+.nsf-tool-copy > footer { margin-top: 10px; }
+.nsf-tool-figure {
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  align-self: start;
+  display: grid;
+  grid-template-rows: auto auto;
+}
+.nsf-tool-image-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #03172d;
+  border: 1px solid var(--nsf-tools-line);
+  border-radius: 10px;
+  box-shadow: 0 16px 38px rgba(0, 37, 84, .14);
+}
+.nsf-tool-image-frame > img,
+.nsf-apto-network .nsf-tool-image-frame > img {
   width: 100%;
   height: 100%;
-  min-height: 230px;
-  max-height: none;
-  aspect-ratio: 16 / 10;
-  padding: 6px;
-  object-fit: contain;
+  display: block;
+  padding: 0;
+  object-fit: cover;
   object-position: center;
-  background: var(--nsf-raised-surface);
-  border-radius: 10px;
+  background: #03172d;
   transform: none;
 }
-.nsf-tool-card:hover .nsf-tool-figure > img,
-.nsf-tool-card:focus-within .nsf-tool-figure > img { transform: none; }
+.nsf-tool-figure figcaption {
+  padding: 8px 1px 0;
+  font-size: .68rem;
+  line-height: 1.4;
+}
+.nsf-apto-network .nsf-tool-image-frame {
+  border-color: var(--nsf-network-line);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .3);
+}
+.nsf-tool-card:hover .nsf-tool-image-frame > img,
+.nsf-tool-card:focus-within .nsf-tool-image-frame > img { transform: none; }
 
-@media (max-width: 1180px) {
-  .nsf-tool-grid { grid-template-columns: 1fr; gap: 38px; }
+@media (max-width: 1040px) {
   .nsf-tool-card,
-  .nsf-apto-network .nsf-tool-card { grid-template-columns: minmax(0, 1fr) minmax(300px, .85fr); }
+  .nsf-apto-network .nsf-tool-card {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, .92fr);
+    gap: 34px;
+  }
 }
 
 @media (max-width: 860px) {
@@ -1981,18 +2059,11 @@
   .nsf-filter-status { grid-column: 1 / -1; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 780px) {
   .nsf-tool-card,
-  .nsf-apto-network .nsf-tool-card { grid-template-columns: 1fr; gap: 18px; }
+  .nsf-apto-network .nsf-tool-card { grid-template-columns: 1fr; gap: 20px; }
   .nsf-tool-figure { grid-row: 1; }
   .nsf-tool-copy { grid-row: 2; }
-  .nsf-tool-figure > img,
-  .nsf-apto-network .nsf-tool-figure > img {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    aspect-ratio: 16 / 10;
-  }
 }
 
 @media (max-width: 560px) {
@@ -2008,6 +2079,9 @@
   .nsf-filter-groups,
   .nsf-apto-network .nsf-filter-groups { grid-template-columns: 1fr; }
   .nsf-filter-status { grid-column: auto; }
+  .nsf-tool-copy { --nsf-tool-copy-indent: 68px; }
+  .nsf-tool-heading { grid-template-columns: 54px minmax(0, 1fr); gap: 14px; }
+  .nsf-tool-heading .nsf-participant-mark { width: 54px; height: 42px; padding: 5px 6px; }
 }
 
 @media (max-width: 640px) {
@@ -2019,4 +2093,5 @@
   .nsf-cohort-group,
   .nsf-cohort-team .nsf-person-card,
   .nsf-program-leadership .nsf-person-card { background: Canvas; border: 1px solid CanvasText; }
+  .nsf-tool-image-frame { background: Canvas; border-color: CanvasText; box-shadow: none; }
 }

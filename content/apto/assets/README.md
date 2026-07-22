@@ -33,9 +33,11 @@ Use lowercase kebab-case filenames. Supported extensions are `.avif`, `.jpeg`,
 - Do not communicate an essential result only through color or only inside the
   image.
 
-The current generic science-map, model, prediction, and network images are live
-figures reused across the initial set of tools. Replace them with approved,
-tool-specific figures as project teams provide them.
+The provisional original-design previews live in `tools/previews/`. Each tool
+has its own crop-safe image and the website fills a fixed 16:10 frame with it.
+Replace these generated previews with approved, tool-specific figures as
+project teams provide them, keeping the filename and focal area suitable for
+responsive `object-fit: cover` cropping.
 
 ## Atlas tool gallery
 

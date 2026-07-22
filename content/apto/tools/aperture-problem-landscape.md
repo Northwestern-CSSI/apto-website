@@ -7,7 +7,7 @@
   "categories": ["Capability", "Use"],
   "figure": {
     "kind": "problem-landscape",
-    "src": "/apto/science-map-widget.avif",
+    "src": "/apto/tools/previews/aperture-problem-landscape.jpg",
     "label": "Problem-to-solution landscape",
     "alt": "Landscape connecting clusters of technical problems with technologies and organizations"
   },

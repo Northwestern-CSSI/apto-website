@@ -415,7 +415,9 @@ function ProjectsSection({ id, pageHeading = false }: { id: string; pageHeading?
 
 function ToolFigure({ tool }: { tool: AptoTool }) {
   return <figure className={`nsf-tool-figure is-${tool.figure.kind}`}>
-    <img src={withDeploymentBase(tool.figure.src)} alt={tool.figure.alt} width="640" height="420" loading="lazy" decoding="async" />
+    <div className="nsf-tool-image-frame">
+      <img src={withDeploymentBase(tool.figure.src)} alt={tool.figure.alt} width="1600" height="1000" loading="lazy" decoding="async" />
+    </div>
     <figcaption>{tool.figure.label}</figcaption>
   </figure>;
 }
@@ -446,11 +448,11 @@ function ToolCard({ tool }: { tool: AptoTool }) {
   return <article className="nsf-tool-card">
     <div className="nsf-tool-copy">
       <header className="nsf-tool-heading">
-        <div className="nsf-tool-context">
-          {participant && <ParticipantMark participant={participant} size="compact" />}
-          <p><strong>{participant?.displayName ?? tool.participantId}</strong><span aria-hidden="true"> · </span><span>{tool.statusLabel}</span></p>
+        {participant && <ParticipantMark participant={participant} size="compact" />}
+        <div className="nsf-tool-title-group">
+          <p className="nsf-tool-context"><strong>{participant?.displayName ?? tool.participantId}</strong><span aria-hidden="true"> · </span><span>{tool.statusLabel}</span></p>
+          <h2>{tool.name}</h2>
         </div>
-        <h2>{tool.name}</h2>
       </header>
       <p className="nsf-tool-description">{tool.description}</p>
       <p className="nsf-tool-use-case"><strong>{aptoInterface.tools.useCaseLabel}</strong> {tool.useCase}</p>

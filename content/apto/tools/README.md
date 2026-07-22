@@ -104,7 +104,11 @@ translation-funnel
 - Use `figure.label` as a concise caption.
 - Use `figure.alt` to explain what the image communicates, not merely repeat
   the caption. Do not place essential information only inside the image.
-- The layout uses `object-fit: contain`, so the complete figure remains visible.
+- Store original-design previews in `content/apto/assets/tools/previews/` and
+  reference them as `/apto/tools/previews/filename.ext`.
+- The original design fills a fixed 16:10 media frame with `object-fit: cover`.
+  Keep the focal area near the center and expect a small amount of responsive
+  cropping on every side.
 
 ## Atlas gallery images
 

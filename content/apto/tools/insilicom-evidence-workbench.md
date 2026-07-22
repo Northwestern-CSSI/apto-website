@@ -7,7 +7,7 @@
   "categories": ["Capability"],
   "figure": {
     "kind": "evidence-stream",
-    "src": "/apto/science-map-widget.avif",
+    "src": "/apto/tools/previews/insilicom-evidence-workbench.jpg",
     "label": "Evidence extraction workflow",
     "alt": "Workflow that turns articles and patents into reviewed entities, relationships, and evidence records"
   },

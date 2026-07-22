@@ -7,7 +7,7 @@
   "categories": ["Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/model-scale.png",
+    "src": "/apto/tools/previews/macrocosm-policy-investment-lab.jpg",
     "label": "Energy scenario comparison",
     "alt": "Small-multiple charts comparing energy technology, policy, and investment scenarios over time"
   },
