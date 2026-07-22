@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Open_Sans } from "next/font/google";
-import { headers } from "next/headers";
+import { aptoThemeBootstrap } from "./apto/theme";
+import { withDeploymentBase } from "./apto/paths";
 import { aptoInterface } from "./nsf-apto-data";
 import "./globals.css";
-import "./interactive-mockups.css";
-import "./kinetic-mockups.css";
-import "./portfolio-mockups.css";
-import "./widget-mockups.css";
 import "./nsf-apto-mockups.css";
 
 const geistSans = Geist({
@@ -24,27 +21,23 @@ const openSans = Open_Sans({
   subsets: ["latin"],
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host =
-    requestHeaders.get("x-forwarded-host") ??
-    requestHeaders.get("host") ??
-    "localhost:3000";
-  const protocol =
-    requestHeaders.get("x-forwarded-proto") ??
-    (host.includes("localhost") ? "http" : "https");
-  const baseUrl = new URL(`${protocol}://${host}`);
+export function generateMetadata(): Metadata {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://apto-design-study.moondark.chatgpt.site";
+  const baseUrl = new URL(siteUrl);
   const {
     siteTitle: title,
     siteDescription: description,
     socialImageSrc,
     socialImageAlt,
   } = aptoInterface.study;
-  const socialImage = new URL(socialImageSrc, baseUrl).toString();
+  const socialImage = new URL(withDeploymentBase(socialImageSrc), baseUrl.origin).toString();
 
   return {
     metadataBase: baseUrl,
-    title,
+    title: {
+      default: title,
+      template: `%s | ${title}`,
+    },
     description,
     openGraph: {
       title,
@@ -68,6 +61,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          id="apto-theme-bootstrap"
+          dangerouslySetInnerHTML={{ __html: aptoThemeBootstrap }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${openSans.variable} antialiased`}
       >

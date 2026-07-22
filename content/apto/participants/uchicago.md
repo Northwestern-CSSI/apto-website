@@ -8,8 +8,8 @@
   "website": "https://www.uchicago.edu/",
   "logo": {
     "src": "/apto/partners/uchicago.png",
-    "width": 1920,
-    "height": 669,
+    "width": 1611,
+    "height": 359,
     "surface": "light",
     "kind": "wordmark",
     "sourceUrl": "https://creative.uchicago.edu/files/2023/09/University-Logo_1Color_Maroon_RGB.png",

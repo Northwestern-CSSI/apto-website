@@ -8,8 +8,8 @@
   "website": "https://www.northwestern.edu/",
   "logo": {
     "src": "/apto/partners/northwestern.png",
-    "width": 407,
-    "height": 235,
+    "width": 368,
+    "height": 69,
     "surface": "light",
     "kind": "wordmark",
     "sourceUrl": "https://www.northwestern.edu/brand/images/horizontal-wordmark.png",

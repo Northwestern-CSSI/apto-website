@@ -3,6 +3,7 @@
 /*
  * Dormant by design. This module is intentionally not imported by any route.
  * Its editable configuration is preserved in content/apto/future/home-tool-widget.md.
+ * Import ./home-tool-widget.css when this component is re-enabled.
  */
 
 import BadgeCheck from "lucide-react/dist/esm/icons/badge-check.mjs";

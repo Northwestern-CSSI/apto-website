@@ -19,7 +19,7 @@ const legacyConceptAliases = [
   "nsfnetworkwidgets",
 ];
 const baseline = {
-  assets: 16,
+  assets: 12,
   participants: 5,
   people: 13,
   projects: 5,
@@ -146,15 +146,16 @@ async function generatedContent() {
   );
 }
 
-test("redirects the repository root to the first-version APTO website", async () => {
+test("renders the selected APTO design at the repository root", async () => {
   const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.match(source, /redirect\("\/apto"\)/);
+  assert.match(source, /<AptoRoutePage section="home" \/>/);
+  assert.doesNotMatch(source, /redirect\(/);
 
   const response = await render("/");
-  assert.ok([307, 308].includes(response.status), `Expected a redirect, received ${response.status}`);
-  const location = response.headers.get("location");
-  assert.ok(location, "Root redirect must include a Location header");
-  assert.equal(new URL(location, "http://localhost").pathname, "/apto");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /class="concept concept-apto nsf-apto is-routed"/);
+  assert.match(html, /class="nsf-program-hero has-partner-grid"/);
 });
 
 test("preserves the dormant homepage widget without exposing it on public routes", async () => {
@@ -407,7 +408,7 @@ test("combines program leadership, organizations, and project teams on the cohor
 });
 
 test("builds a flexible Markdown inventory, copies content assets, and preserves accessibility essentials", async () => {
-  const [content, generator, dataSource, mockupSource, routeSource, themeSource, styles, rootLayout, aptoLayout] = await Promise.all([
+  const [content, generator, dataSource, mockupSource, routeSource, themeSource, styles, rootLayout] = await Promise.all([
     generatedContent(),
     readFile(new URL("../scripts/build-apto-content.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-data.ts", import.meta.url), "utf8"),
@@ -416,7 +417,6 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     readFile(new URL("../app/apto/theme.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/nsf-apto-mockups.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/apto/layout.tsx", import.meta.url), "utf8"),
   ]);
   const directories = {
     pages: await markdownFileNames(new URL("pages/", contentRoot)),
@@ -533,8 +533,8 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(themeSource, /storedTheme \|\| queryTheme \|\| sessionTheme/);
   assert.match(rootLayout, /aptoInterface\.study/);
   assert.match(rootLayout, /<html lang="en" suppressHydrationWarning>/);
-  assert.match(aptoLayout, /template: `%s \| \$\{aptoProgram\.acronym\}`/);
-  assert.match(aptoLayout, /id="apto-theme-bootstrap"/);
+  assert.match(rootLayout, /template: `%s \| \$\{title\}`/);
+  assert.match(rootLayout, /id="apto-theme-bootstrap"/);
   assert.match(mockupSource, /role="switch"/);
   assert.match(mockupSource, /aria-checked=\{theme === "dark"\}/);
   assert.match(mockupSource, /preference\.addEventListener\("change", handlePreferenceChange\)/);
@@ -556,8 +556,9 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\.nsf-theme-switch button\s*\{[^}]*min-width:\s*44px[^}]*min-height:\s*44px/);
   assert.match(styles, /data-apto-theme="dark"[^\n]*\.nsf-theme-switch-thumb[^\n]*translateX\(16px\)/);
   assert.match(styles, /\.nsf-awardee-map-plot\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593/);
-  assert.match(styles, /\.nsf-cohort-identity > span:last-child small\s*\{[^}]*max-height:\s*none/);
-  assert.match(styles, /\.nsf-tool-figure > img\s*\{[^}]*object-fit:\s*cover/);
+  assert.match(styles, /\.nsf-tool-figure > img,[\s\S]*?object-fit:\s*contain/);
+  assert.match(styles, /\.nsf-section-intro \.nsf-section-intro-description\s*\{[^}]*text-align:\s*left/);
+  assert.match(styles, /\.nsf-cohort-group::before\s*\{[^}]*background:\s*var\(--cohort-accent\)/);
   assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
   assert.match(mockupSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
   assert.match(mockupSource, /!rootRef\.current\?\.contains\(target\)/);
