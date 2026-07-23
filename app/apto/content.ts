@@ -12,6 +12,7 @@ export type AptoParticipantLogo = {
   height: number;
   surface: "dark" | "light";
   kind: "symbol" | "wordmark";
+  appearance: "adaptive-monochrome" | "fixed";
 };
 
 export type AptoPersonRole =

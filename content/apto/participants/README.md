@@ -20,6 +20,7 @@ Organizations are displayed alphabetically without a ranking field.
     "height": 180,
     "surface": "light",
     "kind": "wordmark",
+    "appearance": "fixed",
     "sourceUrl": "https://example.edu/brand/",
     "sourceLabel": "Example Organization brand resource",
     "status": "approval-required",
@@ -41,6 +42,9 @@ Organizations are displayed alphabetically without a ranking field.
 - `logo.surface` is `light` or `dark`, describing the artwork’s intended
   background.
 - `logo.kind` is `symbol` or `wordmark`.
+- `logo.appearance` is `fixed` for full-color artwork or
+  `adaptive-monochrome` for a monochrome mark that should become NSF navy on
+  light surfaces and white on dark surfaces.
 - `logo.width` and `logo.height` should be the image’s true intrinsic
   dimensions.
 - `status` and `approved` record review state; they do not themselves grant

@@ -12,6 +12,7 @@
     "height": 194,
     "surface": "dark",
     "kind": "wordmark",
+    "appearance": "adaptive-monochrome",
     "sourceUrl": "https://macrocosm.group/macrocosm-logo.svg",
     "sourceLabel": "Macrocosm official logo asset",
     "status": "approval-required",

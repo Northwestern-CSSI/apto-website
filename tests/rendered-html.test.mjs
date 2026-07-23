@@ -326,6 +326,11 @@ test("renders one shared, content-complete long-scroll story at both public rout
     assert.ok(new Set(parallaxSpeeds).size >= 6, `${path} should use several distinct parallax depths`);
     assert.ok(parallaxSpeeds.some((speed) => speed < 0), `${path} should include a counter-moving layer`);
     assert.ok(parallaxSpeeds.every((speed) => Number.isFinite(speed) && Math.abs(speed) <= 0.1));
+    assert.match(
+      markup,
+      /class="story-hero-detail-anchor" data-story-parallax="0\.018"/,
+      "The hero inset should have an independently measured foreground parallax depth",
+    );
     for (const [index, section] of expectedSections.entries()) {
       const start = markup.indexOf(`id="story-${section}"`);
       const next = expectedSections[index + 1];
@@ -353,7 +358,7 @@ test("renders one shared, content-complete long-scroll story at both public rout
       assert.ok(markup.includes(`href="${participant.website}"`));
       assert.ok(
         markup.includes(
-          `story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} asset-on-${participant.logo.surface}`,
+          `story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} logo-appearance-${participant.logo.appearance} asset-on-${participant.logo.surface}`,
         ),
         `${participant.displayName} should preserve its content-managed logo geometry and surface`,
       );
@@ -463,6 +468,14 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
     const darkValue = customPropertyValue(darkTheme, token);
     assert.notEqual(lightValue, darkValue, `${token} must visibly distinguish light and dark themes`);
   }
+  const darkMapFilter = customPropertyValue(darkTheme, "--story-map-filter");
+  const darkMapOpacity = Number(customPropertyValue(darkTheme, "--story-map-opacity"));
+  assert.equal(customPropertyValue(darkTheme, "--story-map-bg"), "#0b2438");
+  assert.doesNotMatch(darkMapFilter, /invert\(/, "Dark mode should retain the map's light land mass");
+  assert.match(darkMapFilter, /grayscale\(1\)/);
+  assert.match(darkMapFilter, /brightness\(\.66\)/);
+  assert.match(darkMapFilter, /contrast\(1\.25\)/);
+  assert.ok(darkMapOpacity >= .85, "Dark mode needs enough map opacity for state boundaries to remain legible");
 
   assert.match(styles, /\.story-header\s*\{[^}]*color:\s*var\(--story-header-ink\)[^}]*background:\s*var\(--story-header-bg\)/);
   assert.match(styles, /\.story-projects\s*\{[^}]*color:\s*var\(--story-projects-ink\)[^}]*background:\s*var\(--story-projects-bg\)/);
@@ -488,7 +501,13 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-participant-logo\.logo-kind-symbol\s*\{[^}]*width:\s*70px[^}]*aspect-ratio:\s*1/);
   assert.match(styles, /\.story-project-stage-active-inner\s*>\s*div\s*>\s*strong,[\s\S]*?\.story-project-stage-active-inner\s*>\s*div\s*>\s*span\s*\{\s*display:\s*block/);
   assert.doesNotMatch(styles, /\.story-project-stage-active\s+strong,\s*\.story-project-stage-active\s+span\s*\{/);
-  assert.doesNotMatch(styles, /\.story-participant-logo\.logo-(?:aperture|macrocosm|northwestern|uchicago)[^{]*\{[^}]*filter:/);
+  assert.match(styles, /\.story-participant-logo\.logo-appearance-adaptive-monochrome\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-light\)/);
+  assert.match(styles, /\.story-participant-logo\.logo-appearance-adaptive-monochrome img\s*\{[^}]*filter:\s*brightness\(0\)/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.story-participant-logo\.logo-appearance-adaptive-monochrome,[\s\S]*?--story-logo-canvas:\s*var\(--story-logo-canvas-dark\)/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.story-participant-logo\.logo-appearance-adaptive-monochrome img,[\s\S]*?filter:\s*none/);
+  assert.doesNotMatch(styles, /\.story-participant-logo\.logo-(?:aperture|insilicom|macrocosm|northwestern|uchicago)[^{]*\{[^}]*filter:/);
+  assert.match(styles, /\.story-hero-detail-anchor\s*\{[^}]*position:\s*absolute[^}]*pointer-events:\s*none/);
+  assert.match(styles, /\.story-hero-detail\s*\{[^}]*transform:\s*translate3d\(0,var\(--story-shift,0\),0\)[^}]*will-change:\s*transform/);
   assert.match(styles, /\.apto-story\.is-motion-ready \[data-story-reveal\]\s*\{[^}]*opacity:\s*var\(--story-reveal-opacity,1\)[^}]*translate3d\(var\(--story-reveal-x,0px\),var\(--story-reveal-y,0px\),0\)[^}]*transition:\s*none/);
   assert.doesNotMatch(styles, /story-project-caption-in/);
   assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-map\s*\{[^}]*width:\s*100%[^}]*max-width:\s*100%/);

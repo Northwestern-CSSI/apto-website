@@ -58,7 +58,7 @@ for (const page of storyPages) {
   assert.equal((html.match(/class="story-logo-canvas"/g) ?? []).length, expectedLogoCount, `${page} needs a contained canvas for every logo`);
   for (const participant of content.participants) {
     assert.ok(
-      html.includes(`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} asset-on-${participant.logo.surface}`),
+      html.includes(`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} logo-appearance-${participant.logo.appearance} asset-on-${participant.logo.surface}`),
       `${page} needs ${participant.displayName}'s logo geometry and surface metadata`,
     );
     assert.ok(

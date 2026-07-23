@@ -49,6 +49,7 @@ const allowedSourceKinds = new Set([
   "organization",
 ]);
 const allowedLogoKinds = new Set(["symbol", "wordmark"]);
+const allowedLogoAppearances = new Set(["adaptive-monochrome", "fixed"]);
 const allowedLogoSurfaces = new Set(["dark", "light"]);
 const allowedParticipantKinds = new Set(["Company", "University"]);
 const allowedImageExtensions = new Set([".avif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
@@ -359,6 +360,7 @@ function validateParticipantLogo(logo, context) {
       "height",
       "surface",
       "kind",
+      "appearance",
       "sourceUrl",
       "sourceLabel",
       "status",
@@ -372,6 +374,7 @@ function validateParticipantLogo(logo, context) {
   requirePositiveNumber(logo, "height", context);
   assert(allowedLogoSurfaces.has(requireString(logo, "surface", context)), `${context}.surface is not supported`);
   assert(allowedLogoKinds.has(requireString(logo, "kind", context)), `${context}.kind is not supported`);
+  assert(allowedLogoAppearances.has(requireString(logo, "appearance", context)), `${context}.appearance is not supported`);
   requireHttpsUrl(requireString(logo, "sourceUrl", context), `${context}.sourceUrl`);
   requireString(logo, "sourceLabel", context);
   requireString(logo, "status", context);

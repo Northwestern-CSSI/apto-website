@@ -12,6 +12,7 @@
     "height": 200,
     "surface": "light",
     "kind": "symbol",
+    "appearance": "fixed",
     "sourceUrl": "https://www.aperture.ai/assets/brand/favicon.svg",
     "sourceLabel": "Light-background adaptation of Aperture official website mark",
     "status": "approval-required",
