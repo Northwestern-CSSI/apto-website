@@ -502,7 +502,11 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-participant-logo\.asset-on-light\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-light\)/);
   assert.match(styles, /\.story-logo-canvas\s*\{[^}]*display:\s*grid[^}]*overflow:\s*hidden[^}]*background:\s*var\(--story-logo-canvas\)/);
   assert.match(styles, /\.story-logo-canvas img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*object-position:\s*center[^}]*filter:\s*none[^}]*mix-blend-mode:\s*normal/);
-  assert.match(styles, /\.story-participant-logo\.logo-kind-symbol\s*\{[^}]*width:\s*70px[^}]*aspect-ratio:\s*1/);
+  assert.match(styles, /\.story-participant-logo\s*\{[^}]*width:\s*142px[^}]*height:\s*70px/);
+  assert.match(styles, /\.story-project-stage-active \.story-participant-logo\s*\{[^}]*width:\s*106px[^}]*height:\s*54px/);
+  assert.match(styles, /\.story-cohort-group \.story-participant-logo\s*\{[^}]*width:\s*150px[^}]*height:\s*82px/);
+  assert.doesNotMatch(styles, /\.story-participant-logo\.logo-kind-symbol\s*\{[^}]*(?:width|height|aspect-ratio)\s*:/);
+  assert.doesNotMatch(styles, /\.story-(?:project-stage-active|cohort-group) \.story-participant-logo\.logo-kind-symbol\s*\{/);
   assert.match(styles, /\.story-project-stage-active-inner\s*>\s*div\s*>\s*strong,[\s\S]*?\.story-project-stage-active-inner\s*>\s*div\s*>\s*span\s*\{\s*display:\s*block/);
   assert.doesNotMatch(styles, /\.story-project-stage-active\s+strong,\s*\.story-project-stage-active\s+span\s*\{/);
   assert.match(styles, /\.story-participant-logo\.logo-appearance-adaptive-monochrome\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-light\)/);
