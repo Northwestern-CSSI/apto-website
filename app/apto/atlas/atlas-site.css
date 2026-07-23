@@ -346,12 +346,6 @@
   border: 1px solid var(--atlas-logo-line);
   border-radius: 6px;
 }
-.atlas-logo.logo-kind-symbol .atlas-logo-canvas {
-  width: auto;
-  height: 100%;
-  padding: 8px;
-  aspect-ratio: 1;
-}
 .atlas-logo-canvas img {
   width: 100%;
   height: 100%;
@@ -362,6 +356,17 @@
   filter: none;
   mix-blend-mode: normal;
   transform: none;
+}
+.atlas-logo.logo-kind-symbol .atlas-logo-canvas { position: relative; }
+.atlas-logo.logo-kind-symbol .atlas-logo-canvas img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: 132%;
+  max-width: none;
+  max-height: none;
+  transform: translate(-50%, -50%);
 }
 .atlas-logo.logo-appearance-adaptive-monochrome {
   --atlas-logo-canvas: var(--atlas-logo-canvas-light);

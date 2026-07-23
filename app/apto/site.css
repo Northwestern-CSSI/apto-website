@@ -1727,20 +1727,6 @@
   filter: none;
   mix-blend-mode: normal;
 }
-.nsf-apto .nsf-participant-mark.logo-aperture.is-feature { padding: 4px; }
-.nsf-apto .nsf-participant-mark.logo-aperture.is-directory { padding: 5px; }
-.nsf-apto .nsf-participant-mark.logo-aperture.is-compact { padding: 3px; }
-.nsf-apto .nsf-participant-mark.logo-aperture img {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center;
-  transform: scale(1.22);
-  transform-origin: center;
-}
-
 /* Cohort chapters use proximity, whitespace, and an edge-free ambient wash. */
 .nsf-program-leadership,
 .nsf-cohort-group,
@@ -2092,6 +2078,26 @@
   .nsf-tool-copy { --nsf-tool-copy-indent: 68px; }
   .nsf-tool-heading { grid-template-columns: 54px minmax(0, 1fr); gap: 14px; }
   .nsf-tool-heading .nsf-participant-mark { width: 54px; height: 42px; padding: 5px 6px; }
+}
+
+/* Aperture is a square symbol with generous transparent SVG margins. Size it
+   from each logo well's height so it cannot intrude into adjacent copy. */
+.nsf-apto .nsf-participant-mark.logo-aperture {
+  position: relative;
+  overflow: hidden;
+}
+.nsf-apto .nsf-participant-mark.logo-aperture img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: 132%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  object-position: center;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
 }
 
 @media (forced-colors: active) {

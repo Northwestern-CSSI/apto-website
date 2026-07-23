@@ -172,7 +172,9 @@ function useStoryExperience(
           const rect = element.getBoundingClientRect();
           const centerDelta = rect.top + rect.height / 2 - viewportHeight / 2;
           const speed = Number(element.dataset.storyParallax ?? "0.06");
-          const shift = Math.max(-48, Math.min(48, -centerDelta * speed));
+          const requestedLimit = Number(element.dataset.storyParallaxLimit ?? "48");
+          const limit = Number.isFinite(requestedLimit) ? Math.max(0, requestedLimit) : 48;
+          const shift = Math.max(-limit, Math.min(limit, -centerDelta * speed));
           const progress = clamp01((viewportHeight - rect.top) / (viewportHeight + rect.height));
           element.style.setProperty("--story-shift", `${shift.toFixed(2)}px`);
           element.style.setProperty("--story-shift-soft", `${(shift * .38).toFixed(2)}px`);
@@ -279,7 +281,12 @@ function StoryHero() {
           decoding="async"
           fetchPriority="high"
         />
-        {heroDetail && <span className="story-hero-detail-anchor" data-story-parallax="0.018" aria-hidden="true">
+        {heroDetail && <span
+          className="story-hero-detail-anchor"
+          data-story-parallax="0.095"
+          data-story-parallax-limit="76"
+          aria-hidden="true"
+        >
           <span className="story-hero-detail">
             <img src={withDeploymentBase(heroDetail.src)} alt="" width="1536" height="1024" decoding="async" />
           </span>
@@ -302,7 +309,8 @@ function OutcomePanorama() {
   return <div className="story-outcome-panorama" data-story-reveal="media">
     {lenses.map(({ outcome, tool }, index) => <div
       className="story-outcome-depth"
-      data-story-parallax={(.008 + index * .004).toFixed(3)}
+      data-story-parallax={(.04 + index * .03).toFixed(3)}
+      data-story-parallax-limit="88"
       key={outcome.name}
     >
       <figure>
