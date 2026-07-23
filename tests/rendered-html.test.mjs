@@ -507,6 +507,8 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-cohort-group \.story-participant-logo\s*\{[^}]*width:\s*150px[^}]*height:\s*82px/);
   assert.doesNotMatch(styles, /\.story-participant-logo\.logo-kind-symbol\s*\{[^}]*(?:width|height|aspect-ratio)\s*:/);
   assert.doesNotMatch(styles, /\.story-(?:project-stage-active|cohort-group) \.story-participant-logo\.logo-kind-symbol\s*\{/);
+  assert.match(styles, /\.story-participant-logo\.logo-kind-symbol \.story-logo-canvas\s*\{[^}]*position:\s*relative[^}]*padding:\s*0/);
+  assert.match(styles, /\.story-participant-logo\.logo-kind-symbol \.story-logo-canvas img\s*\{[^}]*position:\s*absolute[^}]*left:\s*50%[^}]*top:\s*50%[^}]*width:\s*auto[^}]*height:\s*132%[^}]*max-width:\s*none[^}]*max-height:\s*none[^}]*transform:\s*translate\(-50%,\s*-50%\)/);
   assert.match(styles, /\.story-project-stage-active-inner\s*>\s*div\s*>\s*strong,[\s\S]*?\.story-project-stage-active-inner\s*>\s*div\s*>\s*span\s*\{\s*display:\s*block/);
   assert.doesNotMatch(styles, /\.story-project-stage-active\s+strong,\s*\.story-project-stage-active\s+span\s*\{/);
   assert.match(styles, /\.story-participant-logo\.logo-appearance-adaptive-monochrome\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-light\)/);

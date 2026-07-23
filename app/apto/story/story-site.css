@@ -731,7 +731,20 @@
 }
 [data-apto-theme="dark"] .story-participant-logo.logo-appearance-adaptive-monochrome img,
 .nsf-apto-network .story-participant-logo.logo-appearance-adaptive-monochrome img { filter: none; }
-.story-participant-logo.logo-kind-symbol .story-logo-canvas { padding: 8px; }
+.story-participant-logo.logo-kind-symbol .story-logo-canvas {
+  position: relative;
+  padding: 0;
+}
+.story-participant-logo.logo-kind-symbol .story-logo-canvas img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: 132%;
+  max-width: none;
+  max-height: none;
+  transform: translate(-50%, -50%);
+}
 .story-project-chapter header p { margin-bottom: 7px; color: var(--story-projects-muted); font-size: .72rem; font-weight: 750; }
 .story-project-chapter h3 { margin: 0; color: var(--story-projects-ink); font-size: clamp(1.45rem,2.6vw,2.3rem); letter-spacing: -.03em; line-height: 1.12; }
 .story-project-chapter > p { max-width: 68ch; margin-bottom: 26px; color: var(--story-projects-copy); font-size: clamp(.96rem,1.15vw,1.06rem); line-height: 1.75; }
