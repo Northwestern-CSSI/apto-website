@@ -730,7 +730,7 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(source, /function hashString\(value: string\)/);
   assert.match(source, /function seededRandom\(seed: number\)/);
   assert.match(source, /hashString\(`\$\{toolId\}:\$\{index\}:\$\{cycle\}`\)/);
-  assert.match(source, /randomBetween\(random, 10_500, 17_500\)/);
+  assert.match(source, /randomBetween\(random, 9_500, 15_500\)/);
   assert.match(source, /randomBetween\(random, 3_200, 5_200\)/);
   assert.match(source, /const zoomsIn = random\(\) >= \.5/);
   assert.match(source, /fromScale: zoomsIn \? lowScale : highScale/);

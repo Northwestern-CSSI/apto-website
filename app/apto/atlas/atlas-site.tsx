@@ -88,7 +88,7 @@ function randomBetween(random: () => number, minimum: number, maximum: number) {
 
 function makeKenBurnsPlan(toolId: string, index: number, cycle: number, enterFadeMs = 0): KenBurnsPlan {
   const random = seededRandom(hashString(`${toolId}:${index}:${cycle}`));
-  const holdMs = Math.round(randomBetween(random, 10_500, 17_500));
+  const holdMs = Math.round(randomBetween(random, 9_500, 15_500));
   const exitFadeMs = Math.round(randomBetween(random, 3_200, 5_200));
   const lowScale = randomBetween(random, 1.08, 1.14);
   const highScale = randomBetween(random, 1.2, 1.32);
