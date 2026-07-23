@@ -363,6 +363,18 @@
   mix-blend-mode: normal;
   transform: none;
 }
+.atlas-logo.logo-appearance-adaptive-monochrome {
+  --atlas-logo-canvas: var(--atlas-logo-canvas-light);
+}
+.atlas-logo.logo-appearance-adaptive-monochrome img {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(47%) saturate(1915%) hue-rotate(178deg) brightness(84%) contrast(105%);
+}
+[data-apto-theme="dark"] .atlas-logo.logo-appearance-adaptive-monochrome,
+.nsf-apto-network .atlas-logo.logo-appearance-adaptive-monochrome {
+  --atlas-logo-canvas: var(--atlas-logo-canvas-dark);
+}
+[data-apto-theme="dark"] .atlas-logo.logo-appearance-adaptive-monochrome img,
+.nsf-apto-network .atlas-logo.logo-appearance-adaptive-monochrome img { filter: none; }
 
 .atlas-project-map-section {
   width: min(calc(100% - max(4vw, 28px)), 1460px);

@@ -300,20 +300,23 @@ function OutcomePanorama() {
   });
 
   return <div className="story-outcome-panorama" data-story-reveal="media">
-    {lenses.map(({ outcome, tool }, index) => <figure
+    {lenses.map(({ outcome, tool }, index) => <div
+      className="story-outcome-depth"
+      data-story-parallax={(.008 + index * .004).toFixed(3)}
       key={outcome.name}
-      data-story-parallax={(.012 + index * .006).toFixed(3)}
     >
-      {tool && <img
-        src={withDeploymentBase(tool.galleryImages[0]?.src ?? tool.figure.src)}
-        alt=""
-        width="1536"
-        height="1024"
-        loading="lazy"
-        decoding="async"
-      />}
-      <figcaption><strong>{outcome.name}</strong><span>{outcome.description}</span></figcaption>
-    </figure>)}
+      <figure>
+        {tool && <img
+          src={withDeploymentBase(tool.galleryImages[0]?.src ?? tool.figure.src)}
+          alt=""
+          width="1536"
+          height="1024"
+          loading="lazy"
+          decoding="async"
+        />}
+        <figcaption><strong>{outcome.name}</strong><span>{outcome.description}</span></figcaption>
+      </figure>
+    </div>)}
   </div>;
 }
 

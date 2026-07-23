@@ -88,7 +88,7 @@ function randomBetween(random: () => number, minimum: number, maximum: number) {
 
 function makeKenBurnsPlan(toolId: string, index: number, cycle: number, enterFadeMs = 0): KenBurnsPlan {
   const random = seededRandom(hashString(`${toolId}:${index}:${cycle}`));
-  const holdMs = Math.round(randomBetween(random, 11_500, 19_000));
+  const holdMs = Math.round(randomBetween(random, 10_500, 17_500));
   const exitFadeMs = Math.round(randomBetween(random, 3_200, 5_200));
   const lowScale = randomBetween(random, 1.08, 1.14);
   const highScale = randomBetween(random, 1.2, 1.32);
@@ -168,7 +168,7 @@ function ParticipantLogo({ participant, eager = false, className = "" }: {
   className?: string;
 }) {
   return <span
-    className={`atlas-logo logo-${participant.id} logo-kind-${participant.logo.kind} asset-on-${participant.logo.surface} ${className}`.trim()}
+    className={`atlas-logo logo-${participant.id} logo-kind-${participant.logo.kind} logo-appearance-${participant.logo.appearance} asset-on-${participant.logo.surface} ${className}`.trim()}
     aria-hidden="true"
   >
     <span className="atlas-logo-canvas">

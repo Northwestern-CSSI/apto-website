@@ -331,6 +331,9 @@ test("renders one shared, content-complete long-scroll story at both public rout
       /class="story-hero-detail-anchor" data-story-parallax="0\.018"/,
       "The hero inset should have an independently measured foreground parallax depth",
     );
+    assert.match(markup, /class="story-outcome-depth" data-story-parallax="0\.008"/);
+    assert.match(markup, /class="story-outcome-depth" data-story-parallax="0\.012"/);
+    assert.match(markup, /class="story-outcome-depth" data-story-parallax="0\.016"/);
     for (const [index, section] of expectedSections.entries()) {
       const start = markup.indexOf(`id="story-${section}"`);
       const next = expectedSections[index + 1];
@@ -726,7 +729,7 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(source, /function hashString\(value: string\)/);
   assert.match(source, /function seededRandom\(seed: number\)/);
   assert.match(source, /hashString\(`\$\{toolId\}:\$\{index\}:\$\{cycle\}`\)/);
-  assert.match(source, /randomBetween\(random, 11_500, 19_000\)/);
+  assert.match(source, /randomBetween\(random, 10_500, 17_500\)/);
   assert.match(source, /randomBetween\(random, 3_200, 5_200\)/);
   assert.match(source, /const zoomsIn = random\(\) >= \.5/);
   assert.match(source, /fromScale: zoomsIn \? lowScale : highScale/);
@@ -774,8 +777,13 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(styles, /animation-iteration-count:\s*1\s*!important/);
   assert.match(styles, /\.atlas-tool-media img\s*\{[^}]*animation:\s*none\s*!important[^}]*transform:\s*none\s*!important/);
   assert.match(source, /<span className="atlas-logo-canvas">/);
+  assert.match(source, /logo-appearance-\$\{participant\.logo\.appearance\}/);
   assert.match(styles, /\.atlas-logo-canvas\s*\{[^}]*display:\s*grid[^}]*place-items:\s*center[^}]*overflow:\s*hidden[^}]*background:\s*var\(--atlas-logo-canvas\)/);
   assert.match(styles, /\.atlas-logo-canvas img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*object-position:\s*center[^}]*filter:\s*none[^}]*mix-blend-mode:\s*normal[^}]*transform:\s*none/);
+  assert.match(styles, /\.atlas-logo\.logo-appearance-adaptive-monochrome\s*\{[^}]*--atlas-logo-canvas:\s*var\(--atlas-logo-canvas-light\)/);
+  assert.match(styles, /\.atlas-logo\.logo-appearance-adaptive-monochrome img\s*\{[^}]*filter:\s*brightness\(0\)/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.atlas-logo\.logo-appearance-adaptive-monochrome,[\s\S]*?--atlas-logo-canvas:\s*var\(--atlas-logo-canvas-dark\)/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.atlas-logo\.logo-appearance-adaptive-monochrome img,[\s\S]*?filter:\s*none/);
   assert.doesNotMatch(styles, /\.atlas-logo(?:-canvas)?\.logo-aperture|\.logo-aperture\s+(?:\.atlas-logo-canvas\s+)?img/);
   assert.match(styles, /@media \(forced-colors:\s*active\)/);
   assert.match(styles, /\.atlas-tool-card::after\s*\{[^}]*border:\s*2px solid CanvasText/);
@@ -1264,7 +1272,8 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     /\.nsf-cohort-group-header \.nsf-participant-mark\.is-feature img\s*\{[^}]*width:\s*auto[^}]*height:\s*auto[^}]*max-width:\s*100%[^}]*max-height:\s*70px[^}]*object-fit:\s*contain[^}]*object-position:\s*center/,
   );
   assert.doesNotMatch(styles, /\.nsf-cohort-group-header \.nsf-participant-mark\.logo-(?:aperture|insilicom|macrocosm)/);
-  assert.match(styles, /\.nsf-participant-mark\.logo-aperture\.is-directory img\s*\{[^}]*max-width:\s*48px/);
+  assert.match(styles, /\.nsf-apto \.nsf-participant-mark\.logo-aperture\.is-directory\s*\{[^}]*padding:\s*5px/);
+  assert.match(styles, /\.nsf-apto \.nsf-participant-mark\.logo-aperture img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*transform:\s*scale\(1\.22\)/);
   assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
   assert.match(siteSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
   assert.match(siteSource, /!rootRef\.current\?\.contains\(target\)/);
