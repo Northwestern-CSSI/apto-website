@@ -7,14 +7,21 @@
   "location": "Brooklyn, New York",
   "website": "https://macrocosm.group/",
   "logo": {
-    "src": "/apto/partners/macrocosm.svg",
-    "width": 443,
-    "height": 194,
-    "surface": "dark",
     "kind": "wordmark",
-    "appearance": "adaptive-monochrome",
+    "variants": {
+      "light": {
+        "src": "/apto/partners/macrocosm-light.svg",
+        "width": 443,
+        "height": 194
+      },
+      "dark": {
+        "src": "/apto/partners/macrocosm.svg",
+        "width": 443,
+        "height": 194
+      }
+    },
     "sourceUrl": "https://macrocosm.group/macrocosm-logo.svg",
-    "sourceLabel": "Macrocosm official logo asset",
+    "sourceLabel": "Macrocosm official logo asset and light-theme color adaptation",
     "status": "approval-required",
     "approved": false
   },

@@ -168,15 +168,25 @@ function ParticipantLogo({ participant, eager = false, className = "" }: {
   className?: string;
 }) {
   return <span
-    className={`atlas-logo logo-${participant.id} logo-kind-${participant.logo.kind} logo-appearance-${participant.logo.appearance} asset-on-${participant.logo.surface} ${className}`.trim()}
+    className={`atlas-logo logo-${participant.id} logo-kind-${participant.logo.kind} ${className}`.trim()}
     aria-hidden="true"
   >
     <span className="atlas-logo-canvas">
       <img
-        src={withDeploymentBase(participant.logo.src)}
+        className="atlas-logo-asset is-light"
+        src={withDeploymentBase(participant.logo.variants.light.src)}
         alt=""
-        width={participant.logo.width}
-        height={participant.logo.height}
+        width={participant.logo.variants.light.width}
+        height={participant.logo.variants.light.height}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+      <img
+        className="atlas-logo-asset is-dark"
+        src={withDeploymentBase(participant.logo.variants.dark.src)}
+        alt=""
+        width={participant.logo.variants.dark.width}
+        height={participant.logo.variants.dark.height}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
       />

@@ -96,10 +96,23 @@ function ParticipantMark({
 }) {
   const logo = participant.logo;
   return <span
-    className={`nsf-participant-mark is-${size} is-${logo.kind} asset-on-${logo.surface} logo-${participant.id}`}
+    className={`nsf-participant-mark is-${size} is-${logo.kind} logo-${participant.id}`}
     aria-hidden="true"
   >
-    <img src={withDeploymentBase(logo.src)} width={logo.width} height={logo.height} alt="" />
+    <img
+      className="nsf-logo-asset is-light"
+      src={withDeploymentBase(logo.variants.light.src)}
+      width={logo.variants.light.width}
+      height={logo.variants.light.height}
+      alt=""
+    />
+    <img
+      className="nsf-logo-asset is-dark"
+      src={withDeploymentBase(logo.variants.dark.src)}
+      width={logo.variants.dark.width}
+      height={logo.variants.dark.height}
+      alt=""
+    />
   </span>;
 }
 

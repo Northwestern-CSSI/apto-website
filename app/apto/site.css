@@ -231,20 +231,6 @@
 .nsf-participant-mark.is-directory { width: 148px; height: 72px; padding: 10px 13px; }
 .nsf-participant-mark.is-feature { width: 148px; height: 82px; padding: 11px 13px; }
 .nsf-participant-mark img { max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; object-fit: contain; }
-.nsf-apto-home .nsf-participant-mark.logo-macrocosm img {
-  filter: brightness(0) saturate(100%) invert(14%) sepia(47%) saturate(1915%) hue-rotate(178deg) brightness(84%) contrast(105%);
-}
-.nsf-apto-home .nsf-participant-mark.logo-aperture img {
-  filter: invert(1) grayscale(1) contrast(4);
-  mix-blend-mode: multiply;
-}
-.nsf-apto-network .nsf-participant-mark.logo-uchicago img {
-  filter: grayscale(1) brightness(0) invert(1);
-}
-.nsf-apto-network .nsf-participant-mark.logo-northwestern img {
-  filter: invert(1) grayscale(1) brightness(3);
-  mix-blend-mode: screen;
-}
 .nsf-participant-mark.is-symbol img { max-width: 52px; max-height: 52px; }
 .nsf-participant-mark.is-compact.is-symbol img { max-width: 34px; max-height: 34px; }
 .nsf-participant-mark.is-fallback { color: var(--nsf-dark-blue); font-size: .8rem; font-weight: 800; }
@@ -1723,10 +1709,6 @@
   object-fit: contain;
   object-position: center;
 }
-.nsf-apto-home .nsf-participant-mark.logo-aperture img {
-  filter: none;
-  mix-blend-mode: normal;
-}
 /* Cohort chapters use proximity, whitespace, and an edge-free ambient wash. */
 .nsf-program-leadership,
 .nsf-cohort-group,
@@ -1884,11 +1866,6 @@
 }
 .nsf-apto-network .nsf-cohort-group .nsf-headshot-placeholder,
 .nsf-apto-network .nsf-program-leadership .nsf-headshot-placeholder { border-color: var(--nsf-light-blue); }
-.nsf-apto-network .nsf-participant-mark.logo-northwestern img {
-  filter: invert(1) grayscale(1) contrast(10);
-  mix-blend-mode: screen;
-}
-
 .nsf-tools-section .nsf-section-intro { margin-bottom: 26px; }
 .nsf-filter-groups,
 .nsf-apto-network .nsf-filter-groups {
@@ -2098,6 +2075,20 @@
   object-position: center;
   transform: translate(-50%, -50%);
   transform-origin: center;
+}
+.nsf-participant-mark .nsf-logo-asset {
+  grid-area: 1 / 1;
+}
+.nsf-participant-mark .nsf-logo-asset.is-dark {
+  display: none;
+}
+[data-apto-theme="dark"] .nsf-participant-mark .nsf-logo-asset.is-light,
+.nsf-apto-network .nsf-participant-mark .nsf-logo-asset.is-light {
+  display: none;
+}
+[data-apto-theme="dark"] .nsf-participant-mark .nsf-logo-asset.is-dark,
+.nsf-apto-network .nsf-participant-mark .nsf-logo-asset.is-dark {
+  display: block;
 }
 
 @media (forced-colors: active) {

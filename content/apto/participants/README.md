@@ -15,12 +15,19 @@ Organizations are displayed alphabetically without a ranking field.
   "location": "City, State",
   "website": "https://example.edu/",
   "logo": {
-    "src": "/apto/partners/example-organization.svg",
-    "width": 600,
-    "height": 180,
-    "surface": "light",
     "kind": "wordmark",
-    "appearance": "fixed",
+    "variants": {
+      "light": {
+        "src": "/apto/partners/example-organization.svg",
+        "width": 600,
+        "height": 180
+      },
+      "dark": {
+        "src": "/apto/partners/example-organization-dark.svg",
+        "width": 600,
+        "height": 180
+      }
+    },
     "sourceUrl": "https://example.edu/brand/",
     "sourceLabel": "Example Organization brand resource",
     "status": "approval-required",
@@ -39,13 +46,12 @@ Organizations are displayed alphabetically without a ranking field.
 - `organizationType` is `University` or `Company`.
 - `website` and `logo.sourceUrl` must use HTTPS.
 - `accent` is a six-digit hexadecimal color.
-- `logo.surface` is `light` or `dark`, describing the artwork’s intended
-  background.
 - `logo.kind` is `symbol` or `wordmark`.
-- `logo.appearance` is `fixed` for full-color artwork or
-  `adaptive-monochrome` for a monochrome mark that should become NSF navy on
-  light surfaces and white on dark surfaces.
-- `logo.width` and `logo.height` should be the image’s true intrinsic
+- `logo.variants.light` contains artwork approved for a light surface and
+  `logo.variants.dark` contains transparent, reversed, or otherwise approved
+  artwork for a dark surface. The same transparent full-color asset may be
+  referenced by both variants when it remains legible in both themes.
+- Each variant’s `width` and `height` must be the image’s true intrinsic
   dimensions.
 - `status` and `approved` record review state; they do not themselves grant
   permission to use a mark.

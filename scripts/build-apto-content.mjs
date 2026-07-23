@@ -49,8 +49,6 @@ const allowedSourceKinds = new Set([
   "organization",
 ]);
 const allowedLogoKinds = new Set(["symbol", "wordmark"]);
-const allowedLogoAppearances = new Set(["adaptive-monochrome", "fixed"]);
-const allowedLogoSurfaces = new Set(["dark", "light"]);
 const allowedParticipantKinds = new Set(["Company", "University"]);
 const allowedImageExtensions = new Set([".avif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const allowedPersonRoles = new Set([
@@ -350,17 +348,23 @@ async function syncAssets(assetFiles, checkOnly) {
   }
 }
 
+function validateParticipantLogoAsset(asset, context) {
+  requireObject(asset, context);
+  assertExactKeys(asset, ["src", "width", "height"], context);
+  const src = requireString(asset, "src", context);
+  assert(src.startsWith("/"), `${context}.src must be a root-relative asset path`);
+  requirePositiveNumber(asset, "width", context);
+  requirePositiveNumber(asset, "height", context);
+  return asset;
+}
+
 function validateParticipantLogo(logo, context) {
   requireObject(logo, context);
   assertExactKeys(
     logo,
     [
-      "src",
-      "width",
-      "height",
-      "surface",
       "kind",
-      "appearance",
+      "variants",
       "sourceUrl",
       "sourceLabel",
       "status",
@@ -368,13 +372,11 @@ function validateParticipantLogo(logo, context) {
     ],
     context,
   );
-  const src = requireString(logo, "src", context);
-  assert(src.startsWith("/"), `${context}.src must be a root-relative asset path`);
-  requirePositiveNumber(logo, "width", context);
-  requirePositiveNumber(logo, "height", context);
-  assert(allowedLogoSurfaces.has(requireString(logo, "surface", context)), `${context}.surface is not supported`);
   assert(allowedLogoKinds.has(requireString(logo, "kind", context)), `${context}.kind is not supported`);
-  assert(allowedLogoAppearances.has(requireString(logo, "appearance", context)), `${context}.appearance is not supported`);
+  requireObject(logo.variants, `${context}.variants`);
+  assertExactKeys(logo.variants, ["light", "dark"], `${context}.variants`);
+  validateParticipantLogoAsset(logo.variants.light, `${context}.variants.light`);
+  validateParticipantLogoAsset(logo.variants.dark, `${context}.variants.dark`);
   requireHttpsUrl(requireString(logo, "sourceUrl", context), `${context}.sourceUrl`);
   requireString(logo, "sourceLabel", context);
   requireString(logo, "status", context);
@@ -953,10 +955,10 @@ function validateTool(document) {
 
 async function validateParticipantLogoFiles(participantRecords) {
   await Promise.all(
-    participantRecords.map((record) => validateImageAsset(
-      record.participant.logo.src,
-      `${relativeFile(record.sourceFile)}.logo.src`,
-    )),
+    participantRecords.flatMap((record) => ["light", "dark"].map((theme) => validateImageAsset(
+      record.participant.logo.variants[theme].src,
+      `${relativeFile(record.sourceFile)}.logo.variants.${theme}.src`,
+    ))),
   );
 }
 
@@ -1113,7 +1115,10 @@ async function buildContent() {
     interfaceRecord.footer.nsfLogoSrc,
     interfaceRecord.projects.map.imageUrl,
     ...programRecord.program.landingGallery.map((image) => image.src),
-    ...participantRecords.map((record) => record.participant.logo.src),
+    ...participantRecords.flatMap((record) => [
+      record.participant.logo.variants.light.src,
+      record.participant.logo.variants.dark.src,
+    ]),
     ...personRecords
       .map((record) => record.person.headshotUrl)
       .filter((headshotUrl) => headshotUrl !== null),

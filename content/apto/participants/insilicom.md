@@ -7,12 +7,19 @@
   "location": "Tallahassee, Florida",
   "website": "https://insilicom.com/",
   "logo": {
-    "src": "/apto/partners/insilicom.png",
-    "width": 158,
-    "height": 42,
-    "surface": "light",
     "kind": "wordmark",
-    "appearance": "fixed",
+    "variants": {
+      "light": {
+        "src": "/apto/partners/insilicom.png",
+        "width": 158,
+        "height": 42
+      },
+      "dark": {
+        "src": "/apto/partners/insilicom.png",
+        "width": 158,
+        "height": 42
+      }
+    },
     "sourceUrl": "https://www.insilicom.com/",
     "sourceLabel": "Insilicom official website reference",
     "status": "approval-required",

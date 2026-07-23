@@ -296,6 +296,7 @@ test("renders one shared, content-complete long-scroll story at both public rout
     const expectedLogoCount = content.projects.length + content.participants.length + 1;
     assert.equal(countMatches(markup, /class="story-participant-logo\b/g), expectedLogoCount);
     assert.equal(countMatches(markup, /class="story-logo-canvas"/g), expectedLogoCount);
+    assert.equal(countMatches(markup, /class="story-logo-asset is-(?:light|dark)"/g), expectedLogoCount * 2);
     const projectMapStart = markup.indexOf('<div class="story-map"');
     const projectMapEnd = markup.indexOf('<div class="story-project-stage-active"', projectMapStart);
     assert.ok(projectMapStart >= 0 && projectMapEnd > projectMapStart, "The story should include the keyboard-operable project map");
@@ -361,11 +362,16 @@ test("renders one shared, content-complete long-scroll story at both public rout
       assert.ok(markup.includes(`href="${participant.website}"`));
       assert.ok(
         markup.includes(
-          `story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} logo-appearance-${participant.logo.appearance} asset-on-${participant.logo.surface}`,
+          `story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind}`,
         ),
-        `${participant.displayName} should preserve its content-managed logo geometry and surface`,
+        `${participant.displayName} should preserve its content-managed logo geometry`,
       );
-      assert.ok(markup.includes(`src="${participant.logo.src}"`));
+      for (const [theme, asset] of Object.entries(participant.logo.variants)) {
+        assert.ok(
+          markup.includes(`class="story-logo-asset is-${theme}" src="${asset.src}" width="${asset.width}" height="${asset.height}"`),
+          `${participant.displayName} should render its ${theme} logo at the declared intrinsic dimensions`,
+        );
+      }
       for (const person of participant.people) {
         assert.ok(text.includes(person.name));
         assert.ok(text.includes(person.role));
@@ -464,8 +470,6 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
     "--story-logo-shell",
     "--story-logo-line",
     "--story-logo-shadow",
-    "--story-logo-canvas-light",
-    "--story-logo-canvas-dark",
   ];
   for (const token of themedSectionTokens) {
     const lightValue = customPropertyValue(lightTheme, token);
@@ -498,10 +502,12 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-cohort-group\s*\{[^}]*var\(--story-cohort-surface\)/);
   assert.match(styles, /\.story-person\s*\{[^}]*background:\s*var\(--story-cohort-person\)/);
   assert.match(styles, /\.story-footer\s*\{[^}]*color:\s*var\(--story-footer-ink\)[^}]*background:\s*var\(--story-footer-bg\)/);
-  assert.match(styles, /\.story-participant-logo\.asset-on-dark\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-dark\)/);
-  assert.match(styles, /\.story-participant-logo\.asset-on-light\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-light\)/);
   assert.match(styles, /\.story-logo-canvas\s*\{[^}]*display:\s*grid[^}]*overflow:\s*hidden[^}]*background:\s*var\(--story-logo-canvas\)/);
   assert.match(styles, /\.story-logo-canvas img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*object-position:\s*center[^}]*filter:\s*none[^}]*mix-blend-mode:\s*normal/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.story-participant-logo,[\s\S]*?--story-logo-canvas:\s*transparent/);
+  assert.match(styles, /\.story-logo-asset\.is-dark\s*\{\s*display:\s*none/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.story-logo-asset\.is-light,[\s\S]*?display:\s*none/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.story-logo-asset\.is-dark,[\s\S]*?display:\s*block/);
   assert.match(styles, /\.story-participant-logo\s*\{[^}]*width:\s*142px[^}]*height:\s*70px/);
   assert.match(styles, /\.story-project-stage-active \.story-participant-logo\s*\{[^}]*width:\s*106px[^}]*height:\s*54px/);
   assert.match(styles, /\.story-cohort-group \.story-participant-logo\s*\{[^}]*width:\s*150px[^}]*height:\s*82px/);
@@ -511,10 +517,7 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-participant-logo\.logo-kind-symbol \.story-logo-canvas img\s*\{[^}]*position:\s*absolute[^}]*left:\s*50%[^}]*top:\s*50%[^}]*width:\s*auto[^}]*height:\s*132%[^}]*max-width:\s*none[^}]*max-height:\s*none[^}]*transform:\s*translate\(-50%,\s*-50%\)/);
   assert.match(styles, /\.story-project-stage-active-inner\s*>\s*div\s*>\s*strong,[\s\S]*?\.story-project-stage-active-inner\s*>\s*div\s*>\s*span\s*\{\s*display:\s*block/);
   assert.doesNotMatch(styles, /\.story-project-stage-active\s+strong,\s*\.story-project-stage-active\s+span\s*\{/);
-  assert.match(styles, /\.story-participant-logo\.logo-appearance-adaptive-monochrome\s*\{[^}]*--story-logo-canvas:\s*var\(--story-logo-canvas-light\)/);
-  assert.match(styles, /\.story-participant-logo\.logo-appearance-adaptive-monochrome img\s*\{[^}]*filter:\s*brightness\(0\)/);
-  assert.match(styles, /\[data-apto-theme="dark"\] \.story-participant-logo\.logo-appearance-adaptive-monochrome,[\s\S]*?--story-logo-canvas:\s*var\(--story-logo-canvas-dark\)/);
-  assert.match(styles, /\[data-apto-theme="dark"\] \.story-participant-logo\.logo-appearance-adaptive-monochrome img,[\s\S]*?filter:\s*none/);
+  assert.doesNotMatch(styles, /logo-appearance-|asset-on-|adaptive-monochrome/);
   assert.doesNotMatch(styles, /\.story-participant-logo\.logo-(?:aperture|insilicom|macrocosm|northwestern|uchicago)[^{]*\{[^}]*filter:/);
   assert.match(styles, /\.story-hero-detail-anchor\s*\{[^}]*position:\s*absolute[^}]*pointer-events:\s*none/);
   assert.match(styles, /\.story-hero-detail\s*\{[^}]*transform:\s*translate3d\(0,var\(--story-shift,0\),0\)[^}]*will-change:\s*transform/);
@@ -575,6 +578,11 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
         countMatches(markup, /class="atlas-logo-canvas"/g),
         atlasLogoCount,
         `${path} should contain every organization mark in a normalized inner canvas`,
+      );
+      assert.equal(
+        countMatches(markup, /class="atlas-logo-asset is-(?:light|dark)"/g),
+        atlasLogoCount * 2,
+        `${path} should render paired light and dark artwork inside every organization mark`,
       );
       if (section !== "tools") assert.ok(atlasLogoCount >= content.participants.length);
 
@@ -784,17 +792,18 @@ test("keeps the Atlas poster grid responsive, stable, motion-safe, and deeply da
   assert.match(styles, /animation-iteration-count:\s*1\s*!important/);
   assert.match(styles, /\.atlas-tool-media img\s*\{[^}]*animation:\s*none\s*!important[^}]*transform:\s*none\s*!important/);
   assert.match(source, /<span className="atlas-logo-canvas">/);
-  assert.match(source, /logo-appearance-\$\{participant\.logo\.appearance\}/);
+  assert.match(source, /participant\.logo\.variants\.light\.src/);
+  assert.match(source, /participant\.logo\.variants\.dark\.src/);
   assert.match(styles, /\.atlas-logo-canvas\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*display:\s*grid[^}]*place-items:\s*center[^}]*overflow:\s*hidden[^}]*background:\s*var\(--atlas-logo-canvas\)/);
   assert.doesNotMatch(styles, /\.atlas-logo\.logo-kind-symbol \.atlas-logo-canvas\s*\{[^}]*(?:width:\s*auto|aspect-ratio:\s*1)/);
   assert.match(styles, /\.atlas-logo-canvas img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*object-position:\s*center[^}]*filter:\s*none[^}]*mix-blend-mode:\s*normal[^}]*transform:\s*none/);
   assert.match(styles, /\.atlas-logo\.logo-kind-symbol \.atlas-logo-canvas\s*\{[^}]*position:\s*relative/);
   assert.match(styles, /\.atlas-logo\.logo-kind-symbol \.atlas-logo-canvas img\s*\{[^}]*position:\s*absolute[^}]*left:\s*50%[^}]*top:\s*50%[^}]*width:\s*auto[^}]*height:\s*132%[^}]*max-width:\s*none[^}]*max-height:\s*none[^}]*transform:\s*translate\(-50%,\s*-50%\)/);
-  assert.match(styles, /\.atlas-logo\.logo-appearance-adaptive-monochrome\s*\{[^}]*--atlas-logo-canvas:\s*var\(--atlas-logo-canvas-light\)/);
-  assert.match(styles, /\.atlas-logo\.logo-appearance-adaptive-monochrome img\s*\{[^}]*filter:\s*brightness\(0\)/);
-  assert.match(styles, /\[data-apto-theme="dark"\] \.atlas-logo\.logo-appearance-adaptive-monochrome,[\s\S]*?--atlas-logo-canvas:\s*var\(--atlas-logo-canvas-dark\)/);
-  assert.match(styles, /\[data-apto-theme="dark"\] \.atlas-logo\.logo-appearance-adaptive-monochrome img,[\s\S]*?filter:\s*none/);
-  assert.doesNotMatch(styles, /\.atlas-logo(?:-canvas)?\.logo-aperture|\.logo-aperture\s+(?:\.atlas-logo-canvas\s+)?img/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.atlas-logo,[\s\S]*?--atlas-logo-canvas:\s*transparent/);
+  assert.match(styles, /\.atlas-logo-asset\.is-dark\s*\{\s*display:\s*none/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.atlas-logo-asset\.is-light,[\s\S]*?display:\s*none/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.atlas-logo-asset\.is-dark,[\s\S]*?display:\s*block/);
+  assert.doesNotMatch(styles, /logo-appearance-|asset-on-|adaptive-monochrome/);
   assert.match(styles, /@media \(forced-colors:\s*active\)/);
   assert.match(styles, /\.atlas-tool-card::after\s*\{[^}]*border:\s*2px solid CanvasText/);
   assert.match(styles, /\.atlas-header\s*\{[^}]*position:\s*sticky/);
@@ -925,7 +934,11 @@ test("merges the program overview into home and replaces statistics with an inte
     assert.equal(countMatches(roster[0], /class="nsf-participant-mark/g), content.participants.length);
     for (const participant of content.participants) {
       assert.ok(roster[0].includes(participant.displayName));
-      assert.ok(roster[0].includes(`src="${participant.logo.src}"`));
+      for (const [theme, asset] of Object.entries(participant.logo.variants)) {
+        assert.ok(
+          roster[0].includes(`class="nsf-logo-asset is-${theme}" src="${asset.src}" width="${asset.width}" height="${asset.height}"`),
+        );
+      }
       const project = content.projects.find((candidate) => candidate.participantId === participant.id);
       assert.ok(project);
       assert.equal(roster[0].includes(project.shortName), false, "The home logo roster must not repeat project subtitles");
@@ -1052,9 +1065,10 @@ test("combines program leadership, organizations, and project teams on the cohor
         html,
         new RegExp(
           `class="nsf-participant-mark[^"]*logo-${escapeRegex(participant.id)}[^"]*"[\\s\\S]*?` +
-          `<img src="${escapeRegex(participant.logo.src)}" width="${participant.logo.width}" height="${participant.logo.height}" alt=""`,
+          `<img class="nsf-logo-asset is-light" src="${escapeRegex(participant.logo.variants.light.src)}" width="${participant.logo.variants.light.width}" height="${participant.logo.variants.light.height}" alt=""[\\s\\S]*?` +
+          `<img class="nsf-logo-asset is-dark" src="${escapeRegex(participant.logo.variants.dark.src)}" width="${participant.logo.variants.dark.width}" height="${participant.logo.variants.dark.height}" alt=""`,
         ),
-        `${participant.displayName} should render its content-managed logo at the declared intrinsic dimensions`,
+        `${participant.displayName} should render both content-managed theme logos at their declared intrinsic dimensions`,
       );
       assert.ok(participant.people.length > 0, `${participant.displayName} must have a project team`);
       for (const person of participant.people) {
@@ -1116,7 +1130,10 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     content.interface.atlas.socialImageSrc,
     content.interface.footer.nsfLogoSrc,
     content.interface.projects.map.imageUrl,
-    ...content.participants.map((participant) => participant.logo.src),
+    ...content.participants.flatMap((participant) => [
+      participant.logo.variants.light.src,
+      participant.logo.variants.dark.src,
+    ]),
     ...content.program.programTeam.map((person) => person.headshotUrl).filter(Boolean),
     ...content.participants.flatMap((participant) => (
       participant.people.map((person) => person.headshotUrl).filter(Boolean)
@@ -1285,6 +1302,10 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\.nsf-apto \.nsf-participant-mark\.logo-aperture\s*\{[^}]*position:\s*relative[^}]*overflow:\s*hidden/);
   assert.match(styles, /\.nsf-apto \.nsf-participant-mark\.logo-aperture img\s*\{[^}]*position:\s*absolute[^}]*left:\s*50%[^}]*top:\s*50%[^}]*width:\s*auto[^}]*height:\s*132%[^}]*max-width:\s*none[^}]*max-height:\s*none[^}]*transform:\s*translate\(-50%,\s*-50%\)/);
   assert.doesNotMatch(styles, /\.nsf-apto \.nsf-participant-mark\.logo-aperture img\s*\{[^}]*transform:\s*scale/);
+  assert.match(styles, /\.nsf-participant-mark \.nsf-logo-asset\.is-dark\s*\{[^}]*display:\s*none/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.nsf-participant-mark \.nsf-logo-asset\.is-light,[\s\S]*?display:\s*none/);
+  assert.match(styles, /\[data-apto-theme="dark"\] \.nsf-participant-mark \.nsf-logo-asset\.is-dark,[\s\S]*?display:\s*block/);
+  assert.doesNotMatch(styles, /logo-appearance-|asset-on-|adaptive-monochrome/);
   assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
   assert.match(siteSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
   assert.match(siteSource, /!rootRef\.current\?\.contains\(target\)/);

@@ -34,6 +34,14 @@ for (const page of pages) {
   assert.ok(html.includes(`href="${basePath}/cohort"`), `${page} needs a base-path-safe Cohort link`);
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
   assert.ok(html.includes(`${basePath}/_next/`), `${page} needs base-path-safe framework assets`);
+  for (const participant of content.participants) {
+    for (const [theme, asset] of Object.entries(participant.logo.variants)) {
+      assert.ok(
+        html.includes(`class="nsf-logo-asset is-${theme}" src="${basePath}${asset.src}"`),
+        `${page} needs ${participant.displayName}'s base-path-safe ${theme} logo`,
+      );
+    }
+  }
   assert.doesNotMatch(html, unprefixedPath);
 }
 
@@ -56,15 +64,18 @@ for (const page of storyPages) {
   const expectedLogoCount = content.projects.length + content.participants.length + 1;
   assert.equal((html.match(/class="story-participant-logo\b/g) ?? []).length, expectedLogoCount, `${page} needs every project and cohort logo`);
   assert.equal((html.match(/class="story-logo-canvas"/g) ?? []).length, expectedLogoCount, `${page} needs a contained canvas for every logo`);
+  assert.equal((html.match(/class="story-logo-asset is-(?:light|dark)"/g) ?? []).length, expectedLogoCount * 2, `${page} needs paired light and dark assets for every logo`);
   for (const participant of content.participants) {
     assert.ok(
-      html.includes(`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} logo-appearance-${participant.logo.appearance} asset-on-${participant.logo.surface}`),
-      `${page} needs ${participant.displayName}'s logo geometry and surface metadata`,
+      html.includes(`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind}`),
+      `${page} needs ${participant.displayName}'s logo geometry metadata`,
     );
-    assert.ok(
-      html.includes(`src="${basePath}${participant.logo.src}"`),
-      `${page} needs ${participant.displayName}'s base-path-safe logo`,
-    );
+    for (const [theme, asset] of Object.entries(participant.logo.variants)) {
+      assert.ok(
+        html.includes(`class="story-logo-asset is-${theme}" src="${basePath}${asset.src}"`),
+        `${page} needs ${participant.displayName}'s base-path-safe ${theme} logo`,
+      );
+    }
   }
   assert.match(html, /class="story-map-location is-cluster"[^>]*role="group"[^>]*aria-label="2 nearby APTO project locations:/);
   assert.match(html, /<img[^>]*src="[^"]*\/apto\/us-map\.svg"[^>]*width="959"[^>]*height="593"/);
@@ -91,6 +102,16 @@ for (const page of atlasPages) {
   assert.ok(html.includes(`${basePath}/apto/social/apto-atlas-social.png`), `${page} needs the Atlas social image`);
   const atlasLogoCount = (html.match(/class="atlas-logo(?:\s|")/g) ?? []).length;
   assert.equal((html.match(/class="atlas-logo-canvas"/g) ?? []).length, atlasLogoCount, `${page} needs a normalized canvas inside every Atlas logo`);
+  assert.equal((html.match(/class="atlas-logo-asset is-(?:light|dark)"/g) ?? []).length, atlasLogoCount * 2, `${page} needs paired light and dark assets inside every Atlas logo`);
+  for (const participant of content.participants) {
+    if (!html.includes(`atlas-logo logo-${participant.id}`)) continue;
+    for (const [theme, asset] of Object.entries(participant.logo.variants)) {
+      assert.ok(
+        html.includes(`class="atlas-logo-asset is-${theme}" src="${basePath}${asset.src}"`),
+        `${page} needs ${participant.displayName}'s base-path-safe ${theme} logo`,
+      );
+    }
+  }
   if (page.endsWith("tools/index.html")) {
     assert.equal((html.match(/data-gallery-count="4"/g) ?? []).length, 10, `${page} needs four cycling frames for every tool`);
     assert.equal((html.match(/class="atlas-tool-panel"/g) ?? []).length, 10, `${page} needs a bottom information panel for every tool`);

@@ -7,14 +7,21 @@
   "location": "Rocky River, Ohio",
   "website": "https://www.aperture.ai/",
   "logo": {
-    "src": "/apto/partners/aperture.svg",
-    "width": 200,
-    "height": 200,
-    "surface": "light",
     "kind": "symbol",
-    "appearance": "fixed",
+    "variants": {
+      "light": {
+        "src": "/apto/partners/aperture.svg",
+        "width": 200,
+        "height": 200
+      },
+      "dark": {
+        "src": "/apto/partners/aperture-dark.svg",
+        "width": 200,
+        "height": 200
+      }
+    },
     "sourceUrl": "https://www.aperture.ai/assets/brand/favicon.svg",
-    "sourceLabel": "Light-background adaptation of Aperture official website mark",
+    "sourceLabel": "Theme-aware adaptations of Aperture official website mark",
     "status": "approval-required",
     "approved": false
   },

@@ -56,14 +56,24 @@ const storyMapGroups = groupNearbyStoryProjects(aptoProjects.flatMap((project) =
 
 function ParticipantLogo({ participant, eager = false }: { participant: AptoParticipant; eager?: boolean }) {
   return <span
-    className={`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind} logo-appearance-${participant.logo.appearance} asset-on-${participant.logo.surface}`}
+    className={`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind}`}
     aria-hidden="true"
   >
     <span className="story-logo-canvas">
       <img
-        src={withDeploymentBase(participant.logo.src)}
-        width={participant.logo.width}
-        height={participant.logo.height}
+        className="story-logo-asset is-light"
+        src={withDeploymentBase(participant.logo.variants.light.src)}
+        width={participant.logo.variants.light.width}
+        height={participant.logo.variants.light.height}
+        alt=""
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+      <img
+        className="story-logo-asset is-dark"
+        src={withDeploymentBase(participant.logo.variants.dark.src)}
+        width={participant.logo.variants.dark.width}
+        height={participant.logo.variants.dark.height}
         alt=""
         loading={eager ? "eager" : "lazy"}
         decoding="async"

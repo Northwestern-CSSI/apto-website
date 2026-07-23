@@ -93,11 +93,17 @@ altering the site.
 - Prefer SVG for logos when an approved vector is available; otherwise use a
   transparent PNG or WebP.
 - Preserve official proportions, clear space, colors, and minimum sizes.
-- Record the exact intrinsic dimensions in the participant record.
-- Record the source URL, source label, intended light/dark surface, mark type,
-  approval status, and approval boolean in `participants/*.md`.
-- Verify the mark in both website themes. Some marks use organization-specific
-  CSS normalization, but they should not be distorted or recolored casually.
+- Store paired light- and dark-surface variants in this folder when the
+  organization provides them. Prefer transparent or reversed artwork for the
+  dark variant so a white rectangle is never required behind the mark.
+- Record both variants and their exact intrinsic dimensions in the participant
+  record. A transparent full-color mark may be reused for both themes when its
+  contrast is sufficient.
+- Record the source URL, source label, mark type, approval status, and approval
+  boolean in `participants/*.md`.
+- Verify the mark in both website themes and in all three presentations. The
+  shared renderer switches assets by theme; do not add organization-specific
+  filters or casual recoloring in presentation CSS.
 
 The five participant marks remain the property of their respective
 organizations. Inclusion in this repository does not transfer ownership or

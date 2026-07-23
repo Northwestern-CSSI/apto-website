@@ -12,7 +12,6 @@
   --atlas-line-strong: rgb(0 37 84 / 30%);
   --atlas-shadow: 0 18px 54px rgb(0 37 84 / 14%);
   --atlas-logo-canvas-light: #fff;
-  --atlas-logo-canvas-dark: #0b2943;
   --atlas-logo-line: rgb(0 37 84 / 14%);
   --atlas-header-height: 72px;
   min-height: 100vh;
@@ -37,8 +36,6 @@
   --atlas-line: rgb(181 202 214 / 18%);
   --atlas-line-strong: rgb(181 202 214 / 34%);
   --atlas-shadow: 0 22px 68px rgb(0 0 0 / 42%);
-  --atlas-logo-canvas-light: #f7f8f6;
-  --atlas-logo-canvas-dark: #0d304d;
   --atlas-logo-line: rgb(181 202 214 / 20%);
   color-scheme: dark;
 }
@@ -333,8 +330,8 @@
   place-items: center;
   overflow: visible;
 }
-.atlas-logo.asset-on-light { --atlas-logo-canvas: var(--atlas-logo-canvas-light); }
-.atlas-logo.asset-on-dark { --atlas-logo-canvas: var(--atlas-logo-canvas-dark); }
+[data-apto-theme="dark"] .atlas-logo,
+.nsf-apto-network .atlas-logo { --atlas-logo-canvas: transparent; }
 .atlas-logo-canvas {
   width: 100%;
   height: 100%;
@@ -347,6 +344,7 @@
   border-radius: 6px;
 }
 .atlas-logo-canvas img {
+  grid-area: 1 / 1;
   width: 100%;
   height: 100%;
   max-width: 100%;
@@ -357,6 +355,11 @@
   mix-blend-mode: normal;
   transform: none;
 }
+.atlas-logo-asset.is-dark { display: none; }
+[data-apto-theme="dark"] .atlas-logo-asset.is-light,
+.nsf-apto-network .atlas-logo-asset.is-light { display: none; }
+[data-apto-theme="dark"] .atlas-logo-asset.is-dark,
+.nsf-apto-network .atlas-logo-asset.is-dark { display: block; }
 .atlas-logo.logo-kind-symbol .atlas-logo-canvas { position: relative; }
 .atlas-logo.logo-kind-symbol .atlas-logo-canvas img {
   position: absolute;
@@ -368,19 +371,6 @@
   max-height: none;
   transform: translate(-50%, -50%);
 }
-.atlas-logo.logo-appearance-adaptive-monochrome {
-  --atlas-logo-canvas: var(--atlas-logo-canvas-light);
-}
-.atlas-logo.logo-appearance-adaptive-monochrome img {
-  filter: brightness(0) saturate(100%) invert(14%) sepia(47%) saturate(1915%) hue-rotate(178deg) brightness(84%) contrast(105%);
-}
-[data-apto-theme="dark"] .atlas-logo.logo-appearance-adaptive-monochrome,
-.nsf-apto-network .atlas-logo.logo-appearance-adaptive-monochrome {
-  --atlas-logo-canvas: var(--atlas-logo-canvas-dark);
-}
-[data-apto-theme="dark"] .atlas-logo.logo-appearance-adaptive-monochrome img,
-.nsf-apto-network .atlas-logo.logo-appearance-adaptive-monochrome img { filter: none; }
-
 .atlas-project-map-section {
   width: min(calc(100% - max(4vw, 28px)), 1460px);
   margin: 0 auto clamp(80px, 9vw, 138px);

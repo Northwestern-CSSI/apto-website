@@ -6,13 +6,18 @@ export type AptoParticipantId = string;
 export type AptoOutcome = "Capability" | "Production" | "Use";
 export type AptoLineOfEffortId = "models" | "data-tools";
 
-export type AptoParticipantLogo = {
+export type AptoParticipantLogoAsset = {
   src: string;
   width: number;
   height: number;
-  surface: "dark" | "light";
+};
+
+export type AptoParticipantLogo = {
   kind: "symbol" | "wordmark";
-  appearance: "adaptive-monochrome" | "fixed";
+  variants: {
+    light: AptoParticipantLogoAsset;
+    dark: AptoParticipantLogoAsset;
+  };
 };
 
 export type AptoPersonRole =

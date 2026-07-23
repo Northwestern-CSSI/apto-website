@@ -7,14 +7,21 @@
   "location": "Evanston, Illinois",
   "website": "https://www.northwestern.edu/",
   "logo": {
-    "src": "/apto/partners/northwestern.png",
-    "width": 368,
-    "height": 69,
-    "surface": "light",
     "kind": "wordmark",
-    "appearance": "fixed",
+    "variants": {
+      "light": {
+        "src": "/apto/partners/northwestern.png",
+        "width": 368,
+        "height": 69
+      },
+      "dark": {
+        "src": "/apto/partners/northwestern-dark.png",
+        "width": 368,
+        "height": 69
+      }
+    },
     "sourceUrl": "https://www.northwestern.edu/brand/images/horizontal-wordmark.png",
-    "sourceLabel": "Northwestern preferred wordmark preview",
+    "sourceLabel": "Northwestern preferred wordmark with a transparent reversed variant",
     "status": "approval-required",
     "approved": false
   },
