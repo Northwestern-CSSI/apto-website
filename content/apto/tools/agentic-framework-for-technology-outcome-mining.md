@@ -2,7 +2,7 @@
 {
   "kind": "tool",
   "id": "agentic-framework-for-technology-outcome-mining",
-  "participantId": "insilicom",
+  "participantId": "northwestern",
   "name": "Agentic Framework for Technology Outcome Mining",
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -13,15 +13,15 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-provenance.jpg",
+      "src": "/apto/tools/atlas/northwestern-agentic-evidence-provenance.jpg",
       "alt": "Source documents passing review checkpoints before entering a provenance-aware knowledge graph"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-review-layers.jpg",
+      "src": "/apto/tools/atlas/northwestern-agentic-review-layers.jpg",
       "alt": "Source documents passing through extraction and review before becoming structured evidence"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-verified-records.jpg",
+      "src": "/apto/tools/atlas/northwestern-agentic-verified-records.jpg",
       "alt": "Verified claims and relationships retaining traceable connections to their original source documents"
     }
   ],

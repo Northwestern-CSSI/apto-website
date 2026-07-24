@@ -1,9 +1,10 @@
 # Adding or editing tools
 
-Each Markdown file in this folder is one public-facing research tool. Tool names
-should describe a broad APTO capability rather than a narrow interface mockup.
-The website discovers new files automatically; no source-code list or counter
-needs to be updated.
+Each Markdown file in this folder is one public-facing research tool. The
+Northwestern collection uses broad capability names, while other participating
+teams may use provisional research-tool mockups until their final tools are
+available. The website discovers new files automatically; no source-code list
+or counter needs to be updated.
 
 ## Add a tool
 

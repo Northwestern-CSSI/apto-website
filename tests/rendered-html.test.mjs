@@ -29,7 +29,7 @@ const baseline = {
   participants: 5,
   people: 13,
   projects: 5,
-  tools: 5,
+  tools: 13,
 };
 const nsfBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
@@ -52,6 +52,13 @@ const expectedParticipantIds = [
   "aperture",
   "insilicom",
   "macrocosm",
+];
+const expectedNorthwesternToolNames = [
+  "Agentic Framework for Technology Outcome Mining",
+  "Aggregating Research Pipeline at Scale",
+  "Emerging Technology Detection",
+  "Multiobjective Technology Outcomes",
+  "Predicting Technological Evolution",
 ];
 
 function parseJsonFrontmatter(source, filename) {
@@ -584,14 +591,14 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
   }
 });
 
-test("renders the Atlas tool gallery as five accessible, Markdown-backed image posters", async () => {
+test("renders the Atlas tool gallery as accessible, Markdown-backed image posters", async () => {
   const content = await generatedContent();
   const response = await render("/atlas/tools");
   assert.equal(response.status, 200);
   const markup = atlasAptoMarkup(await response.text());
   const articles = markup.match(/<article class="atlas-tool-card[\s\S]*?<\/article>/g) ?? [];
 
-  assert.equal(content.tools.length, 5, "The current APTO release should expose five broad tools");
+  assert.equal(content.tools.length, 13, "The current APTO release should expose five Northwestern capabilities and eight additional team previews");
   assert.equal(articles.length, content.tools.length);
   assert.equal(countMatches(markup, /class="atlas-tool-toggle"/g), content.tools.length);
   assert.equal(countMatches(markup, /aria-expanded="false"/g), content.tools.length);
@@ -1134,7 +1141,11 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     );
   }
   assert.deepEqual(content.participants.map((participant) => participant.id), expectedParticipantIds);
-  assert.deepEqual(content.tools.map((tool) => tool.participantId), expectedParticipantIds);
+  assert.deepEqual([...new Set(content.tools.map((tool) => tool.participantId))], expectedParticipantIds);
+  assert.deepEqual(
+    content.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name),
+    expectedNorthwesternToolNames,
+  );
   assert.deepEqual(content.projects.map((project) => project.participantId), expectedParticipantIds);
 
   assert.match(generator, /const participantDirectory = path\.join\(contentDirectory, "participants"\)/);

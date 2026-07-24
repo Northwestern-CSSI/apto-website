@@ -2,7 +2,7 @@
 {
   "kind": "tool",
   "id": "aggregating-research-pipeline-at-scale",
-  "participantId": "uchicago",
+  "participantId": "northwestern",
   "name": "Aggregating Research Pipeline at Scale",
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -13,15 +13,15 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/uchicago-global-observatory.jpg",
+      "src": "/apto/tools/atlas/northwestern-aggregating-research-system.jpg",
       "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-global-signal-constellations.jpg",
+      "src": "/apto/tools/atlas/northwestern-aggregating-signal-constellations.jpg",
       "alt": "Global constellations of research, patent, funding, workforce, product, and market signals"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-talent-knowledge-corridors.jpg",
+      "src": "/apto/tools/atlas/northwestern-aggregating-knowledge-corridors.jpg",
       "alt": "Knowledge, talent, and collaboration moving among changing regional science and technology clusters"
     }
   ],

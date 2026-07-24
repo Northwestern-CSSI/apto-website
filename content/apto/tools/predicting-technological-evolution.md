@@ -2,7 +2,7 @@
 {
   "kind": "tool",
   "id": "predicting-technological-evolution",
-  "participantId": "macrocosm",
+  "participantId": "northwestern",
   "name": "Predicting Technological Evolution",
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -13,15 +13,15 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/macrocosm-energy-system.jpg",
+      "src": "/apto/tools/atlas/northwestern-predictive-technology-system.jpg",
       "alt": "Miniature energy system linking industrial facilities, renewables, storage, infrastructure, and regional flows"
     },
     {
-      "src": "/apto/tools/atlas/macrocosm-digital-twin-facility-ripple.jpg",
+      "src": "/apto/tools/atlas/northwestern-predictive-evolution-ripple.jpg",
       "alt": "A change at one facility propagating through regional energy assets, suppliers, infrastructure, and markets"
     },
     {
-      "src": "/apto/tools/atlas/macrocosm-digital-twin-system-layers.jpg",
+      "src": "/apto/tools/atlas/northwestern-predictive-system-layers.jpg",
       "alt": "Aligned layers connecting energy assets with firms, materials, employment, investment, and regional markets"
     }
   ],

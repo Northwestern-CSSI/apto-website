@@ -2,7 +2,7 @@
 {
   "kind": "tool",
   "id": "emerging-technology-detection",
-  "participantId": "aperture",
+  "participantId": "northwestern",
   "name": "Emerging Technology Detection",
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -13,15 +13,15 @@
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/aperture-problem-landscape.jpg",
+      "src": "/apto/tools/atlas/northwestern-emerging-technology-landscape.jpg",
       "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
     },
     {
-      "src": "/apto/tools/atlas/aperture-problem-gap-topology.jpg",
+      "src": "/apto/tools/atlas/northwestern-emerging-signal-gaps.jpg",
       "alt": "Technical problem clusters separated by visible evidence gaps and underserved regions"
     },
     {
-      "src": "/apto/tools/atlas/aperture-problem-solution-corridors.jpg",
+      "src": "/apto/tools/atlas/northwestern-emerging-technology-corridors.jpg",
       "alt": "Problem domains connected to candidate solution areas through established and unexpected pathways"
     }
   ],
