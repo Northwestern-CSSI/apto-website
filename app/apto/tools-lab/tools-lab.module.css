@@ -3538,6 +3538,17 @@
   }
 }
 
+@media (min-width: 921px) {
+  .blueprintHeading {
+    min-height: 334px;
+  }
+
+  .assemblyHeading,
+  .constellationHeading {
+    min-height: 292px;
+  }
+}
+
 @media (max-width: 620px) {
   .conceptTrack button {
     min-height: 126px;
