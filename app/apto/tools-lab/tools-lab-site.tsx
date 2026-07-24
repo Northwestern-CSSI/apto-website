@@ -1,11 +1,20 @@
 "use client";
 
-/* Existing content-managed artwork uses deployment-aware paths. */
+/* Content-managed images use deployment-aware paths. */
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, type CSSProperties } from "react";
+import Moon from "lucide-react/dist/esm/icons/moon.mjs";
+import Sun from "lucide-react/dist/esm/icons/sun.mjs";
+import { useState, type ReactNode } from "react";
 
+import {
+  aptoBoilerplate,
+  aptoInterface,
+  aptoProgram,
+} from "../content";
 import { aptoRoute, withDeploymentBase } from "../paths";
+import type { AptoTheme } from "../theme";
+import { useAptoTheme } from "../use-apto-theme";
 import {
   northwesternToolStories,
   type StoryPiece,
@@ -13,54 +22,170 @@ import {
 } from "./tool-story-data";
 import styles from "./tools-lab.module.css";
 
-type StoryFormat = "compare" | "milestones" | "puzzle" | "checklist" | "resources";
-type AppliedFormat = Exclude<StoryFormat, "compare">;
+type InteriorMode = "milestones" | "pieces" | "checklist" | "resources" | "flow";
 
-const formatOptions: Array<{
-  id: StoryFormat;
+const storySections = ["program", "projects", "tools", "cohort", "convening"] as const;
+
+const modeOptions: Array<{
+  id: InteriorMode;
   label: string;
   shortLabel: string;
   tone: string;
   description: string;
 }> = [
   {
-    id: "compare",
-    label: "Compare concepts",
-    shortLabel: "Compare",
-    tone: "Design workspace",
-    description: "See four treatments of one tool side by side.",
-  },
-  {
     id: "milestones",
-    label: "Milestone path",
-    shortLabel: "Path",
+    label: "Milestone rail",
+    shortLabel: "Milestones",
     tone: "Conservative",
-    description: "Best when sequence, handoffs, and cumulative progress carry the story.",
+    description: "A cumulative sequence of subprojects and handoffs.",
   },
   {
-    id: "puzzle",
-    label: "Puzzle mosaic",
-    shortLabel: "Mosaic",
+    id: "pieces",
+    label: "Connected pieces",
+    shortLabel: "Pieces",
     tone: "Creative",
-    description: "Best when distinct subprojects combine into one larger capability.",
+    description: "A component mosaic that reveals how the parts combine.",
   },
   {
     id: "checklist",
     label: "Narrative checklist",
     shortLabel: "Checklist",
     tone: "Conservative",
-    description: "Best for fast scanning, concrete milestones, and clear accountability.",
+    description: "A fast, expandable scan of the tool’s building blocks.",
   },
   {
     id: "resources",
     label: "Field guide",
-    shortLabel: "Guide",
+    shortLabel: "Resources",
     tone: "Editorial",
-    description: "Best when a concise explanation and useful supporting links matter most.",
+    description: "A simple description, use case, and supporting links.",
+  },
+  {
+    id: "flow",
+    label: "Capability flow",
+    shortLabel: "Flow",
+    tone: "Creative",
+    description: "Three stages show how evidence becomes a useful outcome.",
   },
 ];
 
-function ResourceLink({
+const initialModes: InteriorMode[] = [
+  "milestones",
+  "pieces",
+  "checklist",
+  "resources",
+  "flow",
+];
+
+function ExternalLink({
+  href,
+  children,
+  className,
+}: {
+  href: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <a className={className} href={href}>
+      {children}
+      <span aria-hidden="true"> ↗</span>
+    </a>
+  );
+}
+
+function ThemeToggle({
+  theme,
+  onToggle,
+}: {
+  theme: AptoTheme;
+  onToggle: () => void;
+}) {
+  const lightLabel =
+    aptoInterface.directions.find((direction) => direction.id === "nsfhome")?.label ??
+    "Light";
+  const darkLabel =
+    aptoInterface.directions.find((direction) => direction.id === "nsfnetwork")?.label ??
+    "Dark";
+  const nextLabel = theme === "dark" ? lightLabel : darkLabel;
+
+  return (
+    <button
+      className="story-theme-toggle"
+      type="button"
+      role="switch"
+      aria-checked={theme === "dark"}
+      aria-label={`${aptoInterface.study.themeChooserLabel}: ${darkLabel}`}
+      title={`${aptoInterface.study.themeSwitchActionPrefix} ${nextLabel}`}
+      onClick={onToggle}
+    >
+      <Sun aria-hidden="true" focusable="false" />
+      <span aria-hidden="true" />
+      <Moon aria-hidden="true" focusable="false" />
+    </button>
+  );
+}
+
+function StoryHeader({
+  theme,
+  onToggle,
+}: {
+  theme: AptoTheme;
+  onToggle: () => void;
+}) {
+  const labels = {
+    program: aptoInterface.story.programLabel,
+    projects:
+      aptoInterface.primaryNavigation.find((item) => item.section === "projects")?.label ??
+      "Projects",
+    tools:
+      aptoInterface.primaryNavigation.find((item) => item.section === "tools")?.label ??
+      "Tools",
+    cohort:
+      aptoInterface.primaryNavigation.find((item) => item.section === "cohort")?.label ??
+      "Cohort",
+    convening:
+      aptoInterface.primaryNavigation.find((item) => item.section === "convening")?.label ??
+      "Convening",
+  };
+
+  return (
+    <header className="story-header">
+      <a
+        className="story-brand"
+        href={`${aptoRoute("story")}#story-top`}
+        aria-label="APTO story home"
+      >
+        <strong>{aptoProgram.acronym}</strong>
+        <span>{aptoProgram.name}</span>
+      </a>
+      <nav aria-label={aptoInterface.story.navigationLabel}>
+        {storySections.map((section) => (
+          <a
+            key={section}
+            href={
+              section === "tools"
+                ? "#story-tools"
+                : `${aptoRoute("story")}#story-${section}`
+            }
+            aria-current={section === "tools" ? "location" : undefined}
+          >
+            {labels[section]}
+          </a>
+        ))}
+      </nav>
+      <div className="story-header-actions">
+        <a className="story-directory-link" href={aptoRoute()}>
+          {aptoInterface.story.directoryLabel}
+        </a>
+        <ThemeToggle theme={theme} onToggle={onToggle} />
+      </div>
+    </header>
+  );
+}
+
+function PieceLink({
   resource,
   className,
 }: {
@@ -68,439 +193,354 @@ function ResourceLink({
   className?: string;
 }) {
   return (
-    <a
-      className={className}
-      href={resource.href}
-      target="_blank"
-      rel="noreferrer"
-    >
+    <ExternalLink className={className} href={resource.href}>
       {resource.label}
-      <span aria-hidden="true"> ↗</span>
-    </a>
+    </ExternalLink>
   );
 }
 
-function ToolArtwork({
-  tool,
-  compact = false,
-}: {
-  tool: ToolStory;
-  compact?: boolean;
-}) {
+function Synthesis({ children }: { children: ReactNode }) {
   return (
-    <div className={`${styles.artwork} ${compact ? styles.artworkCompact : ""}`}>
-      <img
-        src={withDeploymentBase(tool.figure.src)}
-        alt=""
-        width="1600"
-        height="1000"
-        loading="lazy"
-        decoding="async"
-      />
-      <div className={styles.artworkVeil} />
-      <span className={styles.artworkNumber}>{tool.number}</span>
-      <span className={styles.artworkLabel}>Northwestern · Research preview</span>
+    <div className={styles.synthesis}>
+      <strong>What this adds up to</strong>
+      <p>{children}</p>
     </div>
   );
 }
 
-function ToolTitle({
-  tool,
-  headingLevel = "h2",
-  compact = false,
-}: {
-  tool: ToolStory;
-  headingLevel?: "h2" | "h3" | "h4";
-  compact?: boolean;
-}) {
-  const Heading = headingLevel;
+function MilestoneInterior({ tool }: { tool: ToolStory }) {
   return (
-    <header className={`${styles.toolTitle} ${compact ? styles.toolTitleCompact : ""}`}>
-      <p>
-        <span>{tool.number}</span>
-        Northwestern University
-      </p>
-      <Heading>{tool.name}</Heading>
-      <div className={styles.outcomeTags} aria-label="Technology outcome dimensions">
-        {tool.categories.map((category) => (
-          <span key={category}>{category}</span>
-        ))}
-      </div>
-    </header>
-  );
-}
-
-function MilestoneStory({
-  tool,
-  compact = false,
-}: {
-  tool: ToolStory;
-  compact?: boolean;
-}) {
-  return (
-    <article
-      className={`${styles.storyCard} ${styles.milestoneCard} ${compact ? styles.isCompact : ""}`}
-    >
-      <div className={styles.storyCardTop}>
-        <ToolArtwork tool={tool} compact={compact} />
-        <ToolTitle tool={tool} headingLevel={compact ? "h4" : "h2"} compact={compact} />
-      </div>
-      {!compact && <p className={styles.storyLine}>{tool.storyLine}</p>}
-      <ol className={styles.milestoneList}>
+    <div className={styles.milestoneInterior}>
+      <p className={styles.storyLine}>{tool.storyLine}</p>
+      <ol className={styles.milestoneRail}>
         {tool.pieces.map((piece, index) => (
           <li key={piece.title}>
-            <span className={styles.milestoneIndex}>{String(index + 1).padStart(2, "0")}</span>
+            <span className={styles.milestoneNumber}>
+              {String(index + 1).padStart(2, "0")}
+            </span>
             <div>
               <p>{piece.role}</p>
-              <h3>{piece.title}</h3>
-              {!compact && <span>{piece.summary}</span>}
-              {!compact && piece.resource && (
-                <ResourceLink resource={piece.resource} className={styles.inlineLink} />
+              <h4>{piece.title}</h4>
+              <span>{piece.summary}</span>
+              {piece.resource && (
+                <PieceLink resource={piece.resource} className={styles.inlineLink} />
               )}
             </div>
           </li>
         ))}
       </ol>
-      {!compact && <p className={styles.synthesis}>{tool.synthesis}</p>}
-    </article>
+      <Synthesis>{tool.synthesis}</Synthesis>
+    </div>
   );
 }
 
-function PuzzleStory({
-  tool,
-  compact = false,
-}: {
-  tool: ToolStory;
-  compact?: boolean;
-}) {
+function PiecesInterior({ tool }: { tool: ToolStory }) {
+  const [activePiece, setActivePiece] = useState(0);
+  const selectedPiece = tool.pieces[activePiece] ?? tool.pieces[0];
+
   return (
-    <article
-      className={`${styles.storyCard} ${styles.puzzleCard} ${compact ? styles.isCompact : ""}`}
-    >
-      <div className={styles.puzzleHeader}>
-        <ToolTitle tool={tool} headingLevel={compact ? "h4" : "h2"} compact={compact} />
-        {!compact && <p>{tool.storyLine}</p>}
-      </div>
-      <div className={styles.puzzleBoard} aria-label={`${tool.name} component mosaic`}>
+    <div className={styles.piecesInterior}>
+      <p className={styles.storyLine}>{tool.storyLine}</p>
+      <div className={styles.pieceMosaic} aria-label={`${tool.name} components`}>
         {tool.pieces.map((piece, index) => (
-          <section
-            className={styles.puzzlePiece}
-            data-piece={String((index % 4) + 1)}
+          <button
+            type="button"
             key={piece.title}
+            className={styles.pieceButton}
+            aria-pressed={activePiece === index}
+            onClick={() => setActivePiece(index)}
           >
-            <p>{piece.role}</p>
-            <h3>{piece.title}</h3>
-            {!compact && <span>{piece.summary}</span>}
-            {!compact && piece.resource && (
-              <ResourceLink resource={piece.resource} className={styles.puzzleLink} />
-            )}
-          </section>
+            <span>{piece.role}</span>
+            <strong>{piece.title}</strong>
+          </button>
         ))}
-        <div className={styles.puzzleCore}>
-          <span>One connected capability</span>
-        </div>
       </div>
-      {!compact && <p className={styles.puzzleSynthesis}>{tool.synthesis}</p>}
-    </article>
+      <div className={styles.pieceDetail} aria-live="polite">
+        <p>{selectedPiece.role}</p>
+        <h4>{selectedPiece.title}</h4>
+        <span>{selectedPiece.summary}</span>
+        {selectedPiece.resource && (
+          <PieceLink resource={selectedPiece.resource} className={styles.inlineLink} />
+        )}
+      </div>
+      <Synthesis>{tool.synthesis}</Synthesis>
+    </div>
   );
 }
 
-function ChecklistStory({
-  tool,
-  compact = false,
-}: {
-  tool: ToolStory;
-  compact?: boolean;
-}) {
+function ChecklistInterior({ tool }: { tool: ToolStory }) {
   return (
-    <article
-      className={`${styles.storyCard} ${styles.checklistCard} ${compact ? styles.isCompact : ""}`}
-    >
-      <div className={styles.checklistHeading}>
-        <div>
-          <p className={styles.sheetLabel}>Narrative checklist · {tool.pieces.length} beats</p>
-          <ToolTitle tool={tool} headingLevel={compact ? "h4" : "h2"} compact={compact} />
-        </div>
-        {!compact && <span className={styles.sheetNumber}>{tool.number}</span>}
-      </div>
-      {!compact && <p className={styles.checklistIntro}>{tool.storyLine}</p>}
-      <ol className={styles.checklistList}>
+    <div className={styles.checklistInterior}>
+      <p className={styles.storyLine}>{tool.storyLine}</p>
+      <div className={styles.checklist}>
         {tool.pieces.map((piece, index) => (
-          <li key={piece.title}>
-            <span className={styles.checkmark} aria-hidden="true">{index + 1}</span>
+          <details key={piece.title} open={index === 0}>
+            <summary>
+              <span className={styles.checkNumber}>{index + 1}</span>
+              <span>
+                <small>{piece.role}</small>
+                <strong>{piece.title}</strong>
+              </span>
+              <span className={styles.disclosure} aria-hidden="true">
+                +
+              </span>
+            </summary>
             <div>
-              <p>{piece.role}</p>
-              <h3>{piece.title}</h3>
-              {!compact && <span>{piece.summary}</span>}
+              <p>{piece.summary}</p>
+              {piece.resource && (
+                <PieceLink resource={piece.resource} className={styles.inlineLink} />
+              )}
             </div>
-            {!compact && piece.resource && (
-              <ResourceLink resource={piece.resource} className={styles.checklistLink} />
+          </details>
+        ))}
+      </div>
+      <Synthesis>{tool.synthesis}</Synthesis>
+    </div>
+  );
+}
+
+function ResourcesInterior({ tool }: { tool: ToolStory }) {
+  return (
+    <div className={styles.resourcesInterior}>
+      <div className={styles.useCase}>
+        <strong>{aptoInterface.tools.useCaseLabel}</strong>
+        <p>{tool.useCase}</p>
+      </div>
+      <div className={styles.resourceIndex}>
+        {tool.pieces.map((piece) => (
+          <section key={piece.title}>
+            <p>{piece.role}</p>
+            <h4>{piece.title}</h4>
+            <span>{piece.summary}</span>
+            {piece.resource ? (
+              <PieceLink resource={piece.resource} className={styles.resourceLink} />
+            ) : (
+              <small>Research stream</small>
             )}
+          </section>
+        ))}
+      </div>
+      <p className={styles.resourceNote}>
+        Links lead to supporting tools, datasets, papers, or source material for this
+        research-preview panel.
+      </p>
+    </div>
+  );
+}
+
+function FlowInterior({ tool }: { tool: ToolStory }) {
+  const phases = [
+    { label: "Foundation", pieces: tool.pieces.slice(0, 2) },
+    { label: "Interpretation", pieces: tool.pieces.slice(2, 4) },
+    { label: "Outcome", pieces: tool.pieces.slice(4, 6) },
+  ];
+
+  return (
+    <div className={styles.flowInterior}>
+      <p className={styles.storyLine}>{tool.storyLine}</p>
+      <ol className={styles.flow}>
+        {phases.map((phase, phaseIndex) => (
+          <li key={phase.label}>
+            <header>
+              <span>{phaseIndex + 1}</span>
+              <strong>{phase.label}</strong>
+            </header>
+            <div>
+              {phase.pieces.map((piece) => (
+                <section key={piece.title}>
+                  <p>{piece.role}</p>
+                  <h4>{piece.title}</h4>
+                  <span>{piece.summary}</span>
+                  {piece.resource && (
+                    <PieceLink resource={piece.resource} className={styles.inlineLink} />
+                  )}
+                </section>
+              ))}
+            </div>
           </li>
         ))}
       </ol>
-      {!compact && (
-        <footer className={styles.checklistFooter}>
-          <strong>What the sequence adds up to</strong>
-          <p>{tool.synthesis}</p>
-        </footer>
-      )}
-    </article>
+      <Synthesis>{tool.synthesis}</Synthesis>
+    </div>
   );
 }
 
-function ResourceStory({
+function ToolInterior({
   tool,
-  compact = false,
+  mode,
 }: {
   tool: ToolStory;
-  compact?: boolean;
+  mode: InteriorMode;
 }) {
-  const linkedPieces = tool.pieces.filter((piece) => piece.resource);
-  return (
-    <article
-      className={`${styles.storyCard} ${styles.resourceCard} ${compact ? styles.isCompact : ""}`}
-    >
-      <div className={styles.resourceLead}>
-        <ToolArtwork tool={tool} compact={compact} />
-        <ToolTitle tool={tool} headingLevel={compact ? "h4" : "h2"} compact={compact} />
-        <p>{compact ? tool.storyLine : tool.description}</p>
-        {!compact && (
-          <div className={styles.useCase}>
-            <span>Why it matters</span>
-            <p>{tool.useCase}</p>
-          </div>
-        )}
-      </div>
-      <div className={styles.resourceBody}>
-        <p className={styles.resourceEyebrow}>
-          {compact ? "Selected components" : "Components + supporting resources"}
-        </p>
-        <div className={styles.resourceGrid}>
-          {(compact ? tool.pieces.slice(0, 4) : tool.pieces).map((piece) => (
-            <section key={piece.title}>
-              <p>{piece.role}</p>
-              <h3>{piece.title}</h3>
-              {!compact && <span>{piece.summary}</span>}
-              {piece.resource ? (
-                <ResourceLink resource={piece.resource} className={styles.resourceLink} />
-              ) : (
-                !compact && <small>Research stream</small>
-              )}
-            </section>
-          ))}
-        </div>
-        {!compact && linkedPieces.length > 0 && (
-          <p className={styles.resourceNote}>
-            Links point to supporting tools, datasets, papers, or source material—not a
-            deployed version of the umbrella tool.
-          </p>
-        )}
-      </div>
-    </article>
-  );
+  if (mode === "milestones") return <MilestoneInterior tool={tool} />;
+  if (mode === "pieces") return <PiecesInterior tool={tool} />;
+  if (mode === "checklist") return <ChecklistInterior tool={tool} />;
+  if (mode === "resources") return <ResourcesInterior tool={tool} />;
+  return <FlowInterior tool={tool} />;
 }
 
-function StoryForFormat({
-  format,
+function ToolCard({
   tool,
-  compact = false,
+  initialMode,
 }: {
-  format: AppliedFormat;
   tool: ToolStory;
-  compact?: boolean;
+  initialMode: InteriorMode;
 }) {
-  if (format === "milestones") return <MilestoneStory tool={tool} compact={compact} />;
-  if (format === "puzzle") return <PuzzleStory tool={tool} compact={compact} />;
-  if (format === "checklist") return <ChecklistStory tool={tool} compact={compact} />;
-  return <ResourceStory tool={tool} compact={compact} />;
-}
-
-function CompareWorkspace({
-  activeToolIndex,
-  onToolChange,
-  onApply,
-}: {
-  activeToolIndex: number;
-  onToolChange: (index: number) => void;
-  onApply: (format: AppliedFormat) => void;
-}) {
-  const tool = northwesternToolStories[activeToolIndex];
-  const concepts = formatOptions.filter(
-    (option): option is (typeof formatOptions)[number] & { id: AppliedFormat } =>
-      option.id !== "compare",
-  );
+  const [mode, setMode] = useState<InteriorMode>(initialMode);
+  const activeOption = modeOptions.find((option) => option.id === mode) ?? modeOptions[0];
+  const panelId = `${tool.id}-inside`;
 
   return (
-    <>
-      <nav className={styles.toolPicker} aria-label="Choose a Northwestern tool to compare">
-        <p>Choose a tool</p>
-        <div>
-          {northwesternToolStories.map((candidate, index) => (
-            <button
-              type="button"
-              key={candidate.id}
-              aria-pressed={index === activeToolIndex}
-              onClick={() => onToolChange(index)}
-            >
-              <span>{candidate.number}</span>
-              {candidate.name}
-            </button>
-          ))}
-        </div>
-      </nav>
-      <section className={styles.compareIntro} aria-labelledby="compare-tool-title">
-        <div>
-          <p>Currently comparing</p>
-          <h2 id="compare-tool-title">{tool.name}</h2>
-        </div>
+    <article className="story-tool">
+      <figure>
+        <img
+          src={withDeploymentBase(tool.figure.src)}
+          alt={tool.figure.alt}
+          width="900"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>{tool.figure.label}</figcaption>
+      </figure>
+      <div className={`story-tool-copy ${styles.cardCopy}`}>
+        <header>
+          <p>Northwestern University · {tool.statusLabel}</p>
+          <h3>{tool.name}</h3>
+        </header>
         <p>{tool.description}</p>
-      </section>
-      <div className={styles.compareGrid}>
-        {concepts.map((concept) => (
-          <section className={styles.conceptPreview} key={concept.id}>
-            <header>
-              <div>
-                <p>{concept.tone}</p>
-                <h3>{concept.label}</h3>
-              </div>
-              <span>{concept.description}</span>
-            </header>
-            <div className={styles.previewCanvas}>
-              <StoryForFormat format={concept.id} tool={tool} compact />
+
+        <section className={styles.experiment} aria-labelledby={`${panelId}-label`}>
+          <header className={styles.experimentHeader}>
+            <div>
+              <p id={`${panelId}-label`}>Inside-card layout</p>
+              <strong>{activeOption.label}</strong>
             </div>
-            <button type="button" onClick={() => onApply(concept.id)}>
-              Apply to all five tools
-              <span aria-hidden="true"> →</span>
-            </button>
-          </section>
-        ))}
+            <span>
+              {activeOption.tone} · {activeOption.description}
+            </span>
+          </header>
+          <div className={styles.modePicker} aria-label={`Change the layout inside ${tool.name}`}>
+            {modeOptions.map((option) => (
+              <button
+                type="button"
+                key={option.id}
+                aria-pressed={mode === option.id}
+                aria-controls={panelId}
+                onClick={() => setMode(option.id)}
+              >
+                {option.shortLabel}
+              </button>
+            ))}
+          </div>
+          <div className={styles.interiorPanel} id={panelId}>
+            <ToolInterior tool={tool} mode={mode} />
+          </div>
+        </section>
+
+        <div className="story-tool-footer">
+          <ul aria-label={aptoInterface.tools.categoriesLabel}>
+            {tool.categories.map((category) => (
+              <li key={category}>{category}</li>
+            ))}
+          </ul>
+          <span>
+            {tool.demoVideoUrl && (
+              <ExternalLink href={tool.demoVideoUrl}>
+                {aptoInterface.tools.watchDemoLabel}
+              </ExternalLink>
+            )}
+            {tool.toolUrl && (
+              <ExternalLink href={tool.toolUrl}>
+                {aptoInterface.tools.openToolLabel}
+              </ExternalLink>
+            )}
+          </span>
+        </div>
       </div>
-    </>
+    </article>
   );
 }
 
-function FullStoryCollection({ format }: { format: AppliedFormat }) {
-  const selectedFormat = formatOptions.find((option) => option.id === format);
-  if (!selectedFormat) return null;
+function StoryFooter() {
   return (
-    <>
-      <header className={styles.collectionIntro}>
+    <footer className="story-footer">
+      <a className="story-footer-brand" href="#story-tools">
+        <strong>{aptoProgram.acronym}</strong>
+        <span>{aptoProgram.name}</span>
+      </a>
+      <div className="story-footer-support">
+        <img
+          src={withDeploymentBase(aptoInterface.footer.nsfLogoSrc)}
+          alt={aptoInterface.footer.nsfLogoAlt}
+          width="64"
+          height="64"
+          loading="lazy"
+        />
         <div>
-          <p>{selectedFormat.tone} direction</p>
-          <h2>{selectedFormat.label}</h2>
+          <strong>{aptoInterface.story.supportedByLabel}</strong>
+          <p>{aptoBoilerplate}</p>
         </div>
-        <p>{selectedFormat.description} The five cards below stay in the requested sequence.</p>
-      </header>
-      <div className={styles.storyCollection}>
-        {northwesternToolStories.map((tool) => (
-          <StoryForFormat format={format} tool={tool} key={tool.id} />
-        ))}
       </div>
-    </>
+      <div className="story-footer-links">
+        <a href={aptoRoute()}>{aptoInterface.story.directoryLabel}</a>
+        <a href="#story-tools">
+          {aptoInterface.footer.backToTopLabel} <span aria-hidden="true">↑</span>
+        </a>
+      </div>
+    </footer>
   );
 }
 
 export function ToolsLabSite() {
-  const [format, setFormat] = useState<StoryFormat>("compare");
-  const [activeToolIndex, setActiveToolIndex] = useState(0);
+  const { theme, toggleTheme } = useAptoTheme("light");
+  const rows = [
+    northwesternToolStories.slice(0, 2),
+    northwesternToolStories.slice(2, 4),
+    northwesternToolStories.slice(4, 5),
+  ];
 
   return (
-    <div className={styles.lab}>
-      <a className={styles.skipLink} href="#lab-output">Skip to storytelling concepts</a>
-      <header className={styles.siteHeader}>
-        <a className={styles.brand} href={aptoRoute()} aria-label="APTO program home">
-          <span>APTO</span>
-          <small>Assessing and Predicting Technology Outcomes</small>
-        </a>
-        <a className={styles.collectionLink} href={aptoRoute("tools")}>
-          Full tools collection <span aria-hidden="true">↗</span>
-        </a>
-      </header>
-
-      <main>
+    <div className="apto-story" data-theme={theme}>
+      <a className="story-skip-link" href="#story-main">
+        {aptoInterface.accessibility.skipLinkLabel}
+      </a>
+      <StoryHeader theme={theme} onToggle={toggleTheme} />
+      <main id="story-main" tabIndex={-1}>
         <section
-          className={styles.hero}
-          aria-labelledby="tools-lab-title"
-          style={{
-            "--hero-art": `url("${withDeploymentBase("/apto/tools/previews/aggregating-research-pipeline-at-scale.jpg")}")`,
-          } as CSSProperties}
+          className="story-section story-tools"
+          id="story-tools"
+          aria-labelledby="story-tools-title"
         >
-          <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>Northwestern University · Storytelling lab</p>
-            <h1 id="tools-lab-title">
-              Five tools.
-              <br />
-              Four ways into the story.
-            </h1>
-            <p>
-              An isolated test page for tuning how subprojects, methods, datasets, and
-              resources build into each Northwestern research tool.
-            </p>
-          </div>
-          <aside className={styles.heroNote} aria-label="How to use this page">
-            <img
-              src={withDeploymentBase("/apto/partners/northwestern.png")}
-              width="368"
-              height="69"
-              alt="Northwestern University"
-            />
-            <p>
-              Start in <strong>Compare concepts</strong>. Pick one treatment, then review
-              that format across all five tools in the requested order.
-            </p>
-            <dl>
-              <div><dt>5</dt><dd>Northwestern tools</dd></div>
-              <div><dt>4</dt><dd>Story formats</dd></div>
-              <div><dt>1</dt><dd>Shared content model</dd></div>
-            </dl>
-          </aside>
-        </section>
-
-        <section className={styles.formatBar} aria-labelledby="format-heading">
-          <div className={styles.formatBarCopy}>
-            <p>Story format</p>
-            <h2 id="format-heading">Change the structure, keep the content.</h2>
-          </div>
-          <div className={styles.formatControls} aria-label="Choose a storytelling format">
-            {formatOptions.map((option) => (
-              <button
-                type="button"
-                key={option.id}
-                aria-pressed={format === option.id}
-                aria-controls="lab-output"
-                onClick={() => setFormat(option.id)}
-              >
-                <span>{option.shortLabel}</span>
-                <small>{option.tone}</small>
-              </button>
+          <header className="story-section-heading">
+            <h2 id="story-tools-title">Northwestern tool stories</h2>
+            <span>
+              Five research tools in the existing Story cards. Each card starts with a
+              different interior experiment; its controls affect only that card.
+            </span>
+          </header>
+          <div
+            className="story-tool-matrix"
+            aria-label="Northwestern University tool storytelling experiments"
+          >
+            {rows.map((row, rowIndex) => (
+              <div className="story-tool-pair" key={`tool-row-${rowIndex}`}>
+                {row.map((tool, columnIndex) => {
+                  const toolIndex = rowIndex * 2 + columnIndex;
+                  return (
+                    <ToolCard
+                      tool={tool}
+                      initialMode={initialModes[toolIndex]}
+                      key={tool.id}
+                    />
+                  );
+                })}
+              </div>
             ))}
           </div>
         </section>
-
-        <section className={styles.output} id="lab-output" aria-live="polite">
-          {format === "compare" ? (
-            <CompareWorkspace
-              activeToolIndex={activeToolIndex}
-              onToolChange={setActiveToolIndex}
-              onApply={setFormat}
-            />
-          ) : (
-            <FullStoryCollection format={format} />
-          )}
-        </section>
       </main>
-
-      <footer className={styles.siteFooter}>
-        <div>
-          <span>APTO</span>
-          <p>Northwestern tool storytelling study</p>
-        </div>
-        <p>
-          Supporting links identify live tools, datasets, papers, or source material.
-          The five umbrella tool panels remain research previews.
-        </p>
-      </footer>
+      <StoryFooter />
     </div>
   );
 }
