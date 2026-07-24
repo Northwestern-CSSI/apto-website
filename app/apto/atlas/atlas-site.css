@@ -901,3 +901,47 @@
   .atlas-convening-copy { padding: 22px; }
   .atlas-convening-copy > strong { font-size: clamp(5rem, 25vw, 9rem); }
 }
+
+/* Stack each project identity vertically so the project title sits below the
+   logo and can use the full text column at every portfolio width. */
+.atlas-project-folio summary {
+  grid-template-columns: minmax(0, 1fr) 48px;
+  grid-template-rows: auto auto;
+  align-content: start;
+  align-items: start;
+}
+
+.atlas-project-identity {
+  grid-column: 1;
+  grid-row: 1;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.atlas-project-identity > .atlas-logo {
+  justify-self: start;
+}
+
+.atlas-project-identity > span {
+  min-width: 0;
+}
+
+.atlas-project-identity strong {
+  max-width: 100%;
+  font-size: clamp(1.12rem, 1.55vw, 1.42rem);
+  text-wrap: balance;
+}
+
+.atlas-project-date {
+  grid-column: 1;
+  grid-row: 2;
+  padding-left: 0;
+}
+
+.atlas-project-expand {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  justify-self: end;
+}

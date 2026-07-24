@@ -1260,3 +1260,28 @@
   .story-convening-card { min-height: 680px; }
   .story-convening-overlay { padding: 22px; }
 }
+
+/* Project cards use a vertical identity stack so long titles receive the
+   complete card width in both the two- and three-column portfolio rows. */
+.story-project-chapter > header {
+  min-height: 0;
+  margin-bottom: clamp(24px, 3vw, 34px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.story-project-chapter > header .story-participant-logo {
+  justify-self: start;
+}
+
+.story-project-chapter > header > div {
+  width: 100%;
+  min-width: 0;
+}
+
+.story-project-chapter h3 {
+  max-width: 100%;
+  font-size: clamp(1.55rem, 2.15vw, 2.2rem);
+  text-wrap: balance;
+}
