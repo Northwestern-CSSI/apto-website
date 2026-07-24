@@ -5,7 +5,13 @@
 
 import Moon from "lucide-react/dist/esm/icons/moon.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
-import { useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 import {
   aptoBoilerplate,
@@ -106,15 +112,13 @@ function ExternalLink({
 function PieceLink({
   resource,
   className,
-  compact = false,
 }: {
   resource: NonNullable<StoryPiece["resource"]>;
   className?: string;
-  compact?: boolean;
 }) {
   return (
     <ExternalLink className={className} href={resource.href}>
-      {compact ? "Evidence" : resource.label}
+      {resource.label}
     </ExternalLink>
   );
 }
@@ -227,6 +231,19 @@ function ConceptSelector({
   onChange: (concept: ConceptId) => void;
 }) {
   const active = concepts.find((candidate) => candidate.id === concept) ?? concepts[0];
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const selected = track?.querySelector<HTMLButtonElement>(
+      `button[data-concept="${concept}"]`,
+    );
+    if (!track || !selected || track.scrollWidth <= track.clientWidth) return;
+
+    const nextLeft =
+      selected.offsetLeft - track.clientWidth / 2 + selected.offsetWidth / 2;
+    track.scrollTo({ left: Math.max(0, nextLeft), behavior: "smooth" });
+  }, [concept]);
 
   return (
     <section className={styles.conceptDeck} aria-labelledby="concept-deck-title">
@@ -240,7 +257,11 @@ function ConceptSelector({
           <span>{active.description}</span>
         </p>
       </header>
-      <div className={styles.conceptTrack} aria-label="Choose one concept for all tool cards">
+      <div
+        ref={trackRef}
+        className={styles.conceptTrack}
+        aria-label="Choose one concept for all tool cards"
+      >
         {concepts.map((option) => (
           <button
             type="button"
@@ -370,7 +391,7 @@ function JourneyCard({ tool }: { tool: ToolStory }) {
           decoding="async"
         />
         <header>
-          <ToolKicker tool={tool} inverse />
+          <ToolKicker tool={tool} />
           <h3>{tool.name}</h3>
         </header>
         <span className={styles.journeyHorizon} aria-hidden="true" />
@@ -380,7 +401,7 @@ function JourneyCard({ tool }: { tool: ToolStory }) {
         <p className={styles.journeyLead}>{tool.storyLine}</p>
         <ol className={styles.journeyTrail}>
           {tool.pieces.map((piece, index) => (
-            <li key={piece.title}>
+            <li key={piece.title} data-position={index + 1}>
               <button
                 type="button"
                 aria-pressed={activePiece === index}
@@ -422,6 +443,11 @@ function BlueprintCard({ tool }: { tool: ToolStory }) {
   return (
     <article className={`story-tool ${styles.toolCard}`} data-concept="blueprint">
       <div className={styles.blueprintSheet}>
+        <header className={styles.blueprintHeading}>
+          <ToolKicker tool={tool} />
+          <h3>{tool.name}</h3>
+          <p>{tool.description}</p>
+        </header>
         <figure className={styles.blueprintVisual}>
           <img
             src={withDeploymentBase(blueprintImage?.src ?? tool.figure.src)}
@@ -432,11 +458,6 @@ function BlueprintCard({ tool }: { tool: ToolStory }) {
             decoding="async"
           />
           <div className={styles.blueprintScrim} aria-hidden="true" />
-          <header>
-            <ToolKicker tool={tool} inverse />
-            <h3>{tool.name}</h3>
-            <p>{tool.description}</p>
-          </header>
           <div className={styles.blueprintCallouts} aria-label="Image component callouts">
             {tool.pieces.map((piece, index) => (
               <button
@@ -447,11 +468,15 @@ function BlueprintCard({ tool }: { tool: ToolStory }) {
                 aria-pressed={activePiece === index}
                 onClick={() => setActivePiece(index)}
               >
-                {String(index + 1).padStart(2, "0")}
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <small>{piece.role}</small>
               </button>
             ))}
           </div>
-          <figcaption>{blueprintImage ? "Detail view · " : ""}{tool.figure.label}</figcaption>
+          <figcaption>
+            {blueprintImage ? "Annotated evidence view · " : ""}
+            {tool.name}
+          </figcaption>
         </figure>
         <div className={styles.blueprintBody}>
           <div className={styles.blueprintSpec}>
@@ -493,18 +518,14 @@ function BlueprintCard({ tool }: { tool: ToolStory }) {
             <h4>{selectedPiece.title}</h4>
             <span>{selectedPiece.summary}</span>
             {selectedPiece.resource && (
-              <PieceLink
-                resource={selectedPiece.resource}
-                className={styles.blueprintLink}
-                compact
-              />
+              <PieceLink resource={selectedPiece.resource} className={styles.blueprintLink} />
             )}
           </section>
           <div className={styles.blueprintOutput}>
             <span>System output</span>
             <p>{tool.synthesis}</p>
           </div>
-          <CardFooter tool={tool} inverse />
+          <CardFooter tool={tool} />
         </div>
       </div>
     </article>
@@ -514,12 +535,22 @@ function BlueprintCard({ tool }: { tool: ToolStory }) {
 function AssemblyCard({ tool }: { tool: ToolStory }) {
   const [activePiece, setActivePiece] = useState(0);
   const selectedPiece = tool.pieces[activePiece] ?? tool.pieces[0];
+  const imageUrl = withDeploymentBase(tool.figure.src);
 
   return (
-    <article className={`story-tool ${styles.toolCard}`} data-concept="assembly">
+    <article
+      className={`story-tool ${styles.toolCard}`}
+      data-concept="assembly"
+      style={{ "--piece-image": `url("${imageUrl}")` } as CSSProperties}
+    >
+      <header className={styles.assemblyHeading}>
+        <ToolKicker tool={tool} />
+        <h3>{tool.name}</h3>
+        <p>{tool.storyLine}</p>
+      </header>
       <figure className={styles.assemblyVisual}>
         <img
-          src={withDeploymentBase(tool.figure.src)}
+          src={imageUrl}
           alt={tool.figure.alt}
           width="900"
           height="600"
@@ -527,21 +558,18 @@ function AssemblyCard({ tool }: { tool: ToolStory }) {
           decoding="async"
         />
         <div className={styles.assemblyScrim} aria-hidden="true" />
-        <header className={styles.assemblyHeading}>
-          <ToolKicker tool={tool} inverse />
-          <h3>{tool.name}</h3>
-          <p>{tool.storyLine}</p>
-        </header>
         <div className={styles.assemblyGrid} aria-label={`${tool.name} assembly pieces`}>
           {tool.pieces.map((piece, index) => (
             <button
               type="button"
               key={piece.title}
+              data-position={index + 1}
               data-resource={piece.resource ? "true" : undefined}
               aria-pressed={activePiece === index}
               onClick={() => setActivePiece(index)}
             >
               <span>{String(index + 1).padStart(2, "0")}</span>
+              {piece.resource && <i aria-hidden="true">↗</i>}
               <small>{piece.role}</small>
               <strong>{piece.title}</strong>
             </button>
@@ -566,7 +594,7 @@ function AssemblyCard({ tool }: { tool: ToolStory }) {
           <span>The assembled capability</span>
           <p>{tool.synthesis}</p>
         </div>
-        <CardFooter tool={tool} inverse />
+        <CardFooter tool={tool} />
       </div>
     </article>
   );
@@ -578,6 +606,11 @@ function ConstellationCard({ tool }: { tool: ToolStory }) {
 
   return (
     <article className={`story-tool ${styles.toolCard}`} data-concept="constellation">
+      <header className={styles.constellationHeading}>
+        <ToolKicker tool={tool} />
+        <h3>{tool.name}</h3>
+        <p>{tool.storyLine}</p>
+      </header>
       <figure className={styles.constellationScene}>
         <img
           src={withDeploymentBase(tool.figure.src)}
@@ -588,17 +621,12 @@ function ConstellationCard({ tool }: { tool: ToolStory }) {
           decoding="async"
         />
         <div className={styles.constellationScrim} aria-hidden="true" />
-        <header className={styles.constellationHeading}>
-          <ToolKicker tool={tool} inverse />
-          <h3>{tool.name}</h3>
-          <p>{tool.storyLine}</p>
-        </header>
         <div className={styles.constellationLines} aria-hidden="true">
           {Array.from({ length: 6 }, (_, index) => <i key={index} />)}
         </div>
         <div className={styles.constellationCore}>
           <span>Tool core</span>
-          <strong>{tool.synthesis}</strong>
+          <strong>Integrated capability</strong>
         </div>
         <div className={styles.constellationNodes} aria-label={`${tool.name} signal nodes`}>
           {tool.pieces.map((piece, index) => (
@@ -619,6 +647,10 @@ function ConstellationCard({ tool }: { tool: ToolStory }) {
         <figcaption>{tool.figure.label}</figcaption>
       </figure>
       <div className={styles.constellationBody}>
+        <div className={styles.constellationSynthesis}>
+          <span>What the signals reveal together</span>
+          <p>{tool.synthesis}</p>
+        </div>
         <section className={styles.constellationDetail} aria-live="polite">
           <span>Signal {String(activePiece + 1).padStart(2, "0")}</span>
           <div>
@@ -635,7 +667,7 @@ function ConstellationCard({ tool }: { tool: ToolStory }) {
             )}
           </div>
         </section>
-        <CardFooter tool={tool} inverse />
+        <CardFooter tool={tool} />
       </div>
     </article>
   );
@@ -726,7 +758,12 @@ export function ToolsLabSite() {
               aria-label="Northwestern University tool storytelling concepts"
             >
               {rows.map((row, rowIndex) => (
-                <div className="story-tool-pair" key={`tool-row-${rowIndex}`}>
+                <div
+                  className={`story-tool-pair ${
+                    row.length === 1 ? styles.singleToolRow : ""
+                  }`}
+                  key={`tool-row-${rowIndex}`}
+                >
                   {row.map((tool) => (
                     <ToolCard tool={tool} concept={concept} key={tool.id} />
                   ))}
