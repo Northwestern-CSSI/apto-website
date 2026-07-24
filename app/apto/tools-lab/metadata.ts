@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 
-import { aptoInterface } from "../content";
 import { withDeploymentBase } from "../paths";
 
-const title = "Northwestern tool panel experiments | APTO";
+const title = "APTO tool story systems | Northwestern experiments";
 const description =
-  "The existing APTO Story tool cards with five experimental ways to organize Northwestern University’s subprojects, milestones, and resources.";
-const socialImage = withDeploymentBase(aptoInterface.story.socialImageSrc);
+  "Five complete storytelling systems—from editorial dossier to signal constellation—for Northwestern University’s APTO research tools.";
+const socialImage = withDeploymentBase("/apto-tools-story-systems.png");
 
 export const toolsLabMetadata: Metadata = {
   title: { absolute: title },
@@ -22,7 +21,9 @@ export const toolsLabMetadata: Metadata = {
     images: [
       {
         url: socialImage,
-        alt: aptoInterface.story.socialImageAlt,
+        width: 1568,
+        height: 1003,
+        alt: "APTO Tool Story Systems: an editorial dossier, milestone journey, evidence blueprint, assembly mosaic, and signal constellation.",
       },
     ],
   },

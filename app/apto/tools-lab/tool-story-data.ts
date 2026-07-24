@@ -16,6 +16,7 @@ export type ToolStory = (typeof aptoTools)[number] & {
   number: string;
   storyLine: string;
   synthesis: string;
+  phaseLabels: [string, string, string];
   pieces: StoryPiece[];
 };
 
@@ -29,13 +30,14 @@ const requestedOrder = [
 
 const storyContent: Record<
   (typeof requestedOrder)[number],
-  Pick<ToolStory, "storyLine" | "synthesis" | "pieces">
+  Pick<ToolStory, "storyLine" | "synthesis" | "phaseLabels" | "pieces">
 > = {
   "aggregating-research-pipeline-at-scale": {
     storyLine:
       "Build the shared evidence foundation, connect research to downstream outcomes, then make the pipeline usable for discovery and decisions.",
     synthesis:
       "Together, these systems turn fragmented institutional and public records into one traceable research-to-outcome pipeline.",
+    phaseLabels: ["Gather evidence", "Make it usable", "Turn it into decisions"],
     pieces: [
       {
         title: "SciSciNet v2",
@@ -100,6 +102,7 @@ const storyContent: Record<
       "Coordinate specialist agents to find sources, extract technical evidence, check uncertain claims, and produce expert-reviewable outcome records.",
     synthesis:
       "The framework combines reusable agent roles with domain validation, so every structured outcome remains connected to its source and review path.",
+    phaseLabels: ["Orchestrate", "Run research missions", "Verify"],
     pieces: [
       {
         title: "SciSciGPT agent team",
@@ -152,6 +155,7 @@ const storyContent: Record<
       "Measure several outcomes together so improvement, tradeoffs, lags, and complementarities stay visible instead of collapsing into one score.",
     synthesis:
       "The tool treats technology progress as a portfolio of coupled objectives—technical, productive, and practical—rather than a single curve.",
+    phaseLabels: ["Define outcomes", "Compare contexts", "Model tradeoffs"],
     pieces: [
       {
         title: "Capability",
@@ -196,6 +200,7 @@ const storyContent: Record<
       "Move from observed trajectories to mechanism-aware forecasts that compare alternative pathways and make uncertainty explicit.",
     synthesis:
       "A layered forecasting stack connects early activity, performance change, adoption, and market outcomes without treating evolution as one trend line.",
+    phaseLabels: ["Read trajectories", "Forecast change", "Apply foresight"],
     pieces: [
       {
         title: "Domain time series",
@@ -252,6 +257,7 @@ const storyContent: Record<
       "Find weak but persistent technical signals early, test whether they grow, and keep the evidence trail visible for deeper assessment.",
     synthesis:
       "The detector combines fine-grained concept discovery with temporal validation, distinguishing sustained emergence from isolated activity.",
+    phaseLabels: ["Reveal signals", "Trace the landscape", "Validate and prioritize"],
     pieces: [
       {
         title: "Sparse autoencoder concepts",

@@ -1,127 +1,528 @@
-.cardCopy {
-  display: flex;
-  min-height: 760px;
-  flex-direction: column;
+.conceptDeck {
+  width: min(calc(100% - 48px), var(--story-max));
+  margin: 0 auto clamp(48px, 6vw, 76px);
+  color: var(--story-ink);
 }
 
-.experiment {
-  margin-bottom: 28px;
-  flex: 1;
-  border: 1px solid var(--story-line);
-}
-
-.experimentHeader {
-  min-height: 82px;
-  padding: 16px 18px;
+.conceptDeckHeader {
+  margin-bottom: 18px;
+  padding: 0 2px;
   display: grid;
-  grid-template-columns: minmax(150px, .42fr) minmax(0, .58fr);
-  gap: 18px;
-  align-items: center;
-  background: color-mix(in srgb, var(--story-teal) 7%, var(--story-canvas));
-  border-bottom: 1px solid var(--story-line);
+  grid-template-columns: minmax(220px, .36fr) minmax(0, .64fr);
+  gap: clamp(24px, 5vw, 76px);
+  align-items: end;
 }
 
-.experimentHeader p {
-  margin: 0 0 4px;
+.conceptDeckHeader > div > p {
+  margin: 0 0 6px;
   color: var(--story-teal);
-  font-size: .64rem;
+  font-size: .7rem;
   font-weight: 850;
-  letter-spacing: .08em;
+  letter-spacing: .09em;
   text-transform: uppercase;
 }
 
-.experimentHeader strong {
+.conceptDeckHeader h3 {
+  margin: 0;
   color: var(--story-ink);
-  font-size: .88rem;
+  font-size: clamp(1.25rem, 2vw, 1.72rem);
+  letter-spacing: -.025em;
 }
 
-.experimentHeader > span {
+.conceptDeckHeader > p {
+  margin: 0;
+  padding-left: clamp(18px, 3vw, 38px);
+  display: grid;
+  gap: 5px;
   color: var(--story-copy);
-  font-size: .72rem;
-  line-height: 1.5;
+  border-left: 2px solid var(--story-gold);
 }
 
-.modePicker {
-  padding: 10px;
+.conceptDeckHeader > p strong {
+  color: var(--story-ink);
+  font-size: .84rem;
+}
+
+.conceptDeckHeader > p span {
+  font-size: .79rem;
+  line-height: 1.55;
+}
+
+.conceptTrack {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px;
-  background: var(--story-surface);
-  border-bottom: 1px solid var(--story-line);
+  gap: 8px;
 }
 
-.modePicker button {
+.conceptTrack button {
+  position: relative;
   min-width: 0;
-  min-height: 44px;
-  padding: 7px 8px;
+  min-height: 170px;
+  padding: 18px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 8px 12px;
+  align-items: start;
   color: var(--story-copy);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 5px;
+  text-align: left;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--story-surface) 94%, var(--story-cyan)), var(--story-surface));
+  border: 1px solid var(--story-line);
+  border-top: 3px solid transparent;
   font: inherit;
-  font-size: .65rem;
-  font-weight: 800;
   cursor: pointer;
+  transition:
+    color .2s ease,
+    background-color .2s ease,
+    border-color .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
-.modePicker button:hover,
-.modePicker button:focus-visible {
+.conceptTrack button:hover,
+.conceptTrack button:focus-visible {
   color: var(--story-ink);
-  background: var(--story-raised);
+  border-color: color-mix(in srgb, var(--story-teal) 48%, var(--story-line));
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--story-ink) 10%, transparent);
 }
 
-.modePicker button[aria-pressed="true"] {
-  color: #002554;
-  background: var(--story-gold);
-  border-color: color-mix(in srgb, var(--story-gold) 70%, #002554);
-}
-
-.interiorPanel {
-  padding: clamp(18px, 2.4vw, 28px);
-  background: var(--story-surface);
-}
-
-.milestoneInterior,
-.piecesInterior,
-.checklistInterior,
-.resourcesInterior,
-.flowInterior {
-  min-width: 0;
-}
-
-.storyLine {
-  margin: 0 0 22px;
-  color: var(--story-copy);
-  font-size: .79rem;
-  line-height: 1.64;
-}
-
-.synthesis {
-  margin-top: 22px;
-  padding: 15px 16px;
+.conceptTrack button[aria-pressed="true"] {
   color: var(--story-ink);
-  background: color-mix(in srgb, var(--story-cyan) 12%, var(--story-raised));
-  border-left: 3px solid var(--story-teal);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--story-gold) 13%, var(--story-surface)), var(--story-surface) 56%);
+  border-color: color-mix(in srgb, var(--story-gold) 62%, var(--story-line));
+  border-top-color: var(--story-gold);
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--story-ink) 12%, transparent);
 }
 
-.synthesis strong {
-  display: block;
-  margin-bottom: 5px;
+.conceptNumber {
   color: var(--story-teal);
-  font-size: .64rem;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.conceptTone {
+  align-self: end;
+  color: var(--story-teal);
+  font-size: .61rem;
+  font-weight: 850;
   letter-spacing: .07em;
   text-transform: uppercase;
 }
 
-.synthesis p {
-  margin: 0;
-  font-size: .75rem;
-  line-height: 1.55;
+.conceptTrack button > strong {
+  grid-column: 1 / -1;
+  color: var(--story-ink);
+  font-size: .86rem;
+  line-height: 1.25;
 }
 
-.inlineLink,
-.resourceLink {
-  min-height: 38px;
+.conceptTrack button > small {
+  grid-column: 1 / -1;
+  color: var(--story-copy);
+  font-size: .68rem;
+  line-height: 1.42;
+}
+
+.conceptMark {
+  position: relative;
+  width: 62px;
+  height: 42px;
+  display: block;
+}
+
+.conceptMark i {
+  position: absolute;
+  display: block;
+  background: color-mix(in srgb, var(--story-teal) 58%, var(--story-line));
+}
+
+.conceptMark[data-mark="dossier"] i {
+  right: 0;
+  left: 0;
+  height: 2px;
+}
+
+.conceptMark[data-mark="dossier"] i:nth-child(1) { top: 3px; width: 42%; height: 5px; background: var(--story-gold); }
+.conceptMark[data-mark="dossier"] i:nth-child(2) { top: 13px; }
+.conceptMark[data-mark="dossier"] i:nth-child(3) { top: 20px; width: 82%; }
+.conceptMark[data-mark="dossier"] i:nth-child(4) { top: 27px; }
+.conceptMark[data-mark="dossier"] i:nth-child(5) { top: 34px; width: 66%; }
+.conceptMark[data-mark="dossier"] i:nth-child(6) { display: none; }
+
+.conceptMark[data-mark="journey"]::before {
+  position: absolute;
+  top: 20px;
+  right: 5px;
+  left: 5px;
+  height: 1px;
+  content: "";
+  background: var(--story-teal);
+  transform: rotate(-8deg);
+}
+
+.conceptMark[data-mark="journey"] i {
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--story-surface);
+  border-radius: 50%;
+  background: var(--story-teal);
+}
+
+.conceptMark[data-mark="journey"] i:nth-child(1) { left: 2px; bottom: 6px; }
+.conceptMark[data-mark="journey"] i:nth-child(2) { left: 13px; top: 12px; }
+.conceptMark[data-mark="journey"] i:nth-child(3) { left: 25px; bottom: 11px; }
+.conceptMark[data-mark="journey"] i:nth-child(4) { left: 36px; top: 6px; }
+.conceptMark[data-mark="journey"] i:nth-child(5) { left: 47px; bottom: 15px; }
+.conceptMark[data-mark="journey"] i:nth-child(6) { right: 0; top: 2px; background: var(--story-gold); }
+
+.conceptMark[data-mark="blueprint"] {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--story-teal) 20%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--story-teal) 20%, transparent) 1px, transparent 1px);
+  background-size: 9px 9px;
+  border: 1px solid color-mix(in srgb, var(--story-teal) 45%, var(--story-line));
+}
+
+.conceptMark[data-mark="blueprint"] i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--story-gold);
+  box-shadow: 0 0 0 2px var(--story-surface);
+}
+
+.conceptMark[data-mark="blueprint"] i:nth-child(1) { left: 6px; top: 8px; }
+.conceptMark[data-mark="blueprint"] i:nth-child(2) { left: 23px; top: 24px; }
+.conceptMark[data-mark="blueprint"] i:nth-child(3) { right: 9px; top: 10px; }
+.conceptMark[data-mark="blueprint"] i:nth-child(4) { right: 3px; bottom: 4px; }
+.conceptMark[data-mark="blueprint"] i:nth-child(5),
+.conceptMark[data-mark="blueprint"] i:nth-child(6) { display: none; }
+
+.conceptMark[data-mark="assembly"] {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.conceptMark[data-mark="assembly"] i {
+  position: relative;
+  inset: auto;
+  width: auto;
+  height: auto;
+  background: color-mix(in srgb, var(--story-teal) 20%, var(--story-raised));
+  border: 1px solid color-mix(in srgb, var(--story-teal) 45%, var(--story-line));
+}
+
+.conceptMark[data-mark="assembly"] i:nth-child(4) { background: var(--story-gold); }
+
+.conceptMark[data-mark="constellation"]::before,
+.conceptMark[data-mark="constellation"]::after {
+  position: absolute;
+  top: 20px;
+  left: 8px;
+  width: 48px;
+  height: 1px;
+  content: "";
+  background: color-mix(in srgb, var(--story-teal) 55%, transparent);
+  transform: rotate(22deg);
+}
+
+.conceptMark[data-mark="constellation"]::after { transform: rotate(-24deg); }
+
+.conceptMark[data-mark="constellation"] i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--story-surface);
+  border-radius: 50%;
+  background: var(--story-teal);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--story-cyan) 50%, transparent);
+}
+
+.conceptMark[data-mark="constellation"] i:nth-child(1) { left: 2px; top: 5px; }
+.conceptMark[data-mark="constellation"] i:nth-child(2) { left: 26px; top: 2px; }
+.conceptMark[data-mark="constellation"] i:nth-child(3) { right: 1px; top: 11px; }
+.conceptMark[data-mark="constellation"] i:nth-child(4) { right: 7px; bottom: 2px; }
+.conceptMark[data-mark="constellation"] i:nth-child(5) { left: 22px; bottom: 7px; background: var(--story-gold); }
+.conceptMark[data-mark="constellation"] i:nth-child(6) { left: 5px; bottom: 3px; }
+
+.conceptRange {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto minmax(80px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  color: var(--story-copy);
+  font-size: .62rem;
+  font-weight: 750;
+}
+
+.conceptRange i {
+  height: 1px;
+  background: linear-gradient(90deg, var(--story-line), var(--story-teal), var(--story-gold));
+}
+
+.conceptGrid {
+  animation: concept-enter .42s cubic-bezier(.2, .78, .25, 1) both;
+}
+
+@keyframes concept-enter {
+  from { opacity: .2; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toolCard {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+
+.toolKicker {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--story-teal);
+  font-size: .66rem;
+  font-weight: 850;
+  letter-spacing: .065em;
+  text-transform: uppercase;
+}
+
+.toolKicker > span {
+  min-width: 30px;
+  min-height: 24px;
+  padding: 0 7px;
+  display: inline-grid;
+  place-items: center;
+  color: #002554;
+  background: var(--story-gold);
+  border-radius: 999px;
+}
+
+.toolKicker[data-inverse="true"] {
+  color: #8eddef;
+}
+
+.cardFooter {
+  margin-top: auto;
+  padding-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--story-ink);
+  border-top: 1px solid var(--story-line);
+}
+
+.cardFooter ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+}
+
+.cardFooter li {
+  padding: 6px 9px;
+  color: var(--story-ink);
+  background: var(--story-raised);
+  border-radius: 5px;
+  font-size: .65rem;
+  font-weight: 800;
+}
+
+.cardFooter > span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cardFooter a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--story-blue);
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.cardFooter[data-inverse="true"] {
+  color: #edf8fc;
+  border-color: rgba(174, 218, 234, .2);
+}
+
+.cardFooter[data-inverse="true"] li {
+  color: #eaf7fb;
+  background: rgba(143, 213, 231, .12);
+}
+
+.cardFooter[data-inverse="true"] a {
+  color: #8eddef;
+}
+
+/* Editorial dossier */
+
+.toolCard .dossierVisual {
+  position: relative;
+  aspect-ratio: 2.05 / 1;
+  margin: 0;
+  overflow: hidden;
+  background: var(--story-raised);
+}
+
+.toolCard .dossierVisual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.84) contrast(1.02);
+  transform: none;
+}
+
+.dossierVisual::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, transparent 55%, rgba(2, 21, 39, .62));
+  pointer-events: none;
+}
+
+.visualNumber {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  left: 22px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  color: #002554;
+  background: var(--story-gold);
+  border-radius: 50%;
+  font-size: .74rem;
+  font-weight: 900;
+}
+
+.toolCard .dossierVisual figcaption,
+.toolCard .journeyVisual figcaption,
+.toolCard .blueprintVisual figcaption,
+.toolCard .assemblyVisual figcaption,
+.toolCard .constellationScene figcaption {
+  z-index: 5;
+}
+
+.dossierBody {
+  padding: clamp(26px, 3.2vw, 40px);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dossierTitle h3 {
+  max-width: 23ch;
+  margin: 12px 0 14px;
+  color: var(--story-ink);
+  font-size: clamp(1.45rem, 2.3vw, 2rem);
+  font-weight: 650;
+  letter-spacing: -.035em;
+  line-height: 1.08;
+}
+
+.dossierTitle > p:last-child {
+  margin: 0;
+  color: var(--story-copy);
+  font-size: .88rem;
+  line-height: 1.66;
+}
+
+.dossierThesis {
+  margin: 28px 0;
+  padding: 19px 21px;
+  color: var(--story-ink);
+  background: color-mix(in srgb, var(--story-teal) 7%, var(--story-canvas));
+  border: 0;
+  border-left: 3px solid var(--story-teal);
+}
+
+.dossierThesis span,
+.dossierOutcome span,
+.assemblyOutcome span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--story-teal);
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.dossierThesis p,
+.dossierOutcome p,
+.assemblyOutcome p {
+  margin: 0;
+  font-size: .81rem;
+  line-height: 1.58;
+}
+
+.dossierIndex {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  background: var(--story-line);
+  border: 1px solid var(--story-line);
+  gap: 1px;
+}
+
+.dossierIndex section {
+  min-height: 190px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 10px;
+  background: var(--story-surface);
+}
+
+.dossierIndex section > span {
+  padding-top: 2px;
+  color: var(--story-teal);
+  font-size: .64rem;
+  font-weight: 900;
+}
+
+.dossierIndex section p {
+  margin: 0 0 4px;
+  color: var(--story-teal);
+  font-size: .61rem;
+  font-weight: 850;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.dossierIndex h4 {
+  margin: 0 0 8px;
+  color: var(--story-ink);
+  font-size: .85rem;
+  line-height: 1.25;
+}
+
+.dossierIndex small {
+  display: block;
+  color: var(--story-copy);
+  font-size: .75rem;
+  line-height: 1.52;
+}
+
+.dossierLink {
+  min-height: 40px;
+  margin-top: 8px;
   display: inline-flex;
   align-items: center;
   color: var(--story-blue);
@@ -129,7 +530,126 @@
   font-weight: 850;
 }
 
-.milestoneRail {
+.dossierUseCase {
+  margin: 24px 0 0;
+  padding: 20px 22px;
+  display: grid;
+  grid-template-columns: minmax(90px, .24fr) minmax(0, .76fr);
+  gap: 16px;
+  color: var(--story-copy);
+  background: var(--story-raised);
+}
+
+.dossierUseCase strong {
+  color: var(--story-teal);
+  font-size: .64rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.dossierUseCase p {
+  margin: 0;
+  font-size: .78rem;
+  line-height: 1.55;
+}
+
+.dossierOutcome {
+  margin: 22px 0 26px;
+  padding: 20px 22px;
+  color: var(--story-ink);
+  border: 1px solid color-mix(in srgb, var(--story-cyan) 40%, var(--story-line));
+  box-shadow: inset 5px 0 0 var(--story-cyan);
+}
+
+/* Milestone journey */
+
+.toolCard .journeyVisual {
+  position: relative;
+  aspect-ratio: 1.72 / 1;
+  margin: 0;
+  overflow: hidden;
+  background: #061b33;
+}
+
+.toolCard .journeyVisual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.78) contrast(1.08);
+  transform: scale(1.02);
+}
+
+.toolCard[data-concept="journey"]:hover .journeyVisual img {
+  filter: saturate(.78) contrast(1.08);
+}
+
+.journeyVisual::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(180deg, rgba(2, 13, 25, .12) 15%, rgba(2, 17, 31, .88) 92%),
+    linear-gradient(90deg, rgba(2, 17, 31, .62), transparent 75%);
+}
+
+.journeyVisual > header {
+  position: absolute;
+  z-index: 3;
+  right: clamp(24px, 4vw, 42px);
+  bottom: 46px;
+  left: clamp(24px, 4vw, 42px);
+}
+
+.journeyVisual h3 {
+  max-width: 20ch;
+  margin: 12px 0 0;
+  color: #f8fbfd;
+  font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+  font-weight: 630;
+  letter-spacing: -.035em;
+  line-height: 1.08;
+}
+
+.journeyHorizon {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 22px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 4%, var(--story-gold) 22%, var(--story-gold) 80%, transparent 96%);
+}
+
+.journeyHorizon::after {
+  position: absolute;
+  right: 18%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  content: "";
+  background: var(--story-gold);
+  border: 4px solid rgba(4, 26, 46, .85);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.journeyBody {
+  padding: clamp(28px, 3.5vw, 42px);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.journeyLead {
+  max-width: 62ch;
+  margin: 0 0 30px;
+  color: var(--story-copy);
+  font-size: .89rem;
+  line-height: 1.68;
+}
+
+.journeyTrail {
   position: relative;
   margin: 0;
   padding: 0;
@@ -137,409 +657,1270 @@
   list-style: none;
 }
 
-.milestoneRail::before {
+.journeyTrail::before {
   position: absolute;
-  top: 18px;
-  bottom: 18px;
-  left: 17px;
-  width: 1px;
+  top: 20px;
+  bottom: 20px;
+  left: 50%;
+  width: 2px;
   content: "";
-  background: color-mix(in srgb, var(--story-teal) 38%, var(--story-line));
+  background: linear-gradient(var(--story-gold), var(--story-teal), var(--story-cyan));
+  transform: translateX(-1px);
 }
 
-.milestoneRail li {
+.journeyTrail li {
   position: relative;
-  padding: 0 0 20px;
+  min-height: 96px;
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
-  gap: 13px;
+  grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+  align-items: center;
 }
 
-.milestoneRail li:last-child {
-  padding-bottom: 0;
-}
-
-.milestoneNumber {
-  z-index: 1;
-  width: 35px;
-  height: 35px;
+.journeyTrail li > span {
+  z-index: 2;
+  grid-column: 2;
+  grid-row: 1;
+  width: 38px;
+  height: 38px;
+  justify-self: center;
   display: grid;
   place-items: center;
   color: var(--story-ink);
   background: var(--story-raised);
-  border: 1px solid var(--story-line);
+  border: 2px solid var(--story-teal);
   border-radius: 50%;
   font-size: .61rem;
-  font-weight: 850;
+  font-weight: 900;
 }
 
-.milestoneRail li > div {
-  padding-top: 1px;
-}
-
-.milestoneRail p,
-.pieceDetail > p,
-.resourceIndex section > p,
-.flow section > p {
-  margin: 0 0 3px;
-  color: var(--story-teal);
-  font-size: .61rem;
-  font-weight: 850;
-  letter-spacing: .045em;
-  text-transform: uppercase;
-}
-
-.milestoneRail h4,
-.pieceDetail h4,
-.resourceIndex h4,
-.flow h4 {
-  margin: 0 0 5px;
-  color: var(--story-ink);
-  font-size: .82rem;
-  line-height: 1.3;
-}
-
-.milestoneRail li > div > span,
-.pieceDetail > span,
-.resourceIndex section > span,
-.flow section > span {
-  display: block;
-  color: var(--story-copy);
-  font-size: .71rem;
-  line-height: 1.54;
-}
-
-.pieceMosaic {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 3px;
-  background: var(--story-line);
-  border: 1px solid var(--story-line);
-}
-
-.pieceButton {
-  position: relative;
-  min-height: 92px;
-  padding: 15px;
+.journeyTrail button {
+  min-height: 76px;
+  padding: 13px 15px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  text-align: left;
-  color: var(--story-ink);
-  background: color-mix(in srgb, var(--story-teal) 6%, var(--story-surface));
-  border: 0;
+  justify-content: center;
+  color: var(--story-copy);
+  text-align: right;
+  background: transparent;
+  border: 1px solid transparent;
   font: inherit;
   cursor: pointer;
 }
 
-.pieceButton:nth-child(3n + 2),
-.pieceButton:nth-child(3n + 3) {
-  background: color-mix(in srgb, var(--story-cyan) 9%, var(--story-surface));
+.journeyTrail li:nth-child(odd) button { grid-column: 1; grid-row: 1; }
+.journeyTrail li:nth-child(even) button { grid-column: 3; grid-row: 1; text-align: left; }
+
+.journeyTrail button small {
+  margin-bottom: 4px;
+  color: var(--story-teal);
+  font-size: .61rem;
+  font-weight: 850;
+  letter-spacing: .05em;
+  text-transform: uppercase;
 }
 
-.pieceButton:hover,
-.pieceButton:focus-visible {
+.journeyTrail button strong {
+  color: var(--story-ink);
+  font-size: .8rem;
+  line-height: 1.3;
+}
+
+.journeyTrail button:hover,
+.journeyTrail button:focus-visible {
   background: var(--story-raised);
+  border-color: var(--story-line);
 }
 
-.pieceButton[aria-pressed="true"] {
+.journeyTrail button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--story-gold) 14%, var(--story-surface));
+  border-color: var(--story-gold);
+}
+
+.journeyTrail li:has(button[aria-pressed="true"]) > span {
+  color: #002554;
+  background: var(--story-gold);
+  border-color: var(--story-gold);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--story-gold) 17%, transparent);
+}
+
+.journeyDetail {
+  margin-top: 28px;
+  padding: 22px 24px;
+  color: var(--story-copy);
+  background: color-mix(in srgb, var(--story-teal) 8%, var(--story-canvas));
+  border-left: 3px solid var(--story-teal);
+}
+
+.journeyDetail > p {
+  margin: 0 0 5px;
+  color: var(--story-teal);
+  font-size: .63rem;
+  font-weight: 850;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.journeyDetail h4 {
+  margin: 0 0 8px;
+  color: var(--story-ink);
+  font-size: 1rem;
+}
+
+.journeyDetail > span {
+  display: block;
+  font-size: .79rem;
+  line-height: 1.6;
+}
+
+.journeyLink {
+  min-height: 42px;
+  margin-top: 7px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--story-blue);
+  font-size: .7rem;
+  font-weight: 850;
+}
+
+.journeyDestination {
+  position: relative;
+  margin: 26px 0;
+  padding: 21px 22px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 13px;
   color: #002554;
   background: var(--story-gold);
 }
 
-.pieceButton span {
-  font-size: .58rem;
-  font-weight: 850;
-  letter-spacing: .045em;
+.journeyDestination::after {
+  position: absolute;
+  top: -12px;
+  left: 25px;
+  width: 2px;
+  height: 12px;
+  content: "";
+  background: var(--story-gold);
+}
+
+.journeyDestination > span {
+  font-size: 1rem;
+}
+
+.journeyDestination strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: .66rem;
+  letter-spacing: .06em;
   text-transform: uppercase;
 }
 
-.pieceButton strong {
-  font-size: .75rem;
-  line-height: 1.28;
+.journeyDestination p {
+  margin: 0;
+  font-size: .8rem;
+  line-height: 1.55;
 }
 
-.pieceDetail {
-  min-height: 176px;
-  padding: 20px;
-  background: var(--story-raised);
-  border: solid var(--story-line);
-  border-width: 0 1px 1px;
+/* Evidence blueprint */
+
+.toolCard[data-concept="blueprint"] {
+  color: #eaf7fb;
+  background: #061a2e;
 }
 
-.pieceDetail h4 {
-  font-size: .92rem;
+.blueprintSheet {
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background:
+    linear-gradient(rgba(100, 194, 218, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 194, 218, .045) 1px, transparent 1px),
+    #061a2e;
+  background-size: 24px 24px;
 }
 
-.checklist {
-  border-top: 1px solid var(--story-line);
+.toolCard .blueprintVisual {
+  position: relative;
+  min-height: 500px;
+  aspect-ratio: auto;
+  margin: 0;
+  overflow: hidden;
+  background: #03111f;
 }
 
-.checklist details {
-  border-bottom: 1px solid var(--story-line);
+.toolCard .blueprintVisual > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) sepia(.18) hue-rotate(145deg) saturate(1.5) contrast(1.12) brightness(.72);
+  transform: scale(1.04);
 }
 
-.checklist summary {
-  min-height: 62px;
-  padding: 9px 4px;
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 28px;
-  gap: 10px;
-  align-items: center;
-  color: var(--story-ink);
-  cursor: pointer;
-  list-style: none;
+.toolCard[data-concept="blueprint"]:hover .blueprintVisual > img {
+  filter: grayscale(1) sepia(.18) hue-rotate(145deg) saturate(1.5) contrast(1.12) brightness(.72);
 }
 
-.checklist summary::-webkit-details-marker {
-  display: none;
+.blueprintScrim {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(rgba(95, 207, 231, .09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 207, 231, .09) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(2, 15, 28, .28), rgba(2, 17, 31, .88));
+  background-size: 30px 30px, 30px 30px, 100% 100%;
+  pointer-events: none;
 }
 
-.checkNumber {
-  width: 30px;
-  height: 30px;
+.blueprintVisual > header {
+  position: absolute;
+  z-index: 3;
+  top: clamp(24px, 4vw, 40px);
+  right: clamp(24px, 4vw, 40px);
+  left: clamp(24px, 4vw, 40px);
+  max-width: 80%;
+}
+
+.blueprintVisual h3 {
+  max-width: 20ch;
+  margin: 12px 0;
+  color: #f6fbfd;
+  font-size: clamp(1.5rem, 2.4vw, 2.05rem);
+  font-weight: 620;
+  letter-spacing: -.035em;
+  line-height: 1.08;
+}
+
+.blueprintVisual header > p:last-child {
+  max-width: 58ch;
+  margin: 0;
+  color: #bfd6e2;
+  font-size: .78rem;
+  line-height: 1.56;
+}
+
+.blueprintCallouts {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+}
+
+.blueprintCallouts button {
+  position: absolute;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
-  color: var(--story-teal);
-  background: var(--story-raised);
-  border: 1px solid var(--story-line);
+  color: #eaf8fc;
+  background: rgba(5, 39, 64, .82);
+  border: 1px solid #62c5dc;
   border-radius: 50%;
-  font-size: .64rem;
-  font-weight: 850;
+  box-shadow: 0 0 0 5px rgba(98, 197, 220, .12);
+  font: inherit;
+  font-size: .62rem;
+  font-weight: 900;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
 }
 
-.checklist summary small,
-.checklist summary strong {
+.blueprintCallouts button:hover,
+.blueprintCallouts button:focus-visible {
+  transform: scale(1.08);
+}
+
+.blueprintCallouts button[aria-pressed="true"] {
+  color: #002554;
+  background: var(--story-gold);
+  border-color: var(--story-gold);
+  box-shadow: 0 0 0 7px rgba(211, 179, 78, .22), 0 0 28px rgba(211, 179, 78, .34);
+}
+
+.blueprintCallouts button[data-position="1"] { left: 9%; bottom: 22%; }
+.blueprintCallouts button[data-position="2"] { left: 27%; bottom: 9%; }
+.blueprintCallouts button[data-position="3"] { left: 45%; bottom: 27%; }
+.blueprintCallouts button[data-position="4"] { right: 30%; bottom: 9%; }
+.blueprintCallouts button[data-position="5"] { right: 13%; bottom: 28%; }
+.blueprintCallouts button[data-position="6"] { right: 5%; bottom: 8%; }
+
+.blueprintBody {
+  padding: clamp(27px, 3.5vw, 42px);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.blueprintSpec {
+  margin-bottom: 24px;
+  padding: 18px 20px;
+  color: #bfd6e2;
+  background: rgba(84, 180, 208, .08);
+  border: 1px solid rgba(126, 209, 229, .22);
+  border-left: 3px solid #69c9df;
+}
+
+.blueprintSpec span,
+.blueprintOutput span {
+  display: block;
+  margin-bottom: 6px;
+  color: #7fd5e7;
+  font-size: .63rem;
+  font-weight: 900;
+  letter-spacing: .075em;
+  text-transform: uppercase;
+}
+
+.blueprintSpec p,
+.blueprintOutput p {
+  margin: 0;
+  font-size: .79rem;
+  line-height: 1.6;
+}
+
+.blueprintPhases {
+  display: grid;
+  border: 1px solid rgba(149, 211, 227, .2);
+}
+
+.blueprintPhases > section {
+  display: grid;
+  grid-template-columns: 126px minmax(0, 1fr);
+  border-bottom: 1px solid rgba(149, 211, 227, .2);
+}
+
+.blueprintPhases > section:last-child {
+  border-bottom: 0;
+}
+
+.blueprintPhases section > header {
+  padding: 15px;
+  color: #eaf7fb;
+  background: rgba(88, 184, 210, .09);
+  border-right: 1px solid rgba(149, 211, 227, .2);
+}
+
+.blueprintPhases section > header span,
+.blueprintPhases section > header strong {
   display: block;
 }
 
-.checklist summary small {
+.blueprintPhases section > header span {
+  margin-bottom: 6px;
+  color: #72cee2;
+  font-size: .59rem;
+  font-weight: 850;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.blueprintPhases section > header strong {
+  font-size: .75rem;
+  line-height: 1.32;
+}
+
+.blueprintPhases section > div {
+  display: grid;
+}
+
+.blueprintPhases button {
+  min-height: 68px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  color: #bfd6e2;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(149, 211, 227, .14);
+  font: inherit;
+  cursor: pointer;
+}
+
+.blueprintPhases button:last-child {
+  border-bottom: 0;
+}
+
+.blueprintPhases button:hover,
+.blueprintPhases button:focus-visible {
+  background: rgba(95, 200, 224, .08);
+}
+
+.blueprintPhases button[aria-pressed="true"] {
+  background: rgba(211, 179, 78, .13);
+  box-shadow: inset 3px 0 0 var(--story-gold);
+}
+
+.blueprintPhases button > span:first-child {
+  color: #72cee2;
+  font-size: .59rem;
+  font-weight: 900;
+}
+
+.blueprintPhases button small,
+.blueprintPhases button strong {
+  display: block;
+}
+
+.blueprintPhases button small {
   margin-bottom: 3px;
-  color: var(--story-teal);
+  color: #72cee2;
   font-size: .57rem;
   font-weight: 850;
   letter-spacing: .04em;
   text-transform: uppercase;
 }
 
-.checklist summary strong {
-  font-size: .76rem;
-  line-height: 1.3;
+.blueprintPhases button strong {
+  color: #effafd;
+  font-size: .72rem;
+  line-height: 1.28;
 }
 
-.disclosure {
-  color: var(--story-teal);
-  font-size: 1rem;
-  text-align: center;
-  transition: transform .18s ease;
+.blueprintPhases button i {
+  padding: 5px 7px;
+  color: #002554;
+  background: var(--story-gold);
+  border-radius: 999px;
+  font-size: .54rem;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
-.checklist details[open] .disclosure {
-  transform: rotate(45deg);
+.blueprintDetail {
+  margin-top: 22px;
+  padding: 19px 21px;
+  color: #bfd6e2;
+  background: rgba(2, 13, 25, .48);
+  border: 1px solid rgba(126, 209, 229, .22);
 }
 
-.checklist details > div {
-  padding: 0 42px 15px 48px;
-}
-
-.checklist details > div p {
-  margin: 0;
-  color: var(--story-copy);
-  font-size: .71rem;
-  line-height: 1.55;
-}
-
-.useCase {
-  margin-bottom: 20px;
-  padding: 17px 18px;
-  background: color-mix(in srgb, var(--story-teal) 7%, var(--story-canvas));
-}
-
-.useCase strong {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--story-teal);
-  font-size: .62rem;
+.blueprintDetail > p {
+  margin: 0 0 5px;
+  color: #72cee2;
+  font-size: .61rem;
+  font-weight: 900;
   letter-spacing: .06em;
   text-transform: uppercase;
 }
 
-.useCase p {
-  margin: 0;
-  color: var(--story-copy);
+.blueprintDetail h4 {
+  margin: 0 0 7px;
+  color: #f4fbfd;
+  font-size: .94rem;
+}
+
+.blueprintDetail > span {
+  display: block;
   font-size: .76rem;
   line-height: 1.58;
 }
 
-.resourceIndex {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--story-line);
-  border: 1px solid var(--story-line);
-}
-
-.resourceIndex section {
-  min-height: 175px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  background: var(--story-surface);
-}
-
-.resourceIndex section > span {
-  margin-bottom: 9px;
-}
-
-.resourceIndex section > small {
-  margin-top: auto;
-  padding-top: 12px;
-  color: var(--story-copy);
-  font-size: .62rem;
-  font-weight: 750;
-}
-
-.resourceLink {
-  margin-top: auto;
-}
-
-.resourceNote {
-  margin: 15px 0 0;
-  color: var(--story-copy);
-  font-size: .64rem;
-  line-height: 1.52;
-}
-
-.flow {
-  margin: 0;
-  padding: 0;
-  display: grid;
-  list-style: none;
-}
-
-.flow > li {
-  position: relative;
-  padding-bottom: 24px;
-}
-
-.flow > li:not(:last-child)::after {
-  position: absolute;
-  bottom: 5px;
-  left: 20px;
-  content: "↓";
-  color: var(--story-teal);
-  font-size: .9rem;
-  font-weight: 900;
-}
-
-.flow > li > header {
+.blueprintLink {
   min-height: 40px;
-  padding: 8px 12px;
-  display: flex;
+  margin-top: 7px;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--story-ink);
-  background: var(--story-raised);
-  border-left: 3px solid var(--story-teal);
+  color: #8eddef;
+  font-size: .68rem;
+  font-weight: 850;
 }
 
-.flow > li > header span {
-  width: 22px;
-  height: 22px;
-  display: grid;
-  place-items: center;
+.blueprintOutput {
+  margin: 22px 0 26px;
+  padding: 19px 21px;
   color: #002554;
   background: var(--story-gold);
+}
+
+.blueprintOutput span {
+  color: #002554;
+}
+
+/* Assembly mosaic */
+
+.toolCard[data-concept="assembly"] {
+  color: #edf8fc;
+  background: #071a2c;
+}
+
+.toolCard .assemblyVisual {
+  position: relative;
+  min-height: 720px;
+  aspect-ratio: auto;
+  margin: 0;
+  overflow: hidden;
+  background: #061625;
+}
+
+.toolCard .assemblyVisual > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.86) contrast(1.08) brightness(.78);
+  transform: scale(1.03);
+}
+
+.toolCard[data-concept="assembly"]:hover .assemblyVisual > img {
+  filter: saturate(.86) contrast(1.08) brightness(.78);
+}
+
+.assemblyScrim {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(2, 13, 25, .2), rgba(2, 17, 31, .88)),
+    linear-gradient(110deg, rgba(2, 17, 31, .58), transparent 68%);
+  pointer-events: none;
+}
+
+.assemblyHeading {
+  position: absolute;
+  z-index: 3;
+  top: clamp(26px, 4vw, 42px);
+  right: clamp(24px, 4vw, 42px);
+  left: clamp(24px, 4vw, 42px);
+}
+
+.assemblyHeading h3 {
+  max-width: 20ch;
+  margin: 12px 0;
+  color: #f7fbfd;
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  font-weight: 620;
+  letter-spacing: -.04em;
+  line-height: 1.05;
+}
+
+.assemblyHeading > p:last-child {
+  max-width: 58ch;
+  margin: 0;
+  color: #c8dce6;
+  font-size: .8rem;
+  line-height: 1.58;
+}
+
+.assemblyGrid {
+  position: absolute;
+  z-index: 3;
+  top: 235px;
+  right: clamp(20px, 3vw, 32px);
+  bottom: 48px;
+  left: clamp(20px, 3vw, 32px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.assemblyGrid button {
+  --piece-surface: rgba(5, 30, 50, .76);
+  position: relative;
+  min-width: 0;
+  min-height: 130px;
+  padding: 17px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  color: #eaf8fc;
+  text-align: left;
+  background: var(--piece-surface);
+  border: 1px solid rgba(172, 219, 232, .36);
+  font: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(8px) saturate(120%);
+  transition: transform .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.assemblyGrid button:nth-child(2),
+.assemblyGrid button:nth-child(5) {
+  --piece-surface: rgba(6, 49, 70, .75);
+}
+
+.assemblyGrid button::after {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  right: -13px;
+  width: 21px;
+  height: 21px;
+  content: "";
+  background: var(--piece-surface);
+  border: 1px solid rgba(172, 219, 232, .36);
+  border-left: 0;
   border-radius: 50%;
-  font-size: .6rem;
+  transform: translateY(-50%);
+}
+
+.assemblyGrid button[data-resource="true"]::before {
+  position: absolute;
+  z-index: 5;
+  top: -1px;
+  right: -1px;
+  width: 0;
+  height: 0;
+  content: "";
+  border-style: solid;
+  border-width: 0 22px 22px 0;
+  border-color: transparent var(--story-gold) transparent transparent;
+}
+
+.assemblyGrid button:nth-child(3n)::after {
+  display: none;
+}
+
+.assemblyGrid button:hover,
+.assemblyGrid button:focus-visible {
+  background: rgba(5, 52, 76, .88);
+  border-color: #81d3e5;
+  transform: translateY(-4px);
+}
+
+.assemblyGrid button[aria-pressed="true"] {
+  --piece-surface: rgba(211, 179, 78, .9);
+  z-index: 5;
+  color: #002554;
+  background: var(--piece-surface);
+  border-color: #f1d778;
+  box-shadow: 0 18px 32px rgba(0, 0, 0, .28), 0 0 0 2px rgba(241, 215, 120, .22);
+  transform: translateY(-6px) scale(1.025);
+}
+
+.assemblyGrid button > span {
+  position: absolute;
+  top: 13px;
+  left: 14px;
+  color: #83d5e7;
+  font-size: .61rem;
   font-weight: 900;
 }
 
-.flow > li > header strong {
-  font-size: .73rem;
-  letter-spacing: .035em;
+.assemblyGrid button[aria-pressed="true"] > span {
+  color: #002554;
+}
+
+.assemblyGrid button small {
+  margin-bottom: 6px;
+  color: #83d5e7;
+  font-size: .59rem;
+  font-weight: 850;
+  letter-spacing: .055em;
   text-transform: uppercase;
 }
 
-.flow > li > div {
+.assemblyGrid button[aria-pressed="true"] small {
+  color: #002554;
+}
+
+.assemblyGrid button strong {
+  font-size: .77rem;
+  line-height: 1.3;
+}
+
+.assemblyBody {
+  padding: clamp(27px, 3.5vw, 42px);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 10% 0, rgba(78, 195, 224, .08), transparent 34%),
+    #071a2c;
+}
+
+.assemblyDetail {
+  padding: 22px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border: solid var(--story-line);
-  border-width: 0 1px 1px;
+  grid-template-columns: minmax(150px, .38fr) minmax(0, .62fr);
+  gap: clamp(18px, 3vw, 34px);
+  color: #c7dbe5;
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid rgba(169, 217, 231, .18);
 }
 
-.flow section {
-  min-height: 145px;
-  padding: 15px;
+.assemblyDetail > div:first-child > p {
+  margin: 0 0 6px;
+  color: #82d3e5;
+  font-size: .62rem;
+  font-weight: 850;
+  letter-spacing: .055em;
+  text-transform: uppercase;
 }
 
-.flow section + section {
-  border-left: 1px solid var(--story-line);
+.assemblyDetail h4 {
+  margin: 0;
+  color: #f4fbfd;
+  font-size: 1rem;
+  line-height: 1.3;
 }
 
-@media (max-width: 1180px) {
-  .cardCopy {
-    min-height: 800px;
+.assemblyDetail > div:last-child > p {
+  margin: 0;
+  font-size: .79rem;
+  line-height: 1.62;
+}
+
+.assemblyLink {
+  min-height: 42px;
+  margin-top: 7px;
+  display: inline-flex;
+  align-items: center;
+  color: #8eddef;
+  font-size: .69rem;
+  font-weight: 850;
+}
+
+.assemblyOutcome {
+  margin: 22px 0 26px;
+  padding: 20px 22px;
+  color: #eaf8fc;
+  border: 1px solid rgba(211, 179, 78, .44);
+  box-shadow: inset 5px 0 0 var(--story-gold);
+}
+
+.assemblyOutcome span {
+  color: var(--story-gold);
+}
+
+/* Signal constellation */
+
+.toolCard[data-concept="constellation"] {
+  color: #edf9fc;
+  background: #020c18;
+}
+
+.toolCard .constellationScene {
+  position: relative;
+  min-height: 790px;
+  aspect-ratio: auto;
+  margin: 0;
+  overflow: hidden;
+  background: #020c18;
+}
+
+.toolCard .constellationScene > img {
+  position: absolute;
+  inset: -3%;
+  width: 106%;
+  height: 106%;
+  object-fit: cover;
+  filter: saturate(.68) contrast(1.12) brightness(.55) hue-rotate(2deg);
+  transform: scale(1.02);
+  animation: constellation-drift 18s ease-in-out infinite alternate;
+}
+
+.toolCard[data-concept="constellation"]:hover .constellationScene > img {
+  filter: saturate(.68) contrast(1.12) brightness(.55) hue-rotate(2deg);
+}
+
+@keyframes constellation-drift {
+  from { transform: scale(1.03) translate3d(-.5%, -.4%, 0); }
+  to { transform: scale(1.08) translate3d(.7%, .5%, 0); }
+}
+
+.constellationScrim {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(78, 195, 224, .16), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(211, 179, 78, .1), transparent 24%),
+    linear-gradient(180deg, rgba(1, 8, 16, .42), rgba(1, 10, 20, .84));
+  pointer-events: none;
+}
+
+.constellationHeading {
+  position: absolute;
+  z-index: 5;
+  top: clamp(25px, 4vw, 42px);
+  right: clamp(24px, 4vw, 42px);
+  left: clamp(24px, 4vw, 42px);
+  max-width: 76%;
+}
+
+.constellationHeading h3 {
+  max-width: 20ch;
+  margin: 12px 0;
+  color: #f7fcfe;
+  font-size: clamp(1.55rem, 2.55vw, 2.2rem);
+  font-weight: 610;
+  letter-spacing: -.04em;
+  line-height: 1.05;
+}
+
+.constellationHeading > p:last-child {
+  max-width: 54ch;
+  margin: 0;
+  color: #c4d9e4;
+  font-size: .78rem;
+  line-height: 1.57;
+}
+
+.constellationLines {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.constellationLines i {
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  width: 37%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(111, 211, 231, .62), rgba(111, 211, 231, .08));
+  box-shadow: 0 0 9px rgba(78, 195, 224, .18);
+  transform-origin: left center;
+}
+
+.constellationLines i::after {
+  position: absolute;
+  right: 22%;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  content: "";
+  background: #8be0ef;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #4ec3e0;
+}
+
+.constellationLines i:nth-child(1) { transform: rotate(198deg); }
+.constellationLines i:nth-child(2) { transform: rotate(250deg); width: 31%; }
+.constellationLines i:nth-child(3) { transform: rotate(342deg); }
+.constellationLines i:nth-child(4) { transform: rotate(28deg); }
+.constellationLines i:nth-child(5) { transform: rotate(88deg); width: 29%; }
+.constellationLines i:nth-child(6) { transform: rotate(150deg); }
+
+.constellationCore {
+  position: absolute;
+  z-index: 4;
+  top: 53%;
+  left: 50%;
+  width: 210px;
+  min-height: 154px;
+  padding: 27px 24px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(78, 195, 224, .18), rgba(4, 28, 48, .9) 68%);
+  border: 1px solid rgba(126, 220, 237, .52);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 12px rgba(78, 195, 224, .05),
+    0 0 54px rgba(78, 195, 224, .16);
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(11px);
+}
+
+.constellationCore span {
+  margin-bottom: 7px;
+  color: #83d8e9;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .075em;
+  text-transform: uppercase;
+}
+
+.constellationCore strong {
+  color: #f3fbfd;
+  font-size: .73rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.constellationNodes {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+}
+
+.constellationNodes button {
+  position: absolute;
+  width: 150px;
+  min-height: 88px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  color: #dbeaf1;
+  text-align: left;
+  background: rgba(4, 29, 48, .72);
+  border: 1px solid rgba(128, 210, 228, .34);
+  border-radius: 12px;
+  box-shadow: 0 13px 34px rgba(0, 0, 0, .2);
+  font: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(11px) saturate(115%);
+  transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.constellationNodes button::before {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  content: "";
+  background: #67cee3;
+  border: 2px solid #061a2e;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #4ec3e0;
+}
+
+.constellationNodes button[data-resource="true"]::before {
+  background: var(--story-gold);
+  box-shadow: 0 0 16px var(--story-gold);
+}
+
+.constellationNodes button:hover,
+.constellationNodes button:focus-visible {
+  background: rgba(7, 48, 72, .9);
+  border-color: #74d4e6;
+  transform: translateY(-3px);
+}
+
+.constellationNodes button[aria-pressed="true"] {
+  color: #002554;
+  background: rgba(211, 179, 78, .94);
+  border-color: #f0d474;
+  box-shadow: 0 0 0 6px rgba(211, 179, 78, .12), 0 18px 38px rgba(0, 0, 0, .28);
+  transform: translateY(-4px) scale(1.025);
+}
+
+.constellationNodes button[aria-pressed="true"]::before {
+  background: #ffe58b;
+  box-shadow: 0 0 18px #ffe58b;
+}
+
+.constellationNodes button > span {
+  position: absolute;
+  top: 10px;
+  right: 11px;
+  color: #79d4e7;
+  font-size: .57rem;
+  font-weight: 900;
+}
+
+.constellationNodes button[aria-pressed="true"] > span,
+.constellationNodes button[aria-pressed="true"] small {
+  color: #002554;
+}
+
+.constellationNodes button small {
+  margin: 8px 0 4px;
+  color: #79d4e7;
+  font-size: .57rem;
+  font-weight: 850;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+
+.constellationNodes button strong {
+  font-size: .7rem;
+  line-height: 1.28;
+}
+
+.constellationNodes button[data-position="1"] { top: 34%; left: 3.5%; }
+.constellationNodes button[data-position="2"] { top: 24%; left: calc(50% - 75px); }
+.constellationNodes button[data-position="3"] { top: 34%; right: 3.5%; }
+.constellationNodes button[data-position="4"] { right: 3.5%; bottom: 17%; }
+.constellationNodes button[data-position="5"] { bottom: 8%; left: calc(50% - 75px); }
+.constellationNodes button[data-position="6"] { bottom: 17%; left: 3.5%; }
+
+.constellationBody {
+  padding: clamp(25px, 3.5vw, 40px);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background:
+    linear-gradient(110deg, rgba(78, 195, 224, .055), transparent 48%),
+    #020c18;
+}
+
+.constellationDetail {
+  margin-bottom: 26px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 66px minmax(130px, .34fr) minmax(0, .66fr);
+  gap: 18px;
+  align-items: start;
+  color: #c8dce6;
+  background: rgba(10, 43, 67, .7);
+  border: 1px solid rgba(131, 211, 229, .26);
+  border-radius: 14px;
+  box-shadow: inset 4px 0 0 var(--story-gold);
+}
+
+.constellationDetail > span {
+  color: #84d7e8;
+  font-size: .61rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.constellationDetail > div:nth-child(2) > p {
+  margin: 0 0 5px;
+  color: #84d7e8;
+  font-size: .6rem;
+  font-weight: 850;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.constellationDetail h4 {
+  margin: 0;
+  color: #f5fbfd;
+  font-size: .92rem;
+}
+
+.constellationDetail > div:last-child > p {
+  margin: 0;
+  font-size: .78rem;
+  line-height: 1.58;
+}
+
+.constellationLink {
+  min-height: 42px;
+  margin-top: 7px;
+  display: inline-flex;
+  align-items: center;
+  color: #8eddef;
+  font-size: .69rem;
+  font-weight: 850;
+}
+
+@container (max-width: 560px) {
+  .dossierIndex {
+    grid-template-columns: 1fr;
   }
 
-  .modePicker {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 920px) {
-  .cardCopy {
+  .dossierIndex section {
     min-height: 0;
   }
 
-  .modePicker {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+  .dossierUseCase {
+    grid-template-columns: 1fr;
+  }
+
+  .journeyTrail::before {
+    left: 19px;
+  }
+
+  .journeyTrail li {
+    min-height: 90px;
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .journeyTrail li button,
+  .journeyTrail li:nth-child(odd) button,
+  .journeyTrail li:nth-child(even) button {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left;
+  }
+
+  .journeyTrail li > span {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .blueprintVisual > header {
+    max-width: none;
+  }
+
+  .blueprintPhases > section {
+    grid-template-columns: 1fr;
+  }
+
+  .blueprintPhases section > header {
+    border-right: 0;
+    border-bottom: 1px solid rgba(149, 211, 227, .2);
+  }
+
+  .toolCard .assemblyVisual {
+    min-height: 850px;
+  }
+
+  .assemblyGrid {
+    top: 285px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .assemblyGrid button:nth-child(3n)::after {
+    display: block;
+  }
+
+  .assemblyGrid button:nth-child(2n)::after {
+    display: none;
+  }
+
+  .assemblyDetail {
+    grid-template-columns: 1fr;
+  }
+
+  .toolCard .constellationScene {
+    min-height: auto;
+    padding: 28px 20px 50px;
+  }
+
+  .constellationHeading {
+    position: relative;
+    inset: auto;
+    max-width: none;
+  }
+
+  .constellationCore {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(240px, 82%);
+    min-height: 150px;
+    margin: 44px auto 34px;
+    transform: none;
+  }
+
+  .constellationLines {
+    display: none;
+  }
+
+  .constellationNodes {
+    position: relative;
+    inset: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .constellationNodes button,
+  .constellationNodes button[data-position] {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-height: 112px;
+  }
+
+  .constellationDetail {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .conceptTrack {
+    overflow-x: auto;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(210px, 27vw);
+    grid-template-columns: none;
+    padding: 0 0 10px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .conceptTrack button {
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .conceptDeckHeader {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .conceptDeckHeader > p {
+    padding-left: 16px;
+  }
+
+  .conceptTrack {
+    grid-auto-columns: minmax(220px, 78vw);
   }
 }
 
 @media (max-width: 620px) {
-  .experimentHeader {
-    grid-template-columns: 1fr;
-    gap: 7px;
+  .conceptDeck {
+    width: min(calc(100% - 36px), var(--story-max));
   }
 
-  .modePicker {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .conceptRange {
+    font-size: .57rem;
   }
 
-  .modePicker button:last-child {
-    grid-column: 1 / -1;
-  }
-
-  .resourceIndex,
-  .flow > li > div {
-    grid-template-columns: 1fr;
-  }
-
-  .resourceIndex section {
-    min-height: 0;
-  }
-
-  .flow section {
-    min-height: 0;
-  }
-
-  .flow section + section {
-    border-top: 1px solid var(--story-line);
-    border-left: 0;
+  .dossierBody,
+  .journeyBody,
+  .blueprintBody,
+  .assemblyBody,
+  .constellationBody {
+    padding: 24px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .disclosure {
+  .conceptGrid,
+  .constellationScene > img {
+    animation: none;
+  }
+
+  .conceptTrack button,
+  .blueprintCallouts button,
+  .assemblyGrid button,
+  .constellationNodes button {
     transition: none;
   }
 }
 
+@media (forced-colors: active) {
+  .conceptTrack button,
+  .dossierIndex,
+  .dossierIndex section,
+  .journeyTrail button,
+  .journeyDetail,
+  .blueprintPhases,
+  .blueprintPhases button,
+  .assemblyGrid button,
+  .constellationNodes button,
+  .constellationDetail {
+    border: 1px solid CanvasText;
+  }
+
+  .conceptTrack button[aria-pressed="true"],
+  .journeyTrail button[aria-pressed="true"],
+  .blueprintCallouts button[aria-pressed="true"],
+  .blueprintPhases button[aria-pressed="true"],
+  .assemblyGrid button[aria-pressed="true"],
+  .constellationNodes button[aria-pressed="true"] {
+    outline: 3px solid Highlight;
+  }
+
+  .journeyTrail::before,
+  .constellationLines {
+    background: CanvasText;
+  }
+}
+
 @media print {
-  .modePicker {
+  .conceptDeck {
     display: none;
+  }
+
+  .conceptGrid,
+  .constellationScene > img {
+    animation: none;
+  }
+
+  .toolCard {
+    break-inside: avoid;
   }
 }

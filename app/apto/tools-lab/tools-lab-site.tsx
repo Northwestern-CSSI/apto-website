@@ -22,60 +22,68 @@ import {
 } from "./tool-story-data";
 import styles from "./tools-lab.module.css";
 
-type InteriorMode = "milestones" | "pieces" | "checklist" | "resources" | "flow";
+type ConceptId =
+  | "dossier"
+  | "journey"
+  | "blueprint"
+  | "assembly"
+  | "constellation";
 
 const storySections = ["program", "projects", "tools", "cohort", "convening"] as const;
 
-const modeOptions: Array<{
-  id: InteriorMode;
-  label: string;
-  shortLabel: string;
+const concepts: Array<{
+  id: ConceptId;
+  number: string;
+  name: string;
   tone: string;
+  prompt: string;
   description: string;
 }> = [
   {
-    id: "milestones",
-    label: "Milestone rail",
-    shortLabel: "Milestones",
+    id: "dossier",
+    number: "01",
+    name: "Editorial dossier",
     tone: "Conservative",
-    description: "A cumulative sequence of subprojects and handoffs.",
+    prompt: "Read the argument",
+    description:
+      "An image-led research brief with a crisp evidence index and explicit supporting resources.",
   },
   {
-    id: "pieces",
-    label: "Connected pieces",
-    shortLabel: "Pieces",
+    id: "journey",
+    number: "02",
+    name: "Milestone journey",
+    tone: "Structured",
+    prompt: "Follow the sequence",
+    description:
+      "A cinematic horizon leads into a sequenced route from foundation to destination.",
+  },
+  {
+    id: "blueprint",
+    number: "03",
+    name: "Evidence blueprint",
+    tone: "Analytical",
+    prompt: "Trace the system",
+    description:
+      "A technical map links image callouts, research components, phases, and system output.",
+  },
+  {
+    id: "assembly",
+    number: "04",
+    name: "Assembly mosaic",
     tone: "Creative",
-    description: "A component mosaic that reveals how the parts combine.",
+    prompt: "Assemble the parts",
+    description:
+      "Six interlocking research streams literally assemble one complete tool and its story.",
   },
   {
-    id: "checklist",
-    label: "Narrative checklist",
-    shortLabel: "Checklist",
-    tone: "Conservative",
-    description: "A fast, expandable scan of the tool’s building blocks.",
+    id: "constellation",
+    number: "05",
+    name: "Signal constellation",
+    tone: "Experimental",
+    prompt: "See the relationships",
+    description:
+      "The tool becomes a luminous core surrounded by orbiting evidence, methods, and outcomes.",
   },
-  {
-    id: "resources",
-    label: "Field guide",
-    shortLabel: "Resources",
-    tone: "Editorial",
-    description: "A simple description, use case, and supporting links.",
-  },
-  {
-    id: "flow",
-    label: "Capability flow",
-    shortLabel: "Flow",
-    tone: "Creative",
-    description: "Three stages show how evidence becomes a useful outcome.",
-  },
-];
-
-const initialModes: InteriorMode[] = [
-  "milestones",
-  "pieces",
-  "checklist",
-  "resources",
-  "flow",
 ];
 
 function ExternalLink({
@@ -92,6 +100,22 @@ function ExternalLink({
       {children}
       <span aria-hidden="true"> ↗</span>
     </a>
+  );
+}
+
+function PieceLink({
+  resource,
+  className,
+  compact = false,
+}: {
+  resource: NonNullable<StoryPiece["resource"]>;
+  className?: string;
+  compact?: boolean;
+}) {
+  return (
+    <ExternalLink className={className} href={resource.href}>
+      {compact ? "Evidence" : resource.label}
+    </ExternalLink>
   );
 }
 
@@ -185,214 +209,101 @@ function StoryHeader({
   );
 }
 
-function PieceLink({
-  resource,
-  className,
+function ConceptMark({ concept }: { concept: ConceptId }) {
+  return (
+    <span className={styles.conceptMark} data-mark={concept} aria-hidden="true">
+      {Array.from({ length: 6 }, (_, index) => (
+        <i key={index} />
+      ))}
+    </span>
+  );
+}
+
+function ConceptSelector({
+  concept,
+  onChange,
 }: {
-  resource: NonNullable<StoryPiece["resource"]>;
-  className?: string;
+  concept: ConceptId;
+  onChange: (concept: ConceptId) => void;
 }) {
-  return (
-    <ExternalLink className={className} href={resource.href}>
-      {resource.label}
-    </ExternalLink>
-  );
-}
-
-function Synthesis({ children }: { children: ReactNode }) {
-  return (
-    <div className={styles.synthesis}>
-      <strong>What this adds up to</strong>
-      <p>{children}</p>
-    </div>
-  );
-}
-
-function MilestoneInterior({ tool }: { tool: ToolStory }) {
-  return (
-    <div className={styles.milestoneInterior}>
-      <p className={styles.storyLine}>{tool.storyLine}</p>
-      <ol className={styles.milestoneRail}>
-        {tool.pieces.map((piece, index) => (
-          <li key={piece.title}>
-            <span className={styles.milestoneNumber}>
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <div>
-              <p>{piece.role}</p>
-              <h4>{piece.title}</h4>
-              <span>{piece.summary}</span>
-              {piece.resource && (
-                <PieceLink resource={piece.resource} className={styles.inlineLink} />
-              )}
-            </div>
-          </li>
-        ))}
-      </ol>
-      <Synthesis>{tool.synthesis}</Synthesis>
-    </div>
-  );
-}
-
-function PiecesInterior({ tool }: { tool: ToolStory }) {
-  const [activePiece, setActivePiece] = useState(0);
-  const selectedPiece = tool.pieces[activePiece] ?? tool.pieces[0];
+  const active = concepts.find((candidate) => candidate.id === concept) ?? concepts[0];
 
   return (
-    <div className={styles.piecesInterior}>
-      <p className={styles.storyLine}>{tool.storyLine}</p>
-      <div className={styles.pieceMosaic} aria-label={`${tool.name} components`}>
-        {tool.pieces.map((piece, index) => (
+    <section className={styles.conceptDeck} aria-labelledby="concept-deck-title">
+      <header className={styles.conceptDeckHeader}>
+        <div>
+          <p>Card concept</p>
+          <h3 id="concept-deck-title">Change the storytelling system</h3>
+        </div>
+        <p aria-live="polite">
+          <strong>{active.name}</strong>
+          <span>{active.description}</span>
+        </p>
+      </header>
+      <div className={styles.conceptTrack} aria-label="Choose one concept for all tool cards">
+        {concepts.map((option) => (
           <button
             type="button"
-            key={piece.title}
-            className={styles.pieceButton}
-            aria-pressed={activePiece === index}
-            onClick={() => setActivePiece(index)}
+            key={option.id}
+            data-concept={option.id}
+            aria-pressed={concept === option.id}
+            aria-controls="tool-story-grid"
+            onClick={() => onChange(option.id)}
           >
-            <span>{piece.role}</span>
-            <strong>{piece.title}</strong>
+            <span className={styles.conceptNumber}>{option.number}</span>
+            <ConceptMark concept={option.id} />
+            <span className={styles.conceptTone}>{option.tone}</span>
+            <strong>{option.name}</strong>
+            <small>{option.prompt}</small>
           </button>
         ))}
       </div>
-      <div className={styles.pieceDetail} aria-live="polite">
-        <p>{selectedPiece.role}</p>
-        <h4>{selectedPiece.title}</h4>
-        <span>{selectedPiece.summary}</span>
-        {selectedPiece.resource && (
-          <PieceLink resource={selectedPiece.resource} className={styles.inlineLink} />
+      <div className={styles.conceptRange} aria-hidden="true">
+        <span>More familiar</span>
+        <i />
+        <span>More experimental</span>
+      </div>
+    </section>
+  );
+}
+
+function ToolKicker({ tool, inverse = false }: { tool: ToolStory; inverse?: boolean }) {
+  return (
+    <p className={styles.toolKicker} data-inverse={inverse ? "true" : undefined}>
+      <span>{tool.number}</span>
+      Northwestern University · {tool.statusLabel}
+    </p>
+  );
+}
+
+function CardFooter({ tool, inverse = false }: { tool: ToolStory; inverse?: boolean }) {
+  return (
+    <footer className={styles.cardFooter} data-inverse={inverse ? "true" : undefined}>
+      <ul aria-label={aptoInterface.tools.categoriesLabel}>
+        {tool.categories.map((category) => (
+          <li key={category}>{category}</li>
+        ))}
+      </ul>
+      <span>
+        {tool.demoVideoUrl && (
+          <ExternalLink href={tool.demoVideoUrl}>
+            {aptoInterface.tools.watchDemoLabel}
+          </ExternalLink>
         )}
-      </div>
-      <Synthesis>{tool.synthesis}</Synthesis>
-    </div>
+        {tool.toolUrl && (
+          <ExternalLink href={tool.toolUrl}>
+            {aptoInterface.tools.openToolLabel}
+          </ExternalLink>
+        )}
+      </span>
+    </footer>
   );
 }
 
-function ChecklistInterior({ tool }: { tool: ToolStory }) {
+function DossierCard({ tool }: { tool: ToolStory }) {
   return (
-    <div className={styles.checklistInterior}>
-      <p className={styles.storyLine}>{tool.storyLine}</p>
-      <div className={styles.checklist}>
-        {tool.pieces.map((piece, index) => (
-          <details key={piece.title} open={index === 0}>
-            <summary>
-              <span className={styles.checkNumber}>{index + 1}</span>
-              <span>
-                <small>{piece.role}</small>
-                <strong>{piece.title}</strong>
-              </span>
-              <span className={styles.disclosure} aria-hidden="true">
-                +
-              </span>
-            </summary>
-            <div>
-              <p>{piece.summary}</p>
-              {piece.resource && (
-                <PieceLink resource={piece.resource} className={styles.inlineLink} />
-              )}
-            </div>
-          </details>
-        ))}
-      </div>
-      <Synthesis>{tool.synthesis}</Synthesis>
-    </div>
-  );
-}
-
-function ResourcesInterior({ tool }: { tool: ToolStory }) {
-  return (
-    <div className={styles.resourcesInterior}>
-      <div className={styles.useCase}>
-        <strong>{aptoInterface.tools.useCaseLabel}</strong>
-        <p>{tool.useCase}</p>
-      </div>
-      <div className={styles.resourceIndex}>
-        {tool.pieces.map((piece) => (
-          <section key={piece.title}>
-            <p>{piece.role}</p>
-            <h4>{piece.title}</h4>
-            <span>{piece.summary}</span>
-            {piece.resource ? (
-              <PieceLink resource={piece.resource} className={styles.resourceLink} />
-            ) : (
-              <small>Research stream</small>
-            )}
-          </section>
-        ))}
-      </div>
-      <p className={styles.resourceNote}>
-        Links lead to supporting tools, datasets, papers, or source material for this
-        research-preview panel.
-      </p>
-    </div>
-  );
-}
-
-function FlowInterior({ tool }: { tool: ToolStory }) {
-  const phases = [
-    { label: "Foundation", pieces: tool.pieces.slice(0, 2) },
-    { label: "Interpretation", pieces: tool.pieces.slice(2, 4) },
-    { label: "Outcome", pieces: tool.pieces.slice(4, 6) },
-  ];
-
-  return (
-    <div className={styles.flowInterior}>
-      <p className={styles.storyLine}>{tool.storyLine}</p>
-      <ol className={styles.flow}>
-        {phases.map((phase, phaseIndex) => (
-          <li key={phase.label}>
-            <header>
-              <span>{phaseIndex + 1}</span>
-              <strong>{phase.label}</strong>
-            </header>
-            <div>
-              {phase.pieces.map((piece) => (
-                <section key={piece.title}>
-                  <p>{piece.role}</p>
-                  <h4>{piece.title}</h4>
-                  <span>{piece.summary}</span>
-                  {piece.resource && (
-                    <PieceLink resource={piece.resource} className={styles.inlineLink} />
-                  )}
-                </section>
-              ))}
-            </div>
-          </li>
-        ))}
-      </ol>
-      <Synthesis>{tool.synthesis}</Synthesis>
-    </div>
-  );
-}
-
-function ToolInterior({
-  tool,
-  mode,
-}: {
-  tool: ToolStory;
-  mode: InteriorMode;
-}) {
-  if (mode === "milestones") return <MilestoneInterior tool={tool} />;
-  if (mode === "pieces") return <PiecesInterior tool={tool} />;
-  if (mode === "checklist") return <ChecklistInterior tool={tool} />;
-  if (mode === "resources") return <ResourcesInterior tool={tool} />;
-  return <FlowInterior tool={tool} />;
-}
-
-function ToolCard({
-  tool,
-  initialMode,
-}: {
-  tool: ToolStory;
-  initialMode: InteriorMode;
-}) {
-  const [mode, setMode] = useState<InteriorMode>(initialMode);
-  const activeOption = modeOptions.find((option) => option.id === mode) ?? modeOptions[0];
-  const panelId = `${tool.id}-inside`;
-
-  return (
-    <article className="story-tool">
-      <figure>
+    <article className={`story-tool ${styles.toolCard}`} data-concept="dossier">
+      <figure className={styles.dossierVisual}>
         <img
           src={withDeploymentBase(tool.figure.src)}
           alt={tool.figure.alt}
@@ -401,65 +312,347 @@ function ToolCard({
           loading="lazy"
           decoding="async"
         />
+        <span className={styles.visualNumber}>{tool.number}</span>
         <figcaption>{tool.figure.label}</figcaption>
       </figure>
-      <div className={`story-tool-copy ${styles.cardCopy}`}>
+      <div className={styles.dossierBody}>
+        <header className={styles.dossierTitle}>
+          <ToolKicker tool={tool} />
+          <h3>{tool.name}</h3>
+          <p>{tool.description}</p>
+        </header>
+        <blockquote className={styles.dossierThesis}>
+          <span>The argument</span>
+          <p>{tool.storyLine}</p>
+        </blockquote>
+        <div className={styles.dossierIndex}>
+          {tool.pieces.map((piece, index) => (
+            <section key={piece.title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <p>{piece.role}</p>
+                <h4>{piece.title}</h4>
+                <small>{piece.summary}</small>
+                {piece.resource && (
+                  <PieceLink resource={piece.resource} className={styles.dossierLink} />
+                )}
+              </div>
+            </section>
+          ))}
+        </div>
+        <aside className={styles.dossierUseCase}>
+          <strong>{aptoInterface.tools.useCaseLabel}</strong>
+          <p>{tool.useCase}</p>
+        </aside>
+        <div className={styles.dossierOutcome}>
+          <span>What it adds up to</span>
+          <p>{tool.synthesis}</p>
+        </div>
+        <CardFooter tool={tool} />
+      </div>
+    </article>
+  );
+}
+
+function JourneyCard({ tool }: { tool: ToolStory }) {
+  const [activePiece, setActivePiece] = useState(0);
+  const selectedPiece = tool.pieces[activePiece] ?? tool.pieces[0];
+
+  return (
+    <article className={`story-tool ${styles.toolCard}`} data-concept="journey">
+      <figure className={styles.journeyVisual}>
+        <img
+          src={withDeploymentBase(tool.figure.src)}
+          alt={tool.figure.alt}
+          width="900"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
         <header>
-          <p>Northwestern University · {tool.statusLabel}</p>
+          <ToolKicker tool={tool} inverse />
           <h3>{tool.name}</h3>
         </header>
-        <p>{tool.description}</p>
-
-        <section className={styles.experiment} aria-labelledby={`${panelId}-label`}>
-          <header className={styles.experimentHeader}>
-            <div>
-              <p id={`${panelId}-label`}>Inside-card layout</p>
-              <strong>{activeOption.label}</strong>
-            </div>
-            <span>
-              {activeOption.tone} · {activeOption.description}
-            </span>
-          </header>
-          <div className={styles.modePicker} aria-label={`Change the layout inside ${tool.name}`}>
-            {modeOptions.map((option) => (
+        <span className={styles.journeyHorizon} aria-hidden="true" />
+        <figcaption>{tool.figure.label}</figcaption>
+      </figure>
+      <div className={styles.journeyBody}>
+        <p className={styles.journeyLead}>{tool.storyLine}</p>
+        <ol className={styles.journeyTrail}>
+          {tool.pieces.map((piece, index) => (
+            <li key={piece.title}>
               <button
                 type="button"
-                key={option.id}
-                aria-pressed={mode === option.id}
-                aria-controls={panelId}
-                onClick={() => setMode(option.id)}
+                aria-pressed={activePiece === index}
+                onClick={() => setActivePiece(index)}
               >
-                {option.shortLabel}
+                <small>{piece.role}</small>
+                <strong>{piece.title}</strong>
+              </button>
+              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            </li>
+          ))}
+        </ol>
+        <section className={styles.journeyDetail} aria-live="polite">
+          <p>Selected milestone · {selectedPiece.role}</p>
+          <h4>{selectedPiece.title}</h4>
+          <span>{selectedPiece.summary}</span>
+          {selectedPiece.resource && (
+            <PieceLink resource={selectedPiece.resource} className={styles.journeyLink} />
+          )}
+        </section>
+        <div className={styles.journeyDestination}>
+          <span aria-hidden="true">◆</span>
+          <div>
+            <strong>Destination</strong>
+            <p>{tool.synthesis}</p>
+          </div>
+        </div>
+        <CardFooter tool={tool} />
+      </div>
+    </article>
+  );
+}
+
+function BlueprintCard({ tool }: { tool: ToolStory }) {
+  const [activePiece, setActivePiece] = useState(0);
+  const selectedPiece = tool.pieces[activePiece] ?? tool.pieces[0];
+  const blueprintImage = tool.galleryImages[0];
+
+  return (
+    <article className={`story-tool ${styles.toolCard}`} data-concept="blueprint">
+      <div className={styles.blueprintSheet}>
+        <figure className={styles.blueprintVisual}>
+          <img
+            src={withDeploymentBase(blueprintImage?.src ?? tool.figure.src)}
+            alt={blueprintImage?.alt ?? tool.figure.alt}
+            width="900"
+            height="600"
+            loading="lazy"
+            decoding="async"
+          />
+          <div className={styles.blueprintScrim} aria-hidden="true" />
+          <header>
+            <ToolKicker tool={tool} inverse />
+            <h3>{tool.name}</h3>
+            <p>{tool.description}</p>
+          </header>
+          <div className={styles.blueprintCallouts} aria-label="Image component callouts">
+            {tool.pieces.map((piece, index) => (
+              <button
+                type="button"
+                key={piece.title}
+                data-position={index + 1}
+                aria-label={`Highlight ${piece.title}`}
+                aria-pressed={activePiece === index}
+                onClick={() => setActivePiece(index)}
+              >
+                {String(index + 1).padStart(2, "0")}
               </button>
             ))}
           </div>
-          <div className={styles.interiorPanel} id={panelId}>
-            <ToolInterior tool={tool} mode={mode} />
+          <figcaption>{blueprintImage ? "Detail view · " : ""}{tool.figure.label}</figcaption>
+        </figure>
+        <div className={styles.blueprintBody}>
+          <div className={styles.blueprintSpec}>
+            <span>System objective</span>
+            <p>{tool.storyLine}</p>
           </div>
-        </section>
-
-        <div className="story-tool-footer">
-          <ul aria-label={aptoInterface.tools.categoriesLabel}>
-            {tool.categories.map((category) => (
-              <li key={category}>{category}</li>
+          <div className={styles.blueprintPhases}>
+            {tool.phaseLabels.map((phase, phaseIndex) => (
+              <section key={phase}>
+                <header>
+                  <span>Phase {phaseIndex + 1}</span>
+                  <strong>{phase}</strong>
+                </header>
+                <div>
+                  {tool.pieces.slice(phaseIndex * 2, phaseIndex * 2 + 2).map((piece) => {
+                    const pieceIndex = tool.pieces.indexOf(piece);
+                    return (
+                      <button
+                        type="button"
+                        key={piece.title}
+                        aria-pressed={activePiece === pieceIndex}
+                        onClick={() => setActivePiece(pieceIndex)}
+                      >
+                        <span>{String(pieceIndex + 1).padStart(2, "0")}</span>
+                        <span>
+                          <small>{piece.role}</small>
+                          <strong>{piece.title}</strong>
+                        </span>
+                        {piece.resource && <i>Evidence</i>}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
             ))}
-          </ul>
-          <span>
-            {tool.demoVideoUrl && (
-              <ExternalLink href={tool.demoVideoUrl}>
-                {aptoInterface.tools.watchDemoLabel}
-              </ExternalLink>
+          </div>
+          <section className={styles.blueprintDetail} aria-live="polite">
+            <p>Component {String(activePiece + 1).padStart(2, "0")}</p>
+            <h4>{selectedPiece.title}</h4>
+            <span>{selectedPiece.summary}</span>
+            {selectedPiece.resource && (
+              <PieceLink
+                resource={selectedPiece.resource}
+                className={styles.blueprintLink}
+                compact
+              />
             )}
-            {tool.toolUrl && (
-              <ExternalLink href={tool.toolUrl}>
-                {aptoInterface.tools.openToolLabel}
-              </ExternalLink>
-            )}
-          </span>
+          </section>
+          <div className={styles.blueprintOutput}>
+            <span>System output</span>
+            <p>{tool.synthesis}</p>
+          </div>
+          <CardFooter tool={tool} inverse />
         </div>
       </div>
     </article>
   );
+}
+
+function AssemblyCard({ tool }: { tool: ToolStory }) {
+  const [activePiece, setActivePiece] = useState(0);
+  const selectedPiece = tool.pieces[activePiece] ?? tool.pieces[0];
+
+  return (
+    <article className={`story-tool ${styles.toolCard}`} data-concept="assembly">
+      <figure className={styles.assemblyVisual}>
+        <img
+          src={withDeploymentBase(tool.figure.src)}
+          alt={tool.figure.alt}
+          width="900"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
+        <div className={styles.assemblyScrim} aria-hidden="true" />
+        <header className={styles.assemblyHeading}>
+          <ToolKicker tool={tool} inverse />
+          <h3>{tool.name}</h3>
+          <p>{tool.storyLine}</p>
+        </header>
+        <div className={styles.assemblyGrid} aria-label={`${tool.name} assembly pieces`}>
+          {tool.pieces.map((piece, index) => (
+            <button
+              type="button"
+              key={piece.title}
+              data-resource={piece.resource ? "true" : undefined}
+              aria-pressed={activePiece === index}
+              onClick={() => setActivePiece(index)}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <small>{piece.role}</small>
+              <strong>{piece.title}</strong>
+            </button>
+          ))}
+        </div>
+        <figcaption>Six research streams · one tool</figcaption>
+      </figure>
+      <div className={styles.assemblyBody}>
+        <section className={styles.assemblyDetail} aria-live="polite">
+          <div>
+            <p>Piece {String(activePiece + 1).padStart(2, "0")} · {selectedPiece.role}</p>
+            <h4>{selectedPiece.title}</h4>
+          </div>
+          <div>
+            <p>{selectedPiece.summary}</p>
+            {selectedPiece.resource && (
+              <PieceLink resource={selectedPiece.resource} className={styles.assemblyLink} />
+            )}
+          </div>
+        </section>
+        <div className={styles.assemblyOutcome}>
+          <span>The assembled capability</span>
+          <p>{tool.synthesis}</p>
+        </div>
+        <CardFooter tool={tool} inverse />
+      </div>
+    </article>
+  );
+}
+
+function ConstellationCard({ tool }: { tool: ToolStory }) {
+  const [activePiece, setActivePiece] = useState(0);
+  const selectedPiece = tool.pieces[activePiece] ?? tool.pieces[0];
+
+  return (
+    <article className={`story-tool ${styles.toolCard}`} data-concept="constellation">
+      <figure className={styles.constellationScene}>
+        <img
+          src={withDeploymentBase(tool.figure.src)}
+          alt={tool.figure.alt}
+          width="900"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
+        <div className={styles.constellationScrim} aria-hidden="true" />
+        <header className={styles.constellationHeading}>
+          <ToolKicker tool={tool} inverse />
+          <h3>{tool.name}</h3>
+          <p>{tool.storyLine}</p>
+        </header>
+        <div className={styles.constellationLines} aria-hidden="true">
+          {Array.from({ length: 6 }, (_, index) => <i key={index} />)}
+        </div>
+        <div className={styles.constellationCore}>
+          <span>Tool core</span>
+          <strong>{tool.synthesis}</strong>
+        </div>
+        <div className={styles.constellationNodes} aria-label={`${tool.name} signal nodes`}>
+          {tool.pieces.map((piece, index) => (
+            <button
+              type="button"
+              key={piece.title}
+              data-position={index + 1}
+              data-resource={piece.resource ? "true" : undefined}
+              aria-pressed={activePiece === index}
+              onClick={() => setActivePiece(index)}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <small>{piece.role}</small>
+              <strong>{piece.title}</strong>
+            </button>
+          ))}
+        </div>
+        <figcaption>{tool.figure.label}</figcaption>
+      </figure>
+      <div className={styles.constellationBody}>
+        <section className={styles.constellationDetail} aria-live="polite">
+          <span>Signal {String(activePiece + 1).padStart(2, "0")}</span>
+          <div>
+            <p>{selectedPiece.role}</p>
+            <h4>{selectedPiece.title}</h4>
+          </div>
+          <div>
+            <p>{selectedPiece.summary}</p>
+            {selectedPiece.resource && (
+              <PieceLink
+                resource={selectedPiece.resource}
+                className={styles.constellationLink}
+              />
+            )}
+          </div>
+        </section>
+        <CardFooter tool={tool} inverse />
+      </div>
+    </article>
+  );
+}
+
+function ToolCard({
+  tool,
+  concept,
+}: {
+  tool: ToolStory;
+  concept: ConceptId;
+}) {
+  if (concept === "dossier") return <DossierCard tool={tool} />;
+  if (concept === "journey") return <JourneyCard tool={tool} />;
+  if (concept === "blueprint") return <BlueprintCard tool={tool} />;
+  if (concept === "assembly") return <AssemblyCard tool={tool} />;
+  return <ConstellationCard tool={tool} />;
 }
 
 function StoryFooter() {
@@ -494,6 +687,7 @@ function StoryFooter() {
 
 export function ToolsLabSite() {
   const { theme, toggleTheme } = useAptoTheme("light");
+  const [concept, setConcept] = useState<ConceptId>("assembly");
   const rows = [
     northwesternToolStories.slice(0, 2),
     northwesternToolStories.slice(2, 4),
@@ -515,28 +709,30 @@ export function ToolsLabSite() {
           <header className="story-section-heading">
             <h2 id="story-tools-title">Northwestern tool stories</h2>
             <span>
-              Five research tools in the existing Story cards. Each card starts with a
-              different interior experiment; its controls affect only that card.
+              One set of five research tools, interpreted through five complete card
+              systems—from a restrained editorial dossier to a highly expressive signal
+              constellation.
             </span>
           </header>
+          <ConceptSelector concept={concept} onChange={setConcept} />
           <div
-            className="story-tool-matrix"
-            aria-label="Northwestern University tool storytelling experiments"
+            className={styles.conceptGrid}
+            id="tool-story-grid"
+            key={concept}
+            data-active-concept={concept}
           >
-            {rows.map((row, rowIndex) => (
-              <div className="story-tool-pair" key={`tool-row-${rowIndex}`}>
-                {row.map((tool, columnIndex) => {
-                  const toolIndex = rowIndex * 2 + columnIndex;
-                  return (
-                    <ToolCard
-                      tool={tool}
-                      initialMode={initialModes[toolIndex]}
-                      key={tool.id}
-                    />
-                  );
-                })}
-              </div>
-            ))}
+            <div
+              className="story-tool-matrix"
+              aria-label="Northwestern University tool storytelling concepts"
+            >
+              {rows.map((row, rowIndex) => (
+                <div className="story-tool-pair" key={`tool-row-${rowIndex}`}>
+                  {row.map((tool) => (
+                    <ToolCard tool={tool} concept={concept} key={tool.id} />
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       </main>
