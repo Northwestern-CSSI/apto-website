@@ -27,7 +27,9 @@ content, so one edit updates both presentations.
 | Tools-page introduction | `pages/tools.md` |
 | Individual tools and their figures | `tools/*.md` |
 | Cohort-page introduction | `pages/cohort.md` |
-| Organizations, logos, locations, map pins | `participants/*.md` |
+| Convening-page introduction | `pages/convening.md` |
+| Annual convening text and photography | `convenings/*.md` |
+| Organizations, logos, and locations | `participants/*.md` |
 | Program manager and investigators | `people/*.md` |
 | Navigation, buttons, filters, map labels, footer | `interface.md` |
 | Figures, logos, headshots, map, NSF mark, social image | `assets/` |
@@ -39,6 +41,7 @@ Detailed guides:
 - [People](people/README.md)
 - [Organizations](participants/README.md)
 - [Page text](pages/README.md)
+- [Annual convenings](convenings/README.md)
 - [Images and figures](assets/README.md)
 
 ## Markdown record rules
@@ -60,11 +63,12 @@ Markdown. This is JSON, not YAML:
 Records are joined through IDs. A `participantId` in a person, project, or tool
 must match an organization’s `id` in `participants/`.
 
-## Neutral ordering
+## Presentation order
 
-Organizations, people, projects, tools, and sources are generated
-alphabetically. Do not add numbers, rank fields, or manual sequence prefixes.
-Alphabetical presentation avoids implying preference among APTO participants.
+Northwestern University and the University of Chicago are the two featured
+institutions and are presented first. Aperture, Insilicom, and Macrocosm then
+follow alphabetically. People and tools remain alphabetical within each
+institution. Do not add number prefixes or manual sequence fields.
 
 ## Images
 
@@ -104,7 +108,7 @@ images are generated under `public/apto/`. Both locations are ignored by Git;
 never edit or commit them directly.
 
 The builder validates required fields, IDs, relationships, URLs, local images,
-alphabetical presentation, map coordinates, tool categories, the approved NSF
+presentation order, tool categories, the approved NSF
 boilerplate, and the presence of exactly one principal investigator for every
 organization. It records logo source and approval metadata but cannot confirm
 legal permission, brand approval, or whether remote links remain live.
@@ -112,7 +116,7 @@ legal permission, brand approval, or whether remote links remain live.
 ## Special files
 
 - `interface.md` owns shared labels and navigation. The visible top navigation
-  must remain Program, Projects, Tools, Cohort. Its `story` block contains the
+  must remain Program, Projects, Tools, Cohort, Convening. Its `story` block contains the
   labels used only by the alternate long-scroll presentation.
 - `program.md` owns substantive program language, the Atlas landing gallery,
   and the exact NSF disclaimer. Keep the five `landingGallery` visuals free of

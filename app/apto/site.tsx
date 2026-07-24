@@ -10,6 +10,7 @@ import { useState, type ReactNode } from "react";
 
 import {
   aptoBoilerplate,
+  aptoConvenings,
   aptoInterface,
   aptoPages,
   aptoParticipants,
@@ -17,11 +18,12 @@ import {
   aptoProjects,
   aptoTools,
 } from "./content";
+import { ConveningGallery } from "./convening-gallery";
 import type { AptoTheme } from "./theme";
 import { useAptoTheme } from "./use-apto-theme";
 import { aptoRoute, withDeploymentBase } from "./paths";
 
-export type AptoSection = "home" | "about" | "cohort" | "projects" | "tools";
+export type AptoSection = "home" | "about" | "cohort" | "convening" | "projects" | "tools";
 
 type AptoProject = (typeof aptoProjects)[number];
 type AptoParticipant = (typeof aptoParticipants)[number];
@@ -33,6 +35,7 @@ const sectionPath: Record<AptoSection, string> = {
   home: "",
   about: "about",
   cohort: "cohort",
+  convening: "convening",
   projects: "projects",
   tools: "tools",
 };
@@ -41,6 +44,7 @@ const pageSlug: Record<AptoSection, string> = {
   home: "/",
   about: "/about",
   cohort: "/cohort",
+  convening: "/convening",
   projects: "/projects",
   tools: "/tools",
 };
@@ -172,7 +176,6 @@ function CompactProgramHero({ id }: { id: string }) {
   const homeCopy = copyFor("home");
   return <section className="nsf-program-hero has-partner-grid" aria-labelledby={`${id}-title`}>
     <div className="nsf-hero-copy">
-      <p className="nsf-eyebrow">{homeCopy.eyebrow}</p>
       <h1 id={`${id}-title`}>{homeCopy.title}</h1>
       <p className="nsf-hero-summary">{homeCopy.introduction}</p>
       <div className="nsf-hero-actions">
@@ -182,7 +185,7 @@ function CompactProgramHero({ id }: { id: string }) {
     </div>
     <aside className="nsf-hero-partners" aria-labelledby={`${id}-hero-partners-title`}>
       <header>
-        <p id={`${id}-hero-partners-title`}>{aptoInterface.home.cohortEyebrow}</p>
+        <h2 className="nsf-visually-hidden" id={`${id}-hero-partners-title`}>{aptoInterface.home.cohortEyebrow}</h2>
         <a href={aptoHref("cohort")}>{aptoInterface.home.cohortLinkLabel} <span aria-hidden="true">→</span></a>
       </header>
       <ul>
@@ -214,9 +217,8 @@ function HomePage({ id }: { id: string }) {
   </>;
 }
 
-function SectionIntro({ eyebrow, title, description, id, pageHeading = false }: { eyebrow: string; title: string; description: string; id?: string; pageHeading?: boolean }) {
+function SectionIntro({ title, description, id, pageHeading = false }: { title: string; description: string; id?: string; pageHeading?: boolean }) {
   return <header className="nsf-section-intro">
-    <p className="nsf-section-intro-eyebrow">{eyebrow}</p>
     {pageHeading ? <h1 id={id}>{title}</h1> : <h2 id={id}>{title}</h2>}
     <p className="nsf-section-intro-description">{description}</p>
   </header>;
@@ -225,21 +227,21 @@ function SectionIntro({ eyebrow, title, description, id, pageHeading = false }: 
 function ProgramOverview({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const copy = copyFor("about");
   return <section className="nsf-program-overview" id={`${id}-about`} aria-labelledby={`${id}-about-title`}>
-    <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={pageHeading ? copy.introduction : aptoProgram.description} id={`${id}-about-title`} pageHeading={pageHeading} />
+    <SectionIntro title={copy.title} description={pageHeading ? copy.introduction : aptoProgram.description} id={`${id}-about-title`} pageHeading={pageHeading} />
     <section className="nsf-program-objectives" aria-labelledby={`${id}-objectives-title`}>
       <h2 id={`${id}-objectives-title`}>{aptoProgram.objectivesTitle}</h2>
       <ul>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
     </section>
     <div className="nsf-overview-framework" role="group" aria-label={aptoProgram.framework.ariaLabel}>
       <section className="nsf-framework-block is-outcomes" aria-labelledby={`${id}-outcomes-title`}>
-        <header className="nsf-framework-heading"><h2 id={`${id}-outcomes-title`}>{aptoProgram.framework.outcomesTitle}</h2><p>{aptoProgram.framework.outcomesNote}</p></header>
+        <header className="nsf-framework-heading"><h2 id={`${id}-outcomes-title`}>{aptoProgram.framework.outcomesTitle}</h2></header>
         <dl className="nsf-framework-items">{aptoProgram.outcomes.map((outcome) => {
           const item = displayRecord(outcome);
           return <div key={item.label}><dt>{item.label}</dt>{item.description && <dd>{item.description}</dd>}</div>;
         })}</dl>
       </section>
       <section className="nsf-framework-block is-efforts" aria-labelledby={`${id}-efforts-title`}>
-        <header className="nsf-framework-heading"><h2 id={`${id}-efforts-title`}>{aptoProgram.framework.effortsTitle}</h2><p>{aptoProgram.framework.effortsNote}</p></header>
+        <header className="nsf-framework-heading"><h2 id={`${id}-efforts-title`}>{aptoProgram.framework.effortsTitle}</h2></header>
         <dl className="nsf-framework-items">{aptoProgram.linesOfEffort.map((line) => {
           const item = displayRecord(line);
           return <div key={item.label}><dt>{item.label}</dt>{item.description && <dd>{item.description}</dd>}</div>;
@@ -288,7 +290,7 @@ function ProjectsSection({ id, pageHeading = false }: { id: string; pageHeading?
   const copy = copyFor("projects");
   const projects = aptoProjects;
   return <section className="nsf-projects-section" id={`${id}-projects`} aria-labelledby={`${id}-projects-title`}>
-    <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-projects-title`} pageHeading={pageHeading} />
+    <SectionIntro title={copy.title} description={copy.introduction} id={`${id}-projects-title`} pageHeading={pageHeading} />
     <div className="nsf-projects-layout">
       <div className="nsf-project-ledger" id={`${id}-project-list`}>
         {projects.map((project) => <ProjectAccordionItem key={project.awardId} project={project} />)}
@@ -372,11 +374,10 @@ function ToolsSection({ id, pageHeading = false }: { id: string; pageHeading?: b
   ));
 
   return <section className="nsf-tools-section" id={`${id}-tools`} aria-labelledby={`${id}-tools-title`}>
-    <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-tools-title`} pageHeading={pageHeading} />
+    <SectionIntro title={copy.title} description={copy.introduction} id={`${id}-tools-title`} pageHeading={pageHeading} />
     <div className="nsf-filter-groups" role="group" aria-label={aptoInterface.accessibility.toolFiltersLabel}>
       <FilterSelect title={aptoInterface.tools.organizationFilterLabel} value={participant} onChange={setParticipant} controls={listId} label={aptoInterface.tools.organizationFilterAriaLabel} options={organizationOptions} />
       <FilterSelect title={aptoInterface.tools.categoryFilterLabel} value={category} onChange={setCategory} controls={listId} label={aptoInterface.tools.categoryFilterAriaLabel} options={categoryOptions} />
-      <p className="nsf-filter-status" aria-live="polite">{aptoInterface.tools.showingPrefix} {tools.length} {tools.length === 1 ? aptoInterface.tools.toolSingular : aptoInterface.tools.toolPlural}</p>
     </div>
     {tools.length > 0
       ? <div className="nsf-tool-grid" id={listId}>{tools.map((tool) => <ToolCard key={tool.id} tool={tool} />)}</div>
@@ -400,13 +401,12 @@ function PersonCard({ person }: { person: AptoPerson | AptoProgramPerson }) {
 function CohortPeopleSection({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const copy = copyFor("cohort");
   return <section className="nsf-cohort-people" id={`${id}-cohort`} aria-labelledby={`${id}-cohort-title`}>
-    <SectionIntro eyebrow={copy.eyebrow} title={copy.title} description={copy.introduction} id={`${id}-cohort-title`} pageHeading={pageHeading} />
+    <SectionIntro title={copy.title} description={copy.introduction} id={`${id}-cohort-title`} pageHeading={pageHeading} />
     <section className="nsf-program-leadership" aria-labelledby={`${id}-program-leadership-title`}>
-      <header><p>{aptoInterface.people.programTeamEyebrow}</p><h2 id={`${id}-program-leadership-title`}>{aptoInterface.people.programTeamTitle}</h2></header>
+      <header><h2 id={`${id}-program-leadership-title`}>{aptoInterface.people.programTeamTitle}</h2></header>
       <div>{aptoProgram.programTeam.map((person) => <PersonCard key={person.name} person={person} />)}</div>
     </section>
     <header className="nsf-cohort-directory-heading">
-      <p>{aptoInterface.home.cohortEyebrow}</p>
       <h2>{aptoInterface.home.cohortTitle}</h2>
     </header>
     <div className="nsf-cohort-directory">
@@ -421,6 +421,25 @@ function CohortPeopleSection({ id, pageHeading = false }: { id: string; pageHead
           <div className="nsf-cohort-team">{participant.people.map((person) => <PersonCard key={person.name} person={person} />)}</div>
         </section>;
       })}
+    </div>
+  </section>;
+}
+
+function ConveningSection({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
+  const copy = copyFor("convening");
+  return <section className="nsf-convening-section" id={`${id}-convening`} aria-labelledby={`${id}-convening-title`}>
+    <SectionIntro title={copy.title} description={copy.introduction} id={`${id}-convening-title`} pageHeading={pageHeading} />
+    <div className="nsf-convening-list">
+      {aptoConvenings.map((convening) => <article className="nsf-convening-card" key={convening.id}>
+        <ConveningGallery convening={convening} className="nsf-convening-media" />
+        <div className="nsf-convening-copy">
+          <strong className="nsf-convening-year" aria-label={`Annual convening ${convening.year}`}>{convening.year}</strong>
+          <p className="nsf-convening-location">{convening.location}</p>
+          <h2>{convening.title}</h2>
+          <p>{convening.summary}</p>
+          <p>{convening.discussion}</p>
+        </div>
+      </article>)}
     </div>
   </section>;
 }
@@ -449,6 +468,7 @@ function AptoSectionBody({ id, section }: { id: string; section: AptoSection }) 
     case "home": return <HomePage id={id} />;
     case "about": return <ProgramOverview id={id} pageHeading />;
     case "cohort": return <CohortPeopleSection id={id} pageHeading />;
+    case "convening": return <ConveningSection id={id} pageHeading />;
     case "projects": return <ProjectsSection id={id} pageHeading />;
     case "tools": return <ToolsSection id={id} pageHeading />;
   }

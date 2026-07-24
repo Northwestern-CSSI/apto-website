@@ -1,0 +1,94 @@
+.apto-convening-gallery {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background: #071f3f;
+  color: white;
+}
+
+.apto-convening-gallery-media {
+  position: absolute;
+  inset: 0;
+}
+
+.apto-convening-gallery-media::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgb(3 20 43 / 4%) 28%, rgb(3 20 43 / 58%) 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.apto-convening-gallery-media img {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: var(--convening-motion-start);
+  transform-origin: var(--convening-motion-origin);
+  transition: opacity 1.5s ease-in-out;
+  will-change: opacity, transform;
+}
+
+.apto-convening-gallery-media img.is-active {
+  z-index: 1;
+  opacity: 1;
+  animation: apto-convening-ken-burns 7.8s cubic-bezier(.3, .02, .7, .98) both;
+}
+
+.apto-convening-gallery-progress {
+  position: absolute;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.apto-convening-gallery-progress button {
+  width: 2.15rem;
+  height: 1rem;
+  border: 0;
+  padding: .35rem 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.apto-convening-gallery-progress button span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: rgb(255 255 255 / 46%);
+  transition: background-color .25s ease, transform .25s ease;
+}
+
+.apto-convening-gallery-progress button:hover span,
+.apto-convening-gallery-progress button:focus-visible span {
+  background: white;
+}
+
+.apto-convening-gallery-progress button.is-active span {
+  background: #f4c84d;
+  transform: scaleY(2);
+}
+
+@keyframes apto-convening-ken-burns {
+  from { transform: var(--convening-motion-start); }
+  to { transform: var(--convening-motion-end); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apto-convening-gallery-media img {
+    transition: opacity .2s linear;
+  }
+
+  .apto-convening-gallery-media img.is-active {
+    animation: none;
+    transform: none;
+  }
+}

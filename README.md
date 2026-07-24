@@ -8,12 +8,12 @@ Markdown content and coordinated light and deep-navy themes.
 
 - Website: <https://filipinascimento.github.io/apto-website/>
 - Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/apto>
-- Main pages: Program, Projects, Tools, and Cohort
+- Main pages: Program, Projects, Tools, Cohort, and Convening
 - Alternate long-scroll presentation: `/story` on GitHub Pages and
   `/apto/story` on the existing APTO deployment
 - Alternate gallery presentation: `/atlas` on GitHub Pages and `/apto/atlas`
-  on the existing APTO deployment, with matching `/projects`, `/tools`, and
-  `/cohort` subpages
+  on the existing APTO deployment, with matching `/projects`, `/tools`,
+  `/cohort`, and `/convening` subpages
 
 ## Edit website content
 
@@ -28,6 +28,7 @@ Common tasks:
 - [Add or edit a person](content/apto/people/README.md)
 - [Add or edit an organization](content/apto/participants/README.md)
 - [Edit page titles and introductions](content/apto/pages/README.md)
+- [Add or edit an annual convening](content/apto/convenings/README.md)
 - [Add figures, logos, or headshots](content/apto/assets/README.md)
 
 Content records use Markdown with strict JSON frontmatter. The content builder
@@ -81,8 +82,8 @@ NEXT_PUBLIC_BASE_PATH=/apto-website npm run check:pages
 | --- | --- |
 | `content/apto/` | Editable website content and source images |
 | `app/apto/` | Shared APTO components, theme, styles, and generated content |
-| `app/{projects,tools,cohort,story,atlas}/` | Root routes used by GitHub Pages |
-| `app/apto/{projects,tools,cohort,story,atlas}/` | `/apto` routes used by the existing deployment |
+| `app/{projects,tools,cohort,convening,story,atlas}/` | Root routes used by GitHub Pages |
+| `app/apto/{projects,tools,cohort,convening,story,atlas}/` | `/apto` routes used by the existing deployment |
 | `scripts/` | Content generation and Pages verification |
 | `tests/` | Content, routing, interaction, and accessibility regressions |
 | `.github/workflows/` | Pull-request checks and automatic Pages publishing |
@@ -96,7 +97,7 @@ page imports it.
 ## Accessibility
 
 The shared design uses semantic landmarks, a single page heading, native
-expandable project panels, keyboard-operable filters and map controls, visible
+expandable project panels, keyboard-operable filters and galleries, visible
 focus, responsive reflow, reduced-motion support, forced-colors treatments,
 and text alternatives. Automated checks support ongoing accessibility work but
 do not replace expert review with assistive technologies.

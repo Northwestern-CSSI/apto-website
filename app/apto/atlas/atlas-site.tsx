@@ -13,6 +13,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 
 import {
   aptoBoilerplate,
+  aptoConvenings,
   aptoInterface,
   aptoPages,
   aptoParticipants,
@@ -20,11 +21,12 @@ import {
   aptoProjects,
   aptoTools,
 } from "../content";
+import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
 import { useAptoTheme } from "../use-apto-theme";
 
-export type AtlasSection = "home" | "projects" | "tools" | "cohort";
+export type AtlasSection = "home" | "projects" | "tools" | "cohort" | "convening";
 
 type Participant = (typeof aptoParticipants)[number];
 type Person = Participant["people"][number] | (typeof aptoProgram.programTeam)[number];
@@ -130,14 +132,15 @@ function kenBurnsStyle(plan: KenBurnsPlan) {
   } as CSSProperties;
 }
 
-const sectionSlugs: Record<AtlasSection, "\/" | "\/projects" | "\/tools" | "\/cohort"> = {
+const sectionSlugs: Record<AtlasSection, "\/" | "\/projects" | "\/tools" | "\/cohort" | "\/convening"> = {
   home: "/",
   projects: "/projects",
   tools: "/tools",
   cohort: "/cohort",
+  convening: "/convening",
 };
 
-function pageCopy(slug: "\/" | "\/about" | "\/projects" | "\/tools" | "\/cohort") {
+function pageCopy(slug: "\/" | "\/about" | "\/projects" | "\/tools" | "\/cohort" | "\/convening") {
   const page = aptoPages.find((candidate) => candidate.slug === slug);
   if (!page) throw new Error(`Missing Markdown page content for ${slug}`);
   return page;
@@ -247,7 +250,6 @@ function PageIntroduction({ section }: { section: AtlasSection }) {
   const slug = sectionSlugs[section];
   const page = pageCopy(slug);
   return <header className="atlas-page-intro">
-    <p>{page.eyebrow}</p>
     <h1 id={`atlas-${section}-title`}>{page.title}</h1>
     <div><p>{page.introduction}</p></div>
   </header>;
@@ -284,7 +286,6 @@ function ProgramPage() {
     </section>
 
     <section className="atlas-program-description" aria-labelledby="atlas-program-description-title">
-      <p>{pageCopy("/about").eyebrow}</p>
       <div>
         <h2 id="atlas-program-description-title">{pageCopy("/about").title}</h2>
         <p>{aptoProgram.description}</p>
@@ -293,7 +294,6 @@ function ProgramPage() {
 
     <section className="atlas-objective-field" aria-labelledby="atlas-objectives-title">
       <header>
-        <p>{aptoInterface.atlas.objectivesLabel}</p>
         <h2 id="atlas-objectives-title">{aptoProgram.objectivesTitle}</h2>
       </header>
       <ol>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ol>
@@ -301,18 +301,17 @@ function ProgramPage() {
 
     <section className="atlas-framework" aria-label={aptoProgram.framework.ariaLabel}>
       <article>
-        <header><p>{aptoProgram.framework.outcomesNote}</p><h2>{aptoProgram.framework.outcomesTitle}</h2></header>
+        <header><h2>{aptoProgram.framework.outcomesTitle}</h2></header>
         <dl>{aptoProgram.outcomes.map((outcome) => <div key={outcome.name}><dt>{outcome.name}</dt><dd>{outcome.description}</dd></div>)}</dl>
       </article>
       <article>
-        <header><p>{aptoProgram.framework.effortsNote}</p><h2>{aptoProgram.framework.effortsTitle}</h2></header>
+        <header><h2>{aptoProgram.framework.effortsTitle}</h2></header>
         <dl>{aptoProgram.linesOfEffort.map((effort) => <div key={effort.id}><dt>{effort.title}</dt><dd>{effort.description}</dd></div>)}</dl>
       </article>
     </section>
 
     <section className="atlas-participants" aria-labelledby="atlas-participants-title">
       <header>
-        <p>{aptoInterface.atlas.participantsLabel}</p>
         <h2 id="atlas-participants-title">A nationwide research cohort</h2>
         <a href={atlasRoute("cohort")}>Meet the cohort <span aria-hidden="true">→</span></a>
       </header>
@@ -362,7 +361,7 @@ function ProjectsPage() {
   return <main className="atlas-main atlas-projects" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-projects-title">
     <PageIntroduction section="projects" />
     <section className="atlas-project-portfolio" aria-labelledby="atlas-portfolio-title">
-      <header><p>{aptoInterface.atlas.projectPortfolioLabel}</p><h2 id="atlas-portfolio-title">Five approaches to technology outcomes</h2></header>
+      <header><h2 id="atlas-portfolio-title">Five approaches to technology outcomes</h2></header>
       <div>{aptoProjects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>
     </section>
   </main>;
@@ -546,7 +545,7 @@ function ToolsPage() {
     <PageIntroduction section="tools" />
     <section className="atlas-tool-collection" aria-labelledby="atlas-tool-collection-title">
       <header className="atlas-tool-toolbar">
-        <div><p>{aptoInterface.atlas.toolCollectionLabel}</p><h2 id="atlas-tool-collection-title">Explore the collection</h2></div>
+        <div><h2 id="atlas-tool-collection-title">Explore the collection</h2></div>
         <fieldset aria-label={aptoInterface.accessibility.toolFiltersLabel}>
           <label>
             <span>{aptoInterface.tools.organizationFilterLabel}</span>
@@ -571,7 +570,6 @@ function ToolsPage() {
             </select>
           </label>
         </fieldset>
-        <p className="atlas-tool-count" aria-live="polite">{aptoInterface.tools.showingPrefix} {filteredTools.length} {filteredTools.length === 1 ? aptoInterface.tools.toolSingular : aptoInterface.tools.toolPlural}</p>
       </header>
       {filteredTools.length > 0
         ? <div className="atlas-tool-grid">{filteredTools.map((tool) => <ToolPoster
@@ -598,11 +596,11 @@ function CohortPage() {
   return <main className="atlas-main atlas-cohort" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-cohort-title">
     <PageIntroduction section="cohort" />
     <section className="atlas-leadership" aria-labelledby="atlas-leadership-title">
-      <header><p>{aptoInterface.people.programTeamEyebrow}</p><h2 id="atlas-leadership-title">{aptoInterface.atlas.programLeadershipLabel}</h2></header>
+      <header><h2 id="atlas-leadership-title">{aptoInterface.atlas.programLeadershipLabel}</h2></header>
       <div>{aptoProgram.programTeam.map((person) => <PersonEntry person={person} key={person.id} />)}</div>
     </section>
     <section className="atlas-cohort-index" aria-labelledby="atlas-cohort-index-title">
-      <header><p>{aptoInterface.atlas.cohortIndexLabel}</p><h2 id="atlas-cohort-index-title">Five organizations, one program</h2></header>
+      <header><h2 id="atlas-cohort-index-title">Five organizations, one program</h2></header>
       <OrganizationIndex labelledBy="atlas-cohort-index-title" />
     </section>
     <section className="atlas-team-chapters" aria-label={aptoInterface.atlas.participantsLabel}>
@@ -626,6 +624,26 @@ function CohortPage() {
           </div>
         </article>;
       })}
+    </section>
+  </main>;
+}
+
+function ConveningPage() {
+  return <main className="atlas-main atlas-convening" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-convening-title">
+    <PageIntroduction section="convening" />
+    <section className="atlas-convening-list" aria-label="Annual convenings">
+      {aptoConvenings.map((convening) => <article className="atlas-convening-card" key={convening.id}>
+        <ConveningGallery convening={convening} className="atlas-convening-gallery" />
+        <div className="atlas-convening-copy">
+          <strong>{convening.year}</strong>
+          <div>
+            <p>{convening.location}</p>
+            <h2>{convening.title}</h2>
+            <span>{convening.summary}</span>
+            <span>{convening.discussion}</span>
+          </div>
+        </div>
+      </article>)}
     </section>
   </main>;
 }
@@ -654,6 +672,7 @@ export function AtlasSitePage({ section }: { section: AtlasSection }) {
     {section === "projects" && <ProjectsPage />}
     {section === "tools" && <ToolsPage />}
     {section === "cohort" && <CohortPage />}
+    {section === "convening" && <ConveningPage />}
     <AtlasFooter />
   </div>;
 }

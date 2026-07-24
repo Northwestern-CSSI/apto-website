@@ -5,17 +5,19 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/apto-website";
 const content = JSON.parse(
   await readFile(new URL("../app/apto/content.generated.json", import.meta.url), "utf8"),
 );
-const pages = ["index.html", "projects/index.html", "tools/index.html", "cohort/index.html"];
+const pages = ["index.html", "projects/index.html", "tools/index.html", "cohort/index.html", "convening/index.html"];
 const storyPages = ["story/index.html", "apto/story/index.html"];
 const atlasPages = [
   "atlas/index.html",
   "atlas/projects/index.html",
   "atlas/tools/index.html",
   "atlas/cohort/index.html",
+  "atlas/convening/index.html",
   "apto/atlas/index.html",
   "apto/atlas/projects/index.html",
   "apto/atlas/tools/index.html",
   "apto/atlas/cohort/index.html",
+  "apto/atlas/convening/index.html",
 ];
 const escapedBasePath = basePath.slice(1).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const unprefixedPath = new RegExp(`(?:href|src)="\\/(?!${escapedBasePath}(?:\\/|"))`);
@@ -32,14 +34,17 @@ for (const page of pages) {
   assert.ok(html.includes(`href="${basePath}/projects"`), `${page} needs a base-path-safe Projects link`);
   assert.ok(html.includes(`href="${basePath}/tools"`), `${page} needs a base-path-safe Tools link`);
   assert.ok(html.includes(`href="${basePath}/cohort"`), `${page} needs a base-path-safe Cohort link`);
+  assert.ok(html.includes(`href="${basePath}/convening"`), `${page} needs a base-path-safe Convening link`);
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
   assert.ok(html.includes(`${basePath}/_next/`), `${page} needs base-path-safe framework assets`);
-  for (const participant of content.participants) {
-    for (const [theme, asset] of Object.entries(participant.logo.variants)) {
-      assert.ok(
-        html.includes(`class="nsf-logo-asset is-${theme}" src="${basePath}${asset.src}"`),
-        `${page} needs ${participant.displayName}'s base-path-safe ${theme} logo`,
-      );
+  if (page !== "convening/index.html") {
+    for (const participant of content.participants) {
+      for (const [theme, asset] of Object.entries(participant.logo.variants)) {
+        assert.ok(
+          html.includes(`class="nsf-logo-asset is-${theme}" src="${basePath}${asset.src}"`),
+          `${page} needs ${participant.displayName}'s base-path-safe ${theme} logo`,
+        );
+      }
     }
   }
   assert.doesNotMatch(html, unprefixedPath);
@@ -50,16 +55,16 @@ for (const page of storyPages) {
   assert.match(html, /class="apto-story"/);
   assert.match(html, /class="story-header"/);
   assert.ok(html.includes(`href="${basePath}/"`), `${page} needs a base-path-safe directory link`);
-  for (const section of ["program", "projects", "tools", "cohort"]) {
+  for (const section of ["program", "projects", "tools", "cohort", "convening"]) {
     assert.ok(html.includes(`href="#story-${section}"`), `${page} needs its ${section} anchor link`);
     assert.ok(html.includes(`id="story-${section}"`), `${page} needs its ${section} section`);
   }
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
   assert.ok(html.includes(`src="${basePath}/apto/`), `${page} needs base-path-safe content-managed images`);
   assert.ok(html.includes(`${basePath}/apto/og-apto-continuum.png`), `${page} needs the Continuum social image`);
-  assert.equal((html.match(/href="#story-project-/g) ?? []).length, content.projects.length, `${page} needs one project-index destination per project`);
+  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5, `${page} needs five paired lead-institution tool rows`);
   assert.doesNotMatch(html, /story-map|us-map\.svg/i);
-  const expectedLogoCount = content.projects.length + content.participants.length + 1;
+  const expectedLogoCount = content.projects.length + content.participants.length;
   assert.equal((html.match(/class="story-participant-logo\b/g) ?? []).length, expectedLogoCount, `${page} needs every project and cohort logo`);
   assert.equal((html.match(/class="story-logo-canvas"/g) ?? []).length, expectedLogoCount, `${page} needs a contained canvas for every logo`);
   assert.equal((html.match(/class="story-logo-asset is-(?:light|dark)"/g) ?? []).length, expectedLogoCount * 2, `${page} needs paired light and dark assets for every logo`);
@@ -93,6 +98,7 @@ for (const page of atlasPages) {
   assert.ok(html.includes(`href="${basePath}/atlas/projects"`), `${page} needs a base-path-safe Atlas Projects link`);
   assert.ok(html.includes(`href="${basePath}/atlas/tools"`), `${page} needs a base-path-safe Atlas Tools link`);
   assert.ok(html.includes(`href="${basePath}/atlas/cohort"`), `${page} needs a base-path-safe Atlas Cohort link`);
+  assert.ok(html.includes(`href="${basePath}/atlas/convening"`), `${page} needs a base-path-safe Atlas Convening link`);
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
   assert.ok(html.includes(`src="${basePath}/apto/`), `${page} needs base-path-safe Markdown-managed images`);
   assert.ok(html.includes(`${basePath}/apto/social/apto-atlas-social.png`), `${page} needs the Atlas social image`);

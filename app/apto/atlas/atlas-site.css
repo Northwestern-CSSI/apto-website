@@ -716,3 +716,188 @@
   .atlas-tool-panel::before { display: none; }
   .atlas-tool-card::after { border: 2px solid CanvasText; }
 }
+
+/* Shared editorial hierarchy: page titles carry the section without a
+   separate eyebrow, and the two lead universities anchor the portfolio. */
+.atlas-page-intro {
+  grid-template-columns: minmax(280px, .44fr) minmax(340px, .56fr);
+}
+
+.atlas-page-intro h1 {
+  grid-column: 1;
+  justify-self: end;
+  max-width: 18ch;
+  text-align: right;
+}
+
+.atlas-page-intro > div {
+  grid-column: 2;
+}
+
+.atlas-program-description {
+  grid-template-columns: 1fr;
+}
+
+.atlas-program-description > div {
+  grid-column: 1;
+  max-width: 860px;
+}
+
+.atlas-objective-field > header,
+.atlas-participants > header,
+.atlas-project-portfolio > header,
+.atlas-cohort-index > header {
+  grid-template-columns: 1fr auto;
+}
+
+.atlas-project-portfolio > div {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(14px, 1.8vw, 24px);
+}
+
+.atlas-project-folio {
+  height: 100%;
+  overflow: hidden;
+}
+
+.atlas-project-folio:nth-child(-n + 2) { grid-column: span 3; }
+.atlas-project-folio:nth-child(n + 3) { grid-column: span 2; }
+
+.atlas-project-folio summary {
+  height: 100%;
+  min-height: 188px;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  align-content: center;
+}
+
+.atlas-project-date {
+  grid-column: 1;
+  padding-left: 148px;
+}
+
+.atlas-project-expand {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.atlas-project-body {
+  grid-template-columns: 1fr;
+}
+
+.atlas-tool-toolbar {
+  grid-template-columns: minmax(220px, 1fr) auto;
+}
+
+.atlas-tool-toolbar h2 { margin-top: 0; }
+
+.atlas-leadership > header,
+.atlas-cohort-index > header {
+  align-self: center;
+}
+
+.atlas-convening-list {
+  width: min(100%, 1440px);
+  margin: 0 auto clamp(100px, 12vw, 170px);
+  padding: 0 max(4vw, 28px);
+}
+
+.atlas-convening-card {
+  position: relative;
+  min-height: min(760px, 78svh);
+  overflow: hidden;
+  border-radius: 10px;
+  background: #061b33;
+  box-shadow: 0 24px 70px rgb(0 37 84 / 16%);
+}
+
+[data-apto-theme="dark"] .atlas-convening-card {
+  box-shadow: 0 24px 70px rgb(0 0 0 / 40%);
+}
+
+.atlas-convening-gallery {
+  position: absolute;
+  inset: 0;
+}
+
+.atlas-convening-copy {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: clamp(28px, 5vw, 72px);
+  display: grid;
+  grid-template-columns: minmax(220px, .46fr) minmax(340px, .54fr);
+  align-items: end;
+  gap: clamp(32px, 6vw, 100px);
+  color: white;
+  pointer-events: none;
+}
+
+.atlas-convening-copy > strong {
+  align-self: start;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(6rem, 16vw, 14rem);
+  font-weight: 500;
+  letter-spacing: -.08em;
+  line-height: .78;
+  text-shadow: 0 5px 30px rgb(0 0 0 / 36%);
+}
+
+.atlas-convening-copy > div {
+  max-width: 620px;
+  padding: clamp(24px, 3vw, 36px);
+  background: rgb(3 22 43 / 76%);
+  backdrop-filter: blur(7px);
+}
+
+.atlas-convening-copy p {
+  margin-bottom: .7rem;
+  color: #65d3e7;
+  font-size: .7rem;
+  font-weight: 850;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.atlas-convening-copy h2 {
+  margin-bottom: 1rem;
+  color: white;
+  font-size: clamp(1.7rem, 3vw, 2.8rem);
+  letter-spacing: -.04em;
+  line-height: 1.04;
+}
+
+.atlas-convening-copy span {
+  display: block;
+  color: #d7e7ef;
+  font-size: clamp(.84rem, 1vw, .98rem);
+  line-height: 1.62;
+}
+
+.atlas-convening-copy span + span { margin-top: .8rem; }
+
+@media (max-width: 900px) {
+  .atlas-page-intro {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-page-intro h1,
+  .atlas-page-intro > div {
+    grid-column: 1;
+    max-width: 760px;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .atlas-project-folio:nth-child(n) { grid-column: span 6; }
+  .atlas-convening-copy { grid-template-columns: 1fr; align-content: space-between; }
+}
+
+@media (max-width: 719px) {
+  .atlas-project-portfolio > div { grid-template-columns: 1fr; }
+  .atlas-project-folio:nth-child(n) { grid-column: auto; }
+  .atlas-convening-list { padding-right: 16px; padding-left: 16px; }
+  .atlas-convening-card { min-height: 690px; }
+  .atlas-convening-copy { padding: 22px; }
+  .atlas-convening-copy > strong { font-size: clamp(5rem, 25vw, 9rem); }
+}

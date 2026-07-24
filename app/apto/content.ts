@@ -101,6 +101,19 @@ export type AptoProject = {
   summary: string;
 };
 
+export type AptoConvening = {
+  id: string;
+  year: number;
+  location: string;
+  title: string;
+  summary: string;
+  discussion: string;
+  images: Array<{
+    src: string;
+    alt: string;
+  }>;
+};
+
 export type AptoProgramLineOfEffort = {
   id: AptoLineOfEffortId;
   title: string;
@@ -136,6 +149,7 @@ export type AptoPageSlug =
   | "/"
   | "/about"
   | "/cohort"
+  | "/convening"
   | "/projects"
   | "/tools";
 
@@ -147,7 +161,7 @@ export type AptoPage = {
   introduction: string;
 };
 
-export type AptoInterfaceSection = "home" | "cohort" | "projects" | "tools";
+export type AptoInterfaceSection = "home" | "cohort" | "convening" | "projects" | "tools";
 
 export type AptoInterfaceContent = {
   directions: Array<{
@@ -284,6 +298,7 @@ type AptoGeneratedContent = {
   participants: AptoParticipant[];
   projects: AptoProject[];
   tools: AptoTool[];
+  convenings: AptoConvening[];
 };
 
 // The browser-facing records are generated from content/apto/**/*.md. Keeping
@@ -298,3 +313,4 @@ export const aptoBoilerplate = aptoContent.boilerplate;
 export const aptoParticipants = aptoContent.participants;
 export const aptoProjects = aptoContent.projects;
 export const aptoTools = aptoContent.tools;
+export const aptoConvenings = aptoContent.convenings;

@@ -17,7 +17,8 @@
     { "label": "Program", "section": "home" },
     { "label": "Projects", "section": "projects" },
     { "label": "Tools", "section": "tools" },
-    { "label": "Cohort", "section": "cohort" }
+    { "label": "Cohort", "section": "cohort" },
+    { "label": "Convening", "section": "convening" }
   ],
   "home": {
     "primaryActionLabel": "Explore the projects",

@@ -17,6 +17,7 @@ The public path mirrors the location beneath this folder:
 | `assets/tools/atlas/example.jpg` | `/apto/tools/atlas/example.jpg` |
 | `assets/headshots/jane-doe.webp` | `/apto/headshots/jane-doe.webp` |
 | `assets/partners/example.svg` | `/apto/partners/example.svg` |
+| `assets/convenings/2026/example.jpg` | `/apto/convenings/2026/example.jpg` |
 
 Use lowercase kebab-case filenames. Supported extensions are `.avif`, `.jpeg`,
 `.jpg`, `.png`, `.svg`, and `.webp`. Animated GIF is intentionally unsupported.
@@ -72,6 +73,14 @@ The five equal-weight landing visuals are selected in `../program.md` through
 or embedded labels so the landing composition does not imply preference among
 participants. All five images are cropped responsively and receive a slow,
 continuous pan; keep important details away from every edge.
+
+## Annual convening photography
+
+Store each year’s five photographs under `convenings/<year>/` and reference
+them from the matching record in `../convenings/`. Use wide, crop-safe images
+without embedded text. The shared gallery applies an animated pan and dissolve
+and exposes keyboard-operable image indicators; reduced-motion users receive a
+static presentation.
 
 ## Headshots
 

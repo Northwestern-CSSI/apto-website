@@ -1042,6 +1042,145 @@
   .nsf-project-toggle { forced-color-adjust: none; }
 }
 
+/* Portfolio hierarchy: the two lead universities share the first row; the
+   remaining organizations share the second without implying an order there. */
+.nsf-project-ledger {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(14px, 1.8vw, 24px);
+  border-top: 0;
+}
+
+.nsf-project-accordion,
+.nsf-apto-network .nsf-project-accordion {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--nsf-line) 74%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--nsf-paper) 94%, var(--nsf-blue) 6%);
+}
+
+.nsf-project-accordion:nth-child(-n + 2) { grid-column: span 3; }
+.nsf-project-accordion:nth-child(n + 3) { grid-column: span 2; }
+.nsf-project-accordion > .nsf-project-summary,
+.nsf-project-accordion .nsf-project-summary { height: 100%; }
+
+.nsf-section-intro {
+  grid-template-areas: "title description";
+  row-gap: 0;
+}
+
+.nsf-cohort-directory-heading {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.nsf-convening-section {
+  padding: clamp(64px, 7vw, 92px) max(5vw, 28px);
+}
+
+.nsf-convening-section > .nsf-section-intro {
+  width: min(100%, 1440px);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.nsf-convening-list {
+  width: min(100%, 1440px);
+  margin-right: auto;
+  margin-left: auto;
+  display: grid;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.nsf-convening-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+  min-height: 560px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--nsf-background) 92%, var(--nsf-blue) 8%);
+  box-shadow: 0 24px 64px rgb(0 37 84 / 13%);
+}
+
+.nsf-convening-media {
+  min-height: 560px;
+  border-radius: 0;
+}
+
+.nsf-convening-copy {
+  position: relative;
+  z-index: 3;
+  align-self: stretch;
+  padding: clamp(30px, 4.5vw, 62px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.nsf-convening-year {
+  margin-bottom: auto;
+  color: color-mix(in srgb, var(--nsf-blue) 22%, transparent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(4.8rem, 9vw, 9rem);
+  font-weight: 500;
+  letter-spacing: -.08em;
+  line-height: .8;
+}
+
+.nsf-convening-location {
+  margin: 2rem 0 .6rem;
+  color: var(--nsf-teal);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.nsf-convening-copy h2 {
+  max-width: 15ch;
+  margin: 0 0 1.1rem;
+  color: var(--nsf-dark-blue);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 3.2vw, 3.15rem);
+  font-weight: 500;
+  line-height: 1.02;
+}
+
+.nsf-convening-copy > p:not(.nsf-convening-location) {
+  margin: .55rem 0 0;
+  color: var(--nsf-muted);
+  line-height: 1.65;
+}
+
+:root[data-apto-theme="dark"] .nsf-convening-card {
+  background: #0b2746;
+  box-shadow: 0 24px 64px rgb(0 0 0 / 34%);
+}
+
+:root[data-apto-theme="dark"] .nsf-convening-year { color: rgb(132 201 229 / 18%); }
+:root[data-apto-theme="dark"] .nsf-convening-copy h2 { color: #fff; }
+:root[data-apto-theme="dark"] .nsf-convening-copy > p:not(.nsf-convening-location) { color: #d4e3ec; }
+
+@media (max-width: 980px) {
+  .nsf-project-accordion:nth-child(n) { grid-column: span 6; }
+  .nsf-convening-card { grid-template-columns: 1fr; min-height: 0; }
+  .nsf-convening-media { min-height: min(70vw, 520px); }
+  .nsf-convening-copy { min-height: 360px; }
+}
+
+@media (max-width: 860px) {
+  .nsf-section-intro { grid-template-areas: "title" "description"; }
+}
+
+@media (max-width: 560px) {
+  .nsf-project-ledger { grid-template-columns: 1fr; }
+  .nsf-project-accordion:nth-child(n) { grid-column: auto; }
+  .nsf-convening-card { border-radius: 12px; }
+  .nsf-convening-media { min-height: 65vw; }
+}
+
 /* Merged program home and compact research catalog. */
 .nsf-program-hero.has-partner-grid {
   grid-template-columns: minmax(340px,.72fr) minmax(640px,1.28fr);
@@ -1918,4 +2057,18 @@
   .nsf-cohort-team .nsf-person-card,
   .nsf-program-leadership .nsf-person-card { background: Canvas; border: 1px solid CanvasText; }
   .nsf-tool-image-frame { background: Canvas; border-color: CanvasText; box-shadow: none; }
+}
+
+/* Section intros no longer reserve a row for the retired eyebrow labels. */
+.nsf-section-intro {
+  grid-template-areas: "title description";
+  row-gap: 0;
+}
+
+@media (max-width: 860px) {
+  .nsf-section-intro {
+    grid-template-areas:
+      "title"
+      "description";
+  }
 }

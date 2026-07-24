@@ -7,6 +7,7 @@ const canonicalPages = [
   ["", "/", "home"],
   ["/about", "/about", "about"],
   ["/cohort", "/cohort", "cohort"],
+  ["/convening", "/convening", "convening"],
   ["/projects", "/projects", "projects"],
   ["/tools", "/tools", "tools"],
 ];
@@ -23,13 +24,14 @@ const atlasPages = [
   ["/projects", "projects", "/projects"],
   ["/tools", "tools", "/tools"],
   ["/cohort", "cohort", "/cohort"],
+  ["/convening", "convening", "/convening"],
 ];
 const baseline = {
   assets: 12,
   participants: 5,
   people: 13,
   projects: 5,
-  tools: 13,
+  tools: 16,
 };
 const nsfBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
@@ -59,6 +61,13 @@ const expectedNorthwesternToolNames = [
   "Emerging Technology Detection",
   "Multiobjective Technology Outcomes",
   "Predicting Technological Evolution",
+];
+const expectedUChicagoToolNames = [
+  "Global Innovation Signal Explorer",
+  "Global S&T Observatory",
+  "Innovation Ecosystem Dynamics",
+  "Science & Technology Workforce Flows",
+  "Virtual Policy Laboratory",
 ];
 
 function parseJsonFrontmatter(source, filename) {
@@ -223,7 +232,7 @@ test("renders the selected APTO design at the repository root", async () => {
 
 test("renders one shared, content-complete long-scroll story at both public routes", async () => {
   const content = await generatedContent();
-  const expectedSections = ["program", "projects", "tools", "cohort"];
+  const expectedSections = ["program", "projects", "tools", "cohort", "convening"];
   let sharedMarkup;
 
   for (const path of ["/story", "/apto/story"]) {
@@ -268,20 +277,16 @@ test("renders one shared, content-complete long-scroll story at both public rout
     assert.equal(countMatches(markup, /class="story-cohort-group"/g), content.participants.length);
     assert.equal(countMatches(markup, /class="story-cohort-art"/g), 1, "Cohort art should be one seamless full-width field");
     assert.doesNotMatch(markup, /story-cohort-art is-(?:front|back)/);
-    const expectedLogoCount = content.projects.length + content.participants.length + 1;
+    const expectedLogoCount = content.projects.length + content.participants.length;
     assert.equal(countMatches(markup, /class="story-participant-logo\b/g), expectedLogoCount);
     assert.equal(countMatches(markup, /class="story-logo-canvas"/g), expectedLogoCount);
     assert.equal(countMatches(markup, /class="story-logo-asset is-(?:light|dark)"/g), expectedLogoCount * 2);
-    const projectIndex = markup.match(/<nav class="story-project-index"[\s\S]*?<\/nav>/)?.[0];
-    assert.ok(projectIndex, "The story should include a compact keyboard-operable project index");
-    assert.equal(countMatches(projectIndex, /href="#story-project-/g), content.projects.length);
-    assert.equal(countMatches(projectIndex, /aria-current="location"/g), 1);
+    assert.equal(countMatches(markup, /class="story-project-index"/g), 0);
     assert.doesNotMatch(markup, /story-map|us-map\.svg/i);
     for (const project of content.projects) {
       assert.ok(text.includes(project.shortName));
       assert.ok(text.includes(project.summary));
       assert.ok(markup.includes(`id="story-project-${project.id}"`));
-      assert.ok(projectIndex.includes(`href="#story-project-${project.id}"`));
     }
 
     const parallaxSpeeds = [...markup.matchAll(/data-story-parallax="(-?[\d.]+)"/g)]
@@ -309,6 +314,7 @@ test("renders one shared, content-complete long-scroll story at both public rout
 
     const toolArticles = markup.match(/<article class="story-tool"[\s\S]*?<\/article>/g) ?? [];
     assert.equal(toolArticles.length, content.tools.length);
+    assert.equal(countMatches(markup, /class="story-tool-pair"/g), 5);
     for (const tool of content.tools) {
       const article = toolArticles.find((candidate) => visibleText(candidate).includes(tool.name));
       assert.ok(article, `${tool.name} should render in the story tool collection`);
@@ -439,8 +445,9 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-header\s*\{[^}]*color:\s*var\(--story-header-ink\)[^}]*background:\s*var\(--story-header-bg\)/);
   assert.match(styles, /\.story-projects\s*\{[^}]*color:\s*var\(--story-projects-ink\)[^}]*background:\s*var\(--story-projects-bg\)/);
   assert.match(styles, /\.story-project-chapter\s*\{[^}]*var\(--story-projects-surface\)/);
-  assert.match(styles, /\.story-project-index a\s*\{[^}]*min-height:\s*68px[^}]*background:\s*color-mix/);
-  assert.match(styles, /\.story-project-index a\[aria-current="location"\]::before\s*\{[^}]*box-shadow:/);
+  assert.match(styles, /\.story-project-chapters\s*\{[^}]*grid-template-columns:\s*repeat\(6,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(styles, /\.story-project-chapter:nth-child\(-n \+ 2\)\s*\{[^}]*grid-column:\s*span 3/);
+  assert.match(styles, /\.story-project-chapter:nth-child\(n \+ 3\)\s*\{[^}]*grid-column:\s*span 2/);
   assert.match(styles, /\.story-cohort\s*\{[^}]*color:\s*var\(--story-cohort-ink\)[^}]*background:\s*var\(--story-cohort-bg\)/);
   assert.match(styles, /\.story-cohort-art\s*\{[^}]*width:\s*calc\(100% \+ 12vw\)[^}]*mask-image:\s*radial-gradient/);
   assert.doesNotMatch(styles, /\.story-cohort-art\.is-(?:front|back)\s*\{/);
@@ -491,7 +498,7 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
 test("renders one shared, content-complete APTO Atlas page tree at both route families", async () => {
   const content = await generatedContent();
   const routeBase = process.env.NEXT_PUBLIC_APTO_ROUTE_BASE ?? "/apto";
-  const expectedNavigation = ["/atlas", "/atlas/projects", "/atlas/tools", "/atlas/cohort"]
+  const expectedNavigation = ["/atlas", "/atlas/projects", "/atlas/tools", "/atlas/cohort", "/atlas/convening"]
     .map((path) => `${routeBase}${path}` || "/");
 
   for (const [suffix, section, slug] of atlasPages) {
@@ -515,7 +522,6 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
       assert.match(markup, /class="atlas-skip-link" href="#atlas-main"/);
       assert.match(markup, /<header class="atlas-header"/);
       assert.match(markup, /<main[^>]*id="atlas-main"[^>]*tabindex="-1"/i);
-      assert.ok(text.includes(page.eyebrow));
       assert.ok(text.includes(page.title));
       assert.ok(text.includes(page.introduction));
       assert.ok(text.includes(content.boilerplate));
@@ -531,7 +537,7 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
         atlasLogoCount * 2,
         `${path} should render paired light and dark artwork inside every organization mark`,
       );
-      if (section !== "tools") assert.ok(atlasLogoCount >= content.participants.length);
+      if (!["tools", "convening"].includes(section)) assert.ok(atlasLogoCount >= content.participants.length);
 
       const primaryNav = markup.match(new RegExp(
         `<nav[^>]*aria-label="${escapeRegex(content.interface.atlas.navigationLabel)}"[^>]*>([\\s\\S]*?)<\\/nav>`,
@@ -579,12 +585,19 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
           assert.ok(text.includes(tool.description));
           assert.ok(text.includes(tool.useCase));
         }
-      } else {
+      } else if (section === "cohort") {
         assert.equal(countMatches(markup, /<article class="atlas-team-chapter/g), content.participants.length);
         assert.ok(text.includes("Rebecca Chmiel"));
         for (const participant of content.participants) {
           assert.ok(text.includes(participant.displayName));
           for (const person of participant.people) assert.ok(text.includes(person.name));
+        }
+      } else {
+        assert.equal(countMatches(markup, /class="atlas-convening-card"/g), content.convenings.length);
+        for (const convening of content.convenings) {
+          assert.ok(text.includes(String(convening.year)));
+          assert.ok(text.includes(convening.title));
+          assert.equal(countMatches(markup, /class="apto-convening-gallery-progress"/g), content.convenings.length);
         }
       }
     }
@@ -598,11 +611,11 @@ test("renders the Atlas tool gallery as accessible, Markdown-backed image poster
   const markup = atlasAptoMarkup(await response.text());
   const articles = markup.match(/<article class="atlas-tool-card[\s\S]*?<\/article>/g) ?? [];
 
-  assert.equal(content.tools.length, 13, "The current APTO release should expose five Northwestern capabilities and eight additional team previews");
+  assert.equal(content.tools.length, 16, "The APTO release should expose five Northwestern capabilities, five University of Chicago tools, and six additional team previews");
   assert.equal(articles.length, content.tools.length);
   assert.equal(countMatches(markup, /class="atlas-tool-toggle"/g), content.tools.length);
   assert.equal(countMatches(markup, /aria-expanded="false"/g), content.tools.length);
-  assert.equal(countMatches(markup, /aria-live="polite"/g), 1);
+  assert.equal(countMatches(markup, /aria-live="polite"/g), 0);
   assert.match(markup, /<fieldset[^>]*aria-label="[^"]+"/);
   assert.doesNotMatch(markup, /<progress\b|role="progressbar"|atlas-tool-(?:progress|pagination|dots|indicator)/i);
 
@@ -776,15 +789,15 @@ test("preserves the dormant homepage widget without exposing it on public routes
 
 test("renders one shared page structure, supports both themes, and preserves every published concept alias", async () => {
   const content = await generatedContent();
-  assert.equal(content.interface.primaryNavigation.length, 4);
+  assert.equal(content.interface.primaryNavigation.length, 5);
   assert.deepEqual(
     content.interface.primaryNavigation.map((item) => [item.label, item.section]),
-    [["Program", "home"], ["Projects", "projects"], ["Tools", "tools"], ["Cohort", "cohort"]],
+    [["Program", "home"], ["Projects", "projects"], ["Tools", "tools"], ["Cohort", "cohort"], ["Convening", "convening"]],
   );
   assert.equal(content.interface.directions.length, 2);
   const generatedSlugs = new Set(content.pages.map((page) => page.slug));
   for (const [, slug] of canonicalPages) assert.ok(generatedSlugs.has(slug));
-  assert.equal(generatedSlugs.has("/people"), false, "/people is a route alias, not a sixth content page");
+  assert.equal(generatedSlugs.has("/people"), false, "/people is a route alias, not a seventh content page");
 
   let aliasMarkup;
   for (const concept of legacyConceptAliases) {
@@ -1034,11 +1047,12 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     people: await markdownFileNames(new URL("people/", contentRoot)),
     projects: await markdownFileNames(new URL("projects/", contentRoot)),
     tools: await markdownFileNames(new URL("tools/", contentRoot)),
+    convenings: await markdownFileNames(new URL("convenings/", contentRoot)),
   };
   const allAssetFiles = await filesRecursively(new URL("assets/", contentRoot));
   const assets = await imageFilesRecursively(new URL("assets/", contentRoot));
 
-  assert.deepEqual(directories.pages, ["about.md", "cohort.md", "home.md", "projects.md", "tools.md"]);
+  assert.deepEqual(directories.pages, ["about.md", "cohort.md", "convening.md", "home.md", "projects.md", "tools.md"]);
   assert.ok(allAssetFiles.some((file) => file.pathname.endsWith("/README.md")));
   for (const directory of Object.keys(directories)) {
     const entries = await readdir(new URL(`${directory}/`, contentRoot));
@@ -1052,6 +1066,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.equal(content.participants.length, directories.participants.length);
   assert.equal(content.projects.length, directories.projects.length);
   assert.equal(content.tools.length, directories.tools.length);
+  assert.equal(content.convenings.length, directories.convenings.length);
   assert.equal(
     content.program.programTeam.length + content.participants.reduce((sum, participant) => sum + participant.people.length, 0),
     directories.people.length,
@@ -1077,6 +1092,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     )),
     ...content.tools.map((tool) => tool.figure.src),
     ...content.tools.flatMap((tool) => tool.galleryImages.map((image) => image.src)),
+    ...content.convenings.flatMap((convening) => convening.images.map((image) => image.src)),
   ].map((publicPath) => publicPath.replace(/^\/apto\//, "")));
   const sourceAssetPaths = new Set(assets.map((file) => (
     decodeURIComponent(file.pathname.slice(new URL("assets/", contentRoot).pathname.length))
@@ -1087,7 +1103,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     ...content.program.programTeam,
     ...content.participants.flatMap((participant) => participant.people),
   ];
-  for (const directory of ["participants", "people", "projects", "tools"]) {
+  for (const directory of ["participants", "people", "projects", "tools", "convenings"]) {
     assert.ok(
       content._generated.generatedFrom.some((filename) => filename.startsWith(`content/apto/${directory}/`)),
       `${directory} must be represented in generatedFrom`,
@@ -1127,6 +1143,9 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   for (const record of records.filter((item) => item.directory === "tools")) {
     assert.ok(content.tools.some((tool) => tool.id === record.metadata.id));
   }
+  for (const record of records.filter((item) => item.directory === "convenings")) {
+    assert.ok(content.convenings.some((convening) => convening.id === record.metadata.id));
+  }
   for (const record of records) {
     assert.equal(record.name, `${record.metadata.id}.md`, `${record.directory}/${record.name} must match its record id`);
   }
@@ -1146,11 +1165,16 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     content.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name),
     expectedNorthwesternToolNames,
   );
+  assert.deepEqual(
+    content.tools.filter((tool) => tool.participantId === "uchicago").map((tool) => tool.name),
+    expectedUChicagoToolNames,
+  );
   assert.deepEqual(content.projects.map((project) => project.participantId), expectedParticipantIds);
 
   assert.match(generator, /const participantDirectory = path\.join\(contentDirectory, "participants"\)/);
   assert.match(generator, /const peopleDirectory = path\.join\(contentDirectory, "people"\)/);
   assert.match(generator, /const assetDirectory = path\.join\(contentDirectory, "assets"\)/);
+  assert.match(generator, /const conveningDirectory = path\.join\(contentDirectory, "convenings"\)/);
   assert.match(generator, /path\.relative\(assetDirectory, assetFile\)/);
   assert.match(generator, /fileStatus\.isFile\(\)/);
   assert.match(generator, /allowedImageExtensions/);
@@ -1161,6 +1185,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(generator, /peopleFiles\.length > 0/);
   assert.match(generator, /projectFiles\.length > 0/);
   assert.match(generator, /toolFiles\.length > 0/);
+  assert.match(generator, /conveningFiles\.length > 0/);
   assert.match(generator, /galleryImages\.length === 3/);
   assert.match(generator, /function validateToolMediaInventory\(toolRecords\)/);
   assert.match(generator, /paths\.length === 4/);

@@ -22,6 +22,7 @@ const participantDirectory = path.join(contentDirectory, "participants");
 const peopleDirectory = path.join(contentDirectory, "people");
 const projectDirectory = path.join(contentDirectory, "projects");
 const toolDirectory = path.join(contentDirectory, "tools");
+const conveningDirectory = path.join(contentDirectory, "convenings");
 const outputFile = path.join(rootDirectory, "app", "apto", "content.generated.json");
 
 const expectedBoilerplate =
@@ -60,6 +61,7 @@ const expectedDirectionIds = new Set(["nsfhome", "nsfnetwork"]);
 const expectedPages = new Map([
   ["about", { slug: "/about" }],
   ["cohort", { slug: "/cohort" }],
+  ["convening", { slug: "/convening" }],
   ["home", { slug: "/" }],
   ["projects", { slug: "/projects" }],
   ["tools", { slug: "/tools" }],
@@ -566,7 +568,7 @@ function validateInterface(document) {
   assert(study.socialImageSrc.startsWith("/apto/"), `${context}.study.socialImageSrc must begin with /apto/`);
 
   const primaryNavigation = requireArray(metadata, "primaryNavigation", context);
-  assert(primaryNavigation.length === 4, `${context}.primaryNavigation must contain four links`);
+  assert(primaryNavigation.length === 5, `${context}.primaryNavigation must contain five links`);
   const primaryNavigationSections = primaryNavigation.map((item, index) => {
     const itemContext = `${context}.primaryNavigation[${index}]`;
     requireObject(item, itemContext);
@@ -576,12 +578,12 @@ function validateInterface(document) {
   });
   assertExactSet(
     primaryNavigationSections,
-    new Set(["home", "projects", "tools", "cohort"]),
+    new Set(["home", "projects", "tools", "cohort", "convening"]),
     `${context}.primaryNavigation sections`,
   );
   assert(
-    primaryNavigationSections.join(",") === "home,projects,tools,cohort",
-    `${context}.primaryNavigation must be ordered Program, Projects, Tools, Cohort`,
+    primaryNavigationSections.join(",") === "home,projects,tools,cohort,convening",
+    `${context}.primaryNavigation must be ordered Program, Projects, Tools, Cohort, Convening`,
   );
 
   const home = requireObject(metadata.home, `${context}.home`);
@@ -930,6 +932,52 @@ function validateTool(document) {
   };
 }
 
+function validateConvening(document) {
+  const { metadata, h1, sections, file } = document;
+  const context = relativeFile(file);
+  assertExactKeys(
+    metadata,
+    ["kind", "id", "year", "location", "title", "images"],
+    `${context} frontmatter`,
+  );
+  assert(metadata.kind === "convening", `${context}.kind must be “convening”`);
+  const id = requireString(metadata, "id", context);
+  assertRecordIdMatchesFilename(file, id, context);
+  assert(Number.isInteger(metadata.year) && metadata.year >= 2000 && metadata.year <= 2100, `${context}.year must be a four-digit year`);
+  assert(id === String(metadata.year), `${context}.id must match year`);
+  requireString(metadata, "location", context);
+  const title = requireString(metadata, "title", context);
+  assert(h1 === title, `${context} H1 must match title`);
+  const images = requireArray(metadata, "images", context);
+  assert(images.length === 5, `${context}.images must contain exactly five images`);
+  images.forEach((image, index) => {
+    const imageContext = `${context}.images[${index}]`;
+    requireObject(image, imageContext);
+    assertExactKeys(image, ["src", "alt"], imageContext);
+    const src = requireString(image, "src", imageContext);
+    assert(src.startsWith("/apto/"), `${imageContext}.src must begin with /apto/`);
+    requireString(image, "alt", imageContext);
+  });
+  assertUnique(images.map((image) => image.src), `${context}.images sources`);
+  assertUnique(images.map((image) => image.alt), `${context}.images descriptions`);
+  assert(
+    sections.size === 2 && sections.has("Summary") && sections.has("Discussion"),
+    `${context} must contain exactly “## Summary” and “## Discussion” sections`,
+  );
+  const summary = sections.get("Summary");
+  const discussion = sections.get("Discussion");
+  assert(summary, `${context} must contain a non-empty “## Summary” section`);
+  assert(discussion, `${context} must contain a non-empty “## Discussion” section`);
+  return {
+    sourceFile: file,
+    convening: {
+      ...omitFields(metadata, ["kind"]),
+      summary: normalizeProse(summary),
+      discussion: normalizeProse(discussion),
+    },
+  };
+}
+
 async function validateParticipantLogoFiles(participantRecords) {
   await Promise.all(
     participantRecords.flatMap((record) => ["light", "dark"].map((theme) => validateImageAsset(
@@ -995,12 +1043,13 @@ function assertEveryAssetIsReferenced(assetFiles, publicPaths) {
 
 async function buildContent() {
   const programFile = path.join(contentDirectory, "program.md");
-  const [pageFiles, participantFiles, peopleFiles, projectFiles, toolFiles, assetFiles] = await Promise.all([
+  const [pageFiles, participantFiles, peopleFiles, projectFiles, toolFiles, conveningFiles, assetFiles] = await Promise.all([
     markdownFiles(pageDirectory),
     markdownFiles(participantDirectory),
     markdownFiles(peopleDirectory),
     markdownFiles(projectDirectory),
     markdownFiles(toolDirectory),
+    markdownFiles(conveningDirectory),
     imageFilesRecursively(assetDirectory),
   ]);
   assert(pageFiles.length === expectedPages.size, `Expected exactly ${expectedPages.size} routed page Markdown files; found ${pageFiles.length}`);
@@ -1008,6 +1057,7 @@ async function buildContent() {
   assert(peopleFiles.length > 0, "At least one person Markdown file is required");
   assert(projectFiles.length > 0, "At least one project Markdown file is required");
   assert(toolFiles.length > 0, "At least one tool Markdown file is required");
+  assert(conveningFiles.length > 0, "At least one annual convening Markdown file is required");
   assert(assetFiles.length > 0, "At least one content asset is required");
 
   const [
@@ -1018,6 +1068,7 @@ async function buildContent() {
     peopleDocuments,
     projectDocuments,
     toolDocuments,
+    conveningDocuments,
   ] = await Promise.all([
     readMarkdown(programFile),
     readMarkdown(interfaceFile),
@@ -1026,6 +1077,7 @@ async function buildContent() {
     Promise.all(peopleFiles.map(readMarkdown)),
     Promise.all(projectFiles.map(readMarkdown)),
     Promise.all(toolFiles.map(readMarkdown)),
+    Promise.all(conveningFiles.map(readMarkdown)),
   ]);
 
   const programRecord = validateProgram(programDocument);
@@ -1083,6 +1135,13 @@ async function buildContent() {
     assert(participantById.has(record.participantId), `${relativeFile(record.sourceFile)}.participantId does not join to a participant`);
   });
 
+  const conveningRecords = conveningDocuments.map(validateConvening);
+  assertUnique(conveningRecords.map((record) => record.convening.id), "convening ids");
+  await Promise.all(conveningRecords.flatMap((record) => record.convening.images.map((image, index) => validateImageAsset(
+    image.src,
+    `${relativeFile(record.sourceFile)}.images[${index}].src`,
+  ))));
+
   assertEveryAssetIsReferenced(assetFiles, [
     interfaceRecord.study.socialImageSrc,
     interfaceRecord.story.socialImageSrc,
@@ -1099,6 +1158,7 @@ async function buildContent() {
       .filter((headshotUrl) => headshotUrl !== null),
     ...toolRecords.map((record) => record.tool.figure.src),
     ...toolRecords.flatMap((record) => record.tool.galleryImages.map((image) => image.src)),
+    ...conveningRecords.flatMap((record) => record.convening.images.map((image) => image.src)),
   ]);
 
   for (const [participantId, record] of participantById.entries()) {
@@ -1177,6 +1237,10 @@ async function buildContent() {
       ) || compareAlphabetically(left.shortName, right.shortName)
     ));
 
+  const convenings = conveningRecords
+    .map((record) => record.convening)
+    .sort((left, right) => right.year - left.year);
+
   const sourceFiles = [
     programFile,
     interfaceFile,
@@ -1185,6 +1249,7 @@ async function buildContent() {
     ...peopleFiles,
     ...projectFiles,
     ...toolFiles,
+    ...conveningFiles,
     ...assetFiles,
   ]
     .map(relativeFile)
@@ -1193,7 +1258,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 14,
+      schemaVersion: 15,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,
@@ -1206,6 +1271,7 @@ async function buildContent() {
     participants,
     projects,
     tools,
+    convenings,
     assetFiles,
   };
 }
@@ -1218,7 +1284,7 @@ async function main() {
   await syncAssets(content.assetFiles, checkOnly);
   delete content.assetFiles;
   const serialized = `${JSON.stringify(content, null, 2)}\n`;
-  const inventory = `${content.pages.length} routed pages, ${content.participants.length} participants, ${content.program.programTeam.length + content.participants.reduce((sum, participant) => sum + participant.people.length, 0)} people, ${content.projects.length} projects, and ${content.tools.length} tools`;
+  const inventory = `${content.pages.length} routed pages, ${content.participants.length} participants, ${content.program.programTeam.length + content.participants.reduce((sum, participant) => sum + participant.people.length, 0)} people, ${content.projects.length} projects, ${content.tools.length} tools, and ${content.convenings.length} convenings`;
 
   if (checkOnly) {
     let current;
