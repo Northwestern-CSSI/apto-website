@@ -24,6 +24,18 @@ export function ConveningGallery({
   className?: string;
 }) {
   const [activeImage, setActiveImage] = useState(0);
+  const [motionReady, setMotionReady] = useState(false);
+
+  useEffect(() => {
+    let secondFrame = 0;
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => setMotionReady(true));
+    });
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      if (secondFrame) window.cancelAnimationFrame(secondFrame);
+    };
+  }, []);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -38,15 +50,16 @@ export function ConveningGallery({
     <div className="apto-convening-gallery-media">
       {convening.images.map((image, index) => {
         const plan = motionPlans[index % motionPlans.length];
+        const isActive = index === activeImage;
         return <img
-          className={index === activeImage ? "is-active" : ""}
+          className={`${isActive ? "is-visible" : ""} ${isActive && motionReady ? "is-motion-active" : ""}`.trim()}
           key={image.src}
           src={withDeploymentBase(image.src)}
-          alt={index === activeImage ? image.alt : ""}
-          aria-hidden={index === activeImage ? undefined : "true"}
+          alt={isActive ? image.alt : ""}
+          aria-hidden={isActive ? undefined : "true"}
           width="1800"
           height="1126"
-          loading={index === 0 ? "eager" : "lazy"}
+          loading="eager"
           decoding="async"
           style={{
             "--convening-motion-start": plan.start,

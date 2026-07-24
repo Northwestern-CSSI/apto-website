@@ -30,14 +30,20 @@
   opacity: 0;
   transform: var(--convening-motion-start);
   transform-origin: var(--convening-motion-origin);
-  transition: opacity 1.5s ease-in-out;
+  backface-visibility: hidden;
+  transition:
+    opacity 1.5s ease-in-out,
+    transform 7.8s cubic-bezier(.3, .02, .7, .98);
   will-change: opacity, transform;
 }
 
-.apto-convening-gallery-media img.is-active {
+.apto-convening-gallery-media img.is-visible {
   z-index: 1;
   opacity: 1;
-  animation: apto-convening-ken-burns 7.8s cubic-bezier(.3, .02, .7, .98) both;
+}
+
+.apto-convening-gallery-media img.is-motion-active {
+  transform: var(--convening-motion-end);
 }
 
 .apto-convening-gallery-progress {
@@ -77,18 +83,13 @@
   transform: scaleY(2);
 }
 
-@keyframes apto-convening-ken-burns {
-  from { transform: var(--convening-motion-start); }
-  to { transform: var(--convening-motion-end); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .apto-convening-gallery-media img {
     transition: opacity .2s linear;
+    transform: none;
   }
 
-  .apto-convening-gallery-media img.is-active {
-    animation: none;
+  .apto-convening-gallery-media img.is-motion-active {
     transform: none;
   }
 }
