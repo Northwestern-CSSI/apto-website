@@ -321,48 +321,6 @@ function ProgramPage() {
   </main>;
 }
 
-function ProjectMap() {
-  return <section className="atlas-project-map-section" aria-labelledby="atlas-project-map-title">
-    <div className="atlas-project-map-copy">
-      <p>{aptoInterface.atlas.projectsMapLabel}</p>
-      <h2 id="atlas-project-map-title">{aptoInterface.projects.map.title}</h2>
-      <span>{aptoInterface.projects.map.description}</span>
-    </div>
-    <div className="atlas-project-map">
-      <img
-        src={withDeploymentBase(aptoInterface.projects.map.imageUrl)}
-        alt={aptoInterface.projects.map.imageAlt}
-        width="959"
-        height="593"
-        loading="eager"
-        decoding="async"
-      />
-      {aptoProjects.map((project) => {
-        const participant = participantFor(project.participantId);
-        if (!participant) return null;
-        return <a
-          key={project.id}
-          href={`#atlas-project-${project.id}`}
-          className="atlas-map-pin"
-          data-participant={participant.id}
-          aria-label={`${participant.displayName}: ${project.shortName}`}
-          style={{
-            left: `${participant.mapPosition.x}%`,
-            top: `${participant.mapPosition.y}%`,
-            "--atlas-participant-accent": participant.accent,
-          } as CSSProperties}
-        ><span>{participant.displayName}</span></a>;
-      })}
-    </div>
-    <div className="atlas-map-legend" aria-label={aptoInterface.projects.map.caption}>
-      {aptoParticipants.map((participant) => <a
-        href={`#atlas-project-${aptoProjects.find((project) => project.participantId === participant.id)?.id}`}
-        key={participant.id}
-      ><i style={{ background: participant.accent }} aria-hidden="true" /><span>{participant.displayName}</span><small>{participant.location}</small></a>)}
-    </div>
-  </section>;
-}
-
 function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
   const participant = participantFor(project.participantId);
   if (!participant) return null;
@@ -403,7 +361,6 @@ function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
 function ProjectsPage() {
   return <main className="atlas-main atlas-projects" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-projects-title">
     <PageIntroduction section="projects" />
-    <ProjectMap />
     <section className="atlas-project-portfolio" aria-labelledby="atlas-portfolio-title">
       <header><p>{aptoInterface.atlas.projectPortfolioLabel}</p><h2 id="atlas-portfolio-title">Five approaches to technology outcomes</h2></header>
       <div>{aptoProjects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>

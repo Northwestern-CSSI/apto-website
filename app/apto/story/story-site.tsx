@@ -23,7 +23,6 @@ import { useAptoTheme } from "../use-apto-theme";
 type StorySection = "program" | "projects" | "tools" | "cohort";
 type AptoParticipant = (typeof aptoParticipants)[number];
 type AptoPerson = AptoParticipant["people"][number];
-type StoryMapEntry = { participant: AptoParticipant; project: (typeof aptoProjects)[number] };
 
 const storySections: StorySection[] = ["program", "projects", "tools", "cohort"];
 
@@ -36,23 +35,6 @@ function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/cohort") {
 function participantFor(id: string) {
   return aptoParticipants.find((participant) => participant.id === id);
 }
-
-function groupNearbyStoryProjects(entries: StoryMapEntry[]) {
-  return entries.reduce<StoryMapEntry[][]>((groups, entry) => {
-    const nearby = groups.find((group) => group.some((candidate) => Math.hypot(
-      candidate.participant.mapPosition.x - entry.participant.mapPosition.x,
-      candidate.participant.mapPosition.y - entry.participant.mapPosition.y,
-    ) < 2));
-    if (nearby) nearby.push(entry);
-    else groups.push([entry]);
-    return groups;
-  }, []);
-}
-
-const storyMapGroups = groupNearbyStoryProjects(aptoProjects.flatMap((project) => {
-  const participant = participantFor(project.participantId);
-  return participant ? [{ participant, project }] : [];
-}));
 
 function ParticipantLogo({ participant, eager = false }: { participant: AptoParticipant; eager?: boolean }) {
   return <span
@@ -371,64 +353,28 @@ function ProgramStory() {
 function StoryProjectStage({ activeProject }: { activeProject: string }) {
   const current = aptoProjects.find((project) => project.id === activeProject) ?? aptoProjects[0];
   const participant = participantFor(current.participantId);
-  const focusX = participant?.mapPosition.x ?? 50;
-  const focusY = participant?.mapPosition.y ?? 50;
-  const panX = Math.max(-2.4, Math.min(2.4, (50 - focusX) * .07));
-  const panY = Math.max(-1.6, Math.min(1.6, (50 - focusY) * .055));
   return <aside className="story-project-stage" aria-label={aptoInterface.story.projectStageTitle}>
     <div className="story-project-stage-copy">
       <p>{aptoInterface.story.projectsLabel}</p>
       <h3>{aptoInterface.story.projectStageTitle}</h3>
       <span>{aptoInterface.story.projectStageDescription}</span>
     </div>
-    <div
-      className="story-map"
-      style={{
-        "--story-map-focus-x": `${focusX}%`,
-        "--story-map-focus-y": `${focusY}%`,
-        "--story-map-active-accent": participant?.accent ?? "var(--story-teal)",
-      } as CSSProperties}
-    >
-      <div
-        className="story-map-world"
-        data-story-parallax="0.002"
-        style={{ "--story-map-pan-x": `${panX}%`, "--story-map-pan-y": `${panY}%` } as CSSProperties}
-      >
-        <img src={withDeploymentBase(aptoInterface.projects.map.imageUrl)} alt="" width="959" height="593" loading="lazy" decoding="async" />
-        {storyMapGroups.map((group) => {
-          const x = group.reduce((total, entry) => total + entry.participant.mapPosition.x, 0) / group.length;
-          const y = group.reduce((total, entry) => total + entry.participant.mapPosition.y, 0) / group.length;
-          const names = group.map(({ participant: member }) => `${member.displayName}, ${member.location}`).join("; ");
-          return <div
-            className={`story-map-location${group.length > 1 ? " is-cluster" : ""}${x > 82 ? " is-east" : ""}`}
-            key={group.map(({ participant: member }) => member.id).join("-")}
-            role={group.length > 1 ? "group" : undefined}
-            aria-label={group.length > 1 ? `${group.length} ${aptoInterface.projects.map.nearbyLocationsLabel}: ${names}` : undefined}
-            style={{ left: `${x}%`, top: `${y}%` } as CSSProperties}
+    <nav className="story-project-index" aria-label="Jump to a project">
+      <ol>{aptoProjects.map((project) => {
+        const member = participantFor(project.participantId);
+        const active = project.id === current.id;
+        return <li key={project.id}>
+          <a
+            href={`#story-project-${project.id}`}
+            aria-current={active ? "location" : undefined}
+            style={{ "--project-accent": member?.accent ?? "var(--story-teal)" } as CSSProperties}
           >
-            {group.map(({ participant: member, project }, index) => {
-              const angle = group.length > 1 ? -Math.PI / 2 + (index * Math.PI * 2) / group.length : 0;
-              const radius = group.length > 1 ? 18 : 0;
-              const offsetX = Math.cos(angle) * radius;
-              const offsetY = Math.sin(angle) * radius;
-              const active = activeProject === project.id;
-              return <a
-                key={project.id}
-                className={`story-map-pin${active ? " is-active" : ""}`}
-                href={`#story-project-${project.id}`}
-                aria-label={`${member.displayName}: ${project.shortName}`}
-                aria-current={active ? "location" : undefined}
-                style={{
-                  "--project-accent": member.accent,
-                  "--story-pin-x": `${offsetX.toFixed(1)}px`,
-                  "--story-pin-y": `${offsetY.toFixed(1)}px`,
-                } as CSSProperties}
-              ><span className="story-map-pin-dot" aria-hidden="true" /><span className="story-map-pin-label" aria-hidden="true">{member.displayName}</span></a>;
-            })}
-          </div>;
-        })}
-      </div>
-    </div>
+            <span>{member?.displayName ?? project.organization}</span>
+            <strong>{project.shortName}</strong>
+          </a>
+        </li>;
+      })}</ol>
+    </nav>
     <div
       className="story-project-stage-active"
       style={{ "--project-accent": participant?.accent ?? "var(--story-teal)" } as CSSProperties}

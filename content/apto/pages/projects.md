@@ -12,4 +12,4 @@
 
 ## Introduction
 
-Browse active NSF awards whose official titles begin with APTO. Expand a project to read its research summary, meet its investigators, visit the organization, or open the corresponding NSF award. Projects are shown alphabetically, and the map locates each participating team.
+Browse active NSF awards whose official titles begin with APTO. Expand a project to read its research summary, meet its investigators, visit the organization, or open the corresponding NSF award. Northwestern University and the University of Chicago lead the collection, followed by the remaining participating organizations in alphabetical order.

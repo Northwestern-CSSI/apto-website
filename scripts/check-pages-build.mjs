@@ -55,12 +55,10 @@ for (const page of storyPages) {
     assert.ok(html.includes(`id="story-${section}"`), `${page} needs its ${section} section`);
   }
   assert.ok(html.includes(`src="${basePath}/apto/nsf-logo.png"`), `${page} needs a base-path-safe NSF logo`);
-  assert.ok(html.includes(`src="${basePath}/apto/us-map.svg"`), `${page} needs its base-path-safe project map`);
   assert.ok(html.includes(`src="${basePath}/apto/`), `${page} needs base-path-safe content-managed images`);
   assert.ok(html.includes(`${basePath}/apto/og-apto-continuum.png`), `${page} needs the Continuum social image`);
-  assert.equal((html.match(/class="story-map-location(?:\s|\")/g) ?? []).length, 4, `${page} needs four distinct map locations`);
-  assert.equal((html.match(/class="story-map-pin(?:\s|\")/g) ?? []).length, 5, `${page} needs one map link for every project`);
-  assert.equal((html.match(/href="#story-project-/g) ?? []).length, 5, `${page} needs five map destinations`);
+  assert.equal((html.match(/href="#story-project-/g) ?? []).length, content.projects.length, `${page} needs one project-index destination per project`);
+  assert.doesNotMatch(html, /story-map|us-map\.svg/i);
   const expectedLogoCount = content.projects.length + content.participants.length + 1;
   assert.equal((html.match(/class="story-participant-logo\b/g) ?? []).length, expectedLogoCount, `${page} needs every project and cohort logo`);
   assert.equal((html.match(/class="story-logo-canvas"/g) ?? []).length, expectedLogoCount, `${page} needs a contained canvas for every logo`);
@@ -77,8 +75,6 @@ for (const page of storyPages) {
       );
     }
   }
-  assert.match(html, /class="story-map-location is-cluster"[^>]*role="group"[^>]*aria-label="2 nearby APTO project locations:/);
-  assert.match(html, /<img[^>]*src="[^"]*\/apto\/us-map\.svg"[^>]*width="959"[^>]*height="593"/);
   const parallaxSpeeds = [...html.matchAll(/data-story-parallax="(-?[\d.]+)"/g)].map((match) => Number(match[1]));
   assert.ok(parallaxSpeeds.length >= 8, `${page} needs layered scroll visuals`);
   assert.ok(new Set(parallaxSpeeds).size >= 6, `${page} needs varied parallax depths`);
@@ -113,9 +109,9 @@ for (const page of atlasPages) {
     }
   }
   if (page.endsWith("tools/index.html")) {
-    assert.equal((html.match(/data-gallery-count="4"/g) ?? []).length, 10, `${page} needs four cycling frames for every tool`);
-    assert.equal((html.match(/class="atlas-tool-panel"/g) ?? []).length, 10, `${page} needs a bottom information panel for every tool`);
-    assert.equal((html.match(/class="atlas-tool-panel-footer"/g) ?? []).length, 10, `${page} needs View details inside every bottom panel`);
+    assert.equal((html.match(/data-gallery-count="4"/g) ?? []).length, content.tools.length, `${page} needs four cycling frames for every tool`);
+    assert.equal((html.match(/class="atlas-tool-panel"/g) ?? []).length, content.tools.length, `${page} needs a bottom information panel for every tool`);
+    assert.equal((html.match(/class="atlas-tool-panel-footer"/g) ?? []).length, content.tools.length, `${page} needs View details inside every bottom panel`);
     assert.doesNotMatch(html, /<progress\b|role="progressbar"|atlas-tool-(?:progress|pagination|dots|indicator)/i);
   }
   if (page === "atlas/index.html" || page === "apto/atlas/index.html") {

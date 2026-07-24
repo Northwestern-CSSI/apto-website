@@ -1,15 +1,15 @@
 ---
 {
   "kind": "tool",
-  "id": "uchicago-global-observatory",
+  "id": "aggregating-research-pipeline-at-scale",
   "participantId": "uchicago",
-  "name": "Global S&T Observatory",
+  "name": "Aggregating Research Pipeline at Scale",
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "global-map",
-    "src": "/apto/tools/previews/uchicago-global-observatory.jpg",
-    "label": "Global science and technology observatory",
-    "alt": "World map connecting research, patent, product, funding, workforce, and market signals among regions"
+    "src": "/apto/tools/previews/aggregating-research-pipeline-at-scale.jpg",
+    "label": "Research pipeline observatory",
+    "alt": "Large-scale evidence system connecting research, patents, products, funding, workforce, organizations, and technology outcomes"
   },
   "galleryImages": [
     {
@@ -31,12 +31,12 @@
 }
 ---
 
-# Global S&T Observatory
+# Aggregating Research Pipeline at Scale
 
 ## Description
 
-Explore how research, patents, products, funding, workforce, and markets connect across the global science and technology system. The observatory combines geographic, organizational, and temporal views of activity.
+Aggregate publications, patents, products, funding, workforce, organizations, and market signals into a connected view of the research pipeline. The observatory supports analysis across institutions, technology areas, and time while preserving links to the underlying records.
 
 ## Use case
 
-Use the observatory to compare regions, trace the movement of ideas and talent, and examine how scientific activity relates to later technology outcomes.
+Use the tool to follow research activity toward later outcomes, compare pipelines at scale, and examine where ideas, people, resources, and organizations reinforce or constrain technology development.

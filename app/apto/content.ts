@@ -83,7 +83,6 @@ export type AptoParticipant = {
   website: string;
   logo: AptoParticipantLogo;
   accent: string;
-  mapPosition: { x: number; y: number };
   people: AptoPerson[];
 };
 
@@ -208,7 +207,6 @@ export type AptoInterfaceContent = {
     programMosaicLabel: string;
     objectivesLabel: string;
     participantsLabel: string;
-    projectsMapLabel: string;
     projectPortfolioLabel: string;
     toolCollectionLabel: string;
     toolDetailsLabel: string;
@@ -233,16 +231,6 @@ export type AptoInterfaceContent = {
     awardedPrefix: string;
     dateStatusSeparator: string;
     expandLabel: string;
-    map: {
-      eyebrow: string;
-      title: string;
-      description: string;
-      caption: string;
-      imageUrl: string;
-      imageAlt: string;
-      nearbyLocationsLabel: string;
-      nearbyProjectsLabel: string;
-    };
   };
   tools: {
     allOrganizationsLabel: string;

@@ -29,7 +29,7 @@ const baseline = {
   participants: 5,
   people: 13,
   projects: 5,
-  tools: 10,
+  tools: 5,
 };
 const nsfBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
@@ -45,6 +45,14 @@ function compareAlphabetically(left, right) {
 function sortedAlphabetically(values) {
   return [...values].sort(compareAlphabetically);
 }
+
+const expectedParticipantIds = [
+  "northwestern",
+  "uchicago",
+  "aperture",
+  "insilicom",
+  "macrocosm",
+];
 
 function parseJsonFrontmatter(source, filename) {
   const match = source.match(/^---\n([\s\S]*?)\n---(?:\n|$)/);
@@ -209,46 +217,6 @@ test("renders the selected APTO design at the repository root", async () => {
 test("renders one shared, content-complete long-scroll story at both public routes", async () => {
   const content = await generatedContent();
   const expectedSections = ["program", "projects", "tools", "cohort"];
-  const participantsById = new Map(content.participants.map((participant) => [participant.id, participant]));
-  const expectedMapBounds = {
-    aperture: { x: [70, 78], y: [30, 42] },
-    insilicom: { x: [68, 78], y: [70, 84] },
-    macrocosm: { x: [83, 92], y: [27, 40] },
-    northwestern: { x: [60, 68], y: [30, 42] },
-    uchicago: { x: [60, 68], y: [30, 42] },
-  };
-
-  for (const [participantId, bounds] of Object.entries(expectedMapBounds)) {
-    const participant = participantsById.get(participantId);
-    assert.ok(participant, `Missing map participant ${participantId}`);
-    assert.ok(
-      participant.mapPosition.x >= bounds.x[0] && participant.mapPosition.x <= bounds.x[1],
-      `${participant.displayName} must remain in its expected east-west map region`,
-    );
-    assert.ok(
-      participant.mapPosition.y >= bounds.y[0] && participant.mapPosition.y <= bounds.y[1],
-      `${participant.displayName} must remain in its expected north-south map region`,
-    );
-  }
-
-  const nearbyPairs = content.participants.flatMap((participant, index) => (
-    content.participants.slice(index + 1).flatMap((candidate) => (
-      Math.hypot(
-        participant.mapPosition.x - candidate.mapPosition.x,
-        participant.mapPosition.y - candidate.mapPosition.y,
-      ) < 2
-        ? [[participant.id, candidate.id].sort()]
-        : []
-    ))
-  ));
-  assert.deepEqual(nearbyPairs, [["northwestern", "uchicago"]]);
-  assert.ok(participantsById.get("northwestern").mapPosition.x < participantsById.get("aperture").mapPosition.x);
-  assert.ok(participantsById.get("aperture").mapPosition.x < participantsById.get("macrocosm").mapPosition.x);
-  assert.ok(
-    participantsById.get("insilicom").mapPosition.y
-      > Math.max(...content.participants.filter((participant) => participant.id !== "insilicom").map((participant) => participant.mapPosition.y)),
-    "Tallahassee must remain the southernmost project location",
-  );
   let sharedMarkup;
 
   for (const path of ["/story", "/apto/story"]) {
@@ -297,28 +265,16 @@ test("renders one shared, content-complete long-scroll story at both public rout
     assert.equal(countMatches(markup, /class="story-participant-logo\b/g), expectedLogoCount);
     assert.equal(countMatches(markup, /class="story-logo-canvas"/g), expectedLogoCount);
     assert.equal(countMatches(markup, /class="story-logo-asset is-(?:light|dark)"/g), expectedLogoCount * 2);
-    const projectMapStart = markup.indexOf('<div class="story-map"');
-    const projectMapEnd = markup.indexOf('<div class="story-project-stage-active"', projectMapStart);
-    assert.ok(projectMapStart >= 0 && projectMapEnd > projectMapStart, "The story should include the keyboard-operable project map");
-    const projectMap = markup.slice(projectMapStart, projectMapEnd);
-    assert.equal(countMatches(projectMap, /class="story-map-location(?:\s|\")/g), 4);
-    assert.equal(countMatches(projectMap, /class="story-map-pin(?:\s|\")/g), content.projects.length);
-    assert.equal(countMatches(projectMap, /href="#story-project-/g), content.projects.length);
-    assert.doesNotMatch(projectMap, /tabindex="-1"/i);
-    assert.match(projectMap, /<img[^>]*width="959"[^>]*height="593"[^>]*loading="lazy"[^>]*decoding="async"/);
-
-    const chicagoCluster = projectMap.match(/<div class="story-map-location is-cluster"[^>]*>[\s\S]*?<\/div>/);
-    assert.ok(chicagoCluster, "The two Chicago-area projects should render as one labelled map location");
-    assert.match(chicagoCluster[0], /role="group"/);
-    assert.match(chicagoCluster[0], /aria-label="2 nearby APTO project locations:/);
-    assert.equal(countMatches(chicagoCluster[0], /class="story-map-pin(?:\s|\")/g), 2);
-    assert.ok(chicagoCluster[0].includes("Northwestern University, Evanston, Illinois"));
-    assert.ok(chicagoCluster[0].includes("University of Chicago, Chicago, Illinois"));
+    const projectIndex = markup.match(/<nav class="story-project-index"[\s\S]*?<\/nav>/)?.[0];
+    assert.ok(projectIndex, "The story should include a compact keyboard-operable project index");
+    assert.equal(countMatches(projectIndex, /href="#story-project-/g), content.projects.length);
+    assert.equal(countMatches(projectIndex, /aria-current="location"/g), 1);
+    assert.doesNotMatch(markup, /story-map|us-map\.svg/i);
     for (const project of content.projects) {
       assert.ok(text.includes(project.shortName));
       assert.ok(text.includes(project.summary));
       assert.ok(markup.includes(`id="story-project-${project.id}"`));
-      assert.ok(projectMap.includes(`aria-label="${project.organization}: ${project.shortName}"`));
+      assert.ok(projectIndex.includes(`href="#story-project-${project.id}"`));
     }
 
     const parallaxSpeeds = [...markup.matchAll(/data-story-parallax="(-?[\d.]+)"/g)]
@@ -339,7 +295,9 @@ test("renders one shared, content-complete long-scroll story at both public rout
       const start = markup.indexOf(`id="story-${section}"`);
       const next = expectedSections[index + 1];
       const end = next ? markup.indexOf(`id="story-${next}"`, start) : markup.length;
-      assert.match(markup.slice(start, end), /data-story-parallax="-?[\d.]+"/, `${section} needs a scroll-reactive visual`);
+      if (section !== "projects") {
+        assert.match(markup.slice(start, end), /data-story-parallax="-?[\d.]+"/, `${section} needs a scroll-reactive visual`);
+      }
     }
 
     const toolArticles = markup.match(/<article class="story-tool"[\s\S]*?<\/article>/g) ?? [];
@@ -454,11 +412,6 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
     "--story-projects-surface",
     "--story-projects-ink",
     "--story-projects-copy",
-    "--story-map-bg",
-    "--story-map-filter",
-    "--story-map-opacity",
-    "--story-map-label-bg",
-    "--story-map-label-ink",
     "--story-cohort-bg",
     "--story-cohort-surface",
     "--story-cohort-person",
@@ -476,23 +429,11 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
     const darkValue = customPropertyValue(darkTheme, token);
     assert.notEqual(lightValue, darkValue, `${token} must visibly distinguish light and dark themes`);
   }
-  const darkMapFilter = customPropertyValue(darkTheme, "--story-map-filter");
-  const darkMapOpacity = Number(customPropertyValue(darkTheme, "--story-map-opacity"));
-  assert.equal(customPropertyValue(darkTheme, "--story-map-bg"), "#0b2438");
-  assert.doesNotMatch(darkMapFilter, /invert\(/, "Dark mode should retain the map's light land mass");
-  assert.match(darkMapFilter, /grayscale\(1\)/);
-  assert.match(darkMapFilter, /brightness\(\.66\)/);
-  assert.match(darkMapFilter, /contrast\(1\.25\)/);
-  assert.ok(darkMapOpacity >= .85, "Dark mode needs enough map opacity for state boundaries to remain legible");
-
   assert.match(styles, /\.story-header\s*\{[^}]*color:\s*var\(--story-header-ink\)[^}]*background:\s*var\(--story-header-bg\)/);
   assert.match(styles, /\.story-projects\s*\{[^}]*color:\s*var\(--story-projects-ink\)[^}]*background:\s*var\(--story-projects-bg\)/);
   assert.match(styles, /\.story-project-chapter\s*\{[^}]*var\(--story-projects-surface\)/);
-  assert.match(styles, /\.story-map\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593[^}]*background:\s*var\(--story-map-bg\)/);
-  assert.doesNotMatch(styles.match(/\.story-map\s*\{([^}]*)\}/)?.[1] ?? "", /clip-path/);
-  assert.match(styles, /\.story-map-world\s*>\s*img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*opacity:\s*var\(--story-map-opacity\)[^}]*filter:\s*var\(--story-map-filter\)/);
-  assert.match(styles, /\.story-map-pin\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/);
-  assert.match(styles, /\.story-map-pin-label\s*\{[^}]*color:\s*var\(--story-map-label-ink\)[^}]*background:\s*var\(--story-map-label-bg\)/);
+  assert.match(styles, /\.story-project-index a\s*\{[^}]*min-height:\s*68px[^}]*background:\s*color-mix/);
+  assert.match(styles, /\.story-project-index a\[aria-current="location"\]::before\s*\{[^}]*box-shadow:/);
   assert.match(styles, /\.story-cohort\s*\{[^}]*color:\s*var\(--story-cohort-ink\)[^}]*background:\s*var\(--story-cohort-bg\)/);
   assert.match(styles, /\.story-cohort-art\s*\{[^}]*width:\s*calc\(100% \+ 12vw\)[^}]*mask-image:\s*radial-gradient/);
   assert.doesNotMatch(styles, /\.story-cohort-art\.is-(?:front|back)\s*\{/);
@@ -523,7 +464,6 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(styles, /\.story-hero-detail\s*\{[^}]*transform:\s*translate3d\(0,var\(--story-shift,0\),0\)[^}]*will-change:\s*transform/);
   assert.match(styles, /\.apto-story\.is-motion-ready \[data-story-reveal\]\s*\{[^}]*opacity:\s*var\(--story-reveal-opacity,1\)[^}]*translate3d\(var\(--story-reveal-x,0px\),var\(--story-reveal-y,0px\),0\)[^}]*transition:\s*none/);
   assert.doesNotMatch(styles, /story-project-caption-in/);
-  assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-map\s*\{[^}]*width:\s*100%[^}]*max-width:\s*100%/);
   assert.match(styles, /@media \(max-width:\s*620px\)[\s\S]*?\.story-project-stage\s*\{[^}]*position:\s*relative[^}]*top:\s*auto/);
 
   const reducedMotionStart = styles.indexOf("@media (prefers-reduced-motion: reduce)");
@@ -533,7 +473,7 @@ test("implements the story as an accessible, theme-aware progressive scroll expe
   assert.match(reducedMotion, /animation:\s*none\s*!important/);
   assert.match(reducedMotion, /transition:\s*none\s*!important/);
   assert.match(reducedMotion, /\.apto-story\.is-motion-ready \[data-story-reveal\]\s*\{[^}]*opacity:\s*1[^}]*transform:\s*none/);
-  assert.match(reducedMotion, /\.apto-story \[data-story-parallax\],[\s\S]*?\.story-map-world,[\s\S]*?\.story-tool figure img,[\s\S]*?transform:\s*none\s*!important/);
+  assert.match(reducedMotion, /\.apto-story \[data-story-parallax\],[\s\S]*?\.story-tool figure img,[\s\S]*?transform:\s*none\s*!important/);
   assert.match(styles, /@media \(forced-colors: active\)/);
   assert.match(styles, /\.story-skip-link:focus/);
   assert.match(styles, /min-height:\s*44px/);
@@ -618,7 +558,7 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
         }
       } else if (section === "projects") {
         assert.equal(countMatches(markup, /<details class="atlas-project-folio"/g), content.projects.length);
-        assert.equal(countMatches(markup, /class="atlas-map-pin"/g), content.projects.length);
+        assert.doesNotMatch(markup, /atlas-project-map|atlas-map-pin|us-map\.svg/i);
         for (const project of content.projects) {
           assert.ok(text.includes(project.shortName));
           assert.ok(text.includes(project.summary));
@@ -644,14 +584,14 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
   }
 });
 
-test("renders the Atlas tool gallery as ten accessible, Markdown-backed image posters", async () => {
+test("renders the Atlas tool gallery as five accessible, Markdown-backed image posters", async () => {
   const content = await generatedContent();
   const response = await render("/atlas/tools");
   assert.equal(response.status, 200);
   const markup = atlasAptoMarkup(await response.text());
   const articles = markup.match(/<article class="atlas-tool-card[\s\S]*?<\/article>/g) ?? [];
 
-  assert.equal(content.tools.length, 10, "The current APTO release should expose ten tools");
+  assert.equal(content.tools.length, 5, "The current APTO release should expose five broad tools");
   assert.equal(articles.length, content.tools.length);
   assert.equal(countMatches(markup, /class="atlas-tool-toggle"/g), content.tools.length);
   assert.equal(countMatches(markup, /aria-expanded="false"/g), content.tools.length);
@@ -946,7 +886,7 @@ test("merges the program overview into home and replaces statistics with an inte
   }
 });
 
-test("renders five alphabetical native project accordions and a labelled awardee map", async () => {
+test("renders five prioritized native project accordions without a map", async () => {
   const content = await generatedContent();
   assert.ok(content.projects.length >= baseline.projects);
   const response = await render("/apto/projects?concept=nsfhome");
@@ -961,33 +901,23 @@ test("renders five alphabetical native project accordions and a labelled awardee
   assert.equal(countMatches(html, /<summary class="nsf-project-summary"/g), content.projects.length);
   assert.ok(content.projects.length >= 5, "The first release must include the five APTO projects");
 
-  const alphabeticProjects = [...content.projects].sort((left, right) =>
-    compareAlphabetically(left.shortName, right.shortName),
-  );
-  const projectPositions = alphabeticProjects.map((project) => text.indexOf(project.shortName));
+  const projectPositions = content.projects.map((project) => text.indexOf(project.shortName));
   assert.ok(projectPositions.every((position) => position >= 0));
   assert.deepEqual(projectPositions, [...projectPositions].sort((left, right) => left - right));
 
-  for (const project of alphabeticProjects) {
+  for (const project of content.projects) {
     assert.ok(text.includes(`Awarded in ${project.awardedYear} – ${project.statusLabel}`));
     assert.ok(html.includes(`id="nsf-award-${project.awardId}"`));
     assert.ok(html.includes(`href="${project.awardUrl}"`));
   }
   assert.equal(countMatches(text, /Awarded in 2024 – Ongoing/g), content.projects.length);
 
-  assert.match(html, /<aside class="nsf-awardee-map" aria-labelledby="[^"]+"/);
-  assert.match(html, /<img class="nsf-awardee-map-base"[^>]*alt=""/);
-  assert.match(html, /<img class="nsf-awardee-map-base"[^>]*width="959"[^>]*height="593"/);
-  assert.equal(countMatches(html, /<div class="nsf-awardee-map-cluster"/g), 1);
-  assert.equal(countMatches(html, /class="nsf-awardee-map-pin"/g), 3);
-  assert.match(html, /<button[^>]*aria-expanded="false"[^>]*aria-controls="[^"]+"[^>]*aria-label="2 nearby APTO project locations:/);
-  assert.match(html, /<div id="[^"]*awardee-cluster-[^"]+" hidden="" aria-labelledby="[^"]+">/);
-  assert.ok(text.includes(content.interface.projects.map.title));
+  assert.doesNotMatch(html, /nsf-awardee-map|us-map\.svg/i);
   for (const participant of content.participants) {
     const project = content.projects.find((candidate) => candidate.participantId === participant.id);
     assert.ok(project, `${participant.displayName} must join to a project`);
-    assert.ok(html.includes(`href="#nsf-award-${project.awardId}"`));
-    assert.ok(html.includes(`${participant.displayName}, ${participant.location}`));
+    assert.ok(text.includes(participant.displayName));
+    assert.ok(text.includes(participant.location));
     assert.ok(html.includes(`href="${participant.website}"`));
   }
 });
@@ -1129,7 +1059,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
     content.interface.story.cohortArtSrc,
     content.interface.atlas.socialImageSrc,
     content.interface.footer.nsfLogoSrc,
-    content.interface.projects.map.imageUrl,
+    ...content.program.landingGallery.map((image) => image.src),
     ...content.participants.flatMap((participant) => [
       participant.logo.variants.light.src,
       participant.logo.variants.dark.src,
@@ -1203,18 +1133,9 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
       sortedAlphabetically(participant.people.map((person) => person.name)),
     );
   }
-  assert.deepEqual(
-    content.participants.map((participant) => participant.displayName),
-    sortedAlphabetically(content.participants.map((participant) => participant.displayName)),
-  );
-  assert.deepEqual(
-    content.tools.map((tool) => tool.name),
-    sortedAlphabetically(content.tools.map((tool) => tool.name)),
-  );
-  assert.deepEqual(
-    content.projects.map((project) => project.shortName),
-    sortedAlphabetically(content.projects.map((project) => project.shortName)),
-  );
+  assert.deepEqual(content.participants.map((participant) => participant.id), expectedParticipantIds);
+  assert.deepEqual(content.tools.map((tool) => tool.participantId), expectedParticipantIds);
+  assert.deepEqual(content.projects.map((project) => project.participantId), expectedParticipantIds);
 
   assert.match(generator, /const participantDirectory = path\.join\(contentDirectory, "participants"\)/);
   assert.match(generator, /const peopleDirectory = path\.join\(contentDirectory, "people"\)/);
@@ -1275,7 +1196,7 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\.nsf-theme-switch-track\s*\{[^}]*width:\s*38px[^}]*height:\s*22px/);
   assert.match(styles, /\.nsf-theme-switch button\s*\{[^}]*min-width:\s*44px[^}]*min-height:\s*44px/);
   assert.match(styles, /data-apto-theme="dark"[^\n]*\.nsf-theme-switch-thumb[^\n]*translateX\(16px\)/);
-  assert.match(styles, /\.nsf-awardee-map-plot\s*\{[^}]*aspect-ratio:\s*959\s*\/\s*593/);
+  assert.doesNotMatch(siteSource, /AwardeeMap|us-map/);
   assert.match(styles, /\.nsf-tool-image-frame\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*10[^}]*overflow:\s*hidden/);
   assert.match(styles, /\.nsf-tool-image-frame > img,[\s\S]*?padding:\s*0[^}]*object-fit:\s*cover[^}]*object-position:\s*center/);
   assert.match(styles, /\.nsf-tool-figure\s*\{[^}]*align-self:\s*start/);
@@ -1306,12 +1227,6 @@ test("builds a flexible Markdown inventory, copies content assets, and preserves
   assert.match(styles, /\[data-apto-theme="dark"\] \.nsf-participant-mark \.nsf-logo-asset\.is-light,[\s\S]*?display:\s*none/);
   assert.match(styles, /\[data-apto-theme="dark"\] \.nsf-participant-mark \.nsf-logo-asset\.is-dark,[\s\S]*?display:\s*block/);
   assert.doesNotMatch(styles, /logo-appearance-|asset-on-|adaptive-monochrome/);
-  assert.match(styles, /\.nsf-awardee-map-pin:hover::before,[\s\S]*?transform:\s*none/);
-  assert.match(siteSource, /document\.addEventListener\("pointerdown", handlePointerDown\)/);
-  assert.match(siteSource, /!rootRef\.current\?\.contains\(target\)/);
-  assert.match(siteSource, /document\.removeEventListener\("pointerdown", handlePointerDown\)/);
-  assert.match(siteSource, /event\.key !== "Escape"/);
-  assert.match(siteSource, /triggerRef\.current\?\.focus\(\)/);
   const headingRule = styles.match(/\.nsf-hero-copy h1\s*\{([^}]*)\}/);
   assert.ok(headingRule, "Expected a compact homepage heading rule");
   assert.ok(maxPixelValueFor(headingRule[1], "font-size") <= 44);

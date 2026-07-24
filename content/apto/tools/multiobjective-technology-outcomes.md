@@ -1,15 +1,15 @@
 ---
 {
   "kind": "tool",
-  "id": "northwestern-trajectory-forecaster",
+  "id": "multiobjective-technology-outcomes",
   "participantId": "northwestern",
-  "name": "Technology Trajectory Forecaster",
+  "name": "Multiobjective Technology Outcomes",
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "technology-timeline",
-    "src": "/apto/tools/previews/northwestern-trajectory-forecaster.jpg",
-    "label": "Multi-technology trajectory forecast",
-    "alt": "Chart comparing several technology trajectories with observed values and uncertainty bands"
+    "src": "/apto/tools/previews/multiobjective-technology-outcomes.jpg",
+    "label": "Multiobjective outcome trajectories",
+    "alt": "Linked trajectories comparing technology capability, production, and use with visible tradeoffs and uncertainty"
   },
   "galleryImages": [
     {
@@ -31,12 +31,12 @@
 }
 ---
 
-# Technology Trajectory Forecaster
+# Multiobjective Technology Outcomes
 
 ## Description
 
-Compare observed and projected trajectories for technology capability, production, and use. Assumptions and uncertainty remain visible so users can see how alternative model choices change the shape and timing of each trajectory.
+Assess technology development across multiple outcomes at once, including capability, production, and use. Linked trajectories make tradeoffs, lags, feedback, and uncertainty visible so progress is not reduced to a single performance measure.
 
 ## Use case
 
-Use the forecaster to compare candidate technologies, explore scenario assumptions, and distinguish robust signals from projections that depend heavily on uncertain inputs.
+Use the tool to compare technologies or interventions across several objectives, explore how priorities change the assessment, and identify conclusions that remain robust under different assumptions.

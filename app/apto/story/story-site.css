@@ -30,11 +30,6 @@
   --story-projects-copy: #405b6d;
   --story-projects-muted: #607786;
   --story-projects-shadow: 0 22px 64px rgba(0,37,84,.11);
-  --story-map-bg: #dbe7eb;
-  --story-map-filter: saturate(.52) sepia(.07) hue-rotate(156deg) brightness(1.04) contrast(.92);
-  --story-map-opacity: .9;
-  --story-map-label-bg: rgba(255,255,255,.96);
-  --story-map-label-ink: #002554;
   --story-cohort-bg:
     radial-gradient(circle at 84% 10%,rgba(0,117,141,.11),transparent 32%),
     linear-gradient(155deg,#eef3f2,#f8f5ed 58%,#e7f0f2);
@@ -87,11 +82,6 @@
   --story-projects-copy: #d0dee6;
   --story-projects-muted: #9fb8c6;
   --story-projects-shadow: 0 20px 64px rgba(0,0,0,.2);
-  --story-map-bg: #0b2438;
-  --story-map-filter: grayscale(1) brightness(.66) contrast(1.25);
-  --story-map-opacity: .92;
-  --story-map-label-bg: rgba(2,21,39,.96);
-  --story-map-label-ink: #eef7fa;
   --story-cohort-bg:
     radial-gradient(circle at 82% 8%,rgba(78,195,224,.1),transparent 30%),
     linear-gradient(150deg,#03111f,#071d32 58%,#09243d);
@@ -553,98 +543,55 @@
 .story-project-stage-copy { max-width: 480px; margin-bottom: 24px; }
 .story-project-stage-copy h3 { margin-bottom: 9px; color: var(--story-projects-ink); font-size: clamp(1.35rem,2vw,1.75rem); }
 .story-project-stage-copy > span { color: var(--story-projects-copy); font-size: .88rem; line-height: 1.55; }
-.story-map {
-  position: relative;
-  aspect-ratio: 959 / 593;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--story-map-bg);
-  box-shadow: var(--story-projects-shadow);
+.story-project-index ol {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  list-style: none;
 }
-.story-map::after {
+.story-project-index a {
+  position: relative;
+  min-height: 68px;
+  padding: 12px 14px 12px 23px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  color: var(--story-projects-ink);
+  background: color-mix(in srgb,var(--story-projects-surface) 70%,transparent);
+  text-decoration: none;
+  transition: background-color .2s ease,transform .2s ease;
+}
+.story-project-index a::before {
   content: "";
   position: absolute;
-  z-index: 2;
-  inset: 0;
-  background: radial-gradient(circle at var(--story-map-focus-x,50%) var(--story-map-focus-y,50%),color-mix(in srgb,var(--story-map-active-accent) 22%,transparent) 0%,transparent 13%);
-  transition: background-position .7s ease;
-  pointer-events: none;
-}
-.story-map-world {
-  position: absolute;
-  inset: 0;
-  transform: translate3d(var(--story-map-pan-x,0),calc(var(--story-map-pan-y,0%) + var(--story-shift,0px)),0) scale(1.035);
-  transform-origin: center;
-  transition: transform .72s cubic-bezier(.2,.7,.2,1);
-  will-change: transform;
-}
-.story-map-world > img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: var(--story-map-opacity);
-  filter: var(--story-map-filter);
-}
-.story-map-location {
-  position: absolute;
-  z-index: 3;
-  width: 0;
-  height: 0;
-}
-.story-map-pin {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  text-decoration: none;
-  transform: translate(calc(-50% + var(--story-pin-x,0px)),calc(-50% + var(--story-pin-y,0px)));
-}
-.story-map-pin-dot {
-  width: 16px;
-  height: 16px;
-  display: block;
-  background: var(--project-accent,var(--story-cyan));
-  border: 3px solid var(--story-projects-raised);
+  left: 9px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--project-accent);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px color-mix(in srgb,var(--project-accent) 20%,transparent);
-  transition: width .28s ease,height .28s ease,box-shadow .28s ease;
+  transform: translateY(-50%);
+  transition: box-shadow .2s ease;
 }
-.story-map-pin.is-active { z-index: 5; }
-.story-map-pin.is-active .story-map-pin-dot {
-  width: 22px;
-  height: 22px;
-  box-shadow: 0 0 0 7px color-mix(in srgb,var(--project-accent) 22%,transparent);
+.story-project-index a:hover,
+.story-project-index a:focus-visible,
+.story-project-index a[aria-current="location"] {
+  background: var(--story-projects-raised);
+  transform: translateX(4px);
 }
-.story-map-pin-label {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% - 4px);
-  max-width: 180px;
-  padding: 6px 8px;
-  color: var(--story-map-label-ink);
-  background: var(--story-map-label-bg);
-  box-shadow: 0 8px 20px rgba(0,37,84,.14);
-  font-size: .65rem;
-  font-weight: 800;
-  line-height: 1.2;
-  opacity: 0;
-  transform: translate3d(-50%,5px,0);
-  transition: opacity .2s ease,transform .2s ease;
-  pointer-events: none;
-  white-space: nowrap;
+.story-project-index a[aria-current="location"]::before {
+  box-shadow: 0 0 0 5px color-mix(in srgb,var(--project-accent) 22%,transparent);
 }
-.story-map-location.is-east .story-map-pin-label { right: 50%; left: auto; transform: translate3d(0,5px,0); }
-.story-map-pin:hover .story-map-pin-label,
-.story-map-pin:focus-visible .story-map-pin-label,
-.story-map-pin.is-active .story-map-pin-label { opacity: 1; transform: translate3d(-50%,0,0); }
-.story-map-location.is-east .story-map-pin:hover .story-map-pin-label,
-.story-map-location.is-east .story-map-pin:focus-visible .story-map-pin-label,
-.story-map-location.is-east .story-map-pin.is-active .story-map-pin-label { transform: translate3d(0,0,0); }
-.story-map-pin:focus-visible { outline: none; }
-.story-map-pin:focus-visible .story-map-pin-dot { outline: 3px solid var(--story-gold); outline-offset: 5px; }
+.story-project-index span {
+  color: var(--story-projects-muted);
+  font-size: .67rem;
+  font-weight: 750;
+}
+.story-project-index strong {
+  font-size: .79rem;
+  line-height: 1.3;
+}
 .story-project-stage-active {
   min-height: 84px;
   padding: 14px 0 0;
@@ -978,7 +925,6 @@
     backdrop-filter: blur(16px) saturate(115%);
   }
   .story-project-stage-copy { display: none; }
-  .story-map { width: 100%; max-width: 100%; }
   .story-project-stage-active { min-height: 0; padding: 0; }
   .story-project-chapter { min-height: auto; }
   .story-tool-grid { grid-template-columns: 1fr; }
@@ -1059,7 +1005,6 @@
   .story-hero-visual figcaption,
   .story-outcome-depth > figure,
   .story-outcome-panorama img,
-  .story-map-world,
   .story-tool figure img,
   .story-cohort-art { transform: none !important; }
 }
@@ -1078,20 +1023,8 @@
   .story-framework dl > div { color: CanvasText; background: Canvas; box-shadow: none; }
   .story-header nav a[aria-current="location"] { color: HighlightText; background: Highlight; }
   .story-cohort-art,
-  .story-hero-detail-anchor,
-  .story-map::after { display: none; }
-  .story-map { background: Canvas; border: 1px solid CanvasText; }
-  .story-map-world > img {
-    opacity: 1;
-    filter: grayscale(1) brightness(.55) contrast(1.3);
-    forced-color-adjust: none;
-  }
-  .story-map-pin-label {
-    color: CanvasText;
-    background: Canvas;
-    border: 1px solid CanvasText;
-    box-shadow: none;
-  }
+  .story-hero-detail-anchor { display: none; }
+  .story-project-index a { color: CanvasText; background: Canvas; border: 1px solid CanvasText; }
   .story-participant-logo { background: Canvas; border: 1px solid CanvasText; }
   .story-participant-logo img { forced-color-adjust: none; }
   .apto-story :focus-visible { outline: 3px solid Highlight; }

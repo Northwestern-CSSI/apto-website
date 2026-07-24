@@ -6,7 +6,7 @@
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down.mjs";
 import Moon from "lucide-react/dist/esm/icons/moon.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 import {
   aptoBoilerplate,
@@ -284,134 +284,6 @@ function ProjectAccordionItem({ project }: { project: AptoProject }) {
   </details>;
 }
 
-function revealProject(awardId: string, focusSummary = false) {
-  const target = document.getElementById(`nsf-award-${awardId}`);
-  if (!(target instanceof HTMLDetailsElement)) return;
-  target.open = true;
-  if (focusSummary) requestAnimationFrame(() => target.querySelector<HTMLElement>("summary")?.focus({ preventScroll: true }));
-}
-
-type AwardeeMapEntry = { participant: AptoParticipant; project: AptoProject };
-
-function groupNearbyMapEntries(entries: AwardeeMapEntry[]) {
-  return entries.reduce<AwardeeMapEntry[][]>((groups, entry) => {
-    const nearby = groups.find((group) => group.some((candidate) => Math.hypot(
-      candidate.participant.mapPosition.x - entry.participant.mapPosition.x,
-      candidate.participant.mapPosition.y - entry.participant.mapPosition.y,
-    ) < 2));
-    if (nearby) nearby.push(entry);
-    else groups.push([entry]);
-    return groups;
-  }, []);
-}
-
-function AwardeeMapCluster({ id, group, x, y }: { id: string; group: AwardeeMapEntry[]; x: number; y: number }) {
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const clusterKey = group.map(({ participant }) => participant.id).join("-");
-  const panelId = `${id}-awardee-cluster-${clusterKey}`;
-  const titleId = `${panelId}-title`;
-  const names = group.map(({ participant }) => `${participant.displayName}, ${participant.location}`).join("; ");
-
-  useEffect(() => {
-    if (!open) return;
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target;
-      if (target instanceof Node && !rootRef.current?.contains(target)) setOpen(false);
-    };
-    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      event.preventDefault();
-      setOpen(false);
-      requestAnimationFrame(() => triggerRef.current?.focus());
-    };
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [open]);
-
-  return <div
-    ref={rootRef}
-    className={`nsf-awardee-map-cluster${open ? " is-open" : ""}`}
-    style={{ left: `${x}%`, top: `${y}%` } as CSSProperties}
-  >
-    <button
-      ref={triggerRef}
-      type="button"
-      aria-expanded={open}
-      aria-controls={panelId}
-      aria-label={`${group.length} ${aptoInterface.projects.map.nearbyLocationsLabel}: ${names}`}
-      onClick={() => setOpen((value) => !value)}
-    ><span aria-hidden="true">{group.length}</span></button>
-    <div id={panelId} hidden={!open} aria-labelledby={titleId}>
-      <strong id={titleId}>{group.length} {aptoInterface.projects.map.nearbyProjectsLabel}</strong>
-      {group.map(({ participant, project }) => <a
-        href={`#nsf-award-${project.awardId}`}
-        key={participant.id}
-        onClick={() => {
-          setOpen(false);
-          revealProject(project.awardId, true);
-        }}
-      ><span>{participant.displayName}</span><small>{participant.location}</small></a>)}
-    </div>
-  </div>;
-}
-
-function AwardeeMap({ id }: { id: string }) {
-  const map = aptoInterface.projects.map;
-  const entries = aptoParticipants.flatMap((participant) => {
-    const project = projectForParticipant(participant.id);
-    return project ? [{ participant, project }] : [];
-  });
-  const mapGroups = groupNearbyMapEntries(entries);
-  return <aside className="nsf-awardee-map" aria-labelledby={`${id}-awardee-map-title`}>
-    <header><p>{map.eyebrow}</p><h2 id={`${id}-awardee-map-title`}>{map.title}</h2><span>{map.description}</span></header>
-    <figure>
-      <div className="nsf-awardee-map-plot">
-        <img className="nsf-awardee-map-base" src={withDeploymentBase(map.imageUrl)} alt={map.imageAlt} width="959" height="593" loading="lazy" />
-        {mapGroups.map((group) => {
-          const x = group.reduce((total, entry) => total + entry.participant.mapPosition.x, 0) / group.length;
-          const y = group.reduce((total, entry) => total + entry.participant.mapPosition.y, 0) / group.length;
-          if (group.length === 1) {
-            const [{ participant, project }] = group;
-            return <a
-              className="nsf-awardee-map-pin"
-              key={participant.id}
-              href={`#nsf-award-${project.awardId}`}
-              onClick={() => revealProject(project.awardId)}
-              style={{ left: `${x}%`, top: `${y}%`, "--nsf-participant-accent": participant.accent } as CSSProperties}
-              aria-label={`${participant.displayName}, ${participant.location}`}
-            ><span aria-hidden="true">{participantMonogram(participant.displayName)}</span></a>;
-          }
-          return <AwardeeMapCluster
-            key={group.map(({ participant }) => participant.id).join("-")}
-            id={id}
-            group={group}
-            x={x}
-            y={y}
-          />;
-        })}
-      </div>
-      <figcaption>{map.caption}</figcaption>
-    </figure>
-    <ul className="nsf-awardee-map-legend">
-      {aptoParticipants.map((participant) => {
-        const project = projectForParticipant(participant.id);
-        return project ? <li key={participant.id}>
-          <a href={`#nsf-award-${project.awardId}`} onClick={() => revealProject(project.awardId)}>
-            <ParticipantMark participant={participant} size="compact" />
-            <span><strong>{participant.displayName}</strong><small>{participant.location}</small></span>
-          </a>
-        </li> : null;
-      })}
-    </ul>
-  </aside>;
-}
-
 function ProjectsSection({ id, pageHeading = false }: { id: string; pageHeading?: boolean }) {
   const copy = copyFor("projects");
   const projects = aptoProjects;
@@ -421,7 +293,6 @@ function ProjectsSection({ id, pageHeading = false }: { id: string; pageHeading?
       <div className="nsf-project-ledger" id={`${id}-project-list`}>
         {projects.map((project) => <ProjectAccordionItem key={project.awardId} project={project} />)}
       </div>
-      <AwardeeMap id={id} />
     </div>
   </section>;
 }

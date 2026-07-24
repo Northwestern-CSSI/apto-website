@@ -115,11 +115,8 @@ grant reuse rights. Confirm approved artwork and usage before final launch.
 Brand Standards and Usage guidance. The required NSF acknowledgement and
 disclaimer are maintained in `../program.md`.
 
-## Map and social image
+## Social images
 
-- `us-map.svg` is the project-page base map. Its CC0 Wikimedia source metadata
-  is recorded in `../interface.md`. The map image is decorative because the
-  adjacent keyboard-operable legend provides the same locations in text.
 - `og-apto.png` is the social preview image. Keep social replacements at
   1200 × 630 pixels and ensure important text remains legible in small link
   previews.

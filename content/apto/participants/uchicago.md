@@ -25,8 +25,7 @@
     "status": "approval-required",
     "approved": false
   },
-  "accent": "#002554",
-  "mapPosition": { "x": 64.28, "y": 35.69 }
+  "accent": "#002554"
 }
 ---
 

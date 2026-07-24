@@ -33,8 +33,7 @@ Organizations are displayed alphabetically without a ranking field.
     "status": "approval-required",
     "approved": false
   },
-  "accent": "#005699",
-  "mapPosition": { "x": 50, "y": 50 }
+  "accent": "#005699"
 }
 ---
 
@@ -59,14 +58,6 @@ Organizations are displayed alphabetically without a ranking field.
 - The H1 must exactly match `displayName`. Organization records do not use H2
   sections; the related project provides the research summary shown on the
   website.
-
-## Map position
-
-`mapPosition.x` and `mapPosition.y` are percentages from 0 to 100 on the
-configured 959 × 593 Albers-projection U.S. map. They are not longitude and
-latitude. Recalculate the percentages when replacing the map rather than
-visually moving neighboring cities apart. Nearby locations are grouped into an
-accessible cluster automatically.
 
 ## Adding a new organization
 

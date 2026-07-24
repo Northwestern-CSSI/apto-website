@@ -12,4 +12,4 @@
 
 ## Introduction
 
-Explore maps, forecasting views, evidence workbenches, scenario laboratories, and research-to-market interfaces emerging from APTO research. Filter the collection by participating institution or by the capability, production, and use dimensions each tool helps investigate.
+Explore broad research tools for detecting emerging technologies, mining technology-outcome evidence, aggregating research pipelines, predicting technological evolution, and comparing multiple outcome objectives. Filter the collection by participating institution or by the capability, production, and use dimensions each tool helps investigate.

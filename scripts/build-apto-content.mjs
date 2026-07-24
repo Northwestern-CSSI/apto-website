@@ -113,15 +113,6 @@ function requirePositiveNumber(object, key, context) {
   return value;
 }
 
-function requirePercentage(object, key, context) {
-  const value = object[key];
-  assert(
-    typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 100,
-    `${context}.${key} must be a number from 0 to 100`,
-  );
-  return value;
-}
-
 function requireHttpsUrl(value, context) {
   let url;
   try {
@@ -196,6 +187,17 @@ function compareAlphabetically(left, right) {
     left.localeCompare(right, "en", { sensitivity: "base" }) ||
     left.localeCompare(right, "en")
   );
+}
+
+const featuredParticipantOrder = new Map([
+  ["northwestern", 0],
+  ["uchicago", 1],
+]);
+
+function compareParticipantIds(leftId, rightId, leftLabel, rightLabel) {
+  const leftPriority = featuredParticipantOrder.get(leftId) ?? 2;
+  const rightPriority = featuredParticipantOrder.get(rightId) ?? 2;
+  return leftPriority - rightPriority || compareAlphabetically(leftLabel, rightLabel);
 }
 
 function omitFields(object, fields) {
@@ -643,7 +645,6 @@ function validateInterface(document) {
       "programMosaicLabel",
       "objectivesLabel",
       "participantsLabel",
-      "projectsMapLabel",
       "projectPortfolioLabel",
       "toolCollectionLabel",
       "toolDetailsLabel",
@@ -677,20 +678,8 @@ function validateInterface(document) {
     "dateStatusSeparator",
     "expandLabel",
   ];
-  assertExactKeys(projects, [...projectStringKeys, "map"], `${context}.projects`);
+  assertExactKeys(projects, projectStringKeys, `${context}.projects`);
   for (const key of projectStringKeys) requireString(projects, key, `${context}.projects`);
-  const map = requireObject(projects.map, `${context}.projects.map`);
-  assertExactKeys(
-    map,
-    ["eyebrow", "title", "description", "caption", "imageUrl", "imageAlt", "sourceUrl", "sourceLabel", "nearbyLocationsLabel", "nearbyProjectsLabel"],
-    `${context}.projects.map`,
-  );
-  for (const key of ["eyebrow", "title", "description", "caption", "imageUrl", "sourceUrl", "sourceLabel", "nearbyLocationsLabel", "nearbyProjectsLabel"]) {
-    requireString(map, key, `${context}.projects.map`);
-  }
-  requireStringValue(map.imageAlt, `${context}.projects.map.imageAlt`, { allowEmpty: true });
-  assert(map.imageUrl.startsWith("/apto/"), `${context}.projects.map.imageUrl must begin with /apto/`);
-  requireHttpsUrl(map.sourceUrl, `${context}.projects.map.sourceUrl`);
 
   requireStringKeys(
     metadata.tools,
@@ -734,13 +723,7 @@ function validateInterface(document) {
   );
   requireHttpsUrl(footer.nsfWebsiteUrl, `${context}.footer.nsfWebsiteUrl`);
   assert(footer.nsfLogoSrc.startsWith("/"), `${context}.footer.nsfLogoSrc must be a root-relative asset path`);
-  return {
-    ...omitFields(metadata, ["kind"]),
-    projects: {
-      ...projects,
-      map: omitFields(map, ["sourceUrl", "sourceLabel"]),
-    },
-  };
+  return omitFields(metadata, ["kind"]);
 }
 
 function validateParticipant(document) {
@@ -757,7 +740,6 @@ function validateParticipant(document) {
       "website",
       "logo",
       "accent",
-      "mapPosition",
     ],
     `${context} frontmatter`,
   );
@@ -772,10 +754,6 @@ function validateParticipant(document) {
   requireHttpsUrl(requireString(metadata, "website", context), `${context}.website`);
   const logo = validateParticipantLogo(metadata.logo, `${context}.logo`);
   assert(/^#[0-9A-F]{6}$/i.test(requireString(metadata, "accent", context)), `${context}.accent must be a six-digit hex color`);
-  const mapPosition = requireObject(metadata.mapPosition, `${context}.mapPosition`);
-  assertExactKeys(mapPosition, ["x", "y"], `${context}.mapPosition`);
-  requirePercentage(mapPosition, "x", `${context}.mapPosition`);
-  requirePercentage(mapPosition, "y", `${context}.mapPosition`);
   assert(sections.size === 0, `${context} does not support H2 sections`);
   return {
     sourceFile: file,
@@ -786,7 +764,6 @@ function validateParticipant(document) {
       website: metadata.website,
       logo: omitFields(logo, ["sourceUrl", "sourceLabel", "status", "approved"]),
       accent: metadata.accent,
-      mapPosition,
     },
   };
 }
@@ -1063,7 +1040,6 @@ async function buildContent() {
     [interfaceRecord.story.cohortArtSrc, "story.cohortArtSrc"],
     [interfaceRecord.atlas.socialImageSrc, "atlas.socialImageSrc"],
     [interfaceRecord.footer.nsfLogoSrc, "footer.nsfLogoSrc"],
-    [interfaceRecord.projects.map.imageUrl, "projects.map.imageUrl"],
   ]) {
     await validateImageAsset(
       publicPath,
@@ -1113,7 +1089,6 @@ async function buildContent() {
     interfaceRecord.story.cohortArtSrc,
     interfaceRecord.atlas.socialImageSrc,
     interfaceRecord.footer.nsfLogoSrc,
-    interfaceRecord.projects.map.imageUrl,
     ...programRecord.program.landingGallery.map((image) => image.src),
     ...participantRecords.flatMap((record) => [
       record.participant.logo.variants.light.src,
@@ -1146,7 +1121,14 @@ async function buildContent() {
 
   const tools = toolRecords
     .map((record) => record.tool)
-    .sort((left, right) => compareAlphabetically(left.name, right.name));
+    .sort((left, right) => (
+      compareParticipantIds(
+        left.participantId,
+        right.participantId,
+        participantById.get(left.participantId).participant.displayName,
+        participantById.get(right.participantId).participant.displayName,
+      ) || compareAlphabetically(left.name, right.name)
+    ));
 
   const participants = participantRecords
     .map((record) => {
@@ -1162,7 +1144,12 @@ async function buildContent() {
         people,
       };
     })
-    .sort((left, right) => compareAlphabetically(left.displayName, right.displayName));
+    .sort((left, right) => compareParticipantIds(
+      left.id,
+      right.id,
+      left.displayName,
+      right.displayName,
+    ));
 
   const projects = projectRecords
     .map((record) => {
@@ -1181,7 +1168,14 @@ async function buildContent() {
         people,
       };
     })
-    .sort((left, right) => compareAlphabetically(left.shortName, right.shortName));
+    .sort((left, right) => (
+      compareParticipantIds(
+        left.participantId,
+        right.participantId,
+        left.organization,
+        right.organization,
+      ) || compareAlphabetically(left.shortName, right.shortName)
+    ));
 
   const sourceFiles = [
     programFile,

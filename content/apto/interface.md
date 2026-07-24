@@ -44,8 +44,8 @@
     "toolsLabel": "Exploration tools",
     "cohortLabel": "People and organizations",
     "projectStageTitle": "Five projects, one evidence base",
-    "projectStageDescription": "Project locations respond as you move through the portfolio.",
-    "toolCollectionLabel": "Research tools in development",
+    "projectStageDescription": "Move through five complementary approaches to assessing and predicting technology outcomes.",
+    "toolCollectionLabel": "research tools",
     "programLeadershipLabel": "Program leadership",
     "supportedByLabel": "Supported by the U.S. National Science Foundation"
   },
@@ -60,7 +60,6 @@
     "programMosaicLabel": "Research landscapes from across the APTO portfolio",
     "objectivesLabel": "Program objectives",
     "participantsLabel": "Participating organizations",
-    "projectsMapLabel": "Project locations",
     "projectPortfolioLabel": "Research portfolio",
     "toolCollectionLabel": "Tool gallery",
     "toolDetailsLabel": "View details",
@@ -84,19 +83,7 @@
     "awardLabel": "NSF award",
     "awardedPrefix": "Awarded in",
     "dateStatusSeparator": "–",
-    "expandLabel": "View project details",
-    "map": {
-      "eyebrow": "Project locations",
-      "title": "Where the cohort works",
-      "description": "APTO teams span universities and companies across the United States.",
-      "caption": "Select a location to move to that organization’s project.",
-      "imageUrl": "/apto/us-map.svg",
-      "imageAlt": "",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blank_US_Map_%28states_only%29.svg",
-      "sourceLabel": "CC0 map base from Wikimedia Commons",
-      "nearbyLocationsLabel": "nearby APTO project locations",
-      "nearbyProjectsLabel": "nearby projects"
-    }
+    "expandLabel": "View project details"
   },
   "tools": {
     "allOrganizationsLabel": "All organizations",
@@ -137,4 +124,4 @@
 
 ## Editorial guidance
 
-This file contains the editable labels, navigation, project-map configuration, tool-filter copy, accessibility text, and footer language shared by the light and dark APTO themes.
+This file contains the editable labels, navigation, tool-filter copy, accessibility text, and footer language shared by the light and dark APTO themes.
