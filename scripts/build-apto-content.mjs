@@ -29,7 +29,6 @@ const expectedBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
 
 const allowedCategories = new Set(["Capability", "Production", "Use"]);
-const allowedLinesOfEffort = new Set(["models", "data-tools"]);
 const allowedFigureKinds = new Set([
   "agent-network",
   "causal-graph",
@@ -429,9 +428,6 @@ function validateProgram(document) {
       "objectives",
       "landingGallery",
       "lastVerified",
-      "framework",
-      "outcomes",
-      "linesOfEffort",
       "boilerplate",
       "sources",
     ],
@@ -460,39 +456,6 @@ function validateProgram(document) {
   assertUnique(landingGallery.map((image) => image.alt), `${context}.landingGallery descriptions`);
   requireIsoDate(requireString(metadata, "lastVerified", context), `${context}.lastVerified`);
 
-  const framework = requireStringKeys(
-    metadata.framework,
-    ["ariaLabel", "outcomesTitle", "outcomesNote", "effortsTitle", "effortsNote"],
-    `${context}.framework`,
-  );
-
-  const outcomes = requireArray(metadata, "outcomes", context);
-  assertExactSet(
-    outcomes.map((outcome, index) => {
-      const outcomeContext = `${context}.outcomes[${index}]`;
-      requireObject(outcome, outcomeContext);
-      assertExactKeys(outcome, ["name", "description"], outcomeContext);
-      requireString(outcome, "description", outcomeContext);
-      return requireString(outcome, "name", outcomeContext);
-    }),
-    allowedCategories,
-    `${context}.outcomes`,
-  );
-
-  const linesOfEffort = requireArray(metadata, "linesOfEffort", context);
-  assertExactSet(
-    linesOfEffort.map((line, index) => {
-      const lineContext = `${context}.linesOfEffort[${index}]`;
-      requireObject(line, lineContext);
-      assertExactKeys(line, ["id", "title", "description"], lineContext);
-      requireString(line, "title", lineContext);
-      requireString(line, "description", lineContext);
-      return requireString(line, "id", lineContext);
-    }),
-    allowedLinesOfEffort,
-    `${context}.linesOfEffort`,
-  );
-
   assert(metadata.boilerplate === expectedBoilerplate, `${context}.boilerplate must match the approved NSF language exactly`);
   const sources = requireArray(metadata, "sources", context);
   sources.forEach((source, index) => {
@@ -509,7 +472,7 @@ function validateProgram(document) {
   assert(description, `${context} must contain a non-empty “## Description” section`);
   const program = omitFields(metadata, ["kind", "id", "boilerplate", "sources"]);
   return {
-    program: { ...program, framework, description: normalizeProse(description) },
+    program: { ...program, description: normalizeProse(description) },
     boilerplate: metadata.boilerplate,
   };
 }
@@ -1258,7 +1221,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 15,
+      schemaVersion: 16,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

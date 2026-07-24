@@ -15,6 +15,7 @@ import {
   aptoBoilerplate,
   aptoConvenings,
   aptoInterface,
+  aptoOutcomes,
   aptoPages,
   aptoParticipants,
   aptoProgram,
@@ -299,17 +300,6 @@ function ProgramPage() {
       <ol>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ol>
     </section>
 
-    <section className="atlas-framework" aria-label={aptoProgram.framework.ariaLabel}>
-      <article>
-        <header><h2>{aptoProgram.framework.outcomesTitle}</h2></header>
-        <dl>{aptoProgram.outcomes.map((outcome) => <div key={outcome.name}><dt>{outcome.name}</dt><dd>{outcome.description}</dd></div>)}</dl>
-      </article>
-      <article>
-        <header><h2>{aptoProgram.framework.effortsTitle}</h2></header>
-        <dl>{aptoProgram.linesOfEffort.map((effort) => <div key={effort.id}><dt>{effort.title}</dt><dd>{effort.description}</dd></div>)}</dl>
-      </article>
-    </section>
-
     <section className="atlas-participants" aria-labelledby="atlas-participants-title">
       <header>
         <h2 id="atlas-participants-title">A nationwide research cohort</h2>
@@ -566,7 +556,7 @@ function ToolsPage() {
               onChange={(event) => { setCategory(event.target.value); setExpandedTool(null); }}
             >
               <option value="all">{aptoInterface.tools.allCategoriesLabel}</option>
-              {aptoProgram.outcomes.map((outcome) => <option key={outcome.name} value={outcome.name}>{outcome.name}</option>)}
+              {aptoOutcomes.map((outcome) => <option key={outcome} value={outcome}>{outcome}</option>)}
             </select>
           </label>
         </fieldset>

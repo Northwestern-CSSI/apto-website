@@ -21,7 +21,7 @@ content, so one edit updates both presentations.
 | Website content | Source |
 | --- | --- |
 | Homepage title and introduction | `pages/home.md` |
-| Program description, objectives, landing gallery, framework, NSF language, sources | `program.md` |
+| Program description, objectives, landing gallery, NSF language, sources | `program.md` |
 | Projects-page introduction | `pages/projects.md` |
 | Individual projects | `projects/*.md` |
 | Tools-page introduction | `pages/tools.md` |

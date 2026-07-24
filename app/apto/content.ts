@@ -4,7 +4,6 @@ import generatedContent from "./content.generated.json";
 // require a TypeScript edit.
 export type AptoParticipantId = string;
 export type AptoOutcome = "Capability" | "Production" | "Use";
-export type AptoLineOfEffortId = "models" | "data-tools";
 
 export type AptoParticipantLogoAsset = {
   src: string;
@@ -114,12 +113,6 @@ export type AptoConvening = {
   }>;
 };
 
-export type AptoProgramLineOfEffort = {
-  id: AptoLineOfEffortId;
-  title: string;
-  description: string;
-};
-
 export type AptoProgram = {
   name: string;
   acronym: "APTO";
@@ -131,18 +124,6 @@ export type AptoProgram = {
     alt: string;
   }>;
   programTeam: AptoProgramPerson[];
-  framework: {
-    ariaLabel: string;
-    outcomesTitle: string;
-    outcomesNote: string;
-    effortsTitle: string;
-    effortsNote: string;
-  };
-  outcomes: Array<{
-    name: AptoOutcome;
-    description: string;
-  }>;
-  linesOfEffort: AptoProgramLineOfEffort[];
 };
 
 export type AptoPageSlug =
@@ -314,3 +295,4 @@ export const aptoParticipants = aptoContent.participants;
 export const aptoProjects = aptoContent.projects;
 export const aptoTools = aptoContent.tools;
 export const aptoConvenings = aptoContent.convenings;
+export const aptoOutcomes: readonly AptoOutcome[] = ["Capability", "Production", "Use"];

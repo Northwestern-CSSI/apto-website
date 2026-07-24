@@ -33,39 +33,6 @@
     }
   ],
   "lastVerified": "2026-07-20",
-  "framework": {
-    "ariaLabel": "APTO research framework",
-    "outcomesTitle": "Outcome lenses",
-    "outcomesNote": "What APTO measures",
-    "effortsTitle": "Research tracks",
-    "effortsNote": "How APTO builds evidence"
-  },
-  "outcomes": [
-    {
-      "name": "Capability",
-      "description": "What a technology can do and how its technical performance changes."
-    },
-    {
-      "name": "Production",
-      "description": "How a technology is made, scaled, supplied, and supported by organizations and infrastructure."
-    },
-    {
-      "name": "Use",
-      "description": "How a technology is adopted, deployed, and translated into economic or societal outcomes."
-    }
-  ],
-  "linesOfEffort": [
-    {
-      "id": "data-tools",
-      "title": "Data Sets and Tools",
-      "description": "Data resources, measurement approaches, and tools that make technology-outcome evidence easier to assemble, analyze, validate, and share."
-    },
-    {
-      "id": "models",
-      "title": "Technology Outcome Models",
-      "description": "Generalizable, empirically grounded models for assessing and predicting technology capability, production, and use across past and possible future states."
-    }
-  ],
   "boilerplate": "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
   "sources": [
     {

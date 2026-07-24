@@ -35,6 +35,12 @@ const baseline = {
 };
 const nsfBoilerplate =
   "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.";
+const removedProgramFrameworkCopy = [
+  "Outcome lenses",
+  "Research tracks",
+  "Data Sets and Tools",
+  "Technology Outcome Models",
+];
 const imageExtensions = new Set([".avif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 
 function compareAlphabetically(left, right) {
@@ -271,6 +277,8 @@ test("renders one shared, content-complete long-scroll story at both public rout
     assert.ok(text.includes(content.program.description));
     assert.ok(text.includes(content.program.objectivesTitle));
     for (const objective of content.program.objectives) assert.ok(text.includes(objective));
+    for (const removedCopy of removedProgramFrameworkCopy) assert.equal(text.includes(removedCopy), false);
+    assert.doesNotMatch(markup, /story-outcome-panorama|story-framework/);
 
     assert.equal(countMatches(markup, /class="story-project-chapter"/g), content.projects.length);
     assert.equal(countMatches(markup, /class="story-tool"/g), content.tools.length);
@@ -291,8 +299,8 @@ test("renders one shared, content-complete long-scroll story at both public rout
 
     const parallaxSpeeds = [...markup.matchAll(/data-story-parallax="(-?[\d.]+)"/g)]
       .map((match) => Number(match[1]));
-    assert.ok(parallaxSpeeds.length >= 8, `${path} should expose a layered scroll experience`);
-    assert.ok(new Set(parallaxSpeeds).size >= 6, `${path} should use several distinct parallax depths`);
+    assert.ok(parallaxSpeeds.length >= 5, `${path} should expose a layered scroll experience`);
+    assert.ok(new Set(parallaxSpeeds).size >= 4, `${path} should use several distinct parallax depths`);
     assert.ok(parallaxSpeeds.some((speed) => speed < 0), `${path} should include a counter-moving layer`);
     assert.ok(parallaxSpeeds.every((speed) => Number.isFinite(speed) && Math.abs(speed) <= 0.1));
     assert.match(
@@ -300,14 +308,11 @@ test("renders one shared, content-complete long-scroll story at both public rout
       /class="story-hero-detail-anchor" data-story-parallax="0\.095" data-story-parallax-limit="76"/,
       "The hero inset should have an independently measured foreground parallax depth",
     );
-    assert.match(markup, /class="story-outcome-depth" data-story-parallax="0\.040" data-story-parallax-limit="88"/);
-    assert.match(markup, /class="story-outcome-depth" data-story-parallax="0\.070" data-story-parallax-limit="88"/);
-    assert.match(markup, /class="story-outcome-depth" data-story-parallax="0\.100" data-story-parallax-limit="88"/);
     for (const [index, section] of expectedSections.entries()) {
       const start = markup.indexOf(`id="story-${section}"`);
       const next = expectedSections[index + 1];
       const end = next ? markup.indexOf(`id="story-${next}"`, start) : markup.length;
-      if (section !== "projects") {
+      if (!["program", "projects"].includes(section)) {
         assert.match(markup.slice(start, end), /data-story-parallax="-?[\d.]+"/, `${section} needs a scroll-reactive visual`);
       }
     }
@@ -555,6 +560,8 @@ test("renders one shared, content-complete APTO Atlas page tree at both route fa
       if (section === "home") {
         assert.ok(text.includes(content.program.description));
         for (const objective of content.program.objectives) assert.ok(text.includes(objective));
+        for (const removedCopy of removedProgramFrameworkCopy) assert.equal(text.includes(removedCopy), false);
+        assert.doesNotMatch(markup, /atlas-framework/);
         assert.equal(countMatches(markup, /class="atlas-organization-index"/g), 1);
         const mosaic = markup.match(/<section class="atlas-program-mosaic"[\s\S]*?<\/section>/)?.[0];
         assert.ok(mosaic, `${path} should render the program visual gallery`);
@@ -862,6 +869,7 @@ test("renders one shared page structure, supports both themes, and preserves eve
         "Mock content",
         "Prototype accessibility approach",
         "Project taxonomy",
+        ...removedProgramFrameworkCopy,
       ]) {
         assert.equal(text.includes(forbidden), false, `${section} must not render legacy content: ${forbidden}`);
       }

@@ -12,6 +12,7 @@ import {
   aptoBoilerplate,
   aptoConvenings,
   aptoInterface,
+  aptoOutcomes,
   aptoPages,
   aptoParticipants,
   aptoProgram,
@@ -58,16 +59,6 @@ function copyFor(section: AptoSection) {
   const page = aptoPages.find((candidate) => candidate.slug === pageSlug[section]);
   if (!page) throw new Error(`Missing Markdown page content for ${section}`);
   return page;
-}
-
-function displayRecord(value: unknown) {
-  if (typeof value === "string") return { label: value, description: "" };
-  if (!value || typeof value !== "object") return { label: String(value ?? ""), description: "" };
-  const record = value as Record<string, unknown>;
-  return {
-    label: String(record.label ?? record.name ?? record.title ?? record.value ?? ""),
-    description: String(record.description ?? record.detail ?? record.note ?? ""),
-  };
 }
 
 function participantFor(id: string) {
@@ -232,22 +223,6 @@ function ProgramOverview({ id, pageHeading = false }: { id: string; pageHeading?
       <h2 id={`${id}-objectives-title`}>{aptoProgram.objectivesTitle}</h2>
       <ul>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
     </section>
-    <div className="nsf-overview-framework" role="group" aria-label={aptoProgram.framework.ariaLabel}>
-      <section className="nsf-framework-block is-outcomes" aria-labelledby={`${id}-outcomes-title`}>
-        <header className="nsf-framework-heading"><h2 id={`${id}-outcomes-title`}>{aptoProgram.framework.outcomesTitle}</h2></header>
-        <dl className="nsf-framework-items">{aptoProgram.outcomes.map((outcome) => {
-          const item = displayRecord(outcome);
-          return <div key={item.label}><dt>{item.label}</dt>{item.description && <dd>{item.description}</dd>}</div>;
-        })}</dl>
-      </section>
-      <section className="nsf-framework-block is-efforts" aria-labelledby={`${id}-efforts-title`}>
-        <header className="nsf-framework-heading"><h2 id={`${id}-efforts-title`}>{aptoProgram.framework.effortsTitle}</h2></header>
-        <dl className="nsf-framework-items">{aptoProgram.linesOfEffort.map((line) => {
-          const item = displayRecord(line);
-          return <div key={item.label}><dt>{item.label}</dt>{item.description && <dd>{item.description}</dd>}</div>;
-        })}</dl>
-      </section>
-    </div>
   </section>;
 }
 
@@ -366,7 +341,7 @@ function ToolsSection({ id, pageHeading = false }: { id: string; pageHeading?: b
   ];
   const categoryOptions = [
     { id: "all", label: aptoInterface.tools.allCategoriesLabel },
-    ...aptoProgram.outcomes.map((outcome) => ({ id: outcome.name, label: outcome.name })),
+    ...aptoOutcomes.map((outcome) => ({ id: outcome, label: outcome })),
   ];
   const tools = aptoTools.filter((tool) => (
     (participant === "all" || tool.participantId === participant)

@@ -81,8 +81,8 @@ for (const page of storyPages) {
     }
   }
   const parallaxSpeeds = [...html.matchAll(/data-story-parallax="(-?[\d.]+)"/g)].map((match) => Number(match[1]));
-  assert.ok(parallaxSpeeds.length >= 8, `${page} needs layered scroll visuals`);
-  assert.ok(new Set(parallaxSpeeds).size >= 6, `${page} needs varied parallax depths`);
+  assert.ok(parallaxSpeeds.length >= 5, `${page} needs layered scroll visuals`);
+  assert.ok(new Set(parallaxSpeeds).size >= 4, `${page} needs varied parallax depths`);
   assert.ok(parallaxSpeeds.some((speed) => speed < 0), `${page} needs a counter-moving parallax layer`);
   assert.ok(!html.includes(`${basePath}${basePath}`), `${page} must not duplicate the deployment base path`);
   assert.ok(html.includes(`${basePath}/_next/`), `${page} needs base-path-safe framework assets`);
