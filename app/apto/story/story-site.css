@@ -714,7 +714,7 @@
 .story-tool {
   position: relative;
   min-width: 0;
-  min-height: clamp(680px,58vw,780px);
+  min-height: clamp(600px,50vw,660px);
   overflow: hidden;
   color: #f8fbfd;
   background: #06192b;
@@ -743,6 +743,7 @@
   font-size: .66rem;
 }
 .story-tool-copy {
+  --resource-panel-edge: clamp(24px,3vw,36px);
   position: absolute;
   z-index: 2;
   inset: 0;
@@ -983,8 +984,8 @@
 }
 
 @media (max-width: 520px) {
-  .story-tool { min-height: 820px; }
-  .story-tool-copy { padding: 18px; }
+  .story-tool { min-height: 700px; }
+  .story-tool-copy { --resource-panel-edge: 18px; padding: 18px; }
 }
 
 @media (max-width: 700px) {

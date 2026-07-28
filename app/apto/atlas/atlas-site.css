@@ -415,7 +415,7 @@
 .atlas-tool-toolbar select { min-height: 44px; padding: 0 38px 0 12px; color: var(--atlas-ink); background: var(--atlas-surface); border: 1px solid var(--atlas-line-strong); border-radius: 5px; font-size: .76rem; font-weight: 700; }
 .atlas-tool-count { min-width: 108px; color: var(--atlas-copy); font-size: .72rem; text-align: right; }
 .atlas-tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); }
-.atlas-tool-card { position: relative; min-width: 0; aspect-ratio: 5 / 6; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
+.atlas-tool-card { position: relative; min-width: 0; aspect-ratio: 1 / 1.08; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
 .atlas-tool-card::after { content: ""; position: absolute; z-index: 4; inset: 0; border: 1px solid rgb(255 255 255 / 14%); border-radius: inherit; pointer-events: none; }
 .atlas-tool-media,
 .atlas-tool-media img,
@@ -546,7 +546,7 @@
   .atlas-view-nav a,
   .atlas-view-nav span { padding: 0 6px; }
   .atlas-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .atlas-tool-card { aspect-ratio: 5 / 5.8; }
+  .atlas-tool-card { aspect-ratio: 1 / 1.04; }
   .atlas-tool-panel { height: 50%; }
   .atlas-program-mosaic { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: clamp(260px, 31vw, 350px); }
   .atlas-program-mosaic figure { grid-column: span 2; }
@@ -637,7 +637,7 @@
   .atlas-tool-toolbar fieldset { display: grid; }
   .atlas-tool-toolbar label { min-width: 0; }
   .atlas-tool-grid { grid-template-columns: 1fr; }
-  .atlas-tool-card { width: min(100%, 560px); margin: 0 auto; aspect-ratio: 4 / 5; }
+  .atlas-tool-card { width: min(100%, 560px); max-height: 520px; margin: 0 auto; aspect-ratio: 1 / 1.04; }
   .atlas-leadership { width: calc(100% - 32px); padding: 28px 22px; }
   .atlas-team-chapter { min-height: 0; padding: 28px 22px; }
   .atlas-team-people { grid-template-columns: 1fr; }
@@ -916,21 +916,21 @@
 .atlas-tool-media.apto-tool-gallery > img.is-current { opacity: 1; }
 .atlas-tool-media.apto-tool-gallery > img.is-current.is-leaving { opacity: 0; }
 .atlas-tool-media.apto-tool-gallery > img.is-incoming { opacity: 1; }
-.atlas-tool-card .atlas-tool-panel { height: 100%; padding: 18px; }
-.apto-resource-path-atlas { gap: 12px; }
-.apto-resource-path-atlas .apto-resource-route { min-height: 154px; grid-template-rows: repeat(2,72px); gap: 8px; }
+.atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 18px; height: 100%; padding: 18px; }
+.apto-resource-path-atlas .apto-resource-route { min-height: 148px; grid-template-rows: repeat(2,69px); gap: 8px; }
 .apto-resource-path-atlas .apto-resource-thumb { width: min(100%,52px); }
 .apto-resource-path-atlas .apto-resource-node { gap: 5px; }
 .apto-resource-path-atlas .apto-resource-node strong { font-size: .52rem; }
-.apto-resource-path-atlas .apto-resource-summary { min-height: 136px; padding: 14px 15px; }
+.apto-resource-path-atlas .apto-resource-summary { min-height: 120px; padding-top: 14px; padding-bottom: 13px; }
 .apto-resource-path-atlas .apto-resource-summary > p { margin-bottom: 5px; font-size: .5rem; }
-.apto-resource-path-atlas .apto-resource-summary h2 { font-size: 1rem; }
-.apto-resource-path-atlas .apto-resource-summary > span { margin-top: 6px; font-size: .61rem; line-height: 1.38; -webkit-line-clamp: 3; }
+.apto-resource-path-atlas .apto-resource-summary h2 { font-size: clamp(1.12rem,1.4vw,1.34rem); }
+.apto-resource-path-atlas .apto-resource-summary > span { margin-top: 6px; font-size: .69rem; line-height: 1.42; -webkit-line-clamp: 3; }
 
 @media (max-width: 520px) {
   .atlas-project-identity > .atlas-logo {
     width: 126px;
     height: 70px;
   }
-  .atlas-tool-card .atlas-tool-panel { padding: 16px; }
+  .atlas-tool-card { min-height: 520px; max-height: none; aspect-ratio: auto; }
+  .atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 16px; padding: 16px; }
 }

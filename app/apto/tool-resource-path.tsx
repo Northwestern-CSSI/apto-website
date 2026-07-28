@@ -75,6 +75,7 @@ export function ToolResourcePath({
         const common = {
           className,
           onMouseEnter: () => setActiveIndex(index),
+          onMouseLeave: () => setActiveIndex((current) => current === index ? null : current),
           onFocus: () => setActiveIndex(index),
           "aria-describedby": summaryId,
           "aria-current": active ? "true" as const : undefined,
