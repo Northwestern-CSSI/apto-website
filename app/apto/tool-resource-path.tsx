@@ -3,7 +3,7 @@
 /* Content-managed images use deployment-aware URLs. */
 /* eslint-disable @next/next/no-img-element */
 
-import { useId, useState, type FocusEvent } from "react";
+import { useId, useState, type FocusEvent, type MouseEvent } from "react";
 
 import { withDeploymentBase } from "./paths";
 
@@ -53,6 +53,12 @@ export function ToolResourcePath({
     if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setActiveIndex(null);
   };
 
+  const resetAfterPointerExit = (event: MouseEvent<HTMLElement>) => {
+    const nextTarget = event.relatedTarget;
+    if (nextTarget instanceof Element && nextTarget.closest(".apto-resource-node")) return;
+    setActiveIndex(null);
+  };
+
   return <section
     className={`apto-resource-path apto-resource-path-${variant}${featured ? " is-featured" : ""}${activeResource ? " has-active-resource" : ""}`}
     aria-label={label}
@@ -72,6 +78,7 @@ export function ToolResourcePath({
         const common = {
           className,
           onMouseEnter: () => setActiveIndex(index),
+          onMouseLeave: resetAfterPointerExit,
           onFocus: () => setActiveIndex(index),
           "aria-describedby": summaryId,
           "aria-current": active ? "true" as const : undefined,

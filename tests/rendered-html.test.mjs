@@ -172,7 +172,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /onMouseLeave=\{\(\) => setActiveIndex\(null\)\}/);
-  assert.doesNotMatch(resourceSource, /onMouseLeave:\s*\(\)\s*=>/);
+  assert.match(resourceSource, /onMouseLeave:\s*resetAfterPointerExit/);
+  assert.match(resourceSource, /nextTarget\.closest\("\.apto-resource-node"\)/);
   assert.match(resourceSource, /apto-resource-summary-inset/);
   assert.doesNotMatch(resourceSource, /routePosition|gridColumn|gridRow/);
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
@@ -184,6 +185,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /grid-template-columns:\s*minmax\(0, 70%\) minmax\(0, 30%\)/);
   assert.match(resourceStyles, /\.apto-resource-route\s*>\s*li\s*\{[\s\S]*?flex:\s*0 1 25%/);
   assert.match(resourceStyles, /\.apto-resource-node\s*\{[\s\S]*?padding:\s*calc\(var\(--resource-gap\) \/ 2\)/);
+  assert.match(resourceStyles, /\.apto-resource-path\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.76rem/);
   const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);

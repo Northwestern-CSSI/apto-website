@@ -930,7 +930,7 @@
 .apto-resource-path-atlas .apto-resource-summary-copy > p { margin-bottom: 5px; font-size: .5rem; }
 .apto-resource-path-atlas .apto-resource-summary-copy h2 { font-size: clamp(1.04rem,1.25vw,1.2rem); }
 .apto-resource-path-atlas .apto-resource-summary-copy > span { margin-top: 5px; font-size: .66rem; line-height: 1.36; }
-.apto-resource-path-atlas.is-featured .apto-resource-summary-copy > span { font-size: .72rem; line-height: 1.38; }
+.apto-resource-path-atlas.is-featured .apto-resource-summary-copy > span { font-size: .76rem; line-height: 1.38; }
 
 @media (max-width: 520px) {
   .atlas-project-identity > .atlas-logo {
