@@ -7,7 +7,7 @@
   "initials": "AL",
   "role": "Co-Principal Investigator",
   "organization": null,
-  "headshotUrl": null,
+  "headshotUrl": "/apto/people/alicia-loffler.avif",
   "headshotAlt": "Portrait of Alicia I. Loffler",
   "profileUrl": null
 }

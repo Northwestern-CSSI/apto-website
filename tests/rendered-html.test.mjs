@@ -86,7 +86,7 @@ test("generated content follows the featured-institution order and supplied-imag
   const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
   assert.deepEqual(
     northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
-    ["dashun-wang", "benjamin-jones", "jian-cao", "yian-yin"],
+    ["dashun-wang", "alicia-loffler", "benjamin-jones", "jian-cao", "yian-yin"],
   );
   assert.equal(data.convenings[0].location, "Washington, D.C.");
 });
