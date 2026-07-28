@@ -192,9 +192,10 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /grid-template-columns:\s*minmax\(0, 70%\) minmax\(0, 30%\)/);
   assert.match(resourceStyles, /\.apto-resource-route\s*>\s*li\s*\{[\s\S]*?flex:\s*0 1 25%/);
   assert.match(resourceStyles, /\.apto-resource-node\s*\{[\s\S]*?padding:\s*calc\(var\(--resource-gap\) \/ 2\)/);
-  assert.match(resourceStyles, /\.apto-resource-path\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.76rem/);
+  assert.match(resourceStyles, /\.apto-resource-path\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.82rem/);
   assert.match(resourceStyles, /\.apto-resource-thumb img\[src\$="\.svg"\]/);
   const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
+  assert.match(atlasStyles, /\.apto-resource-path-atlas\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.82rem/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);
 });
