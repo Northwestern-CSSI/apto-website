@@ -70,7 +70,7 @@
 }
 
 .apto-resource-thumb {
-  width: min(100%, 76px);
+  width: min(100%, 82px);
   aspect-ratio: 1;
   display: block;
   overflow: hidden;
@@ -91,6 +91,7 @@
 .apto-resource-node.is-active .apto-resource-thumb img { transform: scale(1.1); }
 .apto-resource-node strong {
   min-width: 0;
+  min-height: 2.32em;
   max-width: 12ch;
   display: -webkit-box;
   overflow: hidden;
@@ -179,7 +180,7 @@
     --resource-gap: 10px;
   }
   .apto-resource-route > li { flex-basis: calc((100% - var(--resource-gap)) / 2); }
-  .apto-resource-thumb { width: min(100%, 68px); }
+  .apto-resource-thumb { width: min(100%, 72px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

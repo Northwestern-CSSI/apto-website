@@ -924,10 +924,7 @@
 .atlas-tool-media.apto-tool-gallery > img.is-current.is-leaving { opacity: 0; }
 .atlas-tool-media.apto-tool-gallery > img.is-incoming { opacity: 1; }
 .atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 18px; height: 100%; padding: 18px 18px 0; }
-.apto-resource-path-atlas .apto-resource-route { min-height: 0; --resource-gap: 8px; }
-.apto-resource-path-atlas .apto-resource-thumb { width: min(100%,52px); }
-.apto-resource-path-atlas .apto-resource-node { gap: 5px; }
-.apto-resource-path-atlas .apto-resource-node strong { font-size: .52rem; }
+.apto-resource-path-atlas .apto-resource-route { min-height: 0; }
 .apto-resource-path-atlas .apto-resource-summary { min-height: 0; padding-top: 15px; padding-bottom: 14px; }
 .apto-resource-path-atlas .apto-resource-summary > p { margin-bottom: 5px; font-size: .5rem; }
 .apto-resource-path-atlas .apto-resource-summary h2 { font-size: clamp(1.04rem,1.25vw,1.2rem); }

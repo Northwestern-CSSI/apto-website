@@ -174,6 +174,11 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /backdrop-filter:\s*blur\(4px\) saturate\(112%\)/);
   assert.match(resourceStyles, /grid-template-rows:\s*60% 40%/);
   assert.match(resourceStyles, /flex-flow:\s*row wrap-reverse/);
+  assert.match(resourceStyles, /width:\s*min\(100%, 82px\)/);
+  assert.match(resourceStyles, /min-height:\s*2\.32em/);
+  const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
+  assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
+  assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);
 });
 
 test("light and dark logo assets remain available in both presentations", async () => {
