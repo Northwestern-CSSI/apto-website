@@ -4,30 +4,55 @@
   "id": "macrocosm-policy-investment-lab",
   "participantId": "macrocosm",
   "name": "Policy & Investment Scenario Lab",
-  "categories": ["Production", "Use"],
+  "categories": [
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/previews/macrocosm-policy-investment-lab.jpg",
+    "src": "/apto/tools/photography/multiobjective-01.jpg",
     "label": "Energy scenario comparison",
-    "alt": "Small-multiple charts comparing energy technology, policy, and investment scenarios over time"
+    "alt": "Policy & Investment Scenario Lab conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/macrocosm-scenario-flows.jpg",
-      "alt": "Investment pathways splitting toward several regional energy-system configurations"
+      "src": "/apto/tools/photography/multiobjective-02.jpg",
+      "alt": "Policy & Investment Scenario Lab conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/macrocosm-policy-scenario-ensemble.jpg",
-      "alt": "Four alternative policy and investment scenarios producing different regional energy-system configurations"
+      "src": "/apto/tools/photography/multiobjective-03.jpg",
+      "alt": "Policy & Investment Scenario Lab conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/macrocosm-investment-allocation-rivers.jpg",
-      "alt": "Investment streams allocated across energy technologies and leading to contrasting production and employment outcomes"
+      "src": "/apto/tools/photography/multiobjective-04.jpg",
+      "alt": "Policy & Investment Scenario Lab conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/multiobjective-trajectories.png",
+        "alt": "Technology trajectories compared across multiple performance dimensions"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/multiobjective-trajectories.png",
+        "alt": "Technology trajectories compared across multiple performance dimensions"
+      }
+    }
+  ]
 }
 ---
 

@@ -1,17 +1,17 @@
 # APTO website
 
 The public website for the National Science Foundation’s **Assessing and
-Predicting Technology Outcomes (APTO)** program. It contains three
-complementary responsive presentations—the compact directory, the long-scroll
-APTO Continuum, and the image-led APTO Atlas gallery—built from the same
-Markdown content and coordinated light and deep-navy themes.
+Predicting Technology Outcomes (APTO)** program. It contains two complementary
+responsive presentations—the long-scroll APTO Continuum and the image-led APTO
+Atlas—built from the same Markdown content and coordinated light and deep-navy
+themes.
 
 - Website: <https://filipinascimento.github.io/apto-website/>
-- Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/apto>
+- Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/story>
 - Main pages: Program, Projects, Tools, Cohort, and Convening
-- Alternate long-scroll presentation: `/story` on GitHub Pages and
+- Long-scroll presentation: `/` or `/story` on GitHub Pages and `/story` or
   `/apto/story` on the existing APTO deployment
-- Alternate gallery presentation: `/atlas` on GitHub Pages and `/apto/atlas`
+- Gallery presentation: `/atlas` on GitHub Pages and `/apto/atlas`
   on the existing APTO deployment, with matching `/projects`, `/tools`,
   `/cohort`, and `/convening` subpages
 
@@ -35,7 +35,7 @@ Content records use Markdown with strict JSON frontmatter. The content builder
 validates the records, joins their relationships, presents entries
 alphabetically, generates `app/apto/content.generated.json`, and copies only
 referenced images to the generated `public/apto/` directory. This one content
-set feeds all three presentations. Never edit either generated, Git-ignored
+set feeds both presentations. Never edit either generated, Git-ignored
 location by hand.
 
 ## Publishing
@@ -82,17 +82,15 @@ NEXT_PUBLIC_BASE_PATH=/apto-website npm run check:pages
 | --- | --- |
 | `content/apto/` | Editable website content and source images |
 | `app/apto/` | Shared APTO components, theme, styles, and generated content |
-| `app/{projects,tools,cohort,convening,story,atlas}/` | Root routes used by GitHub Pages |
-| `app/apto/{projects,tools,cohort,convening,story,atlas}/` | `/apto` routes used by the existing deployment |
+| `app/{story,atlas}/` | Canonical routes used by GitHub Pages |
+| `app/apto/{story,atlas}/` | `/apto` aliases used by the existing deployment |
 | `scripts/` | Content generation and Pages verification |
 | `tests/` | Content, routing, interaction, and accessibility regressions |
 | `.github/workflows/` | Pull-request checks and automatic Pages publishing |
 | `.openai/`, `build/`, `worker/`, `vite.config.ts` | Existing Sites deployment support |
 
-The `/apto/about` and `/apto/people` routes are small compatibility aliases for
-previously shared links. The disabled homepage widget remains isolated under
-`app/apto/_future/` and `content/apto/future/` for possible future use; no live
-page imports it.
+The retired Original design, historical concepts, and disabled widget work are
+preserved in the project-level archive outside this repository.
 
 ## Accessibility
 

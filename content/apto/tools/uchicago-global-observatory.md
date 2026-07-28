@@ -4,30 +4,56 @@
   "id": "uchicago-global-observatory",
   "participantId": "uchicago",
   "name": "Global S&T Observatory",
-  "categories": ["Capability", "Production", "Use"],
+  "categories": [
+    "Capability",
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "global-map",
-    "src": "/apto/tools/previews/uchicago-global-observatory.jpg",
+    "src": "/apto/tools/photography/aggregating-01.jpg",
     "label": "Global science and technology observatory",
-    "alt": "World map connecting research, patent, product, funding, workforce, and market signals among regions"
+    "alt": "Global S&T Observatory conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/uchicago-global-observatory.jpg",
-      "alt": "Global research observatory with connected regions, evidence surfaces, and alternative technology trajectories"
+      "src": "/apto/tools/photography/aggregating-02.jpg",
+      "alt": "Global S&T Observatory conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-global-signal-constellations.jpg",
-      "alt": "Global constellations of research, patent, funding, workforce, product, and market signals"
+      "src": "/apto/tools/photography/aggregating-03.jpg",
+      "alt": "Global S&T Observatory conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-talent-knowledge-corridors.jpg",
-      "alt": "Knowledge, talent, and collaboration moving among changing regional science and technology clusters"
+      "src": "/apto/tools/photography/aggregating-04.jpg",
+      "alt": "Global S&T Observatory conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/aggregating-architecture.png",
+        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/aggregating-architecture.png",
+        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+      }
+    }
+  ]
 }
 ---
 

@@ -8,7 +8,7 @@
   "study": {
     "siteTitle": "APTO",
     "siteDescription": "Research, people, projects, and tools from the Assessing and Predicting Technology Outcomes program.",
-    "socialImageSrc": "/apto/og-apto.png",
+    "socialImageSrc": "/apto/tools/photography/aggregating-01.jpg",
     "socialImageAlt": "APTO — evidence for better technology decisions.",
     "themeChooserLabel": "Choose color theme",
     "themeSwitchActionPrefix": "Use"
@@ -34,12 +34,11 @@
   },
   "story": {
     "viewLabel": "APTO Continuum",
-    "socialImageSrc": "/apto/og-apto-continuum.png",
+    "socialImageSrc": "/apto/tools/photography/agentic-01.jpg",
     "socialImageAlt": "An abstract evidence landscape connecting technology clusters and development trajectories.",
-    "cohortArtSrc": "/apto/nsf-network-art.avif",
-    "directoryLabel": "Directory view",
+    "cohortArtSrc": "/apto/tools/photography/emerging-02.jpg",
+    "directoryLabel": "Atlas view",
     "navigationLabel": "APTO story sections",
-    "scrollPrompt": "Scroll to explore",
     "programLabel": "Program",
     "projectsLabel": "Research portfolio",
     "toolsLabel": "Exploration tools",
@@ -52,7 +51,7 @@
   },
   "atlas": {
     "viewLabel": "APTO Atlas",
-    "socialImageSrc": "/apto/social/apto-atlas-social.png",
+    "socialImageSrc": "/apto/tools/photography/predicting-01.jpg",
     "socialImageAlt": "A dark-blue scientific atlas connecting technology landscapes, evidence networks, energy systems, trajectories, and observatories.",
     "directoryLabel": "Directory",
     "continuumLabel": "Continuum",

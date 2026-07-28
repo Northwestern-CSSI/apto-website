@@ -920,6 +920,8 @@
 }
 
 .atlas-project-identity > .atlas-logo {
+  width: 148px;
+  height: 82px;
   justify-self: start;
 }
 
@@ -944,4 +946,49 @@
   grid-row: 1;
   align-self: start;
   justify-self: end;
+}
+
+/* Shared tool media keeps Atlas and Story on the same independently timed,
+   supplied-image Ken Burns implementation. */
+.atlas-tool-media.apto-tool-gallery > img {
+  object-fit: cover;
+  opacity: 0;
+  transform: translate3d(var(--tool-kb-from-x,0),var(--tool-kb-from-y,0),0) scale(var(--tool-kb-from-scale,1.08));
+  transform-origin: var(--tool-kb-origin-x,50%) var(--tool-kb-origin-y,50%);
+  transition: opacity var(--tool-kb-crossfade-ms,3600ms) cubic-bezier(.45,0,.55,1);
+}
+.atlas-tool-media.apto-tool-gallery > img.is-current,
+.atlas-tool-media.apto-tool-gallery > img.is-incoming {
+  animation-name: apto-tool-ken-burns;
+  animation-duration: var(--tool-kb-motion-ms,14000ms);
+  animation-timing-function: var(--tool-kb-easing,ease-in-out);
+}
+.atlas-tool-media.apto-tool-gallery > img.is-current { opacity: 1; }
+.atlas-tool-media.apto-tool-gallery > img.is-current.is-leaving { opacity: 0; }
+.atlas-tool-media.apto-tool-gallery > img.is-incoming { opacity: 1; }
+.atlas-tool-card { --atlas-tool-panel-height: 48%; }
+.atlas-tool-card.is-expanded { --atlas-tool-panel-height: 66%; }
+.atlas-tool-panel { height: var(--atlas-tool-panel-height); transition: height .42s ease, background-color .35s ease; }
+.atlas-tool-resources { margin-top: 14px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
+.atlas-tool-resources > div,
+.atlas-tool-resources > a { min-width: 0; padding: 6px; display: grid; grid-template-columns: 46px minmax(0,1fr); gap: 7px; color: inherit; background: rgb(255 255 255 / 9%); text-decoration: none; }
+.atlas-tool-resources img { width: 46px; height: 46px; object-fit: cover; }
+.atlas-tool-resources span,
+.atlas-tool-resources strong,
+.atlas-tool-resources small,
+.atlas-tool-resources em { min-width: 0; display: block; }
+.atlas-tool-resources strong { overflow: hidden; color: #fff; font-size: .61rem; text-overflow: ellipsis; white-space: nowrap; }
+.atlas-tool-resources small { margin-top: 2px; display: -webkit-box; overflow: hidden; color: rgb(255 255 255 / 68%); font-size: .52rem; line-height: 1.25; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.atlas-tool-resources em { margin-top: 3px; color: #80d8e7; font-size: .49rem; font-style: normal; font-weight: 850; text-transform: uppercase; }
+
+@media (hover:hover) and (pointer:fine) {
+  .atlas-tool-card:hover { --atlas-tool-panel-height: 66%; }
+}
+
+@media (max-width: 520px) {
+  .atlas-project-identity > .atlas-logo {
+    width: 126px;
+    height: 70px;
+  }
+  .atlas-tool-resources { grid-template-columns: 1fr; }
 }

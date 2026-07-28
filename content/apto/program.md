@@ -4,35 +4,35 @@
   "id": "apto",
   "name": "Assessing and Predicting Technology Outcomes",
   "acronym": "APTO",
-  "objectivesTitle": "What APTO is designed to do",
+  "objectivesTitle": "APTO’s impact",
   "objectives": [
-    "Build generalizable, empirically grounded models for assessing and predicting changes in technology capability, production, and use.",
-    "Develop data sets, measurement approaches, and practical tools that make technology-outcome evidence easier to assemble, test, and apply.",
-    "Connect historical evidence with possible future states so research and development decisions can be made with greater clarity."
+    "Establish a new empirical foundation for mapping research investments to real-world technological advancements.",
+    "Enable high-accuracy predictions and targeted interventions that can accelerate innovation.",
+    "Enhance understanding and prediction of research-and-development return on investment in the United States."
   ],
   "landingGallery": [
     {
-      "src": "/apto/tools/atlas/aperture-decision-signals.jpg",
-      "alt": "Layered technology problem fields connected to a small set of promising intervention points"
+      "src": "/apto/tools/photography/aggregating-01.jpg",
+      "alt": "Research infrastructure and connected evidence represented through supplied conceptual photography"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-provenance.jpg",
-      "alt": "Evidence records flowing into a traceable network of technology relationships"
+      "src": "/apto/tools/photography/agentic-01.jpg",
+      "alt": "Technology-outcome evidence mining represented through supplied conceptual photography"
     },
     {
-      "src": "/apto/tools/atlas/macrocosm-scenario-flows.jpg",
-      "alt": "Interconnected energy infrastructure and scenario flows across an industrial system"
+      "src": "/apto/tools/photography/emerging-01.jpg",
+      "alt": "Early research signals and emerging technologies represented through supplied conceptual photography"
     },
     {
-      "src": "/apto/tools/atlas/northwestern-translation-trajectories.jpg",
-      "alt": "Technology trajectories moving from research signals toward practical outcomes"
+      "src": "/apto/tools/photography/multiobjective-01.jpg",
+      "alt": "Multiple technology outcomes represented through supplied conceptual photography"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-policy-flows.jpg",
-      "alt": "Global science and technology signals moving through an evidence observatory"
+      "src": "/apto/tools/photography/predicting-01.jpg",
+      "alt": "Technological evolution and forecasting represented through supplied conceptual photography"
     }
   ],
-  "lastVerified": "2026-07-20",
+  "lastVerified": "2026-07-27",
   "boilerplate": "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
   "sources": [
     {
@@ -64,4 +64,4 @@
 
 ## Description
 
-Through the NSF Directorate for Technology, Innovation and Partnerships, APTO advances the assessment of how investments in science and technology research and development lead to changes in technology capability, production, and use. Projects study past and possible future states, create models that can extend across technology areas, and develop evidence intended to improve R&D investment decisions and strengthen long-term U.S. competitiveness.
+In 2023, the National Science Foundation established the Assessing and Predicting Technology Outcomes program to develop causal models that can predict how science and technology investments shape future outcomes in technology capability, production, and use. By funding a collaborative cohort of research teams to build these models, supporting datasets, and practical tools, APTO seeks to give decision-makers the evidence base needed to strategize U.S. research-and-development investments effectively.

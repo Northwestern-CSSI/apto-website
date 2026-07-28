@@ -4,30 +4,55 @@
   "id": "aperture-leverage-point-finder",
   "participantId": "aperture",
   "name": "Leverage Point Finder",
-  "categories": ["Production", "Use"],
+  "categories": [
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "signal-matrix",
-    "src": "/apto/tools/previews/aperture-leverage-point-finder.jpg",
+    "src": "/apto/tools/photography/multiobjective-01.jpg",
     "label": "Opportunity signal matrix",
-    "alt": "Matrix comparing technical problems by evidence strength, activity, and potential leverage"
+    "alt": "Leverage Point Finder conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/aperture-decision-signals.jpg",
-      "alt": "High-leverage opportunities illuminated where evidence pathways converge across a layered decision landscape"
+      "src": "/apto/tools/photography/multiobjective-02.jpg",
+      "alt": "Leverage Point Finder conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/aperture-leverage-evidence-radar.jpg",
-      "alt": "Candidate interventions across an evidence landscape, with the strongest leverage points highlighted where multiple signals converge"
+      "src": "/apto/tools/photography/multiobjective-03.jpg",
+      "alt": "Leverage Point Finder conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/aperture-leverage-intervention-ripple.jpg",
-      "alt": "A selected leverage point propagating effects through connected technical, organizational, and investment systems"
+      "src": "/apto/tools/photography/multiobjective-04.jpg",
+      "alt": "Leverage Point Finder conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/multiobjective-trajectories.png",
+        "alt": "Technology trajectories compared across multiple performance dimensions"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/multiobjective-trajectories.png",
+        "alt": "Technology trajectories compared across multiple performance dimensions"
+      }
+    }
+  ]
 }
 ---
 

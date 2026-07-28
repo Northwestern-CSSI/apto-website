@@ -309,9 +309,18 @@ async function validateImageAsset(publicPath, context) {
 }
 
 async function syncAssets(assetFiles, checkOnly) {
+  await mkdir(publicAssetDirectory, { recursive: true });
+
+  const publicFiles = await filesRecursively(publicAssetDirectory);
+  const expectedFiles = new Set(assetFiles.map((sourceFile) => (
+    path.join(publicAssetDirectory, path.relative(assetDirectory, sourceFile))
+  )));
+  const staleFiles = publicFiles.filter((file) => !expectedFiles.has(file));
+
   if (!checkOnly) {
-    await rm(publicAssetDirectory, { recursive: true, force: true });
+    await Promise.all(staleFiles.map((file) => rm(file, { force: true })));
   }
+
   for (const sourceFile of assetFiles) {
     const relativeAsset = path.relative(assetDirectory, sourceFile);
     const destinationFile = path.join(publicAssetDirectory, relativeAsset);
@@ -334,16 +343,25 @@ async function syncAssets(assetFiles, checkOnly) {
       );
       continue;
     }
+
+    // Asset libraries are intentionally large. Avoid copying unchanged images
+    // on every content or type build; content:check still performs the exact
+    // byte comparison used by CI.
+    try {
+      const [sourceStatus, destinationStatus] = await Promise.all([
+        stat(sourceFile),
+        stat(destinationFile),
+      ]);
+      if (sourceStatus.size === destinationStatus.size) continue;
+    } catch {
+      // A missing destination is created below.
+    }
+
     await mkdir(path.dirname(destinationFile), { recursive: true });
     await copyFile(sourceFile, destinationFile);
   }
 
   if (checkOnly) {
-    const publicFiles = await filesRecursively(publicAssetDirectory);
-    const expectedFiles = new Set(assetFiles.map((sourceFile) => (
-      path.join(publicAssetDirectory, path.relative(assetDirectory, sourceFile))
-    )));
-    const staleFiles = publicFiles.filter((file) => !expectedFiles.has(file));
     assert(
       staleFiles.length === 0,
       `${relativeFile(publicAssetDirectory)} contains stale generated assets. Run: node scripts/build-apto-content.mjs`,
@@ -581,7 +599,6 @@ function validateInterface(document) {
       "cohortArtSrc",
       "directoryLabel",
       "navigationLabel",
-      "scrollPrompt",
       "programLabel",
       "projectsLabel",
       "toolsLabel",
@@ -836,6 +853,7 @@ function validateTool(document) {
       "categories",
       "figure",
       "galleryImages",
+      "resources",
       "statusLabel",
       "demoVideoUrl",
       "toolUrl",
@@ -875,6 +893,25 @@ function validateTool(document) {
   assert(new Set(galleryImages.map((image) => image.src)).size === galleryImages.length, `${context}.galleryImages sources must be unique`);
   assert(new Set(galleryImages.map((image) => image.alt)).size === galleryImages.length, `${context}.galleryImages descriptions must be unique`);
   assert(!galleryImages.some((image) => image.src === figureSrc), `${context}.galleryImages must not repeat figure.src`);
+  const resources = requireArray(metadata, "resources", context);
+  assert(resources.length > 0, `${context}.resources must contain at least one resource`);
+  resources.forEach((resource, index) => {
+    const resourceContext = `${context}.resources[${index}]`;
+    requireObject(resource, resourceContext);
+    assertExactKeys(resource, ["name", "description", "status", "url", "image"], resourceContext);
+    requireString(resource, "name", resourceContext);
+    requireString(resource, "description", resourceContext);
+    const status = requireString(resource, "status", resourceContext);
+    assert(new Set(["available", "coming-soon"]).has(status), `${resourceContext}.status must be “available” or “coming-soon”`);
+    requireOptionalHttpsUrl(resource.url, `${resourceContext}.url`);
+    assert(status !== "coming-soon" || resource.url === null, `${resourceContext}.url must be null while status is “coming-soon”`);
+    const image = requireObject(resource.image, `${resourceContext}.image`);
+    assertExactKeys(image, ["src", "alt"], `${resourceContext}.image`);
+    const imageSrc = requireString(image, "src", `${resourceContext}.image`);
+    assert(imageSrc.startsWith("/apto/"), `${resourceContext}.image.src must begin with /apto/`);
+    requireString(image, "alt", `${resourceContext}.image`);
+  });
+  assertUnique(resources.map((resource) => resource.name), `${context}.resources names`);
   requireString(metadata, "statusLabel", context);
   requireOptionalHttpsUrl(metadata.demoVideoUrl, `${context}.demoVideoUrl`);
   requireOptionalHttpsUrl(metadata.toolUrl, `${context}.toolUrl`);
@@ -912,7 +949,7 @@ function validateConvening(document) {
   const title = requireString(metadata, "title", context);
   assert(h1 === title, `${context} H1 must match title`);
   const images = requireArray(metadata, "images", context);
-  assert(images.length === 5, `${context}.images must contain exactly five images`);
+  assert(images.length === 4, `${context}.images must contain exactly four images`);
   images.forEach((image, index) => {
     const imageContext = `${context}.images[${index}]`;
     requireObject(image, imageContext);
@@ -961,12 +998,16 @@ async function validateToolFigureFiles(toolRecords) {
         image.src,
         `${relativeFile(record.sourceFile)}.galleryImages[${index}].src`,
       )),
+      ...record.tool.resources.map((resource, index) => validateImageAsset(
+        resource.image.src,
+        `${relativeFile(record.sourceFile)}.resources[${index}].image.src`,
+      )),
     ]),
   );
 }
 
 function validateToolMediaInventory(toolRecords) {
-  const mediaPaths = toolRecords.flatMap((record) => {
+  toolRecords.forEach((record) => {
     const paths = [
       record.tool.figure.src,
       ...record.tool.galleryImages.map((image) => image.src),
@@ -975,9 +1016,8 @@ function validateToolMediaInventory(toolRecords) {
       paths.length === 4,
       `${relativeFile(record.sourceFile)} must provide exactly four Atlas media frames (figure.src plus three galleryImages)`,
     );
-    return paths;
+    assertUnique(paths, `${relativeFile(record.sourceFile)} tool media paths`);
   });
-  assertUnique(mediaPaths, "tool media paths across all tools");
 }
 
 async function validatePersonHeadshotFiles(personRecords) {
@@ -1121,6 +1161,7 @@ async function buildContent() {
       .filter((headshotUrl) => headshotUrl !== null),
     ...toolRecords.map((record) => record.tool.figure.src),
     ...toolRecords.flatMap((record) => record.tool.galleryImages.map((image) => image.src)),
+    ...toolRecords.flatMap((record) => record.tool.resources.map((resource) => resource.image.src)),
     ...conveningRecords.flatMap((record) => record.convening.images.map((image) => image.src)),
   ]);
 
@@ -1221,7 +1262,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 16,
+      schemaVersion: 17,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,

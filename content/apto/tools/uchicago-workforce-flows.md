@@ -4,30 +4,55 @@
   "id": "uchicago-workforce-flows",
   "participantId": "uchicago",
   "name": "Science & Technology Workforce Flows",
-  "categories": ["Capability", "Production"],
+  "categories": [
+    "Capability",
+    "Production"
+  ],
   "figure": {
     "kind": "global-map",
-    "src": "/apto/tools/previews/uchicago-workforce-flows.jpg",
+    "src": "/apto/tools/photography/agentic-01.jpg",
     "label": "Science and technology workforce flows",
-    "alt": "Researchers, skills, and collaboration moving among institutions, regions, and technology areas"
+    "alt": "Science & Technology Workforce Flows conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/uchicago-workforce-research-system.jpg",
-      "alt": "A connected research system showing institutions, technical skills, and workforce movement"
+      "src": "/apto/tools/photography/agentic-02.jpg",
+      "alt": "Science & Technology Workforce Flows conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-workforce-knowledge-corridors.jpg",
-      "alt": "Knowledge and talent corridors linking changing regional science and technology clusters"
+      "src": "/apto/tools/photography/agentic-03.jpg",
+      "alt": "Science & Technology Workforce Flows conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-workforce-signal-constellations.jpg",
-      "alt": "Workforce and collaboration signals forming constellations around emerging technology areas"
+      "src": "/apto/tools/photography/agentic-04.jpg",
+      "alt": "Science & Technology Workforce Flows conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/agentic-roles.png",
+        "alt": "Diagram of specialized AI agents coordinating evidence discovery, extraction, and review"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/agentic-roles.png",
+        "alt": "Diagram of specialized AI agents coordinating evidence discovery, extraction, and review"
+      }
+    }
+  ]
 }
 ---
 

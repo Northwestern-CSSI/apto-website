@@ -2,8 +2,8 @@
 
 This folder is the source of truth for the APTO website. Most updates require
 editing only Markdown and images here—no React, TypeScript, or CSS changes.
-The compact directory and long-scroll APTO Continuum read the same generated
-content, so one edit updates both presentations.
+APTO Continuum and APTO Atlas read the same generated content, so one edit
+updates both presentations.
 
 ## Quick workflow
 
@@ -31,8 +31,8 @@ content, so one edit updates both presentations.
 | Annual convening text and photography | `convenings/*.md` |
 | Organizations, logos, and locations | `participants/*.md` |
 | Program manager and investigators | `people/*.md` |
-| Navigation, buttons, filters, map labels, footer | `interface.md` |
-| Figures, logos, headshots, map, NSF mark, social image | `assets/` |
+| Navigation, buttons, filters, and footer | `interface.md` |
+| Figures, logos, headshots, NSF mark, and social image | `assets/` |
 
 Detailed guides:
 
@@ -121,5 +121,5 @@ legal permission, brand approval, or whether remote links remain live.
 - `program.md` owns substantive program language, the Atlas landing gallery,
   and the exact NSF disclaimer. Keep the five `landingGallery` visuals free of
   organization names and marks; they receive equal space on the landing page.
-- `future/` preserves approved-but-disabled interface work. Its homepage widget
-  is not included in the public site and should remain disabled until approved.
+- Retired designs and experiments are preserved in the project-level archive,
+  outside this public website repository.

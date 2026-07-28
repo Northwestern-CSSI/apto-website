@@ -4,30 +4,54 @@
   "id": "insilicom-evidence-workbench",
   "participantId": "insilicom",
   "name": "Evidence Extraction Workbench",
-  "categories": ["Capability"],
+  "categories": [
+    "Capability"
+  ],
   "figure": {
     "kind": "evidence-stream",
-    "src": "/apto/tools/previews/insilicom-evidence-workbench.jpg",
+    "src": "/apto/tools/photography/agentic-01.jpg",
     "label": "Evidence extraction workflow",
-    "alt": "Workflow that turns articles and patents into reviewed entities, relationships, and evidence records"
+    "alt": "Evidence Extraction Workbench conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-provenance.jpg",
-      "alt": "Source documents passing review checkpoints before entering a provenance-aware knowledge graph"
+      "src": "/apto/tools/photography/agentic-02.jpg",
+      "alt": "Evidence Extraction Workbench conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-review-layers.jpg",
-      "alt": "Source documents passing through extraction and review before becoming structured evidence"
+      "src": "/apto/tools/photography/agentic-03.jpg",
+      "alt": "Evidence Extraction Workbench conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-evidence-verified-records.jpg",
-      "alt": "Verified claims and relationships retaining traceable connections to their original source documents"
+      "src": "/apto/tools/photography/agentic-04.jpg",
+      "alt": "Evidence Extraction Workbench conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/agentic-roles.png",
+        "alt": "Diagram of specialized AI agents coordinating evidence discovery, extraction, and review"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/agentic-roles.png",
+        "alt": "Diagram of specialized AI agents coordinating evidence discovery, extraction, and review"
+      }
+    }
+  ]
 }
 ---
 

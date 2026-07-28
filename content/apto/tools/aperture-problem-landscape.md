@@ -4,30 +4,55 @@
   "id": "aperture-problem-landscape",
   "participantId": "aperture",
   "name": "Problem Landscape Explorer",
-  "categories": ["Capability", "Use"],
+  "categories": [
+    "Capability",
+    "Use"
+  ],
   "figure": {
     "kind": "problem-landscape",
-    "src": "/apto/tools/previews/aperture-problem-landscape.jpg",
+    "src": "/apto/tools/photography/emerging-01.jpg",
     "label": "Problem-to-solution landscape",
-    "alt": "Landscape connecting clusters of technical problems with technologies and organizations"
+    "alt": "Problem Landscape Explorer conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/aperture-problem-landscape.jpg",
-      "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
+      "src": "/apto/tools/photography/emerging-02.jpg",
+      "alt": "Problem Landscape Explorer conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/aperture-problem-gap-topology.jpg",
-      "alt": "Technical problem clusters separated by visible evidence gaps and underserved regions"
+      "src": "/apto/tools/photography/emerging-03.jpg",
+      "alt": "Problem Landscape Explorer conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/aperture-problem-solution-corridors.jpg",
-      "alt": "Problem domains connected to candidate solution areas through established and unexpected pathways"
+      "src": "/apto/tools/photography/emerging-04.jpg",
+      "alt": "Problem Landscape Explorer conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/emerging-landscape.png",
+        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/emerging-landscape.png",
+        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+      }
+    }
+  ]
 }
 ---
 

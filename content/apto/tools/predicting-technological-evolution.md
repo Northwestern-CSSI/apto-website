@@ -4,30 +4,86 @@
   "id": "predicting-technological-evolution",
   "participantId": "northwestern",
   "name": "Predicting Technological Evolution",
-  "categories": ["Capability", "Production", "Use"],
+  "categories": [
+    "Capability",
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "agent-network",
-    "src": "/apto/tools/previews/predicting-technological-evolution.jpg",
+    "src": "/apto/tools/photography/predicting-01.jpg",
     "label": "Technology evolution model",
-    "alt": "Model connecting firms, physical assets, markets, investment, infrastructure, and technology change over time"
+    "alt": "Predicting Technological Evolution conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/northwestern-predictive-technology-system.jpg",
-      "alt": "Miniature energy system linking industrial facilities, renewables, storage, infrastructure, and regional flows"
+      "src": "/apto/tools/photography/predicting-02.jpg",
+      "alt": "Predicting Technological Evolution conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/northwestern-predictive-evolution-ripple.jpg",
-      "alt": "A change at one facility propagating through regional energy assets, suppliers, infrastructure, and markets"
+      "src": "/apto/tools/photography/predicting-03.jpg",
+      "alt": "Predicting Technological Evolution conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/northwestern-predictive-system-layers.jpg",
-      "alt": "Aligned layers connecting energy assets with firms, materials, employment, investment, and regional markets"
+      "src": "/apto/tools/photography/predicting-04.jpg",
+      "alt": "Predicting Technological Evolution conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Funding the Frontier",
+      "description": "Funding the Frontier is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    },
+    {
+      "name": "Innovation Insights",
+      "description": "Innovation Insights is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    },
+    {
+      "name": "TechBridge",
+      "description": "TechBridge is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    },
+    {
+      "name": "Perovskite Forecasting Prototype",
+      "description": "Perovskite Forecasting Prototype is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    },
+    {
+      "name": "Manufacturing Datasets",
+      "description": "Manufacturing Datasets is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    }
+  ]
 }
 ---
 
@@ -35,8 +91,8 @@
 
 ## Description
 
-Explore how technologies may evolve as firms, investment, infrastructure, policy, supply chains, and demand interact. The model connects technical improvement with production decisions and adoption so alternative pathways can be compared without reducing change to a single trend line.
+Forecasting technological evolution requires combining technical performance, research activity, and evidence of how discoveries move into use. This layered system integrates mechanistic and transformer-based capability models with licensability and commercialization models trained on governed TechBridge data. It compares technical pathways, predicts future performance from scientific text and historical results, and connects research investments to downstream patents, licenses, startups, and other outcomes.
 
 ## Use case
 
-Use the tool to compare possible technology pathways, test how assumptions propagate through a system, and identify which mechanisms or constraints have the greatest influence on future outcomes.
+Explore competing technical pathways, anticipate future performance, identify promising device configurations, and connect research investments with commercialization signals and downstream impact.

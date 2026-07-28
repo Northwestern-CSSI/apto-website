@@ -5,6 +5,6 @@ Each annual convening is one Markdown file. Add a future year by copying
 image paths, then add the referenced images under
 `content/apto/assets/convenings/<year>/`.
 
-Every record must include exactly five unique images. The build copies those
-images to `public/apto/convenings/` and uses the same content in the Directory,
-Continuum, and Atlas presentations.
+Every record must include exactly four unique images, including a full-cohort
+portrait and three program or discussion scenes. The build copies those images
+to `public/apto/convenings/` and uses the same content in Continuum and Atlas.

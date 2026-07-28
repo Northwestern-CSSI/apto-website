@@ -4,7 +4,7 @@
   "id": "northwestern-technology-outcomes",
   "participantId": "northwestern",
   "awardId": "2404035",
-  "shortName": "Measuring and accelerating outcomes",
+  "shortName": "Measuring and predicting technology outcomes",
   "officialTitle": "APTO: Measuring, Understanding, Predicting, and Accelerating Technology Outcomes",
   "awardedYear": 2024,
   "statusLabel": "Ongoing",
@@ -16,4 +16,4 @@
 
 ## Summary
 
-Northwestern and its partners are building an integrated research-to-market data pipeline and predictive and causal models to measure, understand, predict, and accelerate technology outcomes. The work links university research and investment to disclosures, licensing, startups, and technology-specific measures across additive manufacturing, synthetic biology, advanced materials, AI algorithms, and therapeutics.
+Northwestern is building a first-of-its-kind data pipeline that links research funding to market applications and supports predictive and causal models for forecasting and accelerating technology outcomes. The work brings together expertise in science of science, manufacturing, materials science and engineering, economics, synthetic biology, chemical and biological engineering, and related fields at Northwestern and Cornell University. The team is establishing measurement and experimental infrastructure for understanding how research-and-development investments change technology outcomes.

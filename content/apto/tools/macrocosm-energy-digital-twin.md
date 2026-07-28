@@ -4,30 +4,55 @@
   "id": "macrocosm-energy-digital-twin",
   "participantId": "macrocosm",
   "name": "Energy System Digital Twin",
-  "categories": ["Production", "Use"],
+  "categories": [
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "agent-network",
-    "src": "/apto/tools/previews/macrocosm-energy-digital-twin.jpg",
+    "src": "/apto/tools/photography/predicting-01.jpg",
     "label": "Firm and energy-asset network",
-    "alt": "Network of energy firms, physical assets, markets, investment relationships, and geographic connections"
+    "alt": "Energy System Digital Twin conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/macrocosm-energy-system.jpg",
-      "alt": "Miniature energy system linking industrial facilities, renewables, storage, infrastructure, and regional flows"
+      "src": "/apto/tools/photography/predicting-02.jpg",
+      "alt": "Energy System Digital Twin conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/macrocosm-digital-twin-facility-ripple.jpg",
-      "alt": "A change at one facility propagating through regional energy assets, suppliers, infrastructure, and markets"
+      "src": "/apto/tools/photography/predicting-03.jpg",
+      "alt": "Energy System Digital Twin conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/macrocosm-digital-twin-system-layers.jpg",
-      "alt": "Aligned layers connecting energy assets with firms, materials, employment, investment, and regional markets"
+      "src": "/apto/tools/photography/predicting-04.jpg",
+      "alt": "Energy System Digital Twin conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    }
+  ]
 }
 ---
 

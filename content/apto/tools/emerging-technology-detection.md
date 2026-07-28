@@ -4,30 +4,56 @@
   "id": "emerging-technology-detection",
   "participantId": "northwestern",
   "name": "Emerging Technology Detection",
-  "categories": ["Capability", "Production", "Use"],
+  "categories": [
+    "Capability",
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "problem-landscape",
-    "src": "/apto/tools/previews/emerging-technology-detection.jpg",
+    "src": "/apto/tools/photography/emerging-01.jpg",
     "label": "Emerging technology landscape",
-    "alt": "Evidence landscape connecting early research signals, technical problems, candidate solutions, and emerging technology clusters"
+    "alt": "Emerging Technology Detection conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/northwestern-emerging-technology-landscape.jpg",
-      "alt": "Abstract topographic evidence landscape with connected problem clusters and highlighted leverage points"
+      "src": "/apto/tools/photography/emerging-02.jpg",
+      "alt": "Emerging Technology Detection conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/northwestern-emerging-signal-gaps.jpg",
-      "alt": "Technical problem clusters separated by visible evidence gaps and underserved regions"
+      "src": "/apto/tools/photography/emerging-03.jpg",
+      "alt": "Emerging Technology Detection conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/northwestern-emerging-technology-corridors.jpg",
-      "alt": "Problem domains connected to candidate solution areas through established and unexpected pathways"
+      "src": "/apto/tools/photography/emerging-04.jpg",
+      "alt": "Emerging Technology Detection conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "SAE Method",
+      "description": "SAE Method is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/emerging-landscape.png",
+        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+      }
+    },
+    {
+      "name": "Additional resources",
+      "description": "Additional resources is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/emerging-landscape.png",
+        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+      }
+    }
+  ]
 }
 ---
 
@@ -35,8 +61,8 @@
 
 ## Description
 
-Detect emerging technology areas by combining early research activity, technical problems, candidate solutions, organizational signals, and supporting evidence. The interface helps distinguish sustained momentum from isolated activity while keeping the underlying evidence visible.
+The Emerging Technology Detection capability is designed to spot a technology while it is still forming, before it has a stable name or market. New technologies often first appear as unusual combinations of older ideas described with inconsistent language. Sparse autoencoders decompose papers into concepts and track how those concepts spread. Signals have been checked against market and performance records in artificial intelligence and perovskite solar cells, including technologies that stalled rather than only those that succeeded.
 
 ## Use case
 
-Use the tool to scan an unfamiliar domain, compare the strength and persistence of emerging signals, and identify areas that merit deeper assessment before they become widely established.
+Detect early, persistent combinations of ideas, distinguish emerging trajectories from isolated activity, and give research agencies and policymakers more time to direct investment and compare international momentum.

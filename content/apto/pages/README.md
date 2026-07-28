@@ -7,7 +7,7 @@ but is not displayed:
 | File | Visible use |
 | --- | --- |
 | `home.md` | Program homepage hero |
-| `about.md` | Program-overview title on the homepage; full introduction on the `/apto/about` compatibility route |
+| `about.md` | Program-overview title and introduction |
 | `projects.md` | Projects-page introduction |
 | `tools.md` | Tools-page introduction |
 | `cohort.md` | Cohort-page introduction |
@@ -40,10 +40,8 @@ page and what they can do there.
 The H1 must exactly match `title`, and each record must contain exactly one
 `## Introduction` section.
 
-On the homepage, the compact hero uses `home.md`, while the program overview
-uses the title from `about.md` and the longer description from
-`../program.md`. The `about.md` introduction is shown only on the compatibility
-`/apto/about` route.
+On the homepage, the hero uses `home.md`, while the program overview uses the
+title from `about.md` and the longer description from `../program.md`.
 
 The visible top-navigation labels and their required order come from
 `../interface.md`. Shared button, filter, footer, and accessibility labels

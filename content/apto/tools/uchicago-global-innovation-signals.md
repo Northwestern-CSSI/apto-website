@@ -4,30 +4,56 @@
   "id": "uchicago-global-innovation-signals",
   "participantId": "uchicago",
   "name": "Global Innovation Signal Explorer",
-  "categories": ["Capability", "Production", "Use"],
+  "categories": [
+    "Capability",
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "signal-matrix",
-    "src": "/apto/tools/previews/uchicago-global-innovation-signals.jpg",
+    "src": "/apto/tools/photography/emerging-01.jpg",
     "label": "Global innovation signal explorer",
-    "alt": "Technology clusters and weak signals forming across research, patents, funding, and markets"
+    "alt": "Global Innovation Signal Explorer conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/uchicago-innovation-signal-landscape.jpg",
-      "alt": "A global innovation landscape with emerging clusters, evidence layers, and changing trajectories"
+      "src": "/apto/tools/photography/emerging-02.jpg",
+      "alt": "Global Innovation Signal Explorer conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-innovation-signal-gaps.jpg",
-      "alt": "Gaps and discontinuities appearing between research activity and later technology outcomes"
+      "src": "/apto/tools/photography/emerging-03.jpg",
+      "alt": "Global Innovation Signal Explorer conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-innovation-signal-corridors.jpg",
-      "alt": "Promising innovation corridors connecting early scientific signals with production and use"
+      "src": "/apto/tools/photography/emerging-04.jpg",
+      "alt": "Global Innovation Signal Explorer conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/emerging-landscape.png",
+        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/emerging-landscape.png",
+        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+      }
+    }
+  ]
 }
 ---
 

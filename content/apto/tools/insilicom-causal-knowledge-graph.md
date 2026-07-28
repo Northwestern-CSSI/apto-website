@@ -4,30 +4,55 @@
   "id": "insilicom-causal-knowledge-graph",
   "participantId": "insilicom",
   "name": "Causal Technology Knowledge Graph",
-  "categories": ["Capability", "Production"],
+  "categories": [
+    "Capability",
+    "Production"
+  ],
   "figure": {
     "kind": "causal-graph",
-    "src": "/apto/tools/previews/insilicom-causal-knowledge-graph.jpg",
+    "src": "/apto/tools/photography/aggregating-01.jpg",
     "label": "Causal technology graph",
-    "alt": "Directed graph connecting technologies, problems, evidence, methods, and organizations"
+    "alt": "Causal Technology Knowledge Graph conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/insilicom-causal-evidence.jpg",
-      "alt": "Layered evidence records converging into a directed causal knowledge graph"
+      "src": "/apto/tools/photography/aggregating-02.jpg",
+      "alt": "Causal Technology Knowledge Graph conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-causal-competing-pathways.jpg",
-      "alt": "Two competing causal pathways linking technical features, mediators, and downstream outcomes"
+      "src": "/apto/tools/photography/aggregating-03.jpg",
+      "alt": "Causal Technology Knowledge Graph conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/insilicom-causal-counterfactual-branch.jpg",
-      "alt": "A causal system branching into alternative outcomes through different intermediate mechanisms"
+      "src": "/apto/tools/photography/aggregating-04.jpg",
+      "alt": "Causal Technology Knowledge Graph conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/aggregating-architecture.png",
+        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/aggregating-architecture.png",
+        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+      }
+    }
+  ]
 }
 ---
 

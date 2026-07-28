@@ -13,9 +13,9 @@ The public path mirrors the location beneath this folder:
 
 | Source file | Markdown reference |
 | --- | --- |
-| `assets/tools/example.webp` | `/apto/tools/example.webp` |
-| `assets/tools/atlas/example.jpg` | `/apto/tools/atlas/example.jpg` |
-| `assets/headshots/jane-doe.webp` | `/apto/headshots/jane-doe.webp` |
+| `assets/tools/photography/example.jpg` | `/apto/tools/photography/example.jpg` |
+| `assets/tools/resources/example.png` | `/apto/tools/resources/example.png` |
+| `assets/people/jane-doe.webp` | `/apto/people/jane-doe.webp` |
 | `assets/partners/example.svg` | `/apto/partners/example.svg` |
 | `assets/convenings/2026/example.jpg` | `/apto/convenings/2026/example.jpg` |
 
@@ -34,16 +34,14 @@ Use lowercase kebab-case filenames. Supported extensions are `.avif`, `.jpeg`,
 - Do not communicate an essential result only through color or only inside the
   image.
 
-The provisional original-design previews live in `tools/previews/`. Each tool
-has its own crop-safe image and the website fills a fixed 16:10 frame with it.
-Replace these generated previews with approved, tool-specific figures as
-project teams provide them, keeping the filename and focal area suitable for
-responsive `object-fit: cover` cropping.
+Approved and supplied conceptual photographs live in `tools/photography/`.
+Both public designs fill their media frames with these images, so keep the
+focal area suitable for responsive `object-fit: cover` cropping.
 
-## Atlas tool gallery
+## Tool galleries
 
-The APTO Atlas presentation uses image-led tool cards. Their source artwork
-lives in `tools/atlas/` and is referenced from each tool record through a
+APTO Atlas and APTO Continuum use image-led tool cards. Their source imagery
+lives in `tools/photography/` and is referenced from each tool record through a
 required `galleryImages` array containing exactly three `{ "src", "alt" }`
 entries.
 
@@ -53,11 +51,10 @@ entries.
 - Supply three distinct gallery views. The card adds the tool's standard
   `figure` as a fourth frame and cycles through all four with slow, independently
   timed pans, focal shifts, zooms, and overlapping dissolves.
-- Keep every tool media path globally unique. Reusing a figure on another tool
-  is rejected during the content build.
+- Keep the four media paths within each tool unique. Provisional tools may reuse
+  an approved image set until the corresponding team supplies its own figures.
 - Keep important information out of the crop edges and out of embedded text.
-- Treat the current generated Atlas artwork as provisional. When a project team
-  supplies an approved figure, place it in this folder, update the tool
+- When a project team supplies an approved figure, place it in this folder, update the tool
   Markdown reference and alt text, and remove the replaced file so it does not
   fail the unused-asset check.
 - Optimize files before commit and verify their rights, factual accuracy, and
@@ -76,7 +73,7 @@ continuous pan; keep important details away from every edge.
 
 ## Annual convening photography
 
-Store each year’s five photographs under `convenings/<year>/` and reference
+Store each year’s four photographs under `convenings/<year>/` and reference
 them from the matching record in `../convenings/`. Use wide, crop-safe images
 without embedded text. The shared gallery applies an animated pan and dissolve
 and exposes keyboard-operable image indicators; reduced-motion users receive a
@@ -89,7 +86,7 @@ static presentation.
 - Center the face with comfortable margin so the circular crop remains useful.
 - Confirm permission to publish the image.
 - Use alt text in the form “Portrait of Name.”
-- Set `headshotUrl` to the matching `/apto/headshots/…` path. Use `null` when no
+- Set `headshotUrl` to the matching `/apto/people/…` path. Use `null` when no
   approved image is available; the site will show initials.
 
 External headshot URLs are not accepted. This keeps website images versioned
@@ -110,7 +107,7 @@ altering the site.
   contrast is sufficient.
 - Record the source URL, source label, mark type, approval status, and approval
   boolean in `participants/*.md`.
-- Verify the mark in both website themes and in all three presentations. The
+- Verify the mark in both website themes and in both presentations. The
   shared renderer switches assets by theme; do not add organization-specific
   filters or casual recoloring in presentation CSS.
 
@@ -126,15 +123,9 @@ disclaimer are maintained in `../program.md`.
 
 ## Social images
 
-- `og-apto.png` is the social preview image. Keep social replacements at
-  1200 × 630 pixels and ensure important text remains legible in small link
-  previews.
-- `og-apto-continuum.png` is the dedicated preview for the long-scroll APTO
-  Continuum presentation. Its abstract imagery intentionally contains no
-  embedded text, marks, or data claims.
-- The Atlas social preview is referenced by `atlas.socialImageSrc` in
-  `../interface.md`. Keep it at 1200 × 630 pixels and free of embedded claims or
-  organization marks unless their use has been approved.
+Each presentation’s social preview is selected in `../interface.md` from the
+same supplied, approved image library. Keep previews free of unsupported claims
+and organization marks unless their use has been approved.
 
 ## Before publishing an image
 

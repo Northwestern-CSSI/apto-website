@@ -4,30 +4,55 @@
   "id": "uchicago-innovation-ecosystem-dynamics",
   "participantId": "uchicago",
   "name": "Innovation Ecosystem Dynamics",
-  "categories": ["Production", "Use"],
+  "categories": [
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/previews/uchicago-innovation-ecosystem-dynamics.jpg",
+    "src": "/apto/tools/photography/multiobjective-01.jpg",
     "label": "Innovation ecosystem dynamics",
-    "alt": "Alternative pathways linking institutions, investment, production capacity, and adoption"
+    "alt": "Innovation Ecosystem Dynamics conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/uchicago-ecosystem-scenario-ensemble.jpg",
-      "alt": "Alternative innovation-system scenarios responding to policy, investment, and production constraints"
+      "src": "/apto/tools/photography/multiobjective-02.jpg",
+      "alt": "Innovation Ecosystem Dynamics conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-ecosystem-investment-flows.jpg",
-      "alt": "Investment and knowledge flows moving among organizations in a changing technology ecosystem"
+      "src": "/apto/tools/photography/multiobjective-03.jpg",
+      "alt": "Innovation Ecosystem Dynamics conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-ecosystem-outcome-flows.jpg",
-      "alt": "Research and production pathways translating into different patterns of technology use"
+      "src": "/apto/tools/photography/multiobjective-04.jpg",
+      "alt": "Innovation Ecosystem Dynamics conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/multiobjective-trajectories.png",
+        "alt": "Technology trajectories compared across multiple performance dimensions"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/multiobjective-trajectories.png",
+        "alt": "Technology trajectories compared across multiple performance dimensions"
+      }
+    }
+  ]
 }
 ---
 

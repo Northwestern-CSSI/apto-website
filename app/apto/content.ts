@@ -70,6 +70,16 @@ export type AptoTool = {
     src: string;
     alt: string;
   }>;
+  resources: Array<{
+    name: string;
+    description: string;
+    status: "available" | "coming-soon";
+    url: string | null;
+    image: {
+      src: string;
+      alt: string;
+    };
+  }>;
   statusLabel: string;
   demoVideoUrl: string | null;
   toolUrl: string | null;
@@ -180,7 +190,6 @@ export type AptoInterfaceContent = {
     cohortArtSrc: string;
     directoryLabel: string;
     navigationLabel: string;
-    scrollPrompt: string;
     programLabel: string;
     projectsLabel: string;
     toolsLabel: string;

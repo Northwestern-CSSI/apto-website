@@ -9,7 +9,7 @@ import Moon from "lucide-react/dist/esm/icons/moon.mjs";
 import Plus from "lucide-react/dist/esm/icons/plus.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
 import X from "lucide-react/dist/esm/icons/x.mjs";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 
 import {
   aptoBoilerplate,
@@ -25,113 +25,13 @@ import {
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
+import { ToolKenBurnsGallery } from "../tool-gallery";
 import { useAptoTheme } from "../use-apto-theme";
 
 export type AtlasSection = "home" | "projects" | "tools" | "cohort" | "convening";
 
 type Participant = (typeof aptoParticipants)[number];
 type Person = Participant["people"][number] | (typeof aptoProgram.programTeam)[number];
-
-type KenBurnsPlan = {
-  enterFadeMs: number;
-  holdMs: number;
-  exitFadeMs: number;
-  motionMs: number;
-  fromScale: number;
-  toScale: number;
-  fromX: number;
-  fromY: number;
-  toX: number;
-  toY: number;
-  originX: number;
-  originY: number;
-  easing: string;
-};
-
-type KenBurnsFrame = {
-  index: number;
-  cycle: number;
-  plan: KenBurnsPlan;
-};
-
-type KenBurnsState = {
-  current: KenBurnsFrame;
-  incoming: KenBurnsFrame | null;
-};
-
-const kenBurnsEasings = [
-  "cubic-bezier(.37,0,.63,1)",
-  "cubic-bezier(.45,.05,.25,1)",
-  "cubic-bezier(.25,.1,.25,1)",
-] as const;
-
-function hashString(value: string) {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
-}
-
-function seededRandom(seed: number) {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let value = state;
-    value = Math.imul(value ^ (value >>> 15), value | 1);
-    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
-    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function randomBetween(random: () => number, minimum: number, maximum: number) {
-  return minimum + random() * (maximum - minimum);
-}
-
-function makeKenBurnsPlan(toolId: string, index: number, cycle: number, enterFadeMs = 0): KenBurnsPlan {
-  const random = seededRandom(hashString(`${toolId}:${index}:${cycle}`));
-  const holdMs = Math.round(randomBetween(random, 9_500, 15_500));
-  const exitFadeMs = Math.round(randomBetween(random, 3_200, 5_200));
-  const lowScale = randomBetween(random, 1.08, 1.14);
-  const highScale = randomBetween(random, 1.2, 1.32);
-  const zoomsIn = random() >= .5;
-  const fromX = randomBetween(random, -3.5, 3.5);
-  const fromY = randomBetween(random, -3.5, 3.5);
-  const toX = randomBetween(random, -3.5, 3.5);
-  const toY = randomBetween(random, -3.5, 3.5);
-
-  return {
-    enterFadeMs,
-    holdMs,
-    exitFadeMs,
-    motionMs: enterFadeMs + holdMs + exitFadeMs,
-    fromScale: zoomsIn ? lowScale : highScale,
-    toScale: zoomsIn ? highScale : lowScale,
-    fromX,
-    fromY,
-    toX,
-    toY,
-    originX: randomBetween(random, 18, 82),
-    originY: randomBetween(random, 18, 82),
-    easing: kenBurnsEasings[Math.floor(random() * kenBurnsEasings.length)],
-  };
-}
-
-function kenBurnsStyle(plan: KenBurnsPlan) {
-  return {
-    "--atlas-kb-motion-ms": `${plan.motionMs}ms`,
-    "--atlas-kb-easing": plan.easing,
-    "--atlas-kb-from-scale": plan.fromScale.toFixed(4),
-    "--atlas-kb-to-scale": plan.toScale.toFixed(4),
-    "--atlas-kb-from-x": `${plan.fromX.toFixed(3)}%`,
-    "--atlas-kb-from-y": `${plan.fromY.toFixed(3)}%`,
-    "--atlas-kb-to-x": `${plan.toX.toFixed(3)}%`,
-    "--atlas-kb-to-y": `${plan.toY.toFixed(3)}%`,
-    "--atlas-kb-origin-x": `${plan.originX.toFixed(2)}%`,
-    "--atlas-kb-origin-y": `${plan.originY.toFixed(2)}%`,
-  } as CSSProperties;
-}
 
 const sectionSlugs: Record<AtlasSection, "\/" | "\/projects" | "\/tools" | "\/cohort" | "\/convening"> = {
   home: "/",
@@ -239,7 +139,6 @@ function AtlasHeader({ section, theme, onToggle }: {
     <div className="atlas-header-actions">
       <nav className="atlas-view-nav" aria-label={aptoInterface.atlas.viewNavigationLabel}>
         <span aria-current="page">{aptoInterface.atlas.viewLabel.replace("APTO ", "")}</span>
-        <a href={aptoRoute()}>{aptoInterface.atlas.directoryLabel}</a>
         <a href={aptoRoute("/story")}>{aptoInterface.atlas.continuumLabel}</a>
       </nav>
       <ThemeToggle theme={theme} onToggle={onToggle} />
@@ -364,130 +263,16 @@ function ToolPoster({ tool, expanded, onToggle }: {
 }) {
   const participant = participantFor(tool.participantId);
   const detailId = `atlas-tool-details-${tool.id}`;
-  const media = [tool.galleryImages[0], { src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages.slice(1)];
-  const cardRef = useRef<HTMLElement | null>(null);
-  const imageRefs = useRef<Array<HTMLImageElement | null>>([]);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [isNearViewport, setIsNearViewport] = useState(true);
-  const [documentIsVisible, setDocumentIsVisible] = useState(true);
-  const [motion, setMotion] = useState<KenBurnsState>(() => ({
-    current: {
-      index: 0,
-      cycle: 0,
-      plan: makeKenBurnsPlan(tool.id, 0, 0),
-    },
-    incoming: null,
-  }));
-  const shouldAnimate = !prefersReducedMotion && isNearViewport && documentIsVisible;
-
-  useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => setPrefersReducedMotion(reducedMotion.matches);
-    updatePreference();
-    reducedMotion.addEventListener("change", updatePreference);
-    return () => {
-      reducedMotion.removeEventListener("change", updatePreference);
-    };
-  }, []);
-
-  useEffect(() => {
-    const updateVisibility = () => setDocumentIsVisible(!document.hidden);
-    updateVisibility();
-    document.addEventListener("visibilitychange", updateVisibility);
-    return () => document.removeEventListener("visibilitychange", updateVisibility);
-  }, []);
-
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card || !("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsNearViewport(entry.isIntersecting),
-      { rootMargin: "260px 0px" },
-    );
-    observer.observe(card);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!shouldAnimate || motion.incoming || media.length < 2) return;
-    let cancelled = false;
-    const current = motion.current;
-    const nextIndex = (current.index + 1) % media.length;
-    const nextImage = imageRefs.current[nextIndex];
-    const decodePromise = nextImage?.decode().catch(() => undefined) ?? Promise.resolve();
-    const timeoutId = window.setTimeout(async () => {
-      await decodePromise;
-      if (cancelled) return;
-      const incoming: KenBurnsFrame = {
-        index: nextIndex,
-        cycle: current.cycle + 1,
-        plan: makeKenBurnsPlan(tool.id, nextIndex, current.cycle + 1, current.plan.exitFadeMs),
-      };
-      setMotion((latest) => {
-        if (latest.incoming || latest.current.index !== current.index || latest.current.cycle !== current.cycle) return latest;
-        return { current: latest.current, incoming };
-      });
-    }, current.plan.holdMs);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeoutId);
-    };
-  }, [media.length, motion, shouldAnimate, tool.id]);
-
-  useEffect(() => {
-    if (!shouldAnimate || !motion.incoming) return;
-    const incoming = motion.incoming;
-    const timeoutId = window.setTimeout(() => {
-      setMotion((latest) => latest.incoming === incoming
-        ? { current: incoming, incoming: null }
-        : latest);
-    }, motion.current.plan.exitFadeMs);
-    return () => window.clearTimeout(timeoutId);
-  }, [motion, shouldAnimate]);
+  const media = [{ src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages];
 
   if (!participant) return null;
 
   return <article
-    ref={cardRef}
     className={`atlas-tool-card${expanded ? " is-expanded" : ""}`}
     data-gallery-count={media.length}
     style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
   >
-    <figure
-      className="atlas-tool-media"
-      data-motion={shouldAnimate ? "running" : "paused"}
-      style={{ "--atlas-kb-crossfade-ms": `${motion.current.plan.exitFadeMs}ms` } as CSSProperties}
-    >
-      {media.map((image, index) => {
-        const isCurrent = index === motion.current.index;
-        const isIncoming = index === motion.incoming?.index;
-        const isLeaving = isCurrent && motion.incoming !== null;
-        const frame = isIncoming ? motion.incoming : isCurrent ? motion.current : null;
-        const className = [
-          isCurrent ? "is-current" : "",
-          isLeaving ? "is-leaving" : "",
-          isIncoming ? "is-incoming" : "",
-        ].filter(Boolean).join(" ");
-
-        return <img
-          ref={(node) => { imageRefs.current[index] = node; }}
-          key={`${image.src}-${index}`}
-          className={className}
-          data-gallery-index={index}
-          data-active={isIncoming || (isCurrent && !isLeaving) ? "true" : undefined}
-          src={withDeploymentBase(image.src)}
-          alt={index === 0 ? image.alt : ""}
-          aria-hidden={index === 0 ? undefined : "true"}
-          width={index === 0 ? "1536" : "1200"}
-          height={index === 0 ? "1024" : "800"}
-          loading="lazy"
-          decoding="async"
-          style={frame ? kenBurnsStyle(frame.plan) : undefined}
-        />;
-      })}
-      <figcaption>{tool.figure.label}</figcaption>
-    </figure>
+    <ToolKenBurnsGallery galleryId={`atlas-${tool.id}`} images={media} caption={tool.figure.label} className="atlas-tool-media" />
     <div className="atlas-tool-shade" aria-hidden="true" />
     <div className="atlas-tool-panel">
       <div className="atlas-tool-copy">
@@ -499,6 +284,14 @@ function ToolPoster({ tool, expanded, onToggle }: {
         <div className="atlas-tool-details" id={detailId}>
           <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
           <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
+          <div className="atlas-tool-resources" aria-label={`${tool.name} supporting resources`}>
+            {tool.resources.map((resource) => {
+              const content = <><img src={withDeploymentBase(resource.image.src)} alt="" width="96" height="64" loading="lazy" /><span><strong>{resource.name}</strong><small>{resource.description}</small><em>{resource.status === "coming-soon" ? "Coming soon" : "Available"}</em></span></>;
+              return resource.url
+                ? <a href={resource.url} key={resource.name}>{content}</a>
+                : <div key={resource.name}>{content}</div>;
+            })}
+          </div>
           {(tool.demoVideoUrl || tool.toolUrl) && <nav aria-label={`${tool.name} links`}>
             {tool.demoVideoUrl && <ExternalLink href={tool.demoVideoUrl}>{aptoInterface.tools.watchDemoLabel}</ExternalLink>}
             {tool.toolUrl && <ExternalLink href={tool.toolUrl}>{aptoInterface.tools.openToolLabel}</ExternalLink>}

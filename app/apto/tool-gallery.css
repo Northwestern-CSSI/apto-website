@@ -1,0 +1,39 @@
+.apto-tool-gallery {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.apto-tool-gallery > img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translate3d(var(--tool-kb-from-x, 0), var(--tool-kb-from-y, 0), 0) scale(var(--tool-kb-from-scale, 1.08));
+  transform-origin: var(--tool-kb-origin-x, 50%) var(--tool-kb-origin-y, 50%);
+  transition: opacity var(--tool-kb-crossfade-ms, 3600ms) cubic-bezier(.45, 0, .55, 1);
+  will-change: opacity, transform;
+}
+
+.apto-tool-gallery > img.is-current,
+.apto-tool-gallery > img.is-incoming {
+  animation: apto-tool-ken-burns var(--tool-kb-motion-ms, 14000ms) var(--tool-kb-easing, ease-in-out) both;
+}
+
+.apto-tool-gallery[data-motion="paused"] > img.is-current,
+.apto-tool-gallery[data-motion="paused"] > img.is-incoming { animation-play-state: paused; }
+.apto-tool-gallery > img.is-current { z-index: 1; opacity: 1; }
+.apto-tool-gallery > img.is-current.is-leaving { opacity: 0; }
+.apto-tool-gallery > img.is-incoming { z-index: 2; opacity: 1; }
+
+@keyframes apto-tool-ken-burns {
+  from { transform: translate3d(var(--tool-kb-from-x, 0), var(--tool-kb-from-y, 0), 0) scale(var(--tool-kb-from-scale, 1.08)); }
+  to { transform: translate3d(var(--tool-kb-to-x, 0), var(--tool-kb-to-y, 0), 0) scale(var(--tool-kb-to-scale, 1.24)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apto-tool-gallery > img { animation: none !important; transition: none !important; transform: none !important; }
+}

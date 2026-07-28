@@ -7,7 +7,7 @@
   "initials": "DW",
   "role": "Principal Investigator",
   "organization": null,
-  "headshotUrl": null,
+  "headshotUrl": "/apto/people/dashun-wang.avif",
   "headshotAlt": "Portrait of Dashun Wang",
   "profileUrl": null
 }

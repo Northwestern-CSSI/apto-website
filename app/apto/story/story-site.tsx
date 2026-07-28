@@ -20,6 +20,7 @@ import {
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
+import { ToolKenBurnsGallery } from "../tool-gallery";
 import { useAptoTheme } from "../use-apto-theme";
 
 type StorySection = "program" | "projects" | "tools" | "cohort" | "convening";
@@ -236,7 +237,7 @@ function StoryHeader({ activeSection, theme, onToggle }: {
       >{navLabels[section]}</a>)}
     </nav>
     <div className="story-header-actions">
-      <a className="story-directory-link" href={aptoRoute()}>{aptoInterface.story.directoryLabel}</a>
+      <a className="story-directory-link" href={aptoRoute("/atlas")}>Atlas view</a>
       <StoryThemeToggle theme={theme} onToggle={onToggle} />
     </div>
   </header>;
@@ -250,10 +251,6 @@ function StoryHero() {
     <div className="story-hero-copy" data-story-reveal="heading">
       <h1 id="story-title">{home.title}</h1>
       <p>{home.introduction}</p>
-      <a className="story-scroll-cue" href="#story-program">
-        <span>{aptoInterface.story.scrollPrompt}</span>
-        <span aria-hidden="true">↓</span>
-      </a>
     </div>
     <figure className="story-hero-visual" data-story-reveal="media" data-story-parallax="0.038">
       <div className="story-hero-image">
@@ -350,11 +347,11 @@ function ToolsStory() {
 
   const toolCard = (tool: (typeof aptoTools)[number], index: number) => {
     const participant = participantFor(tool.participantId);
+    const media = [{ src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages];
     return <article className="story-tool" key={tool.id} data-story-reveal="media">
-      <figure data-story-parallax={(.01 + index % 3 * .004).toFixed(3)}>
-        <img src={withDeploymentBase(tool.figure.src)} alt={tool.figure.alt} width="900" height="600" loading="lazy" decoding="async" />
-        <figcaption>{tool.figure.label}</figcaption>
-      </figure>
+      <div data-story-parallax={(.01 + index % 3 * .004).toFixed(3)} className="story-tool-gallery-wrap">
+        <ToolKenBurnsGallery galleryId={`story-${tool.id}`} images={media} caption={tool.figure.label} className="story-tool-gallery" />
+      </div>
       <div className="story-tool-copy">
         <header>
           <p>{participant?.displayName} · {tool.statusLabel}</p>
@@ -362,6 +359,15 @@ function ToolsStory() {
         </header>
         <p>{tool.description}</p>
         <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
+        <section className="story-tool-resources" aria-label={`${tool.name} supporting resources`}>
+          <h4>Supporting pieces</h4>
+          <div>{tool.resources.map((resource) => {
+            const content = <><img src={withDeploymentBase(resource.image.src)} alt="" width="120" height="80" loading="lazy" /><span><strong>{resource.name}</strong><small>{resource.description}</small><em>{resource.status === "coming-soon" ? "Coming soon" : "Available"}</em></span></>;
+            return resource.url
+              ? <a href={resource.url} key={resource.name}>{content}</a>
+              : <article key={resource.name}>{content}</article>;
+          })}</div>
+        </section>
         <div className="story-tool-footer">
           <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
           <span>
@@ -463,7 +469,7 @@ function StoryFooter() {
       <img src={withDeploymentBase(aptoInterface.footer.nsfLogoSrc)} alt={aptoInterface.footer.nsfLogoAlt} width="64" height="64" loading="lazy" />
       <div><strong>{aptoInterface.story.supportedByLabel}</strong><p>{aptoBoilerplate}</p></div>
     </div>
-    <div className="story-footer-links"><a href={aptoRoute()}>{aptoInterface.story.directoryLabel}</a><a href="#story-top">{aptoInterface.footer.backToTopLabel} ↑</a></div>
+    <div className="story-footer-links"><a href={aptoRoute("/atlas")}>Atlas view</a><a href="#story-top">{aptoInterface.footer.backToTopLabel} ↑</a></div>
   </footer>;
 }
 

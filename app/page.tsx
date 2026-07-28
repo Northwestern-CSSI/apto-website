@@ -1,13 +1,8 @@
-import type { Metadata } from "next";
+import { aptoStoryMetadata } from "./apto/story/metadata";
+import { AptoStoryPage } from "./apto/story/story-site";
 
-import { metadataFor } from "./apto/_metadata";
-import { AptoRoutePage } from "./apto/_route-page";
-
-export const metadata: Metadata = {
-  ...metadataFor("/"),
-  title: { absolute: "Program home | APTO" },
-};
+export const metadata = aptoStoryMetadata;
 
 export default function Home() {
-  return <AptoRoutePage section="home" />;
+  return <AptoStoryPage />;
 }

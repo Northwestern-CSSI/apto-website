@@ -12,4 +12,4 @@
 
 ## Introduction
 
-Explore Northwestern University’s five broad research capabilities for detecting emerging technologies, mining technology-outcome evidence, aggregating research pipelines, predicting technological evolution, and comparing multiple outcome objectives, alongside research previews from the other APTO teams. Filter the collection by participating institution or by the capability, production, and use dimensions each tool helps investigate.
+Explore the tools and broader capabilities being developed across APTO. Northwestern University’s work connects research pipelines, outcome mining, emerging-technology detection, multiobjective analysis, and forecasting; companion previews show how other cohort teams are approaching complementary questions. Each card also introduces the datasets, prototypes, and research outputs that form the tool’s supporting pieces.

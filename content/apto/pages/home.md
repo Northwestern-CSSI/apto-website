@@ -12,4 +12,4 @@
 
 ## Introduction
 
-APTO is a National Science Foundation program building shared evidence for understanding how technologies develop, spread, and create value. Explore the participating organizations, research projects, people, and research tools for investigating technology outcomes.
+APTO is a National Science Foundation program developing causal models, datasets, and tools for understanding how science and technology investments shape future capability, production, and use. Explore the program, its five projects, the people behind them, and the evidence systems they are building.

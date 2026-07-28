@@ -4,30 +4,55 @@
   "id": "uchicago-virtual-policy-lab",
   "participantId": "uchicago",
   "name": "Virtual Policy Laboratory",
-  "categories": ["Production", "Use"],
+  "categories": [
+    "Production",
+    "Use"
+  ],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/previews/uchicago-virtual-policy-lab.jpg",
+    "src": "/apto/tools/photography/predicting-01.jpg",
     "label": "Policy experiment comparison",
-    "alt": "Chart comparing baseline and alternative policy scenarios for technology outcomes over time"
+    "alt": "Virtual Policy Laboratory conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/atlas/uchicago-policy-flows.jpg",
-      "alt": "Policy waves passing through a connected global science system and separating into future trajectories"
+      "src": "/apto/tools/photography/predicting-02.jpg",
+      "alt": "Virtual Policy Laboratory conceptual view 2, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-policy-counterfactual-worlds.jpg",
-      "alt": "A global science system unfolding into four counterfactual policy outcomes"
+      "src": "/apto/tools/photography/predicting-03.jpg",
+      "alt": "Virtual Policy Laboratory conceptual view 3, using supplied research imagery"
     },
     {
-      "src": "/apto/tools/atlas/uchicago-policy-mechanism-pathways.jpg",
-      "alt": "Policy mechanisms passing through a global science network to produce different technology outcomes"
+      "src": "/apto/tools/photography/predicting-04.jpg",
+      "alt": "Virtual Policy Laboratory conceptual view 4, using supplied research imagery"
     }
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
-  "toolUrl": null
+  "toolUrl": null,
+  "resources": [
+    {
+      "name": "Project documentation",
+      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    },
+    {
+      "name": "Data preview",
+      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "status": "coming-soon",
+      "url": null,
+      "image": {
+        "src": "/apto/tools/resources/predicting-curves.png",
+        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+      }
+    }
+  ]
 }
 ---
 
