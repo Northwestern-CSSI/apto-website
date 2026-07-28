@@ -54,7 +54,7 @@ test("generated content follows the featured-institution order and supplied-imag
     macrocosm: "#0D5C8F",
   });
   assert.deepEqual(data.projects.map((project) => project.participantId), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
-  assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 5);
+  assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 6);
   assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 6);
   assert.deepEqual(data.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name), [
     "Aggregating Research Pipeline At Scale Tool",
@@ -62,6 +62,7 @@ test("generated content follows the featured-institution order and supplied-imag
     "Multi-Objective Technology Outcomes Tool",
     "Predicting Technological Evolution Tool",
     "Emerging Technology Detection Tool",
+    "Tool A",
   ]);
   assert.deepEqual(data.tools.filter((tool) => tool.participantId === "uchicago").map((tool) => tool.name), [
     "Data",
@@ -122,7 +123,7 @@ test("generated content follows the featured-institution order and supplied-imag
   const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
   assert.deepEqual(
     northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
-    ["dashun-wang", "benjamin-jones", "jian-cao", "mark-hersam", "yian-yin"],
+    ["dashun-wang", "alicia-loffler", "benjamin-jones", "jian-cao", "yian-yin"],
   );
   assert.deepEqual(data.program.programTeam.map((person) => [person.name, person.role]), [
     ["Rebecca Chmiel", "Program Manager"],
