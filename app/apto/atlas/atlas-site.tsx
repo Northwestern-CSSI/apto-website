@@ -26,6 +26,7 @@ import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
+import { ProgramIntroduction } from "../program-introduction";
 import { useAptoTheme } from "../use-apto-theme";
 
 export type AtlasSection = "home" | "projects" | "tools" | "cohort" | "convening";
@@ -151,7 +152,13 @@ function PageIntroduction({ section }: { section: AtlasSection }) {
   const page = pageCopy(slug);
   return <header className="atlas-page-intro">
     <h1 id={`atlas-${section}-title`}>{page.title}</h1>
-    <div><p>{page.introduction}</p></div>
+    <div>{section === "home"
+      ? <ProgramIntroduction
+          introduction={page.introduction}
+          projectHref={(projectId) => `${atlasRoute("projects")}#atlas-project-${projectId}`}
+        />
+      : <p>{page.introduction}</p>}
+    </div>
   </header>;
 }
 

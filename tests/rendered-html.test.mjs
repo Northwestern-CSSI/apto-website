@@ -129,6 +129,9 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.equal((html.match(/class="story-outcome-depth"/g) ?? []).length, 3);
   for (const output of ["Technology Outcome Models", "Causal, predictive models", "Datasets", "Tools"]) assert.ok(html.includes(output));
   assert.match(html, /About the APTO Program/);
+  assert.match(html, /The first APTO cohort includes/);
+  for (const organization of ["Northwestern University", "University of Chicago", "Apperture.AI", "Insilicom", "Macrocosm"]) assert.ok(html.includes(organization));
+  for (const project of data.projects) assert.ok(html.includes(`href="#story-project-${project.id}"`));
   assert.match(html, /What We Are Building/);
   assert.match(html, /class="story-section story-impact" id="story-impact"/);
   assert.match(html, /class="story-impact-layout"/);
@@ -198,6 +201,10 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(atlasStyles, /\.apto-resource-path-atlas\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.82rem/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);
+  const atlasHomeHtml = await (await render("/atlas")).text();
+  assert.match(atlasHomeHtml, /The first APTO cohort includes/);
+  for (const organization of ["Northwestern University", "University of Chicago", "Apperture.AI", "Insilicom", "Macrocosm"]) assert.ok(atlasHomeHtml.includes(organization));
+  for (const project of data.projects) assert.ok(atlasHomeHtml.includes(`/atlas/projects#atlas-project-${project.id}`));
 });
 
 test("light and dark logo assets remain available in both presentations", async () => {

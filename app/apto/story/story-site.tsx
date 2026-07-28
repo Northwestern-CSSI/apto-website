@@ -23,6 +23,7 @@ import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
+import { ProgramIntroduction } from "../program-introduction";
 import { useAptoTheme } from "../use-apto-theme";
 
 type StorySection = "program" | "projects" | "tools" | "cohort" | "convening";
@@ -288,7 +289,10 @@ function StoryHero() {
   return <section className="story-hero" id="story-top" aria-labelledby="story-title">
     <div className="story-hero-copy" data-story-reveal="heading" data-story-parallax="-0.030" data-story-parallax-limit="48">
       <h1 id="story-title">{home.title}</h1>
-      <p>{home.introduction}</p>
+      <ProgramIntroduction
+        introduction={home.introduction}
+        projectHref={(projectId) => `#story-project-${projectId}`}
+      />
     </div>
     <figure className="story-hero-visual" data-story-reveal="media" data-story-parallax="0.072" data-story-parallax-limit="92">
       <div className="story-hero-image">

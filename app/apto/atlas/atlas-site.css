@@ -188,6 +188,19 @@
   text-wrap: balance;
 }
 .atlas-page-intro > div { max-width: 680px; color: var(--atlas-copy); font-size: 1.01rem; line-height: 1.72; text-align: left; }
+.atlas-page-intro .apto-program-introduction a {
+  color: inherit;
+  font-weight: 670;
+  text-decoration-color: color-mix(in srgb, var(--atlas-teal) 48%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color .18s ease, text-decoration-color .18s ease;
+}
+.atlas-page-intro .apto-program-introduction a:hover,
+.atlas-page-intro .apto-program-introduction a:focus-visible {
+  color: var(--atlas-teal);
+  text-decoration-color: currentColor;
+}
 
 .atlas-program-mosaic {
   position: relative;

@@ -274,6 +274,19 @@
   font-size: clamp(1rem,1.35vw,1.17rem);
   line-height: 1.72;
 }
+.story-hero-copy > .apto-program-introduction a {
+  color: inherit;
+  font-weight: 670;
+  text-decoration-color: color-mix(in srgb, var(--story-teal) 48%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color .18s ease, text-decoration-color .18s ease;
+}
+.story-hero-copy > .apto-program-introduction a:hover,
+.story-hero-copy > .apto-program-introduction a:focus-visible {
+  color: var(--story-teal);
+  text-decoration-color: currentColor;
+}
 .story-scroll-cue {
   min-height: 44px;
   width: fit-content;
