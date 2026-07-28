@@ -191,6 +191,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /\.apto-resource-path:not\(\.is-featured\)\s*\{[\s\S]*?grid-template-rows:\s*56% 44%/);
   assert.match(resourceStyles, /flex-flow:\s*row wrap-reverse/);
   assert.match(resourceStyles, /width:\s*min\(100%, 82px\)/);
+  assert.match(resourceStyles, /\.apto-resource-node strong\s*\{[\s\S]*?width:\s*min\(100%, 18ch\)/);
   assert.match(resourceStyles, /min-height:\s*2\.32em/);
   assert.match(resourceStyles, /grid-template-columns:\s*minmax\(0, 70%\) minmax\(0, 30%\)/);
   assert.match(resourceStyles, /\.apto-resource-route\s*>\s*li\s*\{[\s\S]*?flex:\s*0 1 25%/);

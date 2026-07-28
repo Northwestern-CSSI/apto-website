@@ -122,9 +122,9 @@
 
 .apto-resource-node.is-active .apto-resource-thumb img { transform: scale(1.1); }
 .apto-resource-node strong {
+  width: min(100%, 18ch);
   min-width: 0;
   min-height: 2.32em;
-  max-width: 14ch;
   display: -webkit-box;
   overflow: hidden;
   color: inherit;
