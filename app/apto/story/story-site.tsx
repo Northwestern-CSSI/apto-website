@@ -301,6 +301,7 @@ function StoryHero() {
           className="story-hero-primary"
           eager
           randomStart
+          randomOrder
         />
         {showHeroInset && heroDetail && <span
           className="story-hero-detail-anchor"

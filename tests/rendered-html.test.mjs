@@ -174,7 +174,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/class="apto-resource-path apto-resource-path-story(?: is-featured)?"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
   assert.doesNotMatch(html, /apto-resource-detail/);
-  const heroImageCount = new Set(data.tools.flatMap((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src))).size;
+  const heroImageCount = data.program.heroGallery.length;
   assert.match(html, new RegExp(`class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="${heroImageCount}"`));
   assert.doesNotMatch(html, /class="story-hero-detail-anchor"/);
   const storySource = await readFile(new URL("../app/apto/story/story-site.tsx", import.meta.url), "utf8");
@@ -266,6 +266,8 @@ test("the shared gallery preserves reduced-motion support and true crossfades", 
   assert.match(source, /IntersectionObserver/);
   assert.match(source, /\.decode\(\)/);
   assert.match(source, /Math\.random\(\)/);
+  assert.match(source, /randomOrder/);
+  assert.match(source, /objectPosition/);
   assert.match(source, /data-random-start-ready/);
   assert.match(styles, /\.is-current\.is-leaving\s*\{\s*opacity:\s*0/);
   assert.match(styles, /\.is-incoming\s*\{\s*z-index:\s*2;\s*opacity:\s*1/);

@@ -50,6 +50,43 @@
       "alt": "Technological evolution and forecasting represented through supplied conceptual photography"
     }
   ],
+  "heroGallery": [
+    {
+      "src": "/apto/hero/joenco-ywTw3JnhyRM-unsplash.jpg",
+      "alt": "Repeating geometric facade of a contemporary building",
+      "objectPosition": "50% 48%"
+    },
+    {
+      "src": "/apto/hero/prasopchok-pId93BwiG1M-unsplash.jpg",
+      "alt": "Warmly lit library shelves filled with books",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "src": "/apto/hero/septian-akbar-1f-GoPoJeug-unsplash.jpg",
+      "alt": "A young green plant emerging from dark soil",
+      "objectPosition": "50% 68%"
+    },
+    {
+      "src": "/apto/hero/pragati-choudhari-pdgTM5BODFs-unsplash.jpg",
+      "alt": "Iridescent prismatic crystal against a dark background",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "src": "/apto/hero/marcel-strauss-mVwqZT2Ah6A-unsplash.jpg",
+      "alt": "Blue sky reflected across angular glass architecture",
+      "objectPosition": "50% 48%"
+    },
+    {
+      "src": "/apto/hero/milad-fakurian-WUtT8cGRPog-unsplash.jpg",
+      "alt": "Minimal abstract sphere surrounded by flowing dark ribbons",
+      "objectPosition": "23% 32%"
+    },
+    {
+      "src": "/apto/hero/gracia-solenyanu-OgZ1roVosRY-unsplash.jpg",
+      "alt": "Macro view of reflective silver ridges and glittering texture",
+      "objectPosition": "54% 50%"
+    }
+  ],
   "lastVerified": "2026-07-28",
   "boilerplate": "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
   "sources": [

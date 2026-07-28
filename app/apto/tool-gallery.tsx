@@ -7,7 +7,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { withDeploymentBase } from "./paths";
 
-type ToolImage = { src: string; alt: string };
+type ToolImage = { src: string; alt: string; objectPosition?: string };
 
 type MotionPlan = {
   holdMs: number;
@@ -102,6 +102,7 @@ export function ToolKenBurnsGallery({
   className = "",
   eager = false,
   randomStart = false,
+  randomOrder = false,
 }: {
   galleryId: string;
   images: ToolImage[];
@@ -109,14 +110,16 @@ export function ToolKenBurnsGallery({
   className?: string;
   eager?: boolean;
   randomStart?: boolean;
+  randomOrder?: boolean;
 }) {
   const rootRef = useRef<HTMLElement | null>(null);
   const imageRefs = useRef<Array<HTMLImageElement | null>>([]);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [nearViewport, setNearViewport] = useState(true);
   const [visible, setVisible] = useState(true);
-  const [randomStartReady, setRandomStartReady] = useState(!randomStart);
+  const [randomStartReady, setRandomStartReady] = useState(!randomStart && !randomOrder);
   const randomStartApplied = useRef(false);
+  const [sequence, setSequence] = useState(() => images.map((_, index) => index));
   const [motion, setMotion] = useState<MotionState>(() => ({
     current: { index: 0, cycle: 0, plan: makePlan(galleryId, 0, 0) },
     incoming: null,
@@ -124,17 +127,25 @@ export function ToolKenBurnsGallery({
   const animate = !reducedMotion && nearViewport && visible && images.length > 1;
 
   useEffect(() => {
-    if (!randomStart || randomStartApplied.current || images.length < 2) return;
+    if ((!randomStart && !randomOrder) || randomStartApplied.current || images.length < 2) return;
     randomStartApplied.current = true;
-    const index = Math.floor(Math.random() * images.length);
+    const shuffled = images.map((_, index) => index);
+    if (randomOrder) {
+      for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+      }
+    }
+    const index = randomOrder ? shuffled[0] : Math.floor(Math.random() * images.length);
     const image = imageRefs.current[index];
     const select = async () => {
       await image?.decode().catch(() => undefined);
+      setSequence(shuffled);
       setMotion({ current: { index, cycle: 0, plan: makePlan(galleryId, index, 0) }, incoming: null });
       setRandomStartReady(true);
     };
     void select();
-  }, [galleryId, images.length, randomStart]);
+  }, [galleryId, images, images.length, randomOrder, randomStart]);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -163,7 +174,8 @@ export function ToolKenBurnsGallery({
     if (!animate || motion.incoming) return;
     let cancelled = false;
     const current = motion.current;
-    const nextIndex = (current.index + 1) % images.length;
+    const currentSequenceIndex = sequence.indexOf(current.index);
+    const nextIndex = sequence[(currentSequenceIndex + 1) % sequence.length] ?? (current.index + 1) % images.length;
     const decodePromise = imageRefs.current[nextIndex]?.decode().catch(() => undefined) ?? Promise.resolve();
     const timer = window.setTimeout(async () => {
       await decodePromise;
@@ -176,7 +188,7 @@ export function ToolKenBurnsGallery({
       setMotion((latest) => latest.incoming ? latest : { current: latest.current, incoming });
     }, current.plan.holdMs);
     return () => { cancelled = true; window.clearTimeout(timer); };
-  }, [animate, galleryId, images.length, motion]);
+  }, [animate, galleryId, images.length, motion, sequence]);
 
   useEffect(() => {
     if (!animate || !motion.incoming) return;
@@ -211,7 +223,10 @@ export function ToolKenBurnsGallery({
         height="1024"
         loading={eager && index === 0 ? "eager" : "lazy"}
         decoding="async"
-        style={frame ? motionStyle(frame.plan) : undefined}
+        style={{
+          ...(frame ? motionStyle(frame.plan) : {}),
+          ...(image.objectPosition ? { objectPosition: image.objectPosition } : {}),
+        }}
       />;
     })}
     {caption && <figcaption>{caption}</figcaption>}

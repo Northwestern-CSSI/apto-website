@@ -474,6 +474,7 @@ function validateProgram(document) {
       "impactIntroduction",
       "objectives",
       "landingGallery",
+      "heroGallery",
       "lastVerified",
       "boilerplate",
       "sources",
@@ -516,6 +517,23 @@ function validateProgram(document) {
   });
   assertUnique(landingGallery.map((image) => image.src), `${context}.landingGallery sources`);
   assertUnique(landingGallery.map((image) => image.alt), `${context}.landingGallery descriptions`);
+  const heroGallery = requireArray(metadata, "heroGallery", context);
+  assert(heroGallery.length === 7, `${context}.heroGallery must contain the seven curated hero visuals`);
+  heroGallery.forEach((image, index) => {
+    const imageContext = `${context}.heroGallery[${index}]`;
+    requireObject(image, imageContext);
+    assertExactKeys(image, ["src", "alt", "objectPosition"], imageContext);
+    const imageSrc = requireString(image, "src", imageContext);
+    assert(imageSrc.startsWith("/apto/hero/"), `${imageContext}.src must begin with /apto/hero/`);
+    requireString(image, "alt", imageContext);
+    const objectPosition = requireString(image, "objectPosition", imageContext);
+    assert(
+      /^\d{1,3}% \d{1,3}%$/.test(objectPosition),
+      `${imageContext}.objectPosition must contain horizontal and vertical percentages`,
+    );
+  });
+  assertUnique(heroGallery.map((image) => image.src), `${context}.heroGallery sources`);
+  assertUnique(heroGallery.map((image) => image.alt), `${context}.heroGallery descriptions`);
   requireIsoDate(requireString(metadata, "lastVerified", context), `${context}.lastVerified`);
 
   assert(metadata.boilerplate === expectedBoilerplate, `${context}.boilerplate must match the approved NSF language exactly`);
@@ -1142,6 +1160,10 @@ async function buildContent() {
     image.src,
     `${relativeFile(programFile)}.landingGallery[${index}].src`,
   )));
+  await Promise.all(programRecord.program.heroGallery.map((image, index) => validateImageAsset(
+    image.src,
+    `${relativeFile(programFile)}.heroGallery[${index}].src`,
+  )));
   const interfaceRecord = validateInterface(interfaceDocument);
   for (const [publicPath, field] of [
     [interfaceRecord.study.socialImageSrc, "study.socialImageSrc"],
@@ -1204,6 +1226,7 @@ async function buildContent() {
     interfaceRecord.atlas.socialImageSrc,
     interfaceRecord.footer.nsfLogoSrc,
     ...programRecord.program.landingGallery.map((image) => image.src),
+    ...programRecord.program.heroGallery.map((image) => image.src),
     ...participantRecords.flatMap((record) => [
       record.participant.logo.variants.light.src,
       record.participant.logo.variants.dark.src,

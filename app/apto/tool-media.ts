@@ -1,17 +1,13 @@
-import { aptoTools } from "./content";
+import { aptoProgram, aptoTools } from "./content";
 
-export type PresentationImage = { src: string; alt: string };
+export type PresentationImage = { src: string; alt: string; objectPosition?: string };
 type Tool = (typeof aptoTools)[number];
 
 function ownMedia(tool: Tool): PresentationImage[] {
   return [tool.figure, ...tool.galleryImages].map(({ src, alt }) => ({ src, alt }));
 }
 
-function uniqueMedia(images: PresentationImage[]) {
-  return [...new Map(images.map((image) => [image.src, image])).values()];
-}
-
-export const storyHeroMedia = uniqueMedia(aptoTools.flatMap(ownMedia));
+export const storyHeroMedia: PresentationImage[] = aptoProgram.heroGallery;
 
 export function presentationMediaForTool(tool: Tool): PresentationImage[] {
   return ownMedia(tool);

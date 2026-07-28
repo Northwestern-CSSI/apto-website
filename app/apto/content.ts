@@ -144,6 +144,11 @@ export type AptoProgram = {
     src: string;
     alt: string;
   }>;
+  heroGallery: Array<{
+    src: string;
+    alt: string;
+    objectPosition: string;
+  }>;
   programTeam: AptoProgramPerson[];
 };
 
