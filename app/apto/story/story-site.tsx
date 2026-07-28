@@ -268,7 +268,11 @@ function OutcomePanorama() {
           loading="lazy"
           decoding="async"
         />
-        <figcaption><strong>{item.title}</strong><span>{item.description}</span></figcaption>
+        <figcaption>
+          <strong>{item.title}</strong>
+          {item.subtitle && <small>{item.subtitle}</small>}
+          <span>{item.description}</span>
+        </figcaption>
       </figure>
     </div>)}
   </div>;
@@ -324,11 +328,13 @@ function ProgramStory() {
         <h2 id="story-impact-title">{aptoProgram.objectivesTitle}</h2>
         <span>{aptoProgram.impactIntroduction}</span>
       </header>
-      <ul className="story-impact-goals">{aptoProgram.objectives.map((objective, index) => <li
-        key={objective}
-        data-story-reveal="up"
-        data-story-reveal-order={index}
-      >{objective}</li>)}</ul>
+      <div className="story-impact-layout">
+        <ul className="story-impact-goals">{aptoProgram.objectives.map((objective, index) => <li
+          key={objective}
+          data-story-reveal="right"
+          data-story-reveal-order={index}
+        >{objective}</li>)}</ul>
+      </div>
     </section>
   </>;
 }

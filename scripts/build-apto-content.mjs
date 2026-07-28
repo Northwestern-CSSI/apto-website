@@ -478,8 +478,11 @@ function validateProgram(document) {
   buildingItems.forEach((item, index) => {
     const itemContext = `${context}.buildingItems[${index}]`;
     requireObject(item, itemContext);
-    assertExactKeys(item, ["title", "description"], itemContext);
+    const itemKeys = ["title", "description"];
+    if (Object.hasOwn(item, "subtitle")) itemKeys.push("subtitle");
+    assertExactKeys(item, itemKeys, itemContext);
     requireString(item, "title", itemContext);
+    if (Object.hasOwn(item, "subtitle")) requireString(item, "subtitle", itemContext);
     requireString(item, "description", itemContext);
   });
   requireString(metadata, "objectivesTitle", context);

@@ -131,6 +131,7 @@ export type AptoProgram = {
   buildingIntroduction: string;
   buildingItems: Array<{
     title: string;
+    subtitle?: string;
     description: string;
   }>;
   objectivesTitle: string;

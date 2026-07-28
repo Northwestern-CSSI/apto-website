@@ -102,10 +102,12 @@ test("Story gives project titles full card width and pairs lead-institution tool
   const data = await content();
   const html = await (await render("/story")).text();
   assert.equal((html.match(/class="story-outcome-depth"/g) ?? []).length, 3);
-  for (const output of ["Technology Outcome Models", "Data Sets", "Tools"]) assert.ok(html.includes(output));
+  for (const output of ["Technology Outcome Models", "Causal, predictive models", "Datasets", "Tools"]) assert.ok(html.includes(output));
   assert.match(html, /About the APTO Program/);
   assert.match(html, /What We Are Building/);
   assert.match(html, /class="story-section story-impact" id="story-impact"/);
+  assert.match(html, /class="story-impact-layout"/);
+  assert.ok((html.match(/data-story-reveal="right"/g) ?? []).length >= data.program.objectives.length);
   assert.match(html, /Together, the APTO cohort is working to achieve/);
   assert.match(html, /Led by Northwestern University/);
   assert.doesNotMatch(html, /Tools from across the APTO cohort/i);

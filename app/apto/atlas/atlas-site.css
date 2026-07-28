@@ -943,6 +943,14 @@
   font-size: clamp(1.2rem,1.8vw,1.65rem);
   line-height: 1.13;
 }
+.atlas-building-mosaic figcaption small {
+  display: block;
+  margin-top: 7px;
+  color: #9fd7e4;
+  font-size: .74rem;
+  font-weight: 750;
+  letter-spacing: .02em;
+}
 .atlas-building-mosaic figcaption span {
   display: block;
   margin-top: 12px;

@@ -8,11 +8,12 @@
   "buildingIntroduction": "APTO is building an integrated evidence base that connects causal models, new datasets, and practical tools for understanding and guiding technology outcomes.",
   "buildingItems": [
     {
-      "title": "Technology Outcome Models (causal, predictive models)",
+      "title": "Technology Outcome Models",
+      "subtitle": "Causal, predictive models",
       "description": "We are building causal, predictive models to predict both future and historical states of technology outcomes across many technology areas so that investors have a compass for strategic investments in research and development in the United States."
     },
     {
-      "title": "Data Sets",
+      "title": "Datasets",
       "description": "We are deriving and developing new datasets to test these technology outcome models."
     },
     {

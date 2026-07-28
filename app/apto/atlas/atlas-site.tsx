@@ -182,7 +182,11 @@ function ProgramPage() {
           loading="eager"
           decoding="async"
         />
-        <figcaption><strong>{item.title}</strong><span>{item.description}</span></figcaption>
+        <figcaption>
+          <strong>{item.title}</strong>
+          {item.subtitle && <small>{item.subtitle}</small>}
+          <span>{item.description}</span>
+        </figcaption>
       </figure>)}
     </section>
 
