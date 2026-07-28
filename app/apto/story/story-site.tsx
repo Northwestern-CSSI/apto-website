@@ -311,24 +311,26 @@ function StoryHero() {
 }
 
 function ProgramStory() {
-  return <section className="story-section story-program" id="story-program" data-story-section="program" aria-labelledby="story-program-title">
-    <header className="story-section-heading" data-story-reveal="heading">
-      <h2 id="story-program-title">{aptoProgram.buildingTitle}</h2>
-      <span>{aptoProgram.buildingIntroduction}</span>
-    </header>
-    <OutcomePanorama />
-    <div className="story-objectives">
-      <div className="story-objectives-copy" data-story-reveal="left">
-        <h3>{aptoProgram.objectivesTitle}</h3>
-        <p>{aptoProgram.impactIntroduction}</p>
-      </div>
-      <ul>{aptoProgram.objectives.map((objective, index) => <li
+  return <>
+    <section className="story-section story-program" id="story-program" data-story-section="program" aria-labelledby="story-program-title">
+      <header className="story-section-heading" data-story-reveal="heading">
+        <h2 id="story-program-title">{aptoProgram.buildingTitle}</h2>
+        <span>{aptoProgram.buildingIntroduction}</span>
+      </header>
+      <OutcomePanorama />
+    </section>
+    <section className="story-section story-impact" id="story-impact" data-story-section="program" aria-labelledby="story-impact-title">
+      <header className="story-section-heading" data-story-reveal="heading">
+        <h2 id="story-impact-title">{aptoProgram.objectivesTitle}</h2>
+        <span>{aptoProgram.impactIntroduction}</span>
+      </header>
+      <ul className="story-impact-goals">{aptoProgram.objectives.map((objective, index) => <li
         key={objective}
-        data-story-reveal="right"
+        data-story-reveal="up"
         data-story-reveal-order={index}
       >{objective}</li>)}</ul>
-    </div>
-  </section>;
+    </section>
+  </>;
 }
 
 function ProjectsStory() {

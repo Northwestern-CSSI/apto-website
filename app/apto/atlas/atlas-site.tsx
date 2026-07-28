@@ -186,7 +186,7 @@ function ProgramPage() {
       </figure>)}
     </section>
 
-    <section className="atlas-objective-field" aria-labelledby="atlas-objectives-title">
+    <section className="atlas-objective-field" id="atlas-impact" aria-labelledby="atlas-objectives-title">
       <header>
         <h2 id="atlas-objectives-title">{aptoProgram.objectivesTitle}</h2>
         <p>{aptoProgram.impactIntroduction}</p>

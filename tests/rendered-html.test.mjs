@@ -105,6 +105,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   for (const output of ["Technology Outcome Models", "Data Sets", "Tools"]) assert.ok(html.includes(output));
   assert.match(html, /About the APTO Program/);
   assert.match(html, /What We Are Building/);
+  assert.match(html, /class="story-section story-impact" id="story-impact"/);
   assert.match(html, /Together, the APTO cohort is working to achieve/);
   assert.match(html, /Led by Northwestern University/);
   assert.doesNotMatch(html, /Tools from across the APTO cohort/i);
@@ -137,6 +138,8 @@ test("Story gives project titles full card width and pairs lead-institution tool
 
 test("Atlas exposes supplied-image galleries and supporting pieces", async () => {
   const data = await content();
+  const programHtml = await (await render("/atlas")).text();
+  assert.match(programHtml, /class="atlas-objective-field" id="atlas-impact"/);
   const html = await (await render("/atlas/tools")).text();
   assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);
