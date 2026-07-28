@@ -3,10 +3,11 @@
   "kind": "tool",
   "id": "aperture-leverage-point-finder",
   "participantId": "aperture",
-  "name": "Leverage Point Finder",
+  "name": "Tool B",
+  "displayOrder": 2,
   "summaryParagraphs": [
-    "Compare technical needs, organizational activity, investment signals, and available evidence in a single ranked view. The matrix helps surface places where a focused intervention may unlock disproportionate progress.",
-    "Shortlist research questions, potential collaborators, or investment targets, then inspect the evidence behind each score before deciding where to investigate further."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, sapien vitae consequat posuere, sem justo facilisis arcu, sed fermentum erat magna non nisl.",
+    "Curabitur vitae mauris at lacus varius luctus. Suspendisse potenti, donec efficitur neque sed ipsum ullamcorper, vitae volutpat sapien tincidunt."
   ],
   "categories": [
     "Production",
@@ -15,21 +16,21 @@
   "figure": {
     "kind": "signal-matrix",
     "src": "/apto/tools/photography/multiobjective-01.jpg",
-    "label": "Opportunity signal matrix",
-    "alt": "Leverage Point Finder conceptual view 1, using supplied research imagery"
+    "label": "Tool B",
+    "alt": "Placeholder conceptual view for Aperture Tool B"
   },
   "galleryImages": [
     {
       "src": "/apto/tools/photography/multiobjective-02.jpg",
-      "alt": "Leverage Point Finder conceptual view 2, using supplied research imagery"
+      "alt": "Second placeholder conceptual view for Aperture Tool B"
     },
     {
       "src": "/apto/tools/photography/multiobjective-03.jpg",
-      "alt": "Leverage Point Finder conceptual view 3, using supplied research imagery"
+      "alt": "Third placeholder conceptual view for Aperture Tool B"
     },
     {
       "src": "/apto/tools/photography/multiobjective-04.jpg",
-      "alt": "Leverage Point Finder conceptual view 4, using supplied research imagery"
+      "alt": "Fourth placeholder conceptual view for Aperture Tool B"
     }
   ],
   "statusLabel": "Research preview",
@@ -37,35 +38,35 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece A",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas porttitor ligula vitae neque cursus, sit amet facilisis arcu tincidunt.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/discovery.svg",
-        "alt": "Project discovery documentation icon"
+        "alt": "Placeholder discovery icon for Piece A"
       }
     },
     {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece B",
+      "description": "Praesent non lorem sed arcu feugiat feugiat. Vivamus aliquet, tortor at congue posuere, nibh erat consequat libero, vel commodo erat nibh id ipsum.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/dataset.svg",
-        "alt": "Technology trajectory data preview icon"
+        "alt": "Placeholder dataset icon for Piece B"
       }
     }
   ]
 }
 ---
 
-# Leverage Point Finder
+# Tool B
 
 ## Description
 
-Compare technical needs, organizational activity, investment signals, and available evidence in a single ranked view. The matrix helps surface places where a focused intervention may unlock disproportionate progress.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, sapien vitae consequat posuere, sem justo facilisis arcu, sed fermentum erat magna non nisl.
 
 ## Use case
 
-Use the finder to shortlist research questions, potential collaborators, or investment targets, then inspect the evidence behind each score before deciding where to investigate further.
+Curabitur vitae mauris at lacus varius luctus. Suspendisse potenti, donec efficitur neque sed ipsum ullamcorper, vitae volutpat sapien tincidunt.

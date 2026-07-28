@@ -9,6 +9,10 @@
   color: #f8fbfd;
 }
 
+.apto-resource-path:not(.is-featured) {
+  grid-template-rows: 56% 44%;
+}
+
 .apto-resource-route {
   --resource-gap: clamp(10px, 1.35vw, 16px);
   width: 100%;

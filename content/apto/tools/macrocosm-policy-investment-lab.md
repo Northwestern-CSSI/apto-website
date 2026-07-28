@@ -3,10 +3,11 @@
   "kind": "tool",
   "id": "macrocosm-policy-investment-lab",
   "participantId": "macrocosm",
-  "name": "Policy & Investment Scenario Lab",
+  "name": "Tool B",
+  "displayOrder": 2,
   "summaryParagraphs": [
-    "Compare how policy choices and private investment strategies could shape energy technologies, firms, employment, and material needs. Coordinated charts make differences among scenarios visible across time and geography.",
-    "Test assumptions, compare a baseline with alternative interventions, and identify which outcomes are most sensitive to policy or investment choices."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor felis non nunc aliquam, vitae viverra erat scelerisque.",
+    "Nunc interdum lectus vitae est commodo, vel sagittis tortor dictum. Donec malesuada enim non libero tincidunt, sit amet laoreet lorem faucibus."
   ],
   "categories": [
     "Production",
@@ -15,21 +16,21 @@
   "figure": {
     "kind": "scenario-curves",
     "src": "/apto/tools/photography/multiobjective-01.jpg",
-    "label": "Energy scenario comparison",
-    "alt": "Policy & Investment Scenario Lab conceptual view 1, using supplied research imagery"
+    "label": "Tool B",
+    "alt": "Placeholder conceptual view for Macrocosm Tool B"
   },
   "galleryImages": [
     {
       "src": "/apto/tools/photography/multiobjective-02.jpg",
-      "alt": "Policy & Investment Scenario Lab conceptual view 2, using supplied research imagery"
+      "alt": "Second placeholder conceptual view for Macrocosm Tool B"
     },
     {
       "src": "/apto/tools/photography/multiobjective-03.jpg",
-      "alt": "Policy & Investment Scenario Lab conceptual view 3, using supplied research imagery"
+      "alt": "Third placeholder conceptual view for Macrocosm Tool B"
     },
     {
       "src": "/apto/tools/photography/multiobjective-04.jpg",
-      "alt": "Policy & Investment Scenario Lab conceptual view 4, using supplied research imagery"
+      "alt": "Fourth placeholder conceptual view for Macrocosm Tool B"
     }
   ],
   "statusLabel": "Research preview",
@@ -37,35 +38,35 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece A",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean suscipit dolor id turpis pretium, sit amet vestibulum nisi cursus.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/decision.svg",
-        "alt": "Policy scenario documentation icon"
+        "alt": "Placeholder decision icon for Piece A"
       }
     },
     {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece B",
+      "description": "Vivamus id risus at metus elementum tempor. Integer varius velit vitae odio aliquet, quis vulputate metus rhoncus.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/prediction.svg",
-        "alt": "Investment scenario data preview icon"
+        "alt": "Placeholder prediction icon for Piece B"
       }
     }
   ]
 }
 ---
 
-# Policy & Investment Scenario Lab
+# Tool B
 
 ## Description
 
-Compare how policy choices and private investment strategies could shape energy technologies, firms, employment, and material needs. Coordinated charts make differences among scenarios visible across time and geography.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor felis non nunc aliquam, vitae viverra erat scelerisque.
 
 ## Use case
 
-Use the lab to test assumptions, compare a baseline with alternative interventions, and identify which outcomes are most sensitive to policy or investment choices.
+Nunc interdum lectus vitae est commodo, vel sagittis tortor dictum. Donec malesuada enim non libero tincidunt, sit amet laoreet lorem faucibus.

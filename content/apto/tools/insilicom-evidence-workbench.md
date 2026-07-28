@@ -3,10 +3,11 @@
   "kind": "tool",
   "id": "insilicom-evidence-workbench",
   "participantId": "insilicom",
-  "name": "Evidence Extraction Workbench",
+  "name": "Tool B",
+  "displayOrder": 2,
   "summaryParagraphs": [
-    "Turn publications, patents, reports, and other technical text into structured evidence. The workspace combines AI-assisted extraction with human review so entities and relationships can be checked before entering a domain knowledge graph.",
-    "Build a reusable evidence base for a new technology area, review extracted claims with subject-matter experts, and track each structured record back to its source."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis velit sed velit vestibulum, at hendrerit mi consequat.",
+    "Nullam consequat ligula sed augue commodo, eu ultrices nisl aliquet. Proin tristique nibh eget purus varius, nec elementum sem interdum."
   ],
   "categories": [
     "Capability"
@@ -14,21 +15,21 @@
   "figure": {
     "kind": "evidence-stream",
     "src": "/apto/tools/photography/agentic-01.jpg",
-    "label": "Evidence extraction workflow",
-    "alt": "Evidence Extraction Workbench conceptual view 1, using supplied research imagery"
+    "label": "Tool B",
+    "alt": "Placeholder conceptual view for Insilicom Tool B"
   },
   "galleryImages": [
     {
       "src": "/apto/tools/photography/agentic-02.jpg",
-      "alt": "Evidence Extraction Workbench conceptual view 2, using supplied research imagery"
+      "alt": "Second placeholder conceptual view for Insilicom Tool B"
     },
     {
       "src": "/apto/tools/photography/agentic-03.jpg",
-      "alt": "Evidence Extraction Workbench conceptual view 3, using supplied research imagery"
+      "alt": "Third placeholder conceptual view for Insilicom Tool B"
     },
     {
       "src": "/apto/tools/photography/agentic-04.jpg",
-      "alt": "Evidence Extraction Workbench conceptual view 4, using supplied research imagery"
+      "alt": "Fourth placeholder conceptual view for Insilicom Tool B"
     }
   ],
   "statusLabel": "Research preview",
@@ -36,35 +37,35 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece A",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer pretium est ac urna gravida, vitae consectetur nisi porttitor.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/algorithm-agent.svg",
-        "alt": "Evidence extraction workflow documentation icon"
+        "alt": "Placeholder agent icon for Piece A"
       }
     },
     {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece B",
+      "description": "Etiam eget augue non libero consequat feugiat. Sed commodo sem ut tellus malesuada, id volutpat mauris eleifend.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/evidence.svg",
-        "alt": "Extracted evidence data preview icon"
+        "alt": "Placeholder evidence icon for Piece B"
       }
     }
   ]
 }
 ---
 
-# Evidence Extraction Workbench
+# Tool B
 
 ## Description
 
-Turn publications, patents, reports, and other technical text into structured evidence. The workspace combines AI-assisted extraction with human review so entities and relationships can be checked before entering a domain knowledge graph.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis velit sed velit vestibulum, at hendrerit mi consequat.
 
 ## Use case
 
-Use the workbench to build a reusable evidence base for a new technology area, review extracted claims with subject-matter experts, and track each structured record back to its source.
+Nullam consequat ligula sed augue commodo, eu ultrices nisl aliquet. Proin tristique nibh eget purus varius, nec elementum sem interdum.

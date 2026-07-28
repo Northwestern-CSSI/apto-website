@@ -3,10 +3,11 @@
   "kind": "tool",
   "id": "insilicom-causal-knowledge-graph",
   "participantId": "insilicom",
-  "name": "Causal Technology Knowledge Graph",
+  "name": "Tool A",
+  "displayOrder": 1,
   "summaryParagraphs": [
-    "Explore directed relationships among technologies, features, problems, methods, datasets, and organizations. Each connection retains its supporting source so users can move from a broad systems view to the underlying evidence.",
-    "Trace possible drivers of an outcome, compare competing causal pathways, or assemble a focused evidence set for a technology assessment."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id justo vitae purus feugiat malesuada, vitae feugiat nibh gravida.",
+    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae, etiam convallis lorem sit amet neque consequat."
   ],
   "categories": [
     "Capability",
@@ -15,21 +16,21 @@
   "figure": {
     "kind": "causal-graph",
     "src": "/apto/tools/photography/aggregating-01.jpg",
-    "label": "Causal technology graph",
-    "alt": "Causal Technology Knowledge Graph conceptual view 1, using supplied research imagery"
+    "label": "Tool A",
+    "alt": "Placeholder conceptual view for Insilicom Tool A"
   },
   "galleryImages": [
     {
       "src": "/apto/tools/photography/aggregating-02.jpg",
-      "alt": "Causal Technology Knowledge Graph conceptual view 2, using supplied research imagery"
+      "alt": "Second placeholder conceptual view for Insilicom Tool A"
     },
     {
       "src": "/apto/tools/photography/aggregating-03.jpg",
-      "alt": "Causal Technology Knowledge Graph conceptual view 3, using supplied research imagery"
+      "alt": "Third placeholder conceptual view for Insilicom Tool A"
     },
     {
       "src": "/apto/tools/photography/aggregating-04.jpg",
-      "alt": "Causal Technology Knowledge Graph conceptual view 4, using supplied research imagery"
+      "alt": "Fourth placeholder conceptual view for Insilicom Tool A"
     }
   ],
   "statusLabel": "Research preview",
@@ -37,35 +38,35 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece A",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce malesuada risus non turpis dictum, vitae sagittis erat luctus.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/network.svg",
-        "alt": "Causal knowledge graph documentation icon"
+        "alt": "Placeholder network icon for Piece A"
       }
     },
     {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece B",
+      "description": "Phasellus sodales, sapien at condimentum faucibus, magna eros interdum nunc, non viverra neque velit at justo.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/dataset.svg",
-        "alt": "Knowledge graph data preview icon"
+        "alt": "Placeholder dataset icon for Piece B"
       }
     }
   ]
 }
 ---
 
-# Causal Technology Knowledge Graph
+# Tool A
 
 ## Description
 
-Explore directed relationships among technologies, features, problems, methods, datasets, and organizations. Each connection retains its supporting source so users can move from a broad systems view to the underlying evidence.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id justo vitae purus feugiat malesuada, vitae feugiat nibh gravida.
 
 ## Use case
 
-Use the graph to trace possible drivers of an outcome, compare competing causal pathways, or assemble a focused evidence set for a technology assessment.
+Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae, etiam convallis lorem sit amet neque consequat.

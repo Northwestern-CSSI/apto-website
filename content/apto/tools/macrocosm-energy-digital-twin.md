@@ -3,10 +3,11 @@
   "kind": "tool",
   "id": "macrocosm-energy-digital-twin",
   "participantId": "macrocosm",
-  "name": "Energy System Digital Twin",
+  "name": "Tool A",
+  "displayOrder": 1,
   "summaryParagraphs": [
-    "Inspect a spatially explicit representation of energy firms, physical assets, local markets, and investment relationships. The model links firm decisions with technology improvement, infrastructure, employment, and materials demand.",
-    "Understand how a change at one firm or facility may propagate through regional markets and the broader U.S. energy system."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat, lectus sed consequat feugiat, risus nulla volutpat sapien, at tristique neque magna non arcu.",
+    "Cras egestas nibh nec orci porttitor, vitae vestibulum lectus venenatis. Mauris pulvinar tellus at lacus finibus, eget tristique magna interdum."
   ],
   "categories": [
     "Production",
@@ -15,21 +16,21 @@
   "figure": {
     "kind": "agent-network",
     "src": "/apto/tools/photography/predicting-01.jpg",
-    "label": "Firm and energy-asset network",
-    "alt": "Energy System Digital Twin conceptual view 1, using supplied research imagery"
+    "label": "Tool A",
+    "alt": "Placeholder conceptual view for Macrocosm Tool A"
   },
   "galleryImages": [
     {
       "src": "/apto/tools/photography/predicting-02.jpg",
-      "alt": "Energy System Digital Twin conceptual view 2, using supplied research imagery"
+      "alt": "Second placeholder conceptual view for Macrocosm Tool A"
     },
     {
       "src": "/apto/tools/photography/predicting-03.jpg",
-      "alt": "Energy System Digital Twin conceptual view 3, using supplied research imagery"
+      "alt": "Third placeholder conceptual view for Macrocosm Tool A"
     },
     {
       "src": "/apto/tools/photography/predicting-04.jpg",
-      "alt": "Energy System Digital Twin conceptual view 4, using supplied research imagery"
+      "alt": "Fourth placeholder conceptual view for Macrocosm Tool A"
     }
   ],
   "statusLabel": "Research preview",
@@ -37,35 +38,35 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece A",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vestibulum odio id leo cursus, in elementum erat faucibus.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/energy.svg",
-        "alt": "Energy-system model documentation icon"
+        "alt": "Placeholder energy icon for Piece A"
       }
     },
     {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece B",
+      "description": "Nam quis enim nec ipsum volutpat egestas. Pellentesque maximus augue sed purus fermentum, vel efficitur neque suscipit.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/infrastructure.svg",
-        "alt": "Energy infrastructure data preview icon"
+        "alt": "Placeholder infrastructure icon for Piece B"
       }
     }
   ]
 }
 ---
 
-# Energy System Digital Twin
+# Tool A
 
 ## Description
 
-Inspect a spatially explicit representation of energy firms, physical assets, local markets, and investment relationships. The model links firm decisions with technology improvement, infrastructure, employment, and materials demand.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat, lectus sed consequat feugiat, risus nulla volutpat sapien, at tristique neque magna non arcu.
 
 ## Use case
 
-Use the digital twin to understand how a change at one firm or facility may propagate through regional markets and the broader U.S. energy system.
+Cras egestas nibh nec orci porttitor, vitae vestibulum lectus venenatis. Mauris pulvinar tellus at lacus finibus, eget tristique magna interdum.

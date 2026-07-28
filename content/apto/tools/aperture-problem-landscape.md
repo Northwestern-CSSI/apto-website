@@ -3,10 +3,11 @@
   "kind": "tool",
   "id": "aperture-problem-landscape",
   "participantId": "aperture",
-  "name": "Problem Landscape Explorer",
+  "name": "Tool A",
+  "displayOrder": 1,
   "summaryParagraphs": [
-    "Navigate a landscape of technical problems, candidate solutions, organizations, and supporting evidence. Related needs and approaches are grouped so gaps, crowded areas, and unexpected connections are easier to see.",
-    "Frame an unfamiliar problem domain, find adjacent technologies, and identify organizations already working on relevant parts of the challenge."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+    "Aliquam erat volutpat. Morbi posuere, mauris vitae aliquet volutpat, lorem sapien interdum lectus, non dignissim mauris neque vitae justo."
   ],
   "categories": [
     "Capability",
@@ -15,21 +16,21 @@
   "figure": {
     "kind": "problem-landscape",
     "src": "/apto/tools/photography/emerging-01.jpg",
-    "label": "Problem-to-solution landscape",
-    "alt": "Problem Landscape Explorer conceptual view 1, using supplied research imagery"
+    "label": "Tool A",
+    "alt": "Placeholder conceptual view for Aperture Tool A"
   },
   "galleryImages": [
     {
       "src": "/apto/tools/photography/emerging-02.jpg",
-      "alt": "Problem Landscape Explorer conceptual view 2, using supplied research imagery"
+      "alt": "Second placeholder conceptual view for Aperture Tool A"
     },
     {
       "src": "/apto/tools/photography/emerging-03.jpg",
-      "alt": "Problem Landscape Explorer conceptual view 3, using supplied research imagery"
+      "alt": "Third placeholder conceptual view for Aperture Tool A"
     },
     {
       "src": "/apto/tools/photography/emerging-04.jpg",
-      "alt": "Problem Landscape Explorer conceptual view 4, using supplied research imagery"
+      "alt": "Fourth placeholder conceptual view for Aperture Tool A"
     }
   ],
   "statusLabel": "Research preview",
@@ -37,35 +38,35 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece A",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia felis eu libero volutpat, quis tincidunt mi ullamcorper.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/evidence.svg",
-        "alt": "Project evidence documentation icon"
+        "alt": "Placeholder evidence icon for Piece A"
       }
     },
     {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Piece B",
+      "description": "Donec accumsan massa vel nibh fermentum, vel dignissim nisl tristique. Nulla facilisi, nam consequat erat vitae augue tempus interdum.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/icons/map.svg",
-        "alt": "Technical problem landscape data preview icon"
+        "alt": "Placeholder map icon for Piece B"
       }
     }
   ]
 }
 ---
 
-# Problem Landscape Explorer
+# Tool A
 
 ## Description
 
-Navigate a landscape of technical problems, candidate solutions, organizations, and supporting evidence. Related needs and approaches are grouped together so gaps, crowded areas, and unexpected connections are easier to see.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 
 ## Use case
 
-Use the explorer to frame an unfamiliar problem domain, find adjacent technologies, and identify organizations already working on relevant parts of the challenge.
+Aliquam erat volutpat. Morbi posuere, mauris vitae aliquet volutpat, lorem sapien interdum lectus, non dignissim mauris neque vitae justo.

@@ -71,6 +71,12 @@ test("generated content follows the featured-institution order and supplied-imag
     "Dashboards",
     "AI Infrastructure",
   ]);
+  for (const participantId of ["aperture", "insilicom", "macrocosm"]) {
+    const placeholderTools = data.tools.filter((tool) => tool.participantId === participantId);
+    assert.deepEqual(placeholderTools.map((tool) => tool.name), ["Tool A", "Tool B"]);
+    assert.ok(placeholderTools.every((tool) => tool.summaryParagraphs.every((paragraph) => /^Lorem ipsum|^Aliquam|^Curabitur|^Vestibulum|^Nullam|^Cras|^Nunc/.test(paragraph))));
+    assert.ok(placeholderTools.every((tool) => tool.resources.map((resource) => resource.name).join(",") === "Piece A,Piece B"));
+  }
   for (const tool of data.tools) {
     assert.equal(tool.summaryParagraphs.length, 2, `${tool.name} should expose exactly two compact summary paragraphs`);
     const media = [tool.figure, ...tool.galleryImages];
@@ -179,6 +185,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
   assert.match(resourceStyles, /backdrop-filter:\s*blur\(4px\) saturate\(112%\)/);
   assert.match(resourceStyles, /grid-template-rows:\s*60% 40%/);
+  assert.match(resourceStyles, /\.apto-resource-path:not\(\.is-featured\)\s*\{[\s\S]*?grid-template-rows:\s*56% 44%/);
   assert.match(resourceStyles, /flex-flow:\s*row wrap-reverse/);
   assert.match(resourceStyles, /width:\s*min\(100%, 82px\)/);
   assert.match(resourceStyles, /min-height:\s*2\.32em/);
