@@ -25,7 +25,7 @@
     "status": "approval-required",
     "approved": false
   },
-  "accent": "#D3B34E"
+  "accent": "#7B7BE2"
 }
 ---
 

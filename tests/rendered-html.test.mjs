@@ -46,6 +46,13 @@ test("publishes only the Story and Atlas presentation families", async () => {
 test("generated content follows the featured-institution order and supplied-image model", async () => {
   const data = await content();
   assert.deepEqual(data.participants.map((participant) => participant.id), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
+  assert.deepEqual(Object.fromEntries(data.participants.map((participant) => [participant.id, participant.accent])), {
+    northwestern: "#4E2A84",
+    uchicago: "#800000",
+    aperture: "#7B7BE2",
+    insilicom: "#78B52A",
+    macrocosm: "#0D5C8F",
+  });
   assert.deepEqual(data.projects.map((project) => project.participantId), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
   assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 5);
   assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 6);

@@ -617,7 +617,8 @@
   flex-direction: column;
   justify-content: center;
   background:
-    radial-gradient(circle at 96% 4%,color-mix(in srgb,var(--project-accent) 22%,transparent),transparent 32%),
+    radial-gradient(circle at 96% 4%,color-mix(in srgb,var(--project-accent) 30%,transparent),transparent 36%),
+    linear-gradient(145deg,color-mix(in srgb,var(--project-accent) 11%,var(--story-projects-surface)),var(--story-projects-surface) 58%),
     var(--story-projects-surface);
   box-shadow: var(--story-projects-shadow);
   scroll-margin-top: calc(var(--story-header-height) + 22px);
@@ -796,7 +797,9 @@
   grid-template-columns: minmax(210px,.35fr) minmax(0,.65fr);
   gap: 34px;
   align-items: center;
-  background: linear-gradient(110deg,color-mix(in srgb,var(--participant-accent) 10%,var(--story-cohort-surface)),var(--story-cohort-surface));
+  background:
+    radial-gradient(circle at 94% 8%,color-mix(in srgb,var(--participant-accent) 24%,transparent),transparent 36%),
+    linear-gradient(110deg,color-mix(in srgb,var(--participant-accent) 16%,var(--story-cohort-surface)),var(--story-cohort-surface) 62%);
 }
 .story-program-team > header { display: grid; grid-template-columns: 72px minmax(0,1fr); gap: 18px; align-items: center; }
 .story-program-team > header img { width: 72px; height: 72px; object-fit: contain; border-radius: 50%; background: #fff; }
