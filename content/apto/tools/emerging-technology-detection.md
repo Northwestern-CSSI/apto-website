@@ -6,8 +6,8 @@
   "name": "Emerging Technology Detection Tool",
   "displayOrder": 5,
   "summaryParagraphs": [
-    "Sparse autoencoders detect technologies before they have stable names or markets by finding unusual combinations of older ideas in papers and tracking their spread despite inconsistent terminology.",
-    "Validation against AI and perovskite market and performance records—including stalled technologies—gives agencies and policymakers earlier signals for research investment and international competitiveness."
+    "This tool detects emerging technologies before names and markets stabilize by identifying unusual combinations of ideas in scientific literature and tracking how those combinations persist and spread.",
+    "Validation against market and performance records distinguishes sustained trajectories from isolated activity, giving decision-makers earlier evidence about research opportunities and international momentum."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "SAE Method",
-      "description": "A sparse-autoencoder method for detecting persistent combinations of concepts before an emerging technology has a stable name.",
+      "description": "Uses sparse autoencoders to identify persistent, unusual combinations of concepts before an emerging technology has a stable name, then tracks whether those combinations spread across papers, fields, countries, and time.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -49,13 +49,13 @@
       }
     },
     {
-      "name": "Science Embedding Map",
-      "description": "An explorable map of scientific concepts and their movement across papers, fields, countries, and time.",
+      "name": "Science Maps",
+      "description": "Maps scientific concepts and their movement across papers, fields, countries, and time, helping users inspect emerging clusters, compare international momentum, and distinguish sustained trajectories from isolated activity.",
       "status": "coming-soon",
       "url": null,
       "image": {
         "src": "/apto/tools/resources/emerging-landscape.png",
-        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+        "alt": "Science map used to identify emerging clusters of ideas"
       }
     }
   ]

@@ -6,8 +6,8 @@
   "name": "AI Skills",
   "displayOrder": 2,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
-    "Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod."
+    "This tool maps the technical skills, research capabilities, and workforce movements shaping AI development across institutions, regions, industries, and application areas.",
+    "It reveals emerging concentrations of expertise, changing skill combinations, and the pathways through which knowledge moves from research teams into production and use."
   ],
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-01.jpg", "alt": "Placeholder visual for AI Skills Piece A"}},
-    {"name": "Piece B", "description": "Nullam id dolor id nibh ultricies vehicula ut id elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/emerging-landscape.png", "alt": "Placeholder visual for AI Skills Piece B"}},
-    {"name": "Piece C", "description": "Donec sed odio dui. Morbi leo risus, porta ac consectetur ac.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-02.jpg", "alt": "Placeholder visual for AI Skills Piece C"}}
+    {"name": "Piece A", "description": "Builds a consistent vocabulary of AI skills from research, job, education, and organizational evidence while preserving links to the original sources.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-01.jpg", "alt": "Conceptual visual for an AI skills vocabulary"}},
+    {"name": "Piece B", "description": "Maps combinations of expertise across institutions, regions, and application domains to reveal emerging capability clusters and changing workforce demand.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/emerging-landscape.png", "alt": "Conceptual visual for AI expertise clusters"}},
+    {"name": "Piece C", "description": "Tracks movement of researchers and skills through collaboration and employment networks, supporting analysis of how knowledge diffuses into production and use.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-02.jpg", "alt": "Conceptual visual for AI skill movements"}}
   ]
 }
 ---
@@ -36,10 +36,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+This tool maps the technical skills, research capabilities, and workforce movements shaping AI development across institutions, regions, industries, and application areas.
 
-Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod.
+It reveals emerging concentrations of expertise, changing skill combinations, and the pathways through which knowledge moves from research teams into production and use.
 
 ## Use case
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Compare skill ecosystems and examine how movement of expertise may precede changes in AI capability, production, and adoption.

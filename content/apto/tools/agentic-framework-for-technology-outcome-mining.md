@@ -6,8 +6,8 @@
   "name": "Agentic Framework For Technology Outcomes Tool",
   "displayOrder": 2,
   "summaryParagraphs": [
-    "Specialized AI agents define domains, find literature, extract quantitative performance and design choices from publications, patents, and technical documents, and flag inconsistencies or unsupported claims.",
-    "Domain experts validate records for perovskite solar cells, superconducting qubits, manufacturing, and other areas, making technology-outcome data collection faster, more consistent, and scalable."
+    "This agentic framework converts publications, patents, and technical documents into validated technology-outcome data by finding evidence, extracting quantitative performance and design choices, and checking unsupported claims.",
+    "Expert review keeps each record grounded while the workflow scales detailed measurement across perovskite cells, superconducting qubits, manufacturing, and additional technology domains."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "Perovskite Dataset",
-      "description": "A structured dataset of extracted perovskite performance measures, material architectures, fabrication choices, and experimental design decisions for comparing technological trajectories.",
+      "description": "Structures extracted perovskite performance measures, material architectures, fabrication choices, and experimental design decisions with source provenance, supporting consistent comparisons of technological trajectories and model validation.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Quantum Dataset",
-      "description": "A structured dataset of extracted quantum-computing performance measures, hardware architectures, implementation choices, and system-design decisions for tracing technological progress.",
+      "description": "Structures extracted quantum-computing performance measures, hardware architectures, implementation choices, and system-design decisions with source provenance, enabling researchers to trace progress and test predictive models across systems.",
       "status": "coming-soon",
       "url": null,
       "image": {

@@ -6,8 +6,8 @@
   "name": "AI Benchmarks",
   "displayOrder": 3,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis.",
-    "Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."
+    "This tool brings technical, economic, and adoption benchmarks into one framework for comparing AI systems across capability, production requirements, deployment conditions, and real-world use.",
+    "Consistent measures expose meaningful progress, tradeoffs, and gaps while supporting historical validation and more grounded forecasts of future performance."
   ],
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-01.jpg", "alt": "Placeholder visual for AI Benchmarks Piece A"}},
-    {"name": "Piece B", "description": "Vestibulum id ligula porta felis euismod semper.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/multiobjective-trajectories.png", "alt": "Placeholder visual for AI Benchmarks Piece B"}},
-    {"name": "Piece C", "description": "Maecenas sed diam eget risus varius blandit sit amet non magna.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-02.jpg", "alt": "Placeholder visual for AI Benchmarks Piece C"}}
+    {"name": "Piece A", "description": "Aligns technical performance measures across models, tasks, datasets, hardware, and reporting practices so comparisons remain meaningful across time.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-01.jpg", "alt": "Conceptual visual for aligned AI performance measures"}},
+    {"name": "Piece B", "description": "Connects benchmark gains with compute, energy, data, cost, and deployment requirements to expose tradeoffs that headline performance scores can hide.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/multiobjective-trajectories.png", "alt": "Conceptual visual for AI benchmark tradeoffs"}},
+    {"name": "Piece C", "description": "Tests whether benchmark trajectories correspond with later production and use outcomes, providing evidence for historical validation and forecasting.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-02.jpg", "alt": "Conceptual visual for AI benchmark validation"}}
   ]
 }
 ---
@@ -36,10 +36,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis.
+This tool brings technical, economic, and adoption benchmarks into one framework for comparing AI systems across capability, production requirements, deployment conditions, and real-world use.
 
-Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+Consistent measures expose meaningful progress, tradeoffs, and gaps while supporting historical validation and more grounded forecasts of future performance.
 
 ## Use case
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Evaluate AI systems with consistent measures, test model predictions against historical evidence, and compare tradeoffs across outcomes.

@@ -285,6 +285,7 @@ function ToolPoster({ tool }: {
           linkLabel: aptoInterface.tools.openToolLabel,
         }}
         variant="atlas"
+        featured={["northwestern", "uchicago"].includes(tool.participantId)}
       />
     </div>
   </article>;

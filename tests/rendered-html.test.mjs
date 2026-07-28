@@ -90,6 +90,9 @@ test("generated content follows the featured-institution order and supplied-imag
     "Quantum Dataset",
   ]);
   assert.ok(agenticTool.resources.every((resource) => !/slides/i.test(`${resource.name} ${resource.description}`)));
+  const emergingTool = data.tools.find((tool) => tool.id === "emerging-technology-detection");
+  assert.ok(emergingTool.resources.some((resource) => resource.name === "Science Maps"));
+  assert.doesNotMatch(JSON.stringify(data.tools), /—/);
   assert.equal(data.convenings[0].images.length, 4);
   assert.ok(data.convenings[0].images.some((image) => image.src.endsWith("cohort-portrait.jpg")));
   const investigatorRank = new Map([["Principal Investigator", 0], ["Co-Principal Investigator", 1]]);
@@ -135,7 +138,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   // on that framework-level transport detail.
   assert.ok((html.match(/class="apto-tool-gallery story-tool-gallery"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story(?: is-featured)?"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
   assert.doesNotMatch(html, /apto-resource-detail/);
   assert.match(html, /class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="20"/);
@@ -162,13 +165,15 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas(?: is-featured)?"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
   assert.doesNotMatch(html, /atlas-tool-toggle|apto-resource-detail/);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
-  assert.match(resourceSource, /onMouseLeave:\s*\(\)\s*=>\s*setActiveIndex/);
+  assert.match(resourceSource, /onMouseLeave=\{\(\) => setActiveIndex\(null\)\}/);
+  assert.doesNotMatch(resourceSource, /onMouseLeave:\s*\(\)\s*=>/);
+  assert.match(resourceSource, /apto-resource-summary-inset/);
   assert.doesNotMatch(resourceSource, /routePosition|gridColumn|gridRow/);
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
   assert.match(resourceStyles, /backdrop-filter:\s*blur\(4px\) saturate\(112%\)/);
@@ -176,6 +181,9 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /flex-flow:\s*row wrap-reverse/);
   assert.match(resourceStyles, /width:\s*min\(100%, 82px\)/);
   assert.match(resourceStyles, /min-height:\s*2\.32em/);
+  assert.match(resourceStyles, /grid-template-columns:\s*minmax\(0, 70%\) minmax\(0, 30%\)/);
+  assert.match(resourceStyles, /\.apto-resource-route\s*>\s*li\s*\{[\s\S]*?flex:\s*0 1 25%/);
+  assert.match(resourceStyles, /\.apto-resource-node\s*\{[\s\S]*?padding:\s*calc\(var\(--resource-gap\) \/ 2\)/);
   const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);

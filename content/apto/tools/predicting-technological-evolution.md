@@ -6,8 +6,8 @@
   "name": "Predicting Technological Evolution Tool",
   "displayOrder": 4,
   "summaryParagraphs": [
-    "Mechanistic and transformer capability models combine scientific text, designs, and historical results with confidential TechBridge disclosures, patents, licenses, and startup data to forecast performance and commercialization.",
-    "Models predict perovskite and qubit performance, while Funding the Frontier links 7 million grants to 160 million patents through 1.8 billion citations for tracing investments, inventions, people, institutions, and device configurations."
+    "This forecasting system combines mechanistic and transformer models with research, design, patent, licensing, startup, and historical performance evidence to compare technical pathways and predict technology outcomes.",
+    "It estimates performance and commercialization potential, connects investments to inventions and institutions, and identifies promising configurations for perovskite cells, superconducting qubits, and future applications."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "Funding the Frontier",
-      "description": "A forecasting view connecting research funding patterns with later technical and commercialization outcomes.",
+      "description": "Connects millions of research awards with later inventions and technical outcomes, enabling forward tracing from investment to impact and backward tracing from patents to their scientific foundations.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Innovation Insights",
-      "description": "A comparison workspace for examining signals that precede patents, licenses, startups, and technology adoption.",
+      "description": "Compares research and institutional signals that precede patents, licenses, startups, and technology adoption, helping users identify promising pathways and test which early indicators reliably anticipate translation.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -60,7 +60,7 @@
     },
     {
       "name": "TechBridge",
-      "description": "Governed institutional evidence used to model the paths from research investment to market translation.",
+      "description": "Provides governed institutional evidence on disclosures, patents, licenses, startups, researchers, and grants, supporting models of the pathways that connect research investment with market translation.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -70,7 +70,7 @@
     },
     {
       "name": "Perovskite Forecast",
-      "description": "A prototype for testing future perovskite performance under alternative material and device-design pathways.",
+      "description": "Tests future perovskite performance under alternative material, architecture, and device-design pathways, allowing users to compare configurations and identify combinations with strong predicted outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -80,7 +80,7 @@
     },
     {
       "name": "Manufacturing Data",
-      "description": "Linked manufacturing records for evaluating how technical choices, scale-up conditions, and production constraints shape outcomes.",
+      "description": "Links manufacturing methods, technical choices, scale-up conditions, organizations, and production constraints so forecasting models can evaluate how feasible production pathways shape technical and downstream outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {

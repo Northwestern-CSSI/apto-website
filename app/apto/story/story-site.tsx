@@ -411,6 +411,7 @@ function ToolsStory() {
             linkLabel: aptoInterface.tools.openToolLabel,
           }}
           variant="story"
+          featured={["northwestern", "uchicago"].includes(tool.participantId)}
         />
       </div>
     </article>;

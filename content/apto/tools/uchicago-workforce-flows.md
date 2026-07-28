@@ -6,8 +6,8 @@
   "name": "Dashboards",
   "displayOrder": 5,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.",
-    "Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes."
+    "These dashboards translate complex evidence and model outputs into coordinated views of technology capability, production, use, geography, organizations, and time.",
+    "Interactive comparisons make progress, uncertainty, and emerging signals easier to examine across technologies while preserving access to the underlying evidence."
   ],
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-01.jpg", "alt": "Placeholder visual for Dashboards Piece A"}},
-    {"name": "Piece B", "description": "Aenean lacinia bibendum nulla sed consectetur.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/agentic-roles.png", "alt": "Placeholder visual for Dashboards Piece B"}},
-    {"name": "Piece C", "description": "Etiam porta sem malesuada magna mollis euismod.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-02.jpg", "alt": "Placeholder visual for Dashboards Piece C"}}
+    {"name": "Piece A", "description": "Coordinates capability, production, and use indicators in a shared temporal view so progress and divergence can be compared without losing context.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-01.jpg", "alt": "Conceptual visual for coordinated technology indicators"}},
+    {"name": "Piece B", "description": "Connects geographic and organizational patterns with underlying evidence, supporting comparisons across institutions, regions, and technology domains.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/agentic-roles.png", "alt": "Conceptual visual for geographic and organizational patterns"}},
+    {"name": "Piece C", "description": "Surfaces uncertainty, missing evidence, and model disagreement alongside headline indicators so users can judge the strength of each signal.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-02.jpg", "alt": "Conceptual visual for uncertainty and model disagreement"}}
   ]
 }
 ---
@@ -36,10 +36,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+These dashboards translate complex evidence and model outputs into coordinated views of technology capability, production, use, geography, organizations, and time.
 
-Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes.
+Interactive comparisons make progress, uncertainty, and emerging signals easier to examine across technologies while preserving access to the underlying evidence.
 
 ## Use case
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Monitor technology trajectories, compare organizations or domains, and move from high-level indicators to supporting evidence.

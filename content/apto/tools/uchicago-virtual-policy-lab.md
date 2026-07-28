@@ -6,8 +6,8 @@
   "name": "The Parable Tool",
   "displayOrder": 4,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor.",
-    "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec id elit non mi porta gravida."
+    "This tool turns evidence about research, organizations, policy, and markets into transparent scenarios that explain how different mechanisms can shape technology outcomes.",
+    "Users can compare competing causal stories, inspect their assumptions, and identify which observations would strengthen or challenge each explanation."
   ],
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/predicting-01.jpg", "alt": "Placeholder visual for The Parable Tool Piece A"}},
-    {"name": "Piece B", "description": "Cras justo odio, dapibus ac facilisis in, egestas eget quam.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/predicting-curves.png", "alt": "Placeholder visual for The Parable Tool Piece B"}},
-    {"name": "Piece C", "description": "Integer posuere erat a ante venenatis dapibus posuere velit aliquet.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/predicting-02.jpg", "alt": "Placeholder visual for The Parable Tool Piece C"}}
+    {"name": "Piece A", "description": "Represents a proposed causal mechanism as a transparent chain of assumptions, relationships, and expected observations that users can inspect.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/predicting-01.jpg", "alt": "Conceptual visual for a transparent causal mechanism"}},
+    {"name": "Piece B", "description": "Compares competing explanations against the same evidence base, highlighting where accounts agree, diverge, or depend on unsupported assumptions.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/predicting-curves.png", "alt": "Conceptual visual for competing causal explanations"}},
+    {"name": "Piece C", "description": "Identifies the observations and model tests that would most clearly distinguish among plausible causal stories and improve future analysis.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/predicting-02.jpg", "alt": "Conceptual visual for causal model tests"}}
   ]
 }
 ---
@@ -36,10 +36,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor.
+This tool turns evidence about research, organizations, policy, and markets into transparent scenarios that explain how different mechanisms can shape technology outcomes.
 
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec id elit non mi porta gravida.
+Users can compare competing causal stories, inspect their assumptions, and identify which observations would strengthen or challenge each explanation.
 
 ## Use case
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Compare causal explanations, test assumptions against evidence, and explore how alternative mechanisms could change expected outcomes.

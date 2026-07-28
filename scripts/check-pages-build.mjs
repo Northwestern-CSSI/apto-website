@@ -21,7 +21,7 @@ for (const page of storyPages) {
   }
   assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 6);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= content.tools.length);
-  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story"/g) ?? []).length >= content.tools.length);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story(?: is-featured)?"/g) ?? []).length >= content.tools.length);
   assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= content.tools.length);
   assert.doesNotMatch(html, /apto-resource-detail/);
   assert.ok(html.includes(`${basePath}/_next/`));
@@ -39,7 +39,7 @@ for (const page of atlasPages) {
   assert.ok(html.includes(`href="${basePath}/story"`));
   if (page.endsWith("tools/index.html")) {
     assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= content.tools.length);
-    assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas"/g) ?? []).length >= content.tools.length);
+    assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas(?: is-featured)?"/g) ?? []).length >= content.tools.length);
     assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= content.tools.length);
     assert.doesNotMatch(html, /atlas-tool-toggle|apto-resource-detail/);
   }

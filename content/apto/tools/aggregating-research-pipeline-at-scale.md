@@ -6,8 +6,8 @@
   "name": "Aggregating Research Pipeline At Scale Tool",
   "displayOrder": 1,
   "summaryParagraphs": [
-    "SciSciNet v2, TechBridge, and specialized datasets standardize grants, publications, patents, institutional records, technical performance, manufacturing, organizations, companies, and evidence of real-world use.",
-    "Links across people, ideas, funding, institutions, and time power SciSciGPT, Funding the Frontier, and Innovation Insights for evidence queries, outcome tracing, translation, commercialization, and adoption decisions."
+    "This connected evidence system unifies grants, publications, patents, institutional records, technical performance, manufacturing, organizations, companies, and evidence of real-world use.",
+    "It links people, ideas, funding, institutions, and time so researchers and decision-makers can trace outcomes, compare innovation pipelines, and identify promising paths from research to adoption."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "TechBridge",
-      "description": "A connected view of research investments, investigators, discoveries, patents, licenses, startups, and downstream outcomes.",
+      "description": "Connects governed institutional records across research investments, investigators, disclosures, patents, licenses, startups, and downstream outcomes, providing the translation evidence needed to trace how research moves toward practical use.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Innovation Insights",
-      "description": "A decision interface for comparing innovation pipelines across institutions, fields, funding programs, and time.",
+      "description": "Turns the connected evidence base into comparative views of institutions, fields, funding programs, and time, helping users identify promising people, ideas, partnerships, and translation opportunities.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -60,7 +60,7 @@
     },
     {
       "name": "SciSciNet",
-      "description": "A linked research graph connecting publications, grants, patents, people, institutions, and scientific concepts at scale.",
+      "description": "Links publications, grants, patents, people, institutions, concepts, and organizations at scale, creating the research graph that supports consistent evidence queries and pipeline analysis.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -70,7 +70,7 @@
     },
     {
       "name": "SciSciGPT",
-      "description": "A conversational research interface for asking evidence-grounded questions across the connected science-of-science graph.",
+      "description": "Provides a conversational interface for asking evidence-grounded questions across the connected research graph, with responses tied back to the records and relationships that support them.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -80,7 +80,7 @@
     },
     {
       "name": "Manufacturing Dataset",
-      "description": "Structured evidence linking manufacturing methods, technical design choices, organizations, and measurable performance outcomes.",
+      "description": "Structures manufacturing methods, design choices, organizations, production conditions, and measured performance so models can examine how technical decisions and scale-up constraints shape outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {

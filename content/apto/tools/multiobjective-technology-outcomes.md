@@ -6,8 +6,8 @@
   "name": "Multi-Objective Technology Outcomes Tool",
   "displayOrder": 3,
   "summaryParagraphs": [
-    "The tool studies interacting outcomes across perovskite cells, superconducting qubits and materials, AI, processors, manufacturing, and other domains, revealing where one dimension reinforces or constrains another.",
-    "Millions of solutions show punctuated progress from breakthroughs and refinements; integrated capability, production, and use measures compare trajectories, tradeoffs, complementarities, near-term predictability, and longer-term uncertainty."
+    "This tool measures technological progress across interacting capability, production, and use outcomes, revealing when improvement in one dimension reinforces or constrains another.",
+    "Cross-domain evidence identifies punctuated breakthroughs, tradeoffs, complementarities, and uncertainty across perovskites, superconducting technologies, AI, processors, manufacturing, and other evolving systems."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "CPU Evolution",
-      "description": "A multi-metric record of processor progress that connects design shifts with changes in performance, cost, and use.",
+      "description": "Connects processor design shifts with changes in performance, cost, production requirements, and use, creating a multi-metric record for comparing reinforcing advances and consequential tradeoffs over time.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Punctuated Progress",
-      "description": "A cross-domain model of long plateaus and clustered breakthroughs across interacting technology outcomes.",
+      "description": "Models long plateaus and clustered breakthroughs across interacting technology outcomes, helping researchers compare near-term predictability, longer-term uncertainty, and the combinations of radical and incremental change that drive progress.",
       "status": "coming-soon",
       "url": null,
       "image": {

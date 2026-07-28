@@ -35,11 +35,13 @@ export function ToolResourcePath({
   label,
   summary,
   variant,
+  featured = false,
 }: {
   resources: readonly ToolResource[];
   label: string;
   summary: ToolSummary;
   variant: "story" | "atlas";
+  featured?: boolean;
 }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const summaryId = useId();
@@ -52,7 +54,7 @@ export function ToolResourcePath({
   };
 
   return <section
-    className={`apto-resource-path apto-resource-path-${variant}${activeResource ? " has-active-resource" : ""}`}
+    className={`apto-resource-path apto-resource-path-${variant}${featured ? " is-featured" : ""}${activeResource ? " has-active-resource" : ""}`}
     aria-label={label}
     data-active-resource={activeIndex === null ? "tool" : activeIndex}
     onMouseLeave={() => setActiveIndex(null)}
@@ -70,7 +72,6 @@ export function ToolResourcePath({
         const common = {
           className,
           onMouseEnter: () => setActiveIndex(index),
-          onMouseLeave: () => setActiveIndex((current) => current === index ? null : current),
           onFocus: () => setActiveIndex(index),
           "aria-describedby": summaryId,
           "aria-current": active ? "true" as const : undefined,
@@ -84,25 +85,37 @@ export function ToolResourcePath({
                 type="button"
                 aria-disabled="true"
                 onClick={(event) => event.preventDefault()}
-                title={`${resource.name} — coming soon`}
+                title={`${resource.name}: coming soon`}
               >{content}</button>}
         </li>;
       })}
     </ol>
 
-    <article className="apto-resource-summary" id={summaryId} aria-live="polite">
-      {(activeResource || summary.eyebrow) && <p>{activeResource
-        ? activeResource.status === "coming-soon" ? "Coming soon" : "Available"
-        : summary.eyebrow}</p>}
-      <Heading>{activeResource?.name ?? summary.title}</Heading>
-      {activeResource
-        ? <span>{activeResource.description}</span>
-        : summary.paragraphs.map((paragraph, index) => <span key={`${summary.title}-summary-${index}`}>{paragraph}</span>)}
-      {activeResource && activeAvailable && activeResource.url
-        ? <a href={activeResource.url}>Open this piece <span aria-hidden="true">↗</span></a>
-        : !activeResource && summary.url
-          ? <a href={summary.url}>{summary.linkLabel ?? "Open tool"} <span aria-hidden="true">↗</span></a>
-          : null}
+    <article className={`apto-resource-summary${activeResource ? " is-showing-resource" : ""}`} id={summaryId} aria-live="polite">
+      <div className="apto-resource-summary-copy">
+        {(activeResource || summary.eyebrow) && <p>{activeResource
+          ? activeResource.status === "coming-soon" ? "Coming soon" : "Available"
+          : summary.eyebrow}</p>}
+        <Heading>{activeResource?.name ?? summary.title}</Heading>
+        {activeResource
+          ? <span>{activeResource.description}</span>
+          : summary.paragraphs.map((paragraph, index) => <span key={`${summary.title}-summary-${index}`}>{paragraph}</span>)}
+        {activeResource && activeAvailable && activeResource.url
+          ? <a href={activeResource.url}>Open this piece <span aria-hidden="true">↗</span></a>
+          : !activeResource && summary.url
+            ? <a href={summary.url}>{summary.linkLabel ?? "Open tool"} <span aria-hidden="true">↗</span></a>
+            : null}
+      </div>
+      {activeResource && <figure className="apto-resource-summary-inset">
+        <img
+          src={withDeploymentBase(activeResource.image.src)}
+          alt={activeResource.image.alt}
+          width="360"
+          height="360"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>}
     </article>
   </section>;
 }
