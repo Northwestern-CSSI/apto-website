@@ -34,8 +34,8 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Perovskite Slides",
-      "description": "Perovskite Slides is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Perovskite Performance and Design Dataset",
+      "description": "A structured dataset of extracted perovskite performance measures, material architectures, fabrication choices, and experimental design decisions for comparing technological trajectories.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -44,8 +44,8 @@
       }
     },
     {
-      "name": "Quantum Computing Slides",
-      "description": "Quantum Computing Slides is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Quantum Computing Performance and Design Dataset",
+      "description": "A structured dataset of extracted quantum-computing performance measures, hardware architectures, implementation choices, and system-design decisions for tracing technological progress.",
       "status": "coming-soon",
       "url": null,
       "image": {

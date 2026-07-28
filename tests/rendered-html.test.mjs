@@ -61,6 +61,12 @@ test("generated content follows the featured-institution order and supplied-imag
       if (resource.status === "coming-soon") assert.equal(resource.url, null);
     }
   }
+  const agenticTool = data.tools.find((tool) => tool.id === "agentic-framework-for-technology-outcome-mining");
+  assert.deepEqual(agenticTool.resources.map((resource) => resource.name), [
+    "Perovskite Performance and Design Dataset",
+    "Quantum Computing Performance and Design Dataset",
+  ]);
+  assert.ok(agenticTool.resources.every((resource) => !/slides/i.test(`${resource.name} ${resource.description}`)));
   assert.equal(data.convenings[0].images.length, 4);
   assert.ok(data.convenings[0].images.some((image) => image.src.endsWith("cohort-portrait.jpg")));
   const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
