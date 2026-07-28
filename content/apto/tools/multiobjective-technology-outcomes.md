@@ -35,7 +35,7 @@
   "resources": [
     {
       "name": "CPU Evolution",
-      "description": "CPU Evolution is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A multi-metric record of processor progress that connects design shifts with changes in performance, cost, and use.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -44,8 +44,8 @@
       }
     },
     {
-      "name": "Universal Dynamics of Punctuated Progress",
-      "description": "Universal Dynamics of Punctuated Progress is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Punctuated Progress",
+      "description": "A cross-domain model of long plateaus and clustered breakthroughs across interacting technology outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {

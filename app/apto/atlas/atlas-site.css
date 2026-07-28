@@ -967,22 +967,20 @@
 .atlas-tool-media.apto-tool-gallery > img.is-current.is-leaving { opacity: 0; }
 .atlas-tool-media.apto-tool-gallery > img.is-incoming { opacity: 1; }
 .atlas-tool-card { --atlas-tool-panel-height: 48%; }
-.atlas-tool-card.is-expanded { --atlas-tool-panel-height: 66%; }
+.atlas-tool-card.is-expanded { --atlas-tool-panel-height: 100%; }
 .atlas-tool-panel { height: var(--atlas-tool-panel-height); transition: height .42s ease, background-color .35s ease; }
-.atlas-tool-resources { margin-top: 14px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
-.atlas-tool-resources > div,
-.atlas-tool-resources > a { min-width: 0; padding: 6px; display: grid; grid-template-columns: 46px minmax(0,1fr); gap: 7px; color: inherit; background: rgb(255 255 255 / 9%); text-decoration: none; }
-.atlas-tool-resources img { width: 46px; height: 46px; object-fit: cover; }
-.atlas-tool-resources span,
-.atlas-tool-resources strong,
-.atlas-tool-resources small,
-.atlas-tool-resources em { min-width: 0; display: block; }
-.atlas-tool-resources strong { overflow: hidden; color: #fff; font-size: .61rem; text-overflow: ellipsis; white-space: nowrap; }
-.atlas-tool-resources small { margin-top: 2px; display: -webkit-box; overflow: hidden; color: rgb(255 255 255 / 68%); font-size: .52rem; line-height: 1.25; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.atlas-tool-resources em { margin-top: 3px; color: #80d8e7; font-size: .49rem; font-style: normal; font-weight: 850; text-transform: uppercase; }
+.atlas-tool-details .apto-resource-path { margin-top: 14px; }
+.apto-resource-path-atlas .apto-resource-route { min-height: 126px; grid-template-rows: repeat(2,56px); gap: 7px; }
+.apto-resource-path-atlas .apto-resource-thumb { height: 36px; }
+.apto-resource-path-atlas .apto-resource-node strong { font-size: .52rem; }
+.apto-resource-path-atlas .apto-resource-detail { height: 108px; min-height: 108px; grid-template-columns: minmax(0,1.2fr) minmax(92px,.8fr); }
+.apto-resource-path-atlas .apto-resource-detail > div { padding: 10px 12px; }
+.apto-resource-path-atlas .apto-resource-detail h5 { font-size: .72rem; }
+.apto-resource-path-atlas .apto-resource-detail > div > span { font-size: .54rem; line-height: 1.35; -webkit-line-clamp: 3; }
+.apto-resource-path-atlas .apto-resource-detail figure { min-height: 108px; }
 
 @media (hover:hover) and (pointer:fine) {
-  .atlas-tool-card:hover { --atlas-tool-panel-height: 66%; }
+  .atlas-tool-card:hover { --atlas-tool-panel-height: 100%; }
 }
 
 @media (max-width: 520px) {
@@ -990,5 +988,5 @@
     width: 126px;
     height: 70px;
   }
-  .atlas-tool-resources { grid-template-columns: 1fr; }
+  .apto-resource-path-atlas .apto-resource-detail { height: auto; grid-template-columns: 1fr; }
 }

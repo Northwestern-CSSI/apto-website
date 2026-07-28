@@ -6,6 +6,7 @@ import { aptoInterface } from "./apto/content";
 import "./globals.css";
 import "./apto/convening-gallery.css";
 import "./apto/tool-gallery.css";
+import "./apto/tool-resource-path.css";
 import "./apto/story/story-site.css";
 import "./apto/atlas/atlas-site.css";
 

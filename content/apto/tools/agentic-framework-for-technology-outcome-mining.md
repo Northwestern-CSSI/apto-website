@@ -34,7 +34,7 @@
   "toolUrl": null,
   "resources": [
     {
-      "name": "Perovskite Performance and Design Dataset",
+      "name": "Perovskite Dataset",
       "description": "A structured dataset of extracted perovskite performance measures, material architectures, fabrication choices, and experimental design decisions for comparing technological trajectories.",
       "status": "coming-soon",
       "url": null,
@@ -44,7 +44,7 @@
       }
     },
     {
-      "name": "Quantum Computing Performance and Design Dataset",
+      "name": "Quantum Dataset",
       "description": "A structured dataset of extracted quantum-computing performance measures, hardware architectures, implementation choices, and system-design decisions for tracing technological progress.",
       "status": "coming-soon",
       "url": null,

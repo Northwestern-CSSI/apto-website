@@ -22,6 +22,7 @@ import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
+import { ToolResourcePath } from "../tool-resource-path";
 import { useAptoTheme } from "../use-apto-theme";
 
 type StorySection = "program" | "projects" | "tools" | "cohort" | "convening";
@@ -396,6 +397,7 @@ function ToolsStory() {
       <div data-story-parallax={(.01 + index % 3 * .004).toFixed(3)} className="story-tool-gallery-wrap">
         <ToolKenBurnsGallery galleryId={`story-${tool.id}`} images={media} className="story-tool-gallery" />
       </div>
+      <div className="story-tool-shade" aria-hidden="true" />
       <div className="story-tool-copy">
         <header>
           <p>{participant?.displayName} · {tool.statusLabel}</p>
@@ -403,15 +405,7 @@ function ToolsStory() {
         </header>
         <p>{tool.description}</p>
         <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
-        <section className="story-tool-resources" aria-label={`${tool.name} supporting resources`}>
-          <h4>Supporting pieces</h4>
-          <div>{tool.resources.map((resource) => {
-            const content = <><img src={withDeploymentBase(resource.image.src)} alt="" width="120" height="80" loading="lazy" /><span><strong>{resource.name}</strong><small>{resource.description}</small><em>{resource.status === "coming-soon" ? "Coming soon" : "Available"}</em></span></>;
-            return resource.url
-              ? <a href={resource.url} key={resource.name}>{content}</a>
-              : <article key={resource.name}>{content}</article>;
-          })}</div>
-        </section>
+        <ToolResourcePath resources={tool.resources} label={`${tool.name} supporting pieces`} variant="story" />
         <div className="story-tool-footer">
           <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
           <span>

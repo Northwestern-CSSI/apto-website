@@ -35,7 +35,7 @@
   "resources": [
     {
       "name": "Funding the Frontier",
-      "description": "Funding the Frontier is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A forecasting view connecting research funding patterns with later technical and commercialization outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -45,7 +45,7 @@
     },
     {
       "name": "Innovation Insights",
-      "description": "Innovation Insights is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A comparison workspace for examining signals that precede patents, licenses, startups, and technology adoption.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -55,7 +55,7 @@
     },
     {
       "name": "TechBridge",
-      "description": "TechBridge is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "Governed institutional evidence used to model the paths from research investment to market translation.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -64,8 +64,8 @@
       }
     },
     {
-      "name": "Perovskite Forecasting Prototype",
-      "description": "Perovskite Forecasting Prototype is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Perovskite Forecast",
+      "description": "A prototype for testing future perovskite performance under alternative material and device-design pathways.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -74,8 +74,8 @@
       }
     },
     {
-      "name": "Manufacturing Datasets",
-      "description": "Manufacturing Datasets is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Manufacturing Data",
+      "description": "Linked manufacturing records for evaluating how technical choices, scale-up conditions, and production constraints shape outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {

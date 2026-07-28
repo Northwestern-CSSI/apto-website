@@ -35,7 +35,7 @@
   "resources": [
     {
       "name": "SAE Method",
-      "description": "SAE Method is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A sparse-autoencoder method for detecting persistent combinations of concepts before an emerging technology has a stable name.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -44,8 +44,8 @@
       }
     },
     {
-      "name": "Additional resources",
-      "description": "Additional resources is one of the supporting outputs being prepared for this APTO capability.",
+      "name": "Science Embedding Map",
+      "description": "An explorable map of scientific concepts and their movement across papers, fields, countries, and time.",
       "status": "coming-soon",
       "url": null,
       "image": {

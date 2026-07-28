@@ -63,8 +63,8 @@ test("generated content follows the featured-institution order and supplied-imag
   }
   const agenticTool = data.tools.find((tool) => tool.id === "agentic-framework-for-technology-outcome-mining");
   assert.deepEqual(agenticTool.resources.map((resource) => resource.name), [
-    "Perovskite Performance and Design Dataset",
-    "Quantum Computing Performance and Design Dataset",
+    "Perovskite Dataset",
+    "Quantum Dataset",
   ]);
   assert.ok(agenticTool.resources.every((resource) => !/slides/i.test(`${resource.name} ${resource.description}`)));
   assert.equal(data.convenings[0].images.length, 4);
@@ -90,7 +90,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   // on that framework-level transport detail.
   assert.ok((html.match(/class="apto-tool-gallery story-tool-gallery"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="story-tool-resources"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story"/g) ?? []).length >= data.tools.length);
   assert.match(html, /class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="20"/);
   assert.doesNotMatch(html, /class="story-hero-detail-anchor"/);
   const storySource = await readFile(new URL("../app/apto/story/story-site.tsx", import.meta.url), "utf8");
@@ -113,7 +113,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="atlas-tool-resources"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas"/g) ?? []).length >= data.tools.length);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
 });

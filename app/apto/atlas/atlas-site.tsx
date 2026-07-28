@@ -27,6 +27,7 @@ import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool } from "../tool-media";
+import { ToolResourcePath } from "../tool-resource-path";
 import { useAptoTheme } from "../use-apto-theme";
 
 export type AtlasSection = "home" | "projects" | "tools" | "cohort" | "convening";
@@ -285,14 +286,7 @@ function ToolPoster({ tool, expanded, onToggle }: {
         <div className="atlas-tool-details" id={detailId}>
           <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
           <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
-          <div className="atlas-tool-resources" aria-label={`${tool.name} supporting resources`}>
-            {tool.resources.map((resource) => {
-              const content = <><img src={withDeploymentBase(resource.image.src)} alt="" width="96" height="64" loading="lazy" /><span><strong>{resource.name}</strong><small>{resource.description}</small><em>{resource.status === "coming-soon" ? "Coming soon" : "Available"}</em></span></>;
-              return resource.url
-                ? <a href={resource.url} key={resource.name}>{content}</a>
-                : <div key={resource.name}>{content}</div>;
-            })}
-          </div>
+          <ToolResourcePath resources={tool.resources} label={`${tool.name} supporting pieces`} variant="atlas" />
           {(tool.demoVideoUrl || tool.toolUrl) && <nav aria-label={`${tool.name} links`}>
             {tool.demoVideoUrl && <ExternalLink href={tool.demoVideoUrl}>{aptoInterface.tools.watchDemoLabel}</ExternalLink>}
             {tool.toolUrl && <ExternalLink href={tool.toolUrl}>{aptoInterface.tools.openToolLabel}</ExternalLink>}

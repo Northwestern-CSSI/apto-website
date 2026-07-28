@@ -35,7 +35,7 @@
   "resources": [
     {
       "name": "TechBridge",
-      "description": "TechBridge is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A connected view of research investments, investigators, discoveries, patents, licenses, startups, and downstream outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -45,7 +45,7 @@
     },
     {
       "name": "Innovation Insights",
-      "description": "Innovation Insights is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A decision interface for comparing innovation pipelines across institutions, fields, funding programs, and time.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -55,7 +55,7 @@
     },
     {
       "name": "SciSciNet",
-      "description": "SciSciNet is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A linked research graph connecting publications, grants, patents, people, institutions, and scientific concepts at scale.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -65,7 +65,7 @@
     },
     {
       "name": "SciSciGPT",
-      "description": "SciSciGPT is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "A conversational research interface for asking evidence-grounded questions across the connected science-of-science graph.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -75,7 +75,7 @@
     },
     {
       "name": "Manufacturing Dataset",
-      "description": "Manufacturing Dataset is one of the supporting outputs being prepared for this APTO capability.",
+      "description": "Structured evidence linking manufacturing methods, technical design choices, organizations, and measurable performance outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {
