@@ -86,7 +86,13 @@ export function ToolResourcePath({
 
         return <li key={resource.name}>
           {available && resource.url
-            ? <a {...common} href={resource.url}>{content}</a>
+            ? <a
+                {...common}
+                href={resource.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${resource.name} (opens in a new tab)`}
+              >{content}</a>
             : <button
                 {...common}
                 type="button"
@@ -108,9 +114,19 @@ export function ToolResourcePath({
           ? <span>{activeResource.description}</span>
           : summary.paragraphs.map((paragraph, index) => <span key={`${summary.title}-summary-${index}`}>{paragraph}</span>)}
         {activeResource && activeAvailable && activeResource.url
-          ? <a href={activeResource.url}>Open this piece <span aria-hidden="true">↗</span></a>
+          ? <a
+              href={activeResource.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Open ${activeResource.name} in a new tab`}
+            >Open this piece <span aria-hidden="true">↗</span></a>
           : !activeResource && summary.url
-            ? <a href={summary.url}>{summary.linkLabel ?? "Open tool"} <span aria-hidden="true">↗</span></a>
+            ? <a
+                href={summary.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${summary.linkLabel ?? "Open tool"} in a new tab`}
+              >{summary.linkLabel ?? "Open tool"} <span aria-hidden="true">↗</span></a>
             : null}
       </div>
       {activeResource && <figure className="apto-resource-summary-inset">

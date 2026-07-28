@@ -51,8 +51,8 @@
     {
       "name": "Punctuated Progress",
       "description": "Models long plateaus and clustered breakthroughs across interacting technology outcomes, helping researchers compare near-term predictability, longer-term uncertainty, and the combinations of radical and incremental change that drive progress.",
-      "status": "coming-soon",
-      "url": null,
+      "status": "available",
+      "url": "https://arxiv.org/abs/2605.16719",
       "image": {
         "src": "/apto/tools/icons/evolution.svg",
         "alt": "Punctuated technology evolution icon"

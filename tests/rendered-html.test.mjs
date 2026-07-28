@@ -273,6 +273,28 @@ test("the shared gallery preserves reduced-motion support and true crossfades", 
   assert.match(styles, /\.is-incoming\s*\{\s*z-index:\s*2;\s*opacity:\s*1/);
 });
 
+test("available tool pieces open externally without a blocked cursor for unavailable pieces", async () => {
+  const data = await content();
+  const expectedUrls = [
+    "https://niinstitute.kellogg.northwestern.edu/bridge",
+    "https://www.innovationinsights.org",
+    "https://northwestern-cssi.github.io/sciscinet/",
+    "https://sciscigpt.com",
+    "https://arxiv.org/abs/2605.16719",
+    "https://fundingthefrontier.com",
+  ];
+  const northwesternUrls = new Set(data.tools
+    .filter((tool) => tool.participantId === "northwestern")
+    .flatMap((tool) => tool.resources.map((resource) => resource.url).filter(Boolean)));
+  expectedUrls.forEach((url) => assert.ok(northwesternUrls.has(url), `missing Northwestern resource URL: ${url}`));
+
+  const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
+  const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
+  assert.match(resourceSource, /target="_blank"\s+rel="noreferrer"/);
+  assert.match(resourceStyles, /\.apto-resource-node\.is-coming-soon\s*\{\s*cursor:\s*default/);
+  assert.doesNotMatch(resourceStyles, /cursor:\s*not-allowed/);
+});
+
 test("each tool presentation uses its independently ordered content media", async () => {
   const source = await readFile(new URL("../app/apto/tool-media.ts", import.meta.url), "utf8");
   assert.match(source, /return ownMedia\(tool\)/);

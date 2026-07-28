@@ -57,7 +57,7 @@
 }
 
 .apto-resource-node.is-available { cursor: pointer; }
-.apto-resource-node.is-coming-soon { cursor: not-allowed; }
+.apto-resource-node.is-coming-soon { cursor: default; }
 .apto-resource-path.has-active-resource .apto-resource-node:not(.is-active) {
   opacity: .24;
   filter: grayscale(.75) blur(1.2px);

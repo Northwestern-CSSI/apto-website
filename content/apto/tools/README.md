@@ -105,7 +105,7 @@ The H1 must exactly match `name`. The body must contain exactly
 | `galleryImages[].src` | `/apto/tools/photography/…` path matching an image under `content/apto/assets/tools/photography/` |
 | `galleryImages[].alt` | Meaningful alternative text for that image; entries must not repeat one another |
 | `resources` | One or more small supporting outputs displayed directly above the tool summary; each output must use a distinct SVG from `/apto/tools/icons/` within that tool |
-| `resources[].status` | `available` or `coming-soon`; coming-soon entries must not have a URL |
+| `resources[].status` | `available` or `coming-soon`; coming-soon entries must not have a URL, while available pieces open their URL in a new tab |
 | `statusLabel` | Short public status such as `Research preview` |
 | `demoVideoUrl` | Full HTTPS URL or `null` |
 | `toolUrl` | Full HTTPS URL or `null` |

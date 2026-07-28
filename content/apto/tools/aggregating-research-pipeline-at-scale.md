@@ -41,8 +41,8 @@
     {
       "name": "TechBridge",
       "description": "Connects governed institutional records across research investments, investigators, disclosures, patents, licenses, startups, and downstream outcomes, providing the translation evidence needed to trace how research moves toward practical use.",
-      "status": "coming-soon",
-      "url": null,
+      "status": "available",
+      "url": "https://niinstitute.kellogg.northwestern.edu/bridge",
       "image": {
         "src": "/apto/tools/icons/research-funding.svg",
         "alt": "Research funding and institutional records icon"
@@ -51,8 +51,8 @@
     {
       "name": "Innovation Insights",
       "description": "Turns the connected evidence base into comparative views of institutions, fields, funding programs, and time, helping users identify promising people, ideas, partnerships, and translation opportunities.",
-      "status": "coming-soon",
-      "url": null,
+      "status": "available",
+      "url": "https://www.innovationinsights.org",
       "image": {
         "src": "/apto/tools/icons/innovation.svg",
         "alt": "Innovation insight icon"
@@ -61,8 +61,8 @@
     {
       "name": "SciSciNet",
       "description": "Links publications, grants, patents, people, institutions, concepts, and organizations at scale, creating the research graph that supports consistent evidence queries and pipeline analysis.",
-      "status": "coming-soon",
-      "url": null,
+      "status": "available",
+      "url": "https://northwestern-cssi.github.io/sciscinet/",
       "image": {
         "src": "/apto/tools/icons/network.svg",
         "alt": "Connected research network icon"
@@ -71,8 +71,8 @@
     {
       "name": "SciSciGPT",
       "description": "Provides a conversational interface for asking evidence-grounded questions across the connected research graph, with responses tied back to the records and relationships that support them.",
-      "status": "coming-soon",
-      "url": null,
+      "status": "available",
+      "url": "https://sciscigpt.com",
       "image": {
         "src": "/apto/tools/icons/algorithm-agent.svg",
         "alt": "Agentic research query icon"
