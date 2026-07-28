@@ -42,9 +42,13 @@ focal area suitable for responsive `object-fit: cover` cropping.
 ## Supporting-piece icons
 
 Supporting-piece icons live in `tools/icons/` as 64 × 64 viewBox SVG files.
-Use the shared rounded-line visual language, cyan-purple-gold accents, and
+Use the shared rounded-line visual language, quiet blue-slate-sand accents, and
 meaningful geometry. Every piece within one tool must reference a different
 icon. Keep raster images out of this folder.
+
+Archived visual treatments live in `tools/icons/themes/`. The original vivid
+cyan-purple-gold recipe is preserved in `themes/vivid-gradient.md`; live icons
+currently use its quieter blue-slate-sand variant.
 
 Candidate tool-side figures remain in `tools/resources/` while that separate
 visual treatment is being decided; they are not used as piece icons.

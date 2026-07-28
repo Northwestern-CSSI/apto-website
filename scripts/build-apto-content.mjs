@@ -363,7 +363,10 @@ async function syncAssets(assetFiles, checkOnly) {
         stat(sourceFile),
         stat(destinationFile),
       ]);
-      if (sourceStatus.size === destinationStatus.size) continue;
+      if (
+        sourceStatus.size === destinationStatus.size
+        && sourceStatus.mtimeMs <= destinationStatus.mtimeMs
+      ) continue;
     } catch {
       // A missing destination is created below.
     }

@@ -81,8 +81,8 @@
   display: block;
   overflow: hidden;
   background:
-    radial-gradient(circle at 24% 18%, rgb(103 224 239 / 20%), transparent 46%),
-    linear-gradient(145deg, rgb(9 37 60 / 92%), rgb(13 24 55 / 94%));
+    radial-gradient(circle at 24% 18%, rgb(156 200 214 / 13%), transparent 46%),
+    linear-gradient(145deg, rgb(13 35 52 / 94%), rgb(25 29 48 / 96%));
   border: 1px solid rgb(255 255 255 / 58%);
   border-radius: 5px;
   box-shadow: 0 9px 25px rgb(0 10 24 / 30%);
@@ -90,20 +90,20 @@
 
 .apto-resource-route > li:nth-child(4n + 2) .apto-resource-thumb {
   background:
-    radial-gradient(circle at 76% 18%, rgb(243 199 81 / 20%), transparent 45%),
-    linear-gradient(145deg, rgb(24 31 65 / 92%), rgb(8 41 58 / 95%));
+    radial-gradient(circle at 76% 18%, rgb(209 184 121 / 13%), transparent 45%),
+    linear-gradient(145deg, rgb(28 32 52 / 95%), rgb(14 40 52 / 96%));
 }
 
 .apto-resource-route > li:nth-child(4n + 3) .apto-resource-thumb {
   background:
-    radial-gradient(circle at 22% 82%, rgb(156 140 244 / 24%), transparent 46%),
-    linear-gradient(145deg, rgb(8 43 58 / 94%), rgb(25 25 62 / 94%));
+    radial-gradient(circle at 22% 82%, rgb(168 167 194 / 15%), transparent 46%),
+    linear-gradient(145deg, rgb(14 41 51 / 95%), rgb(31 31 50 / 96%));
 }
 
 .apto-resource-route > li:nth-child(4n + 4) .apto-resource-thumb {
   background:
-    radial-gradient(circle at 78% 76%, rgb(103 224 239 / 18%), transparent 47%),
-    linear-gradient(145deg, rgb(31 29 62 / 94%), rgb(7 35 54 / 95%));
+    radial-gradient(circle at 78% 76%, rgb(156 200 214 / 12%), transparent 47%),
+    linear-gradient(145deg, rgb(34 32 51 / 95%), rgb(13 35 51 / 96%));
 }
 
 .apto-resource-thumb img {
@@ -186,8 +186,8 @@
   box-sizing: border-box;
   object-fit: contain;
   background:
-    radial-gradient(circle at 28% 24%, rgb(103 224 239 / 16%), transparent 48%),
-    linear-gradient(145deg, rgb(9 38 61 / 96%), rgb(20 24 55 / 96%));
+    radial-gradient(circle at 28% 24%, rgb(156 200 214 / 12%), transparent 48%),
+    linear-gradient(145deg, rgb(14 36 52 / 97%), rgb(27 30 48 / 97%));
 }
 .apto-resource-summary::before {
   content: "";
