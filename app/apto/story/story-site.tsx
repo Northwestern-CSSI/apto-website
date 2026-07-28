@@ -21,6 +21,7 @@ import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
+import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
 import { useAptoTheme } from "../use-apto-theme";
 
 type StorySection = "program" | "projects" | "tools" | "cohort" | "convening";
@@ -257,11 +258,17 @@ function OutcomePanorama() {
     return { outcome, tool };
   });
 
+  const motion = [
+    { speed: "0.025", limit: "54" },
+    { speed: "0.105", limit: "100" },
+    { speed: "0.180", limit: "138" },
+  ] as const;
+
   return <div className="story-outcome-panorama" data-story-reveal="media">
     {lenses.map(({ outcome, tool }, index) => <div
       className="story-outcome-depth"
-      data-story-parallax={(.04 + index * .03).toFixed(3)}
-      data-story-parallax-limit="88"
+      data-story-parallax={motion[index].speed}
+      data-story-parallax-limit={motion[index].limit}
       key={outcome.name}
     >
       <figure>
@@ -283,23 +290,24 @@ function StoryHero() {
   const home = pageCopy("/");
   const heroTool = aptoTools.find((tool) => tool.figure.kind === "knowledge-map") ?? aptoTools[0];
   const heroDetail = heroTool.galleryImages[0];
+  // Retain the inset implementation for a future re-enable without loading or
+  // displaying it in the current design.
+  const showHeroInset = false;
   return <section className="story-hero" id="story-top" aria-labelledby="story-title">
-    <div className="story-hero-copy" data-story-reveal="heading">
+    <div className="story-hero-copy" data-story-reveal="heading" data-story-parallax="-0.030" data-story-parallax-limit="48">
       <h1 id="story-title">{home.title}</h1>
       <p>{home.introduction}</p>
     </div>
-    <figure className="story-hero-visual" data-story-reveal="media" data-story-parallax="0.038">
+    <figure className="story-hero-visual" data-story-reveal="media" data-story-parallax="0.072" data-story-parallax-limit="92">
       <div className="story-hero-image">
-        <img
+        <ToolKenBurnsGallery
+          galleryId="story-hero"
+          images={storyHeroMedia}
           className="story-hero-primary"
-          src={withDeploymentBase(heroTool.figure.src)}
-          alt={heroTool.figure.alt}
-          width="1200"
-          height="900"
-          decoding="async"
-          fetchPriority="high"
+          eager
+          randomStart
         />
-        {heroDetail && <span
+        {showHeroInset && heroDetail && <span
           className="story-hero-detail-anchor"
           data-story-parallax="0.095"
           data-story-parallax-limit="76"
@@ -383,7 +391,7 @@ function ToolsStory() {
 
   const toolCard = (tool: (typeof aptoTools)[number], index: number) => {
     const participant = participantFor(tool.participantId);
-    const media = [{ src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages];
+    const media = presentationMediaForTool(tool);
     return <article className="story-tool" key={tool.id} data-story-reveal="media">
       <div data-story-parallax={(.01 + index % 3 * .004).toFixed(3)} className="story-tool-gallery-wrap">
         <ToolKenBurnsGallery galleryId={`story-${tool.id}`} images={media} className="story-tool-gallery" />

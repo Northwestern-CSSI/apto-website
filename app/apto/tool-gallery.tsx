@@ -101,23 +101,40 @@ export function ToolKenBurnsGallery({
   caption,
   className = "",
   eager = false,
+  randomStart = false,
 }: {
   galleryId: string;
   images: ToolImage[];
   caption?: string;
   className?: string;
   eager?: boolean;
+  randomStart?: boolean;
 }) {
   const rootRef = useRef<HTMLElement | null>(null);
   const imageRefs = useRef<Array<HTMLImageElement | null>>([]);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [nearViewport, setNearViewport] = useState(true);
   const [visible, setVisible] = useState(true);
+  const [randomStartReady, setRandomStartReady] = useState(!randomStart);
+  const randomStartApplied = useRef(false);
   const [motion, setMotion] = useState<MotionState>(() => ({
     current: { index: 0, cycle: 0, plan: makePlan(galleryId, 0, 0) },
     incoming: null,
   }));
   const animate = !reducedMotion && nearViewport && visible && images.length > 1;
+
+  useEffect(() => {
+    if (!randomStart || randomStartApplied.current || images.length < 2) return;
+    randomStartApplied.current = true;
+    const index = Math.floor(Math.random() * images.length);
+    const image = imageRefs.current[index];
+    const select = async () => {
+      await image?.decode().catch(() => undefined);
+      setMotion({ current: { index, cycle: 0, plan: makePlan(galleryId, index, 0) }, incoming: null });
+      setRandomStartReady(true);
+    };
+    void select();
+  }, [galleryId, images.length, randomStart]);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -174,6 +191,7 @@ export function ToolKenBurnsGallery({
     ref={rootRef}
     className={`apto-tool-gallery ${className}`.trim()}
     data-motion={animate ? "running" : "paused"}
+    data-random-start-ready={randomStartReady ? "true" : "false"}
     data-gallery-count={images.length}
     style={{ "--tool-kb-crossfade-ms": `${motion.current.plan.crossfadeMs}ms` } as CSSProperties}
   >
@@ -187,8 +205,8 @@ export function ToolKenBurnsGallery({
         key={`${image.src}-${index}`}
         className={[isCurrent ? "is-current" : "", leaving ? "is-leaving" : "", isIncoming ? "is-incoming" : ""].filter(Boolean).join(" ")}
         src={withDeploymentBase(image.src)}
-        alt={index === 0 ? image.alt : ""}
-        aria-hidden={index === 0 ? undefined : "true"}
+        alt={isCurrent ? image.alt : ""}
+        aria-hidden={isCurrent ? undefined : "true"}
         width="1536"
         height="1024"
         loading={eager && index === 0 ? "eager" : "lazy"}

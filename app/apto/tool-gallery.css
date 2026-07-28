@@ -28,6 +28,7 @@
 .apto-tool-gallery > img.is-current { z-index: 1; opacity: 1; }
 .apto-tool-gallery > img.is-current.is-leaving { opacity: 0; }
 .apto-tool-gallery > img.is-incoming { z-index: 2; opacity: 1; }
+.apto-tool-gallery[data-random-start-ready="false"] > img { opacity: 0; }
 
 @keyframes apto-tool-ken-burns {
   from { transform: translate3d(var(--tool-kb-from-x, 0), var(--tool-kb-from-y, 0), 0) scale(var(--tool-kb-from-scale, 1.08)); }

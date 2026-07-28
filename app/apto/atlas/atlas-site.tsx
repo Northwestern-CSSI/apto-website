@@ -26,6 +26,7 @@ import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
+import { presentationMediaForTool } from "../tool-media";
 import { useAptoTheme } from "../use-apto-theme";
 
 export type AtlasSection = "home" | "projects" | "tools" | "cohort" | "convening";
@@ -263,7 +264,7 @@ function ToolPoster({ tool, expanded, onToggle }: {
 }) {
   const participant = participantFor(tool.participantId);
   const detailId = `atlas-tool-details-${tool.id}`;
-  const media = [{ src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages];
+  const media = presentationMediaForTool(tool);
 
   if (!participant) return null;
 

@@ -85,9 +85,17 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/class="apto-tool-gallery story-tool-gallery"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="story-tool-resources"/g) ?? []).length >= data.tools.length);
+  assert.match(html, /class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="20"/);
+  assert.doesNotMatch(html, /class="story-hero-detail-anchor"/);
+  const storySource = await readFile(new URL("../app/apto/story/story-site.tsx", import.meta.url), "utf8");
+  assert.match(storySource, /const showHeroInset = false/);
+  assert.match(storySource, /data-story-parallax="-0\.030"/);
+  assert.match(storySource, /data-story-parallax="0\.072"/);
   const styles = await readFile(new URL("../app/apto/story/story-site.css", import.meta.url), "utf8");
   assert.match(styles, /\.story-project-chapter > header\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
   assert.match(styles, /\.story-project-chapter h3\s*\{[\s\S]*?max-width:\s*100%/);
+  assert.match(styles, /--story-parallax-y:\s*var\(--story-shift,0px\)/);
+  assert.match(styles, /calc\(var\(--story-reveal-y,0px\) \+ var\(--story-parallax-y,0px\)\)/);
 });
 
 test("Atlas exposes supplied-image galleries and supporting pieces", async () => {
@@ -120,6 +128,16 @@ test("the shared gallery preserves reduced-motion support and true crossfades", 
   assert.match(source, /prefers-reduced-motion:\s*reduce/);
   assert.match(source, /IntersectionObserver/);
   assert.match(source, /\.decode\(\)/);
+  assert.match(source, /Math\.random\(\)/);
+  assert.match(source, /data-random-start-ready/);
   assert.match(styles, /\.is-current\.is-leaving\s*\{\s*opacity:\s*0/);
   assert.match(styles, /\.is-incoming\s*\{\s*z-index:\s*2;\s*opacity:\s*1/);
+});
+
+test("placeholder tools use independently ordered Northwestern media", async () => {
+  const source = await readFile(new URL("../app/apto/tool-media.ts", import.meta.url), "utf8");
+  assert.match(source, /participantId === "northwestern"/);
+  assert.match(source, /placeholderSteps/);
+  assert.match(source, /placeholderIndex \* 7 \+ 3/);
+  assert.match(source, /Array\.from\(\{ length: 4 \}/);
 });
