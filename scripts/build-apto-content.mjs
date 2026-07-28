@@ -912,6 +912,8 @@ function validateTool(document) {
     requireString(image, "alt", `${resourceContext}.image`);
   });
   assertUnique(resources.map((resource) => resource.name), `${context}.resources names`);
+  assertUnique(resources.map((resource) => resource.image.src), `${context}.resources image sources`);
+  assertUnique(resources.map((resource) => resource.image.alt), `${context}.resources image descriptions`);
   requireString(metadata, "statusLabel", context);
   requireOptionalHttpsUrl(metadata.demoVideoUrl, `${context}.demoVideoUrl`);
   requireOptionalHttpsUrl(metadata.toolUrl, `${context}.toolUrl`);

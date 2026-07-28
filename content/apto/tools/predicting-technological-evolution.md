@@ -39,8 +39,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/predicting-curves.png",
-        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+        "src": "/apto/tools/photography/predicting-01.jpg",
+        "alt": "Supplied research photograph illustrating forecasting signals for technological evolution"
       }
     },
     {
@@ -49,8 +49,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/predicting-curves.png",
-        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+        "src": "/apto/tools/photography/predicting-02.jpg",
+        "alt": "Supplied research photograph illustrating linked innovation and commercialization evidence"
       }
     },
     {
@@ -59,8 +59,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/predicting-curves.png",
-        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+        "src": "/apto/tools/photography/predicting-03.jpg",
+        "alt": "Supplied research photograph illustrating competing technology forecast pathways"
       }
     },
     {
@@ -69,8 +69,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/predicting-curves.png",
-        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+        "src": "/apto/tools/photography/predicting-04.jpg",
+        "alt": "Supplied research photograph illustrating manufacturing evidence used in forecasting"
       }
     },
     {

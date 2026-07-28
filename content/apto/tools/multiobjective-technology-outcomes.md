@@ -39,8 +39,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/multiobjective-trajectories.png",
-        "alt": "Technology trajectories compared across multiple performance dimensions"
+        "src": "/apto/tools/photography/multiobjective-01.jpg",
+        "alt": "Supplied research photograph illustrating progress across multiple technology outcomes"
       }
     },
     {

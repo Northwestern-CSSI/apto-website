@@ -38,8 +38,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/predicting-curves.png",
-        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+        "src": "/apto/tools/photography/predicting-01.jpg",
+        "alt": "Supplied research photograph illustrating a modeled energy-system trajectory"
       }
     },
     {

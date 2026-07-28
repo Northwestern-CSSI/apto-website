@@ -39,8 +39,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/emerging-landscape.png",
-        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+        "src": "/apto/tools/photography/emerging-01.jpg",
+        "alt": "Supplied research photograph illustrating emerging innovation signals across regions"
       }
     },
     {

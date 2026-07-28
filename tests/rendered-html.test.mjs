@@ -55,15 +55,20 @@ test("generated content follows the featured-institution order and supplied-imag
     assert.equal(new Set(media.map((image) => image.src)).size, 4, `${tool.name} frames should be distinct`);
     assert.ok(media.every((image) => image.src.startsWith("/apto/tools/photography/")), `${tool.name} should use supplied tool photography`);
     assert.ok(tool.resources.length > 0, `${tool.name} should expose supporting pieces`);
+    assert.equal(new Set(tool.resources.map((resource) => resource.image.src)).size, tool.resources.length, `${tool.name} supporting pieces should use distinct images`);
     for (const resource of tool.resources) {
-      assert.match(resource.image.src, /^\/apto\/tools\/resources\//);
+      assert.match(resource.image.src, /^\/apto\/tools\/(?:resources|photography)\//);
       if (resource.status === "coming-soon") assert.equal(resource.url, null);
     }
   }
   assert.equal(data.convenings[0].images.length, 4);
   assert.ok(data.convenings[0].images.some((image) => image.src.endsWith("cohort-portrait.jpg")));
-  const dashun = data.participants.find((participant) => participant.id === "northwestern").people.find((person) => person.id === "dashun-wang");
-  assert.equal(dashun.headshotUrl, "/apto/people/dashun-wang.avif");
+  const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
+  assert.deepEqual(
+    northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
+    ["benjamin-jones", "dashun-wang", "jian-cao", "yian-yin"],
+  );
+  assert.equal(data.convenings[0].location, "Washington, D.C.");
 });
 
 test("Story gives project titles full card width and pairs lead-institution tools", async () => {

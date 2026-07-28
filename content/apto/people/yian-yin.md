@@ -7,7 +7,7 @@
   "initials": "YY",
   "role": "Co-Principal Investigator",
   "organization": null,
-  "headshotUrl": null,
+  "headshotUrl": "/apto/people/yian-yin.png",
   "headshotAlt": "Portrait of Yian Yin",
   "profileUrl": null
 }

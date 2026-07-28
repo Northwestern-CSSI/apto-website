@@ -39,8 +39,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/agentic-roles.png",
-        "alt": "Diagram of specialized AI agents coordinating evidence discovery, extraction, and review"
+        "src": "/apto/tools/photography/agentic-01.jpg",
+        "alt": "Supplied research photograph illustrating evidence mining across technical sources"
       }
     },
     {

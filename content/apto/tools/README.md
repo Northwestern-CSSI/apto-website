@@ -144,6 +144,9 @@ through all four images with independent Ken Burns timing.
 - Avoid embedded interface labels, unsupported data claims, and essential text.
   The card supplies its title and description as accessible HTML.
 - Give every image specific alt text that explains its subject or information.
+- Give every supporting piece within a tool a distinct image. A piece may use
+  the tool's approved photography when a dedicated screenshot is not yet
+  available, but sibling pieces must not repeat the same image.
   Do not describe a purely decorative style, and do not copy the tool name.
 - Within one tool, keep all four frames distinct. Imagery may be shared across
   provisional tools when an approved team-specific set is not yet available.

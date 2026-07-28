@@ -39,8 +39,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+        "src": "/apto/tools/photography/aggregating-01.jpg",
+        "alt": "Supplied research photograph illustrating an integrated research-data pipeline"
       }
     },
     {
@@ -49,8 +49,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+        "src": "/apto/tools/photography/aggregating-02.jpg",
+        "alt": "Supplied research photograph illustrating linked innovation records at scale"
       }
     },
     {
@@ -59,8 +59,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+        "src": "/apto/tools/photography/aggregating-03.jpg",
+        "alt": "Supplied research photograph illustrating connected science and technology evidence"
       }
     },
     {
@@ -69,8 +69,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+        "src": "/apto/tools/photography/aggregating-04.jpg",
+        "alt": "Supplied research photograph illustrating manufacturing and research data integration"
       }
     },
     {

@@ -39,8 +39,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+        "src": "/apto/tools/photography/aggregating-01.jpg",
+        "alt": "Supplied research photograph illustrating globally connected science and technology evidence"
       }
     },
     {
