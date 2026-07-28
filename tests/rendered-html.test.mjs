@@ -212,8 +212,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(resourceSource, /routePosition|gridColumn|gridRow/);
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
   assert.match(resourceStyles, /backdrop-filter:\s*blur\(4px\) saturate\(112%\)/);
-  assert.match(resourceStyles, /grid-template-rows:\s*60% 40%/);
-  assert.match(resourceStyles, /\.apto-resource-path:not\(\.is-featured\)\s*\{[\s\S]*?grid-template-rows:\s*56% 44%/);
+  assert.match(resourceStyles, /grid-template-rows:\s*58% 42%/);
+  assert.match(resourceStyles, /\.apto-resource-path:not\(\.is-featured\)\s*\{[\s\S]*?grid-template-rows:\s*54% 46%/);
   assert.match(resourceStyles, /flex-flow:\s*row wrap-reverse/);
   assert.match(resourceStyles, /width:\s*min\(100%, 82px\)/);
   assert.match(resourceStyles, /\.apto-resource-node strong\s*\{[\s\S]*?width:\s*min\(100%, 18ch\)/);

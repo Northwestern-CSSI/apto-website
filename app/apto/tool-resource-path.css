@@ -4,13 +4,13 @@
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-rows: 60% 40%;
+  grid-template-rows: 58% 42%;
   gap: 0;
   color: #f8fbfd;
 }
 
 .apto-resource-path:not(.is-featured) {
-  grid-template-rows: 56% 44%;
+  grid-template-rows: 54% 46%;
 }
 
 .apto-resource-route {
