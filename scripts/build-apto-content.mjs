@@ -201,6 +201,17 @@ function compareParticipantIds(leftId, rightId, leftLabel, rightLabel) {
   return leftPriority - rightPriority || compareAlphabetically(leftLabel, rightLabel);
 }
 
+const investigatorRoleOrder = new Map([
+  ["Principal Investigator", 0],
+  ["Co-Principal Investigator", 1],
+]);
+
+function comparePeopleByRole(left, right) {
+  const leftPriority = investigatorRoleOrder.get(left.role) ?? 2;
+  const rightPriority = investigatorRoleOrder.get(right.role) ?? 2;
+  return leftPriority - rightPriority || compareAlphabetically(left.name, right.name);
+}
+
 function omitFields(object, fields) {
   const omitted = new Set(fields);
   return Object.fromEntries(Object.entries(object).filter(([key]) => !omitted.has(key)));
@@ -1204,7 +1215,7 @@ async function buildContent() {
           ...personRecord.person,
           organization: record.participant.displayName,
         }))
-        .sort((left, right) => compareAlphabetically(left.name, right.name));
+        .sort(comparePeopleByRole);
       return {
         ...record.participant,
         people,
@@ -1226,7 +1237,7 @@ async function buildContent() {
           ...personRecord.person,
           organization: participant.displayName,
         }))
-        .sort((left, right) => compareAlphabetically(left.name, right.name));
+        .sort(comparePeopleByRole);
       return {
         ...record.project,
         organization: participant.displayName,

@@ -222,7 +222,11 @@ function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
     <summary>
       <span className="atlas-project-identity">
         <ParticipantLogo participant={participant} />
-        <span><small>{participant.displayName} · {participant.location}</small><strong>{project.shortName}</strong></span>
+        <span>
+          <small>{participant.displayName}</small>
+          <em className="atlas-project-location">{participant.location}</em>
+          <strong>{project.shortName}</strong>
+        </span>
       </span>
       <span className="atlas-project-date">{aptoInterface.projects.awardedPrefix} {project.awardedYear} {aptoInterface.projects.dateStatusSeparator} {project.statusLabel}</span>
       <span className="atlas-project-expand" aria-label={aptoInterface.projects.expandLabel}><ChevronDown aria-hidden="true" focusable="false" /></span>
@@ -363,8 +367,8 @@ function CohortPage() {
         >
           <div className="atlas-team-identity">
             <ParticipantLogo participant={participant} />
-            <p>{participant.location}</p>
             <h2>{participant.displayName}</h2>
+            <p>{participant.location}</p>
             {project && <span>{project.shortName}</span>}
             <ExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</ExternalLink>
           </div>

@@ -363,7 +363,11 @@ function ProjectsStory() {
           >
             <header>
               {participant && <ParticipantLogo participant={participant} />}
-              <div><p>{project.organization} · {project.location}</p><h3>{project.shortName}</h3></div>
+              <div>
+                <p>{project.organization}</p>
+                <span className="story-project-location">{project.location}</span>
+                <h3>{project.shortName}</h3>
+              </div>
             </header>
             <p>{project.summary}</p>
             <div className="story-project-meta">
@@ -464,7 +468,7 @@ function CohortStory() {
       >
         <header>
           <ParticipantLogo participant={participant} />
-          <div><p>{participant.location}</p><h3>{participant.displayName}</h3><StoryExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</StoryExternalLink></div>
+          <div><h3>{participant.displayName}</h3><p>{participant.location}</p><StoryExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</StoryExternalLink></div>
         </header>
         <div className="story-cohort-people">{participant.people.map((person) => <StoryPerson person={person} key={person.id} />)}</div>
       </article>)}

@@ -1,8 +1,10 @@
 # Adding or editing people
 
 Each Markdown file in this folder is one program manager, principal
-investigator, or co-principal investigator. People are displayed alphabetically
-within their group.
+investigator, or co-principal investigator. Within each organization, people
+are displayed by role: principal investigator first, co-principal investigators
+second, and any other supported roles after them. Names are alphabetical within
+the same role.
 
 ## Investigator template
 

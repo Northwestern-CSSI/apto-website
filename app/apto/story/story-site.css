@@ -250,8 +250,7 @@
 .story-hero-copy { position: relative; z-index: 3; max-width: 620px; --story-parallax-y: var(--story-shift,0px); }
 .story-kicker,
 .story-section-heading > p,
-.story-project-stage-copy > p,
-.story-cohort-group > header > div > p {
+.story-project-stage-copy > p {
   margin-bottom: 14px;
   color: var(--story-teal);
   font-size: .72rem;
@@ -684,7 +683,8 @@
   max-height: none;
   transform: translate(-50%, -50%);
 }
-.story-project-chapter header p { margin-bottom: 7px; color: var(--story-projects-muted); font-size: .72rem; font-weight: 750; }
+.story-project-chapter header p { margin-bottom: 2px; color: var(--story-projects-ink); font-size: .76rem; font-weight: 800; }
+.story-project-location { margin-bottom: 9px; display: block; color: var(--story-projects-muted); font-size: .69rem; line-height: 1.35; }
 .story-project-chapter h3 { margin: 0; color: var(--story-projects-ink); font-size: clamp(1.45rem,2.6vw,2.3rem); letter-spacing: -.03em; line-height: 1.12; }
 .story-project-chapter > p { max-width: 68ch; margin-bottom: 26px; color: var(--story-projects-copy); font-size: clamp(.96rem,1.15vw,1.06rem); line-height: 1.75; }
 .story-project-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; color: var(--story-projects-muted); font-size: .77rem; }
@@ -815,7 +815,8 @@
 }
 .story-cohort-group > header { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 24px; align-items: center; }
 .story-cohort-group .story-participant-logo { width: 150px; height: 82px; }
-.story-cohort-group h3 { margin-bottom: 7px; color: var(--story-cohort-ink); font-size: 1.35rem; }
+.story-cohort-group h3 { margin-bottom: 3px; color: var(--story-cohort-ink); font-size: 1.35rem; }
+.story-cohort-group > header p { margin: 0 0 7px; color: var(--story-cohort-muted); font-size: .7rem; line-height: 1.4; }
 .story-cohort-group > header a { min-height: 44px; display: inline-flex; align-items: center; color: var(--story-cyan); font-size: .73rem; font-weight: 800; }
 .story-cohort-people { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
 .story-person {

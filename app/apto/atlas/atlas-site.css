@@ -381,7 +381,8 @@
 .atlas-project-identity > .atlas-logo { height: 82px; }
 .atlas-project-identity small,
 .atlas-project-identity strong { display: block; }
-.atlas-project-identity small { margin-bottom: 5px; color: var(--atlas-copy); font-size: .72rem; font-weight: 700; }
+.atlas-project-identity small { margin-bottom: 2px; color: var(--atlas-ink); font-size: .74rem; font-weight: 800; }
+.atlas-project-location { margin: 0 0 8px; display: block; color: var(--atlas-copy); font-size: .68rem; font-style: normal; line-height: 1.35; }
 .atlas-project-identity strong { max-width: 650px; font-size: clamp(1.08rem, 1.6vw, 1.34rem); line-height: 1.3; }
 .atlas-project-date { color: var(--atlas-copy); font-size: .72rem; font-weight: 750; white-space: nowrap; }
 .atlas-project-expand { width: 44px; height: 44px; display: grid; place-items: center; color: var(--atlas-ink); background: color-mix(in srgb, var(--atlas-raised) 80%, transparent); border-radius: 50%; }
@@ -508,8 +509,8 @@
 .atlas-team-chapter.is-reversed .atlas-team-identity { grid-column: 2; }
 .atlas-team-chapter.is-reversed .atlas-team-people { grid-column: 1; grid-row: 1; }
 .atlas-team-identity > .atlas-logo { width: 190px; height: 104px; margin-bottom: 25px; }
-.atlas-team-identity > p { color: var(--atlas-copy); font-size: .73rem; font-weight: 700; }
-.atlas-team-identity h2 { margin: 4px 0 10px; font-size: clamp(1.75rem, 2.6vw, 2.4rem); font-weight: 650; letter-spacing: -.045em; line-height: 1.1; }
+.atlas-team-identity > p { margin: 0 0 10px; color: var(--atlas-copy); font-size: .73rem; font-weight: 700; }
+.atlas-team-identity h2 { margin: 0 0 4px; font-size: clamp(1.75rem, 2.6vw, 2.4rem); font-weight: 650; letter-spacing: -.045em; line-height: 1.1; }
 .atlas-team-identity > span { max-width: 34ch; display: block; color: var(--atlas-copy); font-size: .82rem; line-height: 1.5; }
 .atlas-team-identity > a { margin-top: 17px; }
 .atlas-team-people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }

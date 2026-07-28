@@ -69,10 +69,24 @@ test("generated content follows the featured-institution order and supplied-imag
   assert.ok(agenticTool.resources.every((resource) => !/slides/i.test(`${resource.name} ${resource.description}`)));
   assert.equal(data.convenings[0].images.length, 4);
   assert.ok(data.convenings[0].images.some((image) => image.src.endsWith("cohort-portrait.jpg")));
+  const investigatorRank = new Map([["Principal Investigator", 0], ["Co-Principal Investigator", 1]]);
+  for (const participant of data.participants) {
+    assert.deepEqual(
+      participant.people.map((person) => investigatorRank.get(person.role) ?? 2),
+      participant.people.map((person) => investigatorRank.get(person.role) ?? 2).toSorted((left, right) => left - right),
+      `${participant.displayName} should list principal investigators before co-principal investigators`,
+    );
+  }
+  for (const project of data.projects) {
+    assert.deepEqual(
+      project.people.map((person) => person.id),
+      data.participants.find((participant) => participant.id === project.participantId).people.map((person) => person.id),
+    );
+  }
   const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
   assert.deepEqual(
     northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
-    ["benjamin-jones", "dashun-wang", "jian-cao", "yian-yin"],
+    ["dashun-wang", "benjamin-jones", "jian-cao", "yian-yin"],
   );
   assert.equal(data.convenings[0].location, "Washington, D.C.");
 });
