@@ -91,6 +91,8 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/class="apto-tool-gallery story-tool-gallery"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-resource-path apto-resource-path-story"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
+  assert.doesNotMatch(html, /apto-resource-detail/);
   assert.match(html, /class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="20"/);
   assert.doesNotMatch(html, /class="story-hero-detail-anchor"/);
   const storySource = await readFile(new URL("../app/apto/story/story-site.tsx", import.meta.url), "utf8");
@@ -114,6 +116,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
+  assert.doesNotMatch(html, /atlas-tool-toggle|apto-resource-detail/);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
 });

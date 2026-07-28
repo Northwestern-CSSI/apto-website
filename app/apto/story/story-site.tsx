@@ -391,7 +391,6 @@ function ToolsStory() {
   );
 
   const toolCard = (tool: (typeof aptoTools)[number], index: number) => {
-    const participant = participantFor(tool.participantId);
     const media = presentationMediaForTool(tool);
     return <article className="story-tool" key={tool.id} data-story-reveal="media">
       <div data-story-parallax={(.01 + index % 3 * .004).toFixed(3)} className="story-tool-gallery-wrap">
@@ -399,20 +398,17 @@ function ToolsStory() {
       </div>
       <div className="story-tool-shade" aria-hidden="true" />
       <div className="story-tool-copy">
-        <header>
-          <p>{participant?.displayName} · {tool.statusLabel}</p>
-          <h3>{tool.name}</h3>
-        </header>
-        <p>{tool.description}</p>
-        <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
-        <ToolResourcePath resources={tool.resources} label={`${tool.name} supporting pieces`} variant="story" />
-        <div className="story-tool-footer">
-          <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
-          <span>
-            {tool.demoVideoUrl && <StoryExternalLink href={tool.demoVideoUrl}>{aptoInterface.tools.watchDemoLabel}</StoryExternalLink>}
-            {tool.toolUrl && <StoryExternalLink href={tool.toolUrl}>{aptoInterface.tools.openToolLabel}</StoryExternalLink>}
-          </span>
-        </div>
+        <ToolResourcePath
+          resources={tool.resources}
+          label={`${tool.name} supporting pieces`}
+          summary={{
+            title: tool.name,
+            description: tool.description,
+            url: tool.toolUrl,
+            linkLabel: aptoInterface.tools.openToolLabel,
+          }}
+          variant="story"
+        />
       </div>
     </article>;
   };

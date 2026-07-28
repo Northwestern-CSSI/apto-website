@@ -1,23 +1,29 @@
 .apto-resource-path {
+  width: 100%;
+  height: 100%;
   min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(16px, 2.2vw, 24px);
   color: #f8fbfd;
 }
 
 .apto-resource-route {
-  min-height: 154px;
-  margin: 0 0 12px;
+  width: 100%;
+  min-height: 198px;
+  margin: 0;
   padding: 0;
+  align-self: end;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(2, 70px);
+  grid-template-rows: repeat(2, 92px);
   align-items: start;
-  gap: 9px;
+  gap: 14px;
   list-style: none;
 }
 
-.apto-resource-route > li {
-  min-width: 0;
-}
+.apto-resource-route > li { min-width: 0; }
 
 .apto-resource-node {
   width: 100%;
@@ -25,40 +31,48 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 5px;
+  justify-items: center;
+  gap: 7px;
   color: inherit;
   background: transparent;
   border: 0;
   font: inherit;
   text-align: center;
   text-decoration: none;
-  opacity: .32;
-  filter: grayscale(.72) blur(.55px);
-  transform: translateY(0) scale(.97);
-  transition: opacity .2s ease, filter .25s ease, transform .25s ease;
+  opacity: .92;
+  filter: none;
+  transform: translateY(0) scale(1);
+  transition: opacity .24s ease, filter .28s ease, transform .28s ease;
 }
 
 .apto-resource-node.is-available { cursor: pointer; }
 .apto-resource-node.is-coming-soon { cursor: not-allowed; }
+.apto-resource-path.has-active-resource .apto-resource-node:not(.is-active) {
+  opacity: .24;
+  filter: grayscale(.75) blur(1.2px);
+  transform: scale(.95);
+}
 .apto-resource-node.is-active {
+  z-index: 2;
   opacity: 1;
   filter: none;
-  transform: translateY(-3px) scale(1);
+  transform: translateY(-4px) scale(1.035);
 }
 
 .apto-resource-node:focus-visible {
   outline: 3px solid #54c6db;
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 .apto-resource-thumb {
-  width: 100%;
-  height: 48px;
+  width: min(100%, 76px);
+  aspect-ratio: 1;
   display: block;
   overflow: hidden;
-  background: rgb(255 255 255 / 10%);
-  border: 1px solid rgb(255 255 255 / 30%);
-  box-shadow: 0 8px 22px rgb(0 12 26 / 18%);
+  background: rgb(5 25 43 / 64%);
+  border: 1px solid rgb(255 255 255 / 58%);
+  border-radius: 5px;
+  box-shadow: 0 9px 25px rgb(0 10 24 / 30%);
 }
 
 .apto-resource-thumb img {
@@ -66,84 +80,89 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform .4s ease;
+  transition: transform .55s cubic-bezier(.2,.7,.2,1);
 }
 
-.apto-resource-node.is-active .apto-resource-thumb img { transform: scale(1.06); }
+.apto-resource-node.is-active .apto-resource-thumb img { transform: scale(1.1); }
 .apto-resource-node strong {
   min-width: 0;
+  max-width: 12ch;
   display: -webkit-box;
   overflow: hidden;
   color: inherit;
-  font-size: .64rem;
-  font-weight: 780;
-  line-height: 1.2;
+  font-size: .67rem;
+  font-weight: 820;
+  line-height: 1.16;
+  text-shadow: 0 2px 9px rgb(0 7 19 / 92%);
   text-wrap: balance;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
-.apto-resource-detail {
-  height: 148px;
-  min-height: 138px;
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(120px, .85fr);
+.apto-resource-summary {
+  position: relative;
+  min-height: 166px;
+  padding: clamp(18px, 2.4vw, 25px);
   overflow: hidden;
   color: #f8fbfd;
-  background: rgb(4 22 38 / 62%);
-  border: 1px solid rgb(255 255 255 / 18%);
-  -webkit-backdrop-filter: blur(9px) saturate(118%);
-  backdrop-filter: blur(9px) saturate(118%);
-  box-shadow: 0 12px 34px rgb(0 12 26 / 16%);
+  background: linear-gradient(135deg, rgb(3 21 38 / 74%), rgb(3 15 29 / 90%));
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 7px;
+  -webkit-backdrop-filter: blur(5px) saturate(118%);
+  backdrop-filter: blur(5px) saturate(118%);
+  box-shadow: 0 14px 38px rgb(0 10 24 / 20%);
 }
 
-.apto-resource-detail > div { min-width: 0; min-height: 0; padding: 14px 16px; overflow: hidden; }
-.apto-resource-detail p {
-  margin: 0 0 5px;
-  color: #7ed8e8;
-  font-size: .56rem;
+.apto-resource-summary > p {
+  margin: 0 0 7px;
+  color: #83deed;
+  font-size: .59rem;
   font-weight: 850;
-  letter-spacing: .07em;
+  letter-spacing: .075em;
   text-transform: uppercase;
 }
-.apto-resource-detail h5 {
+.apto-resource-summary h2,
+.apto-resource-summary h3 {
   margin: 0;
   color: inherit;
-  font-size: .88rem;
-  line-height: 1.2;
+  font-size: clamp(1.18rem, 2vw, 1.65rem);
+  font-weight: 690;
+  letter-spacing: -.025em;
+  line-height: 1.12;
   text-wrap: balance;
 }
-.apto-resource-detail > div > span {
-  margin-top: 7px;
+.apto-resource-summary > span {
+  max-width: 72ch;
+  margin-top: 9px;
   display: -webkit-box;
   overflow: hidden;
-  color: rgb(244 250 253 / 78%);
-  font-size: .64rem;
-  line-height: 1.45;
+  color: rgb(244 250 253 / 80%);
+  font-size: .74rem;
+  line-height: 1.48;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
-.apto-resource-detail a {
+.apto-resource-summary > a {
   min-height: 34px;
-  margin-top: 5px;
+  margin-top: 7px;
   display: inline-flex;
   align-items: center;
   color: #9ce5f0;
-  font-size: .62rem;
+  font-size: .65rem;
   font-weight: 850;
 }
-.apto-resource-detail figure { min-width: 0; min-height: 0; height: 100%; margin: 0; overflow: hidden; }
-.apto-resource-detail figure img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
 @media (max-width: 520px) {
+  .apto-resource-path { gap: 14px; }
   .apto-resource-route {
     min-height: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
+    gap: 14px 10px;
   }
   .apto-resource-route > li { grid-column: auto !important; grid-row: auto !important; }
-  .apto-resource-detail { height: auto; grid-template-columns: 1fr; }
-  .apto-resource-detail figure { min-height: 118px; height: 118px; }
+  .apto-resource-thumb { width: min(100%, 68px); }
+  .apto-resource-summary { min-height: 180px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -152,7 +171,7 @@
 }
 
 @media (forced-colors: active) {
-  .apto-resource-node { color: CanvasText; opacity: 1; filter: none; }
+  .apto-resource-node { color: CanvasText; opacity: 1 !important; filter: none !important; }
   .apto-resource-node.is-active { outline: 3px solid Highlight; }
-  .apto-resource-detail { color: CanvasText; background: Canvas; border: 2px solid CanvasText; backdrop-filter: none; }
+  .apto-resource-summary { color: CanvasText; background: Canvas; border: 2px solid CanvasText; backdrop-filter: none; }
 }

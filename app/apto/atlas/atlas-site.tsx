@@ -6,9 +6,7 @@
 import ArrowUpRight from "lucide-react/dist/esm/icons/arrow-up-right.mjs";
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down.mjs";
 import Moon from "lucide-react/dist/esm/icons/moon.mjs";
-import Plus from "lucide-react/dist/esm/icons/plus.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
-import X from "lucide-react/dist/esm/icons/x.mjs";
 import { useState, type CSSProperties, type ReactNode } from "react";
 
 import {
@@ -258,54 +256,33 @@ function ProjectsPage() {
   </main>;
 }
 
-function ToolPoster({ tool, expanded, onToggle }: {
+function ToolPoster({ tool }: {
   tool: (typeof aptoTools)[number];
-  expanded: boolean;
-  onToggle: () => void;
 }) {
   const participant = participantFor(tool.participantId);
-  const detailId = `atlas-tool-details-${tool.id}`;
   const media = presentationMediaForTool(tool);
 
   if (!participant) return null;
 
   return <article
-    className={`atlas-tool-card${expanded ? " is-expanded" : ""}`}
+    className="atlas-tool-card"
     data-gallery-count={media.length}
     style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
   >
     <ToolKenBurnsGallery galleryId={`atlas-${tool.id}`} images={media} className="atlas-tool-media" />
     <div className="atlas-tool-shade" aria-hidden="true" />
     <div className="atlas-tool-panel">
-      <div className="atlas-tool-copy">
-        <div className="atlas-tool-summary">
-          <p>{participant.displayName} <span>{tool.statusLabel}</span></p>
-          <h2>{tool.name}</h2>
-          <p className="atlas-tool-description">{tool.description}</p>
-        </div>
-        <div className="atlas-tool-details" id={detailId}>
-          <dl><dt>{aptoInterface.tools.useCaseLabel}</dt><dd>{tool.useCase}</dd></dl>
-          <ul aria-label={aptoInterface.tools.categoriesLabel}>{tool.categories.map((category) => <li key={category}>{category}</li>)}</ul>
-          <ToolResourcePath resources={tool.resources} label={`${tool.name} supporting pieces`} variant="atlas" />
-          {(tool.demoVideoUrl || tool.toolUrl) && <nav aria-label={`${tool.name} links`}>
-            {tool.demoVideoUrl && <ExternalLink href={tool.demoVideoUrl}>{aptoInterface.tools.watchDemoLabel}</ExternalLink>}
-            {tool.toolUrl && <ExternalLink href={tool.toolUrl}>{aptoInterface.tools.openToolLabel}</ExternalLink>}
-          </nav>}
-        </div>
-      </div>
-      <div className="atlas-tool-panel-footer">
-        <button
-          className="atlas-tool-toggle"
-          type="button"
-          aria-expanded={expanded}
-          aria-controls={detailId}
-          aria-label={`${expanded ? aptoInterface.atlas.closeDetailsLabel : aptoInterface.atlas.toolDetailsLabel}: ${tool.name}`}
-          onClick={onToggle}
-        >
-          {expanded ? <X aria-hidden="true" focusable="false" /> : <Plus aria-hidden="true" focusable="false" />}
-          <span>{expanded ? aptoInterface.atlas.closeDetailsLabel : aptoInterface.atlas.toolDetailsLabel}</span>
-        </button>
-      </div>
+      <ToolResourcePath
+        resources={tool.resources}
+        label={`${tool.name} supporting pieces`}
+        summary={{
+          title: tool.name,
+          description: tool.description,
+          url: tool.toolUrl,
+          linkLabel: aptoInterface.tools.openToolLabel,
+        }}
+        variant="atlas"
+      />
     </div>
   </article>;
 }
@@ -313,7 +290,6 @@ function ToolPoster({ tool, expanded, onToggle }: {
 function ToolsPage() {
   const [organization, setOrganization] = useState("all");
   const [category, setCategory] = useState("all");
-  const [expandedTool, setExpandedTool] = useState<string | null>(null);
   const filteredTools = aptoTools.filter((tool) => (
     (organization === "all" || tool.participantId === organization)
     && (category === "all" || tool.categories.includes(category as "Capability" | "Production" | "Use"))
@@ -330,7 +306,7 @@ function ToolsPage() {
             <select
               aria-label={aptoInterface.tools.organizationFilterAriaLabel}
               value={organization}
-              onChange={(event) => { setOrganization(event.target.value); setExpandedTool(null); }}
+              onChange={(event) => setOrganization(event.target.value)}
             >
               <option value="all">{aptoInterface.tools.allOrganizationsLabel}</option>
               {aptoParticipants.map((participant) => <option key={participant.id} value={participant.id}>{participant.displayName}</option>)}
@@ -341,7 +317,7 @@ function ToolsPage() {
             <select
               aria-label={aptoInterface.tools.categoryFilterAriaLabel}
               value={category}
-              onChange={(event) => { setCategory(event.target.value); setExpandedTool(null); }}
+              onChange={(event) => setCategory(event.target.value)}
             >
               <option value="all">{aptoInterface.tools.allCategoriesLabel}</option>
               {aptoOutcomes.map((outcome) => <option key={outcome} value={outcome}>{outcome}</option>)}
@@ -350,12 +326,7 @@ function ToolsPage() {
         </fieldset>
       </header>
       {filteredTools.length > 0
-        ? <div className="atlas-tool-grid">{filteredTools.map((tool) => <ToolPoster
-            key={tool.id}
-            tool={tool}
-            expanded={expandedTool === tool.id}
-            onToggle={() => setExpandedTool((current) => current === tool.id ? null : tool.id)}
-          />)}</div>
+        ? <div className="atlas-tool-grid">{filteredTools.map((tool) => <ToolPoster key={tool.id} tool={tool} />)}</div>
         : <div className="atlas-tool-empty"><h2>{aptoInterface.tools.emptyTitle}</h2><p>{aptoInterface.tools.emptyDescription}</p></div>}
     </section>
   </main>;
