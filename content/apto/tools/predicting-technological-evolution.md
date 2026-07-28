@@ -91,7 +91,11 @@
 
 ## Description
 
-Forecasting technological evolution requires combining technical performance, research activity, and evidence of how discoveries move into use. This layered system integrates mechanistic and transformer-based capability models with licensability and commercialization models trained on governed TechBridge data. It compares technical pathways, predicts future performance from scientific text and historical results, and connects research investments to downstream patents, licenses, startups, and other outcomes.
+Forecasting technological evolution requires combining technical performance, research activity, and evidence of how discoveries move into use. Our team is developing a layered system that integrates mechanistic and transformer-based capability models with licensability and commercialization models trained on confidential TechBridge data.
+
+The capability models identify competing technical pathways and predict future performance from scientific text, design features, and historical results. In perovskite solar cells and superconducting qubits, they predict measures such as efficiency, coherence time, and gate fidelity, compare design trajectories, and help identify promising configurations for new devices. TechBridge models use disclosures, patents, licenses, and startups to estimate commercialization potential and connect it to the underlying ideas, grants, researchers, and institutions.
+
+Funding the Frontier brings these layers into a decision-support environment, connecting approximately 7 million grants to downstream outcomes, including 160 million patents through 1.8 billion citation links. Users can trace investments forward to their impacts or inventions backward to their scientific foundations, helping identify commercialization opportunities, anticipate emerging capabilities, and inform research and funding decisions.
 
 ## Use case
 

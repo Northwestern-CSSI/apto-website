@@ -61,7 +61,9 @@
 
 ## Description
 
-Much of the evidence needed to measure technology outcomes remains buried in publications, patents, and other technical documents. Specialized AI agents define a technology domain, identify relevant literature, and extract quantitative performance measures and technical design choices. The agents review results for inconsistencies or unsupported claims while domain experts validate records and resolve uncertain cases. The framework has been applied to perovskite solar cells and is being extended to superconducting qubits, manufacturing, and other technology areas.
+Much of the evidence needed to measure technology outcomes remains buried in publications, patents, and other technical documents. To make this information usable at scale, specialized AI agents define a technology domain, identify the relevant literature, and extract quantitative performance measures and technical design choices. The agents also review results for inconsistencies or unsupported claims, while domain experts validate the records and resolve uncertain cases.
+
+The framework has been applied to perovskite solar cells and is being extended to superconducting qubits, manufacturing, and other technology areas. Its purpose is to make detailed outcome-data collection faster, more consistent, and easier to scale.
 
 ## Use case
 

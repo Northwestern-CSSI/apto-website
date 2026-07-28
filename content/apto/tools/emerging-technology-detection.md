@@ -61,7 +61,7 @@
 
 ## Description
 
-The Emerging Technology Detection capability is designed to spot a technology while it is still forming, before it has a stable name or market. New technologies often first appear as unusual combinations of older ideas described with inconsistent language. Sparse autoencoders decompose papers into concepts and track how those concepts spread. Signals have been checked against market and performance records in artificial intelligence and perovskite solar cells, including technologies that stalled rather than only those that succeeded.
+Our team built the Emerging Technology Detection Tool to spot a technology early, while it is still forming and before it has a name or a market. New technologies leave traces in scientific papers first, usually as unusual mixes of older ideas under inconsistent terms. The tool finds those traces with sparse autoencoders, an AI method that breaks papers down into the ideas inside them and tracks how those ideas spread. We checked its signals against real market and performance records in two fields, artificial intelligence and perovskite solar cells. We also included technologies that stalled, not only ones that succeeded. Earlier detection gives agencies and policymakers more time to direct research money well and to keep pace with competitors abroad.
 
 ## Use case
 

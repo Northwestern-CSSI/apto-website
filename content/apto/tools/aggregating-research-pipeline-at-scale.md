@@ -91,7 +91,11 @@
 
 ## Description
 
-Understanding how research becomes technology requires a connected evidence system that can follow the journey from investment to outcomes. This capability brings together grants, publications, patents, institutional records, technical performance data, organizations, companies, and evidence of real-world use. Public and governed institutional data are standardized and linked across people, ideas, funding, institutions, and time, creating a shared foundation for understanding how research contributes to technology capability, production, commercialization, and adoption.
+Understanding how research becomes technology requires a connected evidence system that can follow the journey from investment to outcomes. We develop a system that brings together information typically fragmented across grants, publications, patents, institutional records, technical performance datasets, organizations, companies, and evidence of real-world use.
+
+The process begins by gathering and standardizing public and governed institutional data through resources such as SciSciNet v2, TechBridge, and specialized technology and manufacturing datasets. These records are then linked across people, ideas, funding, institutions, and time, creating a shared foundation for understanding how research contributes to advances in technology capability, production, commercialization, and adoption.
+
+Analytical tools turn this foundation into something people can use. SciSciGPT helps users query and analyze complex evidence; Funding the Frontier connects research investments with their broader outcomes; and Innovation Insights helps identify promising people, ideas, and translation opportunities. Together, these resources move from fragmented records to connected evidence, and ultimately to more informed research, funding, and technology decisions.
 
 ## Use case
 
