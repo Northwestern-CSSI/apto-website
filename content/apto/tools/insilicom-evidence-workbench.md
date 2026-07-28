@@ -4,6 +4,10 @@
   "id": "insilicom-evidence-workbench",
   "participantId": "insilicom",
   "name": "Evidence Extraction Workbench",
+  "summaryParagraphs": [
+    "Turn publications, patents, reports, and other technical text into structured evidence. The workspace combines AI-assisted extraction with human review so entities and relationships can be checked before entering a domain knowledge graph.",
+    "Build a reusable evidence base for a new technology area, review extracted claims with subject-matter experts, and track each structured record back to its source."
+  ],
   "categories": [
     "Capability"
   ],

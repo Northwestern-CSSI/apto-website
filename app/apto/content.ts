@@ -57,6 +57,7 @@ export type AptoTool = {
   id: string;
   participantId: AptoParticipantId;
   name: string;
+  summaryParagraphs: [string, string];
   categories: AptoOutcome[];
   description: string;
   useCase: string;

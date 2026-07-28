@@ -15,7 +15,9 @@ or counter needs to be updated.
    `../assets/tools/photography/`: one `figure` plus three `galleryImages`.
 5. Add one or more supporting pieces under `resources`. A coming-soon piece
    must use `"status": "coming-soon"` and `"url": null`.
-6. Complete the description and use case.
+6. Add exactly two concise `summaryParagraphs` for the cards, then complete the
+   full description and use case. The card summaries do not replace the full
+   Markdown body.
 7. Run `npm run verify` from the repository root.
 
 ## Complete template
@@ -28,6 +30,10 @@ or counter needs to be updated.
   "participantId": "northwestern",
   "name": "Example Technology Explorer",
   "displayOrder": 1,
+  "summaryParagraphs": [
+    "Summarize the tool’s evidence, method, and scope directly.",
+    "Summarize its intended questions, comparisons, or decisions."
+  ],
   "categories": ["Capability", "Use"],
   "figure": {
     "kind": "knowledge-map",
@@ -89,6 +95,7 @@ The H1 must exactly match `name`. The body must contain exactly
 | `id` | Unique lowercase kebab-case identifier |
 | `participantId` | Must match an organization ID |
 | `displayOrder` | Optional positive integer that orders one organization’s tools; tools without it remain alphabetical |
+| `summaryParagraphs` | Exactly two concise paragraphs shown in the fixed-height card summary region; retain complete detail in the Markdown body |
 | `categories` | One or more unique values: `Capability`, `Production`, `Use` |
 | `figure.kind` | Selects a semantic figure class; see allowed values below |
 | `figure.src` | `/apto/…` path matching an image under `content/apto/assets/` |
@@ -97,7 +104,7 @@ The H1 must exactly match `name`. The body must contain exactly
 | `galleryImages` | Exactly three `{ "src", "alt" }` entries; the standard tool figure provides the fourth cycling frame |
 | `galleryImages[].src` | `/apto/tools/photography/…` path matching an image under `content/apto/assets/tools/photography/` |
 | `galleryImages[].alt` | Meaningful alternative text for that image; entries must not repeat one another |
-| `resources` | One or more small supporting outputs displayed beneath the tool description |
+| `resources` | One or more small supporting outputs displayed directly above the tool summary |
 | `resources[].status` | `available` or `coming-soon`; coming-soon entries must not have a URL |
 | `statusLabel` | Short public status such as `Research preview` |
 | `demoVideoUrl` | Full HTTPS URL or `null` |

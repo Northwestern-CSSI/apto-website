@@ -750,7 +750,7 @@
   z-index: 2;
   inset: 0;
   min-height: 0;
-  padding: clamp(24px,3vw,36px);
+  padding: clamp(24px,3vw,36px) clamp(24px,3vw,36px) 0;
 }
 
 .story-cohort {
@@ -1101,9 +1101,9 @@
 }
 
 .story-project-chapter {
-  min-height: 470px;
+  min-height: 410px;
   height: 100%;
-  padding: clamp(28px, 3.2vw, 46px);
+  padding: clamp(24px, 2.7vw, 38px);
   justify-content: flex-start;
 }
 
@@ -1111,12 +1111,12 @@
 .story-project-chapter:nth-child(n + 3) { grid-column: span 2; }
 
 .story-project-chapter > header {
-  min-height: 150px;
+  min-height: 132px;
   align-content: start;
 }
 
 .story-project-chapter > p {
-  margin-top: 20px;
+  margin-top: 12px;
 }
 
 .story-tool-matrix {
@@ -1136,6 +1136,8 @@
 .story-tool-pair .story-tool {
   height: 100%;
 }
+
+.story-tool-placeholder { min-height: 1px; }
 
 .story-tool-grid-compact {
   width: min(calc(100% - 48px), var(--story-max));
@@ -1226,6 +1228,7 @@
 @media (max-width: 920px) {
   .story-project-chapter:nth-child(n) { grid-column: span 6; }
   .story-tool-pair { grid-template-columns: 1fr; }
+  .story-tool-placeholder { display: none; }
   .story-tool-grid-compact { grid-template-columns: 1fr; }
 }
 
@@ -1269,7 +1272,7 @@
    complete card width in both the two- and three-column portfolio rows. */
 .story-project-chapter > header {
   min-height: 0;
-  margin-bottom: clamp(24px, 3vw, 34px);
+  margin-bottom: clamp(16px, 2vw, 24px);
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 18px;

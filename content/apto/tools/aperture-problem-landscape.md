@@ -4,6 +4,10 @@
   "id": "aperture-problem-landscape",
   "participantId": "aperture",
   "name": "Problem Landscape Explorer",
+  "summaryParagraphs": [
+    "Navigate a landscape of technical problems, candidate solutions, organizations, and supporting evidence. Related needs and approaches are grouped so gaps, crowded areas, and unexpected connections are easier to see.",
+    "Frame an unfamiliar problem domain, find adjacent technologies, and identify organizations already working on relevant parts of the challenge."
+  ],
   "categories": [
     "Capability",
     "Use"

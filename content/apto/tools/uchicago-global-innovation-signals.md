@@ -3,66 +3,43 @@
   "kind": "tool",
   "id": "uchicago-global-innovation-signals",
   "participantId": "uchicago",
-  "name": "Global Innovation Signal Explorer",
-  "categories": [
-    "Capability",
-    "Production",
-    "Use"
+  "name": "AI Skills",
+  "displayOrder": 2,
+  "summaryParagraphs": [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
+    "Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod."
   ],
+  "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "signal-matrix",
     "src": "/apto/tools/photography/emerging-01.jpg",
-    "label": "Global innovation signal explorer",
-    "alt": "Global Innovation Signal Explorer conceptual view 1, using supplied research imagery"
+    "label": "AI skills",
+    "alt": "Conceptual view of artificial-intelligence skills"
   },
   "galleryImages": [
-    {
-      "src": "/apto/tools/photography/emerging-02.jpg",
-      "alt": "Global Innovation Signal Explorer conceptual view 2, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/emerging-03.jpg",
-      "alt": "Global Innovation Signal Explorer conceptual view 3, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/emerging-04.jpg",
-      "alt": "Global Innovation Signal Explorer conceptual view 4, using supplied research imagery"
-    }
+    {"src": "/apto/tools/photography/emerging-02.jpg", "alt": "Conceptual AI skills view across fields"},
+    {"src": "/apto/tools/photography/emerging-03.jpg", "alt": "Conceptual AI skills view across organizations"},
+    {"src": "/apto/tools/photography/emerging-04.jpg", "alt": "Conceptual AI skills view across time"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/photography/emerging-01.jpg",
-        "alt": "Supplied research photograph illustrating emerging innovation signals across regions"
-      }
-    },
-    {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/resources/emerging-landscape.png",
-        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
-      }
-    }
+    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-01.jpg", "alt": "Placeholder visual for AI Skills Piece A"}},
+    {"name": "Piece B", "description": "Nullam id dolor id nibh ultricies vehicula ut id elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/emerging-landscape.png", "alt": "Placeholder visual for AI Skills Piece B"}},
+    {"name": "Piece C", "description": "Donec sed odio dui. Morbi leo risus, porta ac consectetur ac.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-02.jpg", "alt": "Placeholder visual for AI Skills Piece C"}}
   ]
 }
 ---
 
-# Global Innovation Signal Explorer
+# AI Skills
 
 ## Description
 
-Compare early signals from research, patents, funding, organizations, and markets across regions and technology areas. The explorer helps reveal where activity is converging, fragmenting, or moving in an unexpected direction.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+
+Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod.
 
 ## Use case
 
-Use the explorer to identify emerging innovation clusters, compare their supporting evidence, and examine which signals are most closely associated with later technology outcomes.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.

@@ -4,6 +4,10 @@
   "id": "macrocosm-energy-digital-twin",
   "participantId": "macrocosm",
   "name": "Energy System Digital Twin",
+  "summaryParagraphs": [
+    "Inspect a spatially explicit representation of energy firms, physical assets, local markets, and investment relationships. The model links firm decisions with technology improvement, infrastructure, employment, and materials demand.",
+    "Understand how a change at one firm or facility may propagate through regional markets and the broader U.S. energy system."
+  ],
   "categories": [
     "Production",
     "Use"

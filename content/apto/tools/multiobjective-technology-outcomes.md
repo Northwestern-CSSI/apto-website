@@ -5,6 +5,10 @@
   "participantId": "northwestern",
   "name": "Multi-Objective Technology Outcomes Tool",
   "displayOrder": 3,
+  "summaryParagraphs": [
+    "The tool studies interacting outcomes across perovskite cells, superconducting qubits and materials, AI, processors, manufacturing, and other domains, revealing where one dimension reinforces or constrains another.",
+    "Millions of solutions show punctuated progress from breakthroughs and refinements; integrated capability, production, and use measures compare trajectories, tradeoffs, complementarities, near-term predictability, and longer-term uncertainty."
+  ],
   "categories": [
     "Capability",
     "Production",

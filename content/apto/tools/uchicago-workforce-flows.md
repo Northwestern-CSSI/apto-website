@@ -3,65 +3,43 @@
   "kind": "tool",
   "id": "uchicago-workforce-flows",
   "participantId": "uchicago",
-  "name": "Science & Technology Workforce Flows",
-  "categories": [
-    "Capability",
-    "Production"
+  "name": "Dashboards",
+  "displayOrder": 5,
+  "summaryParagraphs": [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.",
+    "Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes."
   ],
+  "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "global-map",
     "src": "/apto/tools/photography/agentic-01.jpg",
-    "label": "Science and technology workforce flows",
-    "alt": "Science & Technology Workforce Flows conceptual view 1, using supplied research imagery"
+    "label": "Dashboards",
+    "alt": "Conceptual view of science and technology dashboards"
   },
   "galleryImages": [
-    {
-      "src": "/apto/tools/photography/agentic-02.jpg",
-      "alt": "Science & Technology Workforce Flows conceptual view 2, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/agentic-03.jpg",
-      "alt": "Science & Technology Workforce Flows conceptual view 3, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/agentic-04.jpg",
-      "alt": "Science & Technology Workforce Flows conceptual view 4, using supplied research imagery"
-    }
+    {"src": "/apto/tools/photography/agentic-02.jpg", "alt": "Conceptual dashboard metrics view"},
+    {"src": "/apto/tools/photography/agentic-03.jpg", "alt": "Conceptual dashboard comparison view"},
+    {"src": "/apto/tools/photography/agentic-04.jpg", "alt": "Conceptual dashboard evidence view"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/photography/agentic-01.jpg",
-        "alt": "Supplied research photograph illustrating the movement of scientific talent and expertise"
-      }
-    },
-    {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/resources/agentic-roles.png",
-        "alt": "Diagram of specialized AI agents coordinating evidence discovery, extraction, and review"
-      }
-    }
+    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-01.jpg", "alt": "Placeholder visual for Dashboards Piece A"}},
+    {"name": "Piece B", "description": "Aenean lacinia bibendum nulla sed consectetur.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/agentic-roles.png", "alt": "Placeholder visual for Dashboards Piece B"}},
+    {"name": "Piece C", "description": "Etiam porta sem malesuada magna mollis euismod.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-02.jpg", "alt": "Placeholder visual for Dashboards Piece C"}}
   ]
 }
 ---
 
-# Science & Technology Workforce Flows
+# Dashboards
 
 ## Description
 
-Trace how researchers, specialized skills, and collaboration networks move among institutions, regions, and technology areas. The interface connects workforce changes with the evolution of scientific and technical capability.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+
+Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes.
 
 ## Use case
 
-Use the flow view to compare regions, identify emerging concentrations of expertise, and study how movement of people and knowledge may precede shifts in production and performance.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.

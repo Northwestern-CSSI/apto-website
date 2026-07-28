@@ -878,6 +878,7 @@ function validateTool(document) {
     "id",
     "participantId",
     "name",
+    "summaryParagraphs",
     "categories",
     "figure",
     "galleryImages",
@@ -897,6 +898,9 @@ function validateTool(document) {
   assertRecordIdMatchesFilename(file, id, context);
   const participantId = requireString(metadata, "participantId", context);
   const name = requireString(metadata, "name", context);
+  const summaryParagraphs = requireArray(metadata, "summaryParagraphs", context);
+  assert(summaryParagraphs.length === 2, `${context}.summaryParagraphs must contain exactly two paragraphs`);
+  summaryParagraphs.forEach((paragraph, index) => requireStringValue(paragraph, `${context}.summaryParagraphs[${index}]`));
   const displayOrder = metadata.displayOrder ?? null;
   assert(
     displayOrder === null || (Number.isInteger(displayOrder) && displayOrder > 0),

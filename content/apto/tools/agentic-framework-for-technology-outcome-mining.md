@@ -5,6 +5,10 @@
   "participantId": "northwestern",
   "name": "Agentic Framework For Technology Outcomes Tool",
   "displayOrder": 2,
+  "summaryParagraphs": [
+    "Specialized AI agents define domains, find literature, extract quantitative performance and design choices from publications, patents, and technical documents, and flag inconsistencies or unsupported claims.",
+    "Domain experts validate records for perovskite solar cells, superconducting qubits, manufacturing, and other areas, making technology-outcome data collection faster, more consistent, and scalable."
+  ],
   "categories": [
     "Capability",
     "Production",

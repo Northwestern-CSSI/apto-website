@@ -4,28 +4,31 @@
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: 60% 40%;
   gap: 0;
   color: #f8fbfd;
 }
 
 .apto-resource-route {
+  --resource-gap: clamp(10px, 1.35vw, 16px);
   width: 100%;
   height: 100%;
   min-height: 0;
   margin: 0;
   padding: 10px 0 16px;
   align-self: stretch;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: max-content minmax(24px, 1fr) max-content;
-  align-items: start;
-  column-gap: clamp(12px, 2vw, 22px);
-  row-gap: 0;
+  display: flex;
+  flex-flow: row wrap-reverse;
+  align-content: flex-start;
+  align-items: flex-start;
+  gap: var(--resource-gap);
   list-style: none;
 }
 
-.apto-resource-route > li { min-width: 0; }
+.apto-resource-route > li {
+  min-width: 0;
+  flex: 0 1 calc((100% - (3 * var(--resource-gap))) / 4);
+}
 
 .apto-resource-node {
   width: 100%;
@@ -104,12 +107,14 @@
 .apto-resource-summary {
   position: relative;
   z-index: 1;
-  min-height: 164px;
-  margin: 0 calc(-1 * var(--resource-panel-edge, 0px)) calc(-1 * var(--resource-panel-edge, 0px));
+  min-height: 0;
+  height: 100%;
+  margin: 0 calc(-1 * var(--resource-panel-edge, 0px));
   padding: 16px var(--resource-panel-edge, 20px) 15px;
   color: #f8fbfd;
   background: linear-gradient(180deg, rgb(3 17 31 / 58%), rgb(3 17 31 / 86%) 30%, rgb(2 14 27 / 97%) 100%);
   border-top: 1px solid rgb(255 255 255 / 14%);
+  overflow: hidden;
   -webkit-backdrop-filter: blur(4px) saturate(112%);
   backdrop-filter: blur(4px) saturate(112%);
 }
@@ -141,7 +146,7 @@
 .apto-resource-summary h3 {
   margin: 0;
   color: inherit;
-  font-size: clamp(1.2rem, 1.65vw, 1.46rem);
+  font-size: clamp(1.08rem, 1.45vw, 1.3rem);
   font-weight: 690;
   letter-spacing: -.04em;
   line-height: 1.08;
@@ -152,9 +157,10 @@
   margin-top: 7px;
   display: block;
   color: rgb(244 250 253 / 80%);
-  font-size: .75rem;
-  line-height: 1.5;
+  font-size: .66rem;
+  line-height: 1.36;
 }
+.apto-resource-summary > span + span { margin-top: 5px; }
 .apto-resource-summary > a {
   min-height: 34px;
   margin-top: 5px;
@@ -170,13 +176,10 @@
     min-height: 0;
     height: auto;
     padding-top: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: none;
-    gap: 14px 10px;
+    --resource-gap: 10px;
   }
-  .apto-resource-route > li { grid-column: auto !important; grid-row: auto !important; }
+  .apto-resource-route > li { flex-basis: calc((100% - var(--resource-gap)) / 2); }
   .apto-resource-thumb { width: min(100%, 68px); }
-  .apto-resource-summary { min-height: 174px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -4,6 +4,10 @@
   "id": "aperture-leverage-point-finder",
   "participantId": "aperture",
   "name": "Leverage Point Finder",
+  "summaryParagraphs": [
+    "Compare technical needs, organizational activity, investment signals, and available evidence in a single ranked view. The matrix helps surface places where a focused intervention may unlock disproportionate progress.",
+    "Shortlist research questions, potential collaborators, or investment targets, then inspect the evidence behind each score before deciding where to investigate further."
+  ],
   "categories": [
     "Production",
     "Use"

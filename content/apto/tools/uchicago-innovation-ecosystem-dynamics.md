@@ -3,65 +3,43 @@
   "kind": "tool",
   "id": "uchicago-innovation-ecosystem-dynamics",
   "participantId": "uchicago",
-  "name": "Innovation Ecosystem Dynamics",
-  "categories": [
-    "Production",
-    "Use"
+  "name": "AI Benchmarks",
+  "displayOrder": 3,
+  "summaryParagraphs": [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis.",
+    "Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."
   ],
+  "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
     "src": "/apto/tools/photography/multiobjective-01.jpg",
-    "label": "Innovation ecosystem dynamics",
-    "alt": "Innovation Ecosystem Dynamics conceptual view 1, using supplied research imagery"
+    "label": "AI benchmarks",
+    "alt": "Conceptual view of artificial-intelligence benchmarks"
   },
   "galleryImages": [
-    {
-      "src": "/apto/tools/photography/multiobjective-02.jpg",
-      "alt": "Innovation Ecosystem Dynamics conceptual view 2, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/multiobjective-03.jpg",
-      "alt": "Innovation Ecosystem Dynamics conceptual view 3, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/multiobjective-04.jpg",
-      "alt": "Innovation Ecosystem Dynamics conceptual view 4, using supplied research imagery"
-    }
+    {"src": "/apto/tools/photography/multiobjective-02.jpg", "alt": "Conceptual AI benchmark comparison"},
+    {"src": "/apto/tools/photography/multiobjective-03.jpg", "alt": "Conceptual AI benchmark trajectory"},
+    {"src": "/apto/tools/photography/multiobjective-04.jpg", "alt": "Conceptual AI benchmark evidence view"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/photography/multiobjective-01.jpg",
-        "alt": "Supplied research photograph illustrating interactions within an innovation ecosystem"
-      }
-    },
-    {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/resources/multiobjective-trajectories.png",
-        "alt": "Technology trajectories compared across multiple performance dimensions"
-      }
-    }
+    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-01.jpg", "alt": "Placeholder visual for AI Benchmarks Piece A"}},
+    {"name": "Piece B", "description": "Vestibulum id ligula porta felis euismod semper.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/multiobjective-trajectories.png", "alt": "Placeholder visual for AI Benchmarks Piece B"}},
+    {"name": "Piece C", "description": "Maecenas sed diam eget risus varius blandit sit amet non magna.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-02.jpg", "alt": "Placeholder visual for AI Benchmarks Piece C"}}
   ]
 }
 ---
 
-# Innovation Ecosystem Dynamics
+# AI Benchmarks
 
 ## Description
 
-Explore how institutions, investment, workforce, supply relationships, and policy jointly shape the development of technology ecosystems. Scenario views make the interactions among production capacity and later adoption easier to compare.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis.
+
+Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
 
 ## Use case
 
-Use the model to test how a change in one part of an innovation system may alter production pathways, organizational behavior, and the conditions for broad technology use.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.

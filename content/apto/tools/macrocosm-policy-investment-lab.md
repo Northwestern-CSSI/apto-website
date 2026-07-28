@@ -4,6 +4,10 @@
   "id": "macrocosm-policy-investment-lab",
   "participantId": "macrocosm",
   "name": "Policy & Investment Scenario Lab",
+  "summaryParagraphs": [
+    "Compare how policy choices and private investment strategies could shape energy technologies, firms, employment, and material needs. Coordinated charts make differences among scenarios visible across time and geography.",
+    "Test assumptions, compare a baseline with alternative interventions, and identify which outcomes are most sensitive to policy or investment choices."
+  ],
   "categories": [
     "Production",
     "Use"

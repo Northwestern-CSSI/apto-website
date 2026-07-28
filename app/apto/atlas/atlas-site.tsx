@@ -279,7 +279,7 @@ function ToolPoster({ tool }: {
         label={`${tool.name} supporting pieces`}
         summary={{
           title: tool.name,
-          description: tool.description,
+          paragraphs: tool.summaryParagraphs,
           eyebrow: `Led by ${participant.displayName}`,
           url: tool.toolUrl,
           linkLabel: aptoInterface.tools.openToolLabel,

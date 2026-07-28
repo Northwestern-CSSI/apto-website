@@ -5,6 +5,10 @@
   "participantId": "northwestern",
   "name": "Predicting Technological Evolution Tool",
   "displayOrder": 4,
+  "summaryParagraphs": [
+    "Mechanistic and transformer capability models combine scientific text, designs, and historical results with confidential TechBridge disclosures, patents, licenses, and startup data to forecast performance and commercialization.",
+    "Models predict perovskite and qubit performance, while Funding the Frontier links 7 million grants to 160 million patents through 1.8 billion citations for tracing investments, inventions, people, institutions, and device configurations."
+  ],
   "categories": [
     "Capability",
     "Production",

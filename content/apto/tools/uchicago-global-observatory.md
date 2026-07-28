@@ -3,66 +3,43 @@
   "kind": "tool",
   "id": "uchicago-global-observatory",
   "participantId": "uchicago",
-  "name": "Global S&T Observatory",
-  "categories": [
-    "Capability",
-    "Production",
-    "Use"
+  "name": "Data",
+  "displayOrder": 1,
+  "summaryParagraphs": [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
+    "Maecenas faucibus mollis interdum. Donec ullamcorper nulla non metus auctor fringilla."
   ],
+  "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "global-map",
     "src": "/apto/tools/photography/aggregating-01.jpg",
-    "label": "Global science and technology observatory",
-    "alt": "Global S&T Observatory conceptual view 1, using supplied research imagery"
+    "label": "Data",
+    "alt": "Conceptual view of linked science and technology data"
   },
   "galleryImages": [
-    {
-      "src": "/apto/tools/photography/aggregating-02.jpg",
-      "alt": "Global S&T Observatory conceptual view 2, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/aggregating-03.jpg",
-      "alt": "Global S&T Observatory conceptual view 3, using supplied research imagery"
-    },
-    {
-      "src": "/apto/tools/photography/aggregating-04.jpg",
-      "alt": "Global S&T Observatory conceptual view 4, using supplied research imagery"
-    }
+    {"src": "/apto/tools/photography/aggregating-02.jpg", "alt": "Conceptual data view with linked records"},
+    {"src": "/apto/tools/photography/aggregating-03.jpg", "alt": "Conceptual data view across organizations"},
+    {"src": "/apto/tools/photography/aggregating-04.jpg", "alt": "Conceptual data view across research pipelines"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {
-      "name": "Project documentation",
-      "description": "Project documentation is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/photography/aggregating-01.jpg",
-        "alt": "Supplied research photograph illustrating globally connected science and technology evidence"
-      }
-    },
-    {
-      "name": "Data preview",
-      "description": "Data preview is one of the supporting outputs being prepared for this APTO capability.",
-      "status": "coming-soon",
-      "url": null,
-      "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
-      }
-    }
+    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/aggregating-01.jpg", "alt": "Placeholder visual for Data Piece A"}},
+    {"name": "Piece B", "description": "Praesent commodo cursus magna, vel scelerisque nisl consectetur.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/aggregating-architecture.png", "alt": "Placeholder visual for Data Piece B"}},
+    {"name": "Piece C", "description": "Aenean lacinia bibendum nulla sed consectetur.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/aggregating-02.jpg", "alt": "Placeholder visual for Data Piece C"}}
   ]
 }
 ---
 
-# Global S&T Observatory
+# Data
 
 ## Description
 
-Explore how research, patents, products, funding, workforce, and markets connect across the global science and technology system. The observatory combines geographic, organizational, and temporal views of activity.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+
+Maecenas faucibus mollis interdum. Donec ullamcorper nulla non metus auctor fringilla.
 
 ## Use case
 
-Use the observatory to compare regions, trace the movement of ideas and talent, and examine how scientific activity relates to later technology outcomes.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.

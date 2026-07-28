@@ -405,7 +405,7 @@ function ToolsStory() {
           label={`${tool.name} supporting pieces`}
           summary={{
             title: tool.name,
-            description: tool.description,
+            paragraphs: tool.summaryParagraphs,
             eyebrow: participant ? `Led by ${participant.displayName}` : undefined,
             url: tool.toolUrl,
             linkLabel: aptoInterface.tools.openToolLabel,
@@ -423,7 +423,9 @@ function ToolsStory() {
     </header>
     <div className="story-tool-matrix" aria-label="Northwestern University and University of Chicago tools">
       {pairedRows.map((row, rowIndex) => <div className="story-tool-pair" key={`tool-row-${rowIndex}`}>
-        {row.map((tool, columnIndex) => tool ? toolCard(tool, rowIndex * 2 + columnIndex) : null)}
+        {row.map((tool, columnIndex) => tool
+          ? toolCard(tool, rowIndex * 2 + columnIndex)
+          : <span className="story-tool-placeholder" aria-hidden="true" key={`empty-${rowIndex}-${columnIndex}`} />)}
       </div>)}
     </div>
     <div className="story-tool-grid story-tool-grid-compact" aria-label="Tools from participating organizations">

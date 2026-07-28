@@ -5,6 +5,10 @@
   "participantId": "northwestern",
   "name": "Emerging Technology Detection Tool",
   "displayOrder": 5,
+  "summaryParagraphs": [
+    "Sparse autoencoders detect technologies before they have stable names or markets by finding unusual combinations of older ideas in papers and tracking their spread despite inconsistent terminology.",
+    "Validation against AI and perovskite market and performance records—including stalled technologies—gives agencies and policymakers earlier signals for research investment and international competitiveness."
+  ],
   "categories": [
     "Capability",
     "Production",

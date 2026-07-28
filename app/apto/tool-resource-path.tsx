@@ -3,7 +3,7 @@
 /* Content-managed images use deployment-aware URLs. */
 /* eslint-disable @next/next/no-img-element */
 
-import { useId, useState, type CSSProperties, type FocusEvent } from "react";
+import { useId, useState, type FocusEvent } from "react";
 
 import { withDeploymentBase } from "./paths";
 
@@ -20,17 +20,11 @@ type ToolResource = {
 
 type ToolSummary = {
   title: string;
-  description: string;
+  paragraphs: readonly string[];
   eyebrow?: string;
   url?: string | null;
   linkLabel?: string;
 };
-
-function routePosition(index: number) {
-  return index === 0
-    ? { gridColumn: 4, gridRow: 3 }
-    : { gridColumn: Math.max(1, 5 - index), gridRow: 1 };
-}
 
 function isAvailable(resource: ToolResource) {
   return Boolean(resource.url) && resource.status !== "coming-soon";
@@ -82,7 +76,7 @@ export function ToolResourcePath({
           "aria-current": active ? "true" as const : undefined,
         };
 
-        return <li key={resource.name} style={routePosition(index) as CSSProperties}>
+        return <li key={resource.name}>
           {available && resource.url
             ? <a {...common} href={resource.url}>{content}</a>
             : <button
@@ -101,7 +95,9 @@ export function ToolResourcePath({
         ? activeResource.status === "coming-soon" ? "Coming soon" : "Available"
         : summary.eyebrow}</p>}
       <Heading>{activeResource?.name ?? summary.title}</Heading>
-      <span>{activeResource?.description ?? summary.description}</span>
+      {activeResource
+        ? <span>{activeResource.description}</span>
+        : summary.paragraphs.map((paragraph, index) => <span key={`${summary.title}-summary-${index}`}>{paragraph}</span>)}
       {activeResource && activeAvailable && activeResource.url
         ? <a href={activeResource.url}>Open this piece <span aria-hidden="true">↗</span></a>
         : !activeResource && summary.url

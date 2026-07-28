@@ -4,6 +4,10 @@
   "id": "insilicom-causal-knowledge-graph",
   "participantId": "insilicom",
   "name": "Causal Technology Knowledge Graph",
+  "summaryParagraphs": [
+    "Explore directed relationships among technologies, features, problems, methods, datasets, and organizations. Each connection retains its supporting source so users can move from a broad systems view to the underlying evidence.",
+    "Trace possible drivers of an outcome, compare competing causal pathways, or assemble a focused evidence set for a technology assessment."
+  ],
   "categories": [
     "Capability",
     "Production"

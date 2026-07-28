@@ -48,7 +48,7 @@ test("generated content follows the featured-institution order and supplied-imag
   assert.deepEqual(data.participants.map((participant) => participant.id), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
   assert.deepEqual(data.projects.map((project) => project.participantId), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
   assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 5);
-  assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 5);
+  assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 6);
   assert.deepEqual(data.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name), [
     "Aggregating Research Pipeline At Scale Tool",
     "Agentic Framework For Technology Outcomes Tool",
@@ -56,7 +56,16 @@ test("generated content follows the featured-institution order and supplied-imag
     "Predicting Technological Evolution Tool",
     "Emerging Technology Detection Tool",
   ]);
+  assert.deepEqual(data.tools.filter((tool) => tool.participantId === "uchicago").map((tool) => tool.name), [
+    "Data",
+    "AI Skills",
+    "AI Benchmarks",
+    "The Parable Tool",
+    "Dashboards",
+    "AI Infrastructure",
+  ]);
   for (const tool of data.tools) {
+    assert.equal(tool.summaryParagraphs.length, 2, `${tool.name} should expose exactly two compact summary paragraphs`);
     const media = [tool.figure, ...tool.galleryImages];
     assert.equal(media.length, 4, `${tool.name} should have four Ken Burns frames`);
     assert.equal(new Set(media.map((image) => image.src)).size, 4, `${tool.name} frames should be distinct`);
@@ -113,7 +122,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.doesNotMatch(html, /Tools from across the APTO cohort/i);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
-  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5);
+  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 6);
   // React's streamed payload can repeat serialized component markup. Require
   // at least one rendered gallery/resource group per tool without depending
   // on that framework-level transport detail.
@@ -153,10 +162,11 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /onMouseLeave:\s*\(\)\s*=>\s*setActiveIndex/);
-  assert.match(resourceSource, /gridColumn:\s*4,\s*gridRow:\s*3/);
+  assert.doesNotMatch(resourceSource, /routePosition|gridColumn|gridRow/);
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
   assert.match(resourceStyles, /backdrop-filter:\s*blur\(4px\) saturate\(112%\)/);
-  assert.match(resourceStyles, /grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(resourceStyles, /grid-template-rows:\s*60% 40%/);
+  assert.match(resourceStyles, /flex-flow:\s*row wrap-reverse/);
 });
 
 test("light and dark logo assets remain available in both presentations", async () => {

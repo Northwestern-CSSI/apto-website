@@ -5,6 +5,10 @@
   "participantId": "northwestern",
   "name": "Aggregating Research Pipeline At Scale Tool",
   "displayOrder": 1,
+  "summaryParagraphs": [
+    "SciSciNet v2, TechBridge, and specialized datasets standardize grants, publications, patents, institutional records, technical performance, manufacturing, organizations, companies, and evidence of real-world use.",
+    "Links across people, ideas, funding, institutions, and time power SciSciGPT, Funding the Frontier, and Innovation Insights for evidence queries, outcome tracing, translation, commercialization, and adoption decisions."
+  ],
   "categories": [
     "Capability",
     "Production",
