@@ -21,6 +21,7 @@ for (const page of storyPages) {
   }
   assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= content.tools.length);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story"/g) ?? []).length >= content.tools.length);
   assert.ok(html.includes(`${basePath}/_next/`));
   assert.doesNotMatch(html, unprefixedPath);
 }
@@ -36,7 +37,7 @@ for (const page of atlasPages) {
   assert.ok(html.includes(`href="${basePath}/story"`));
   if (page.endsWith("tools/index.html")) {
     assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= content.tools.length);
-    assert.ok((html.match(/class="atlas-tool-resources"/g) ?? []).length >= content.tools.length);
+    assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas"/g) ?? []).length >= content.tools.length);
   }
   assert.ok(html.includes(`${basePath}/_next/`));
   assert.doesNotMatch(html, unprefixedPath);
