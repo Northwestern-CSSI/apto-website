@@ -714,7 +714,7 @@
 .story-tool {
   position: relative;
   min-width: 0;
-  min-height: clamp(600px,50vw,660px);
+  min-height: clamp(540px,44vw,590px);
   overflow: hidden;
   color: #f8fbfd;
   background: #06192b;
@@ -984,7 +984,7 @@
 }
 
 @media (max-width: 520px) {
-  .story-tool { min-height: 700px; }
+  .story-tool { min-height: 620px; }
   .story-tool-copy { --resource-panel-edge: 18px; padding: 18px; }
 }
 

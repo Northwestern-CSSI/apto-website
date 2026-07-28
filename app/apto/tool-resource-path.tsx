@@ -27,7 +27,7 @@ type ToolSummary = {
 
 function routePosition(index: number) {
   return index === 0
-    ? { gridColumn: 4, gridRow: 2 }
+    ? { gridColumn: 4, gridRow: 3 }
     : { gridColumn: Math.max(1, 5 - index), gridRow: 1 };
 }
 

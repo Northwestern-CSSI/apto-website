@@ -136,6 +136,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /onMouseLeave:\s*\(\)\s*=>\s*setActiveIndex/);
+  assert.match(resourceSource, /gridColumn:\s*4,\s*gridRow:\s*3/);
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
   assert.match(resourceStyles, /backdrop-filter:\s*blur\(4px\) saturate\(112%\)/);
   assert.match(resourceStyles, /grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/);
