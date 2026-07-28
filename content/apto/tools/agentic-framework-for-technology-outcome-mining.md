@@ -12,7 +12,7 @@
   "figure": {
     "kind": "evidence-stream",
     "src": "/apto/tools/photography/agentic-01.jpg",
-    "label": "Agentic outcome-mining workflow",
+    "label": "Agentic framework",
     "alt": "Agentic Framework for Technology Outcome Mining conceptual view 1, using supplied research imagery"
   },
   "galleryImages": [

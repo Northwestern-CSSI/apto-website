@@ -243,6 +243,42 @@ function StoryHeader({ activeSection, theme, onToggle }: {
   </header>;
 }
 
+function OutcomePanorama() {
+  const usedTools = new Set<string>();
+  const outcomes = [
+    { name: "Capability", description: "What a technology can do and how its technical performance changes." },
+    { name: "Production", description: "How a technology is made, scaled, supplied, and supported by organizations and infrastructure." },
+    { name: "Use", description: "How a technology is adopted, deployed, and translated into economic or societal outcomes." },
+  ] as const;
+  const lenses = outcomes.map((outcome) => {
+    const tool = aptoTools.find((candidate) => candidate.categories.includes(outcome.name) && !usedTools.has(candidate.id))
+      ?? aptoTools.find((candidate) => candidate.categories.includes(outcome.name));
+    if (tool) usedTools.add(tool.id);
+    return { outcome, tool };
+  });
+
+  return <div className="story-outcome-panorama" data-story-reveal="media">
+    {lenses.map(({ outcome, tool }, index) => <div
+      className="story-outcome-depth"
+      data-story-parallax={(.04 + index * .03).toFixed(3)}
+      data-story-parallax-limit="88"
+      key={outcome.name}
+    >
+      <figure>
+        {tool && <img
+          src={withDeploymentBase(tool.galleryImages[0]?.src ?? tool.figure.src)}
+          alt=""
+          width="1536"
+          height="1024"
+          loading="lazy"
+          decoding="async"
+        />}
+        <figcaption><strong>{outcome.name}</strong><span>{outcome.description}</span></figcaption>
+      </figure>
+    </div>)}
+  </div>;
+}
+
 function StoryHero() {
   const home = pageCopy("/");
   const heroTool = aptoTools.find((tool) => tool.figure.kind === "knowledge-map") ?? aptoTools[0];
@@ -274,7 +310,6 @@ function StoryHero() {
           </span>
         </span>}
       </div>
-      <figcaption>{heroTool.figure.label}</figcaption>
     </figure>
   </section>;
 }
@@ -286,6 +321,7 @@ function ProgramStory() {
       <h2 id="story-program-title">{about.title}</h2>
       <span>{aptoProgram.description}</span>
     </header>
+    <OutcomePanorama />
     <div className="story-objectives">
       <h3 data-story-reveal="left">{aptoProgram.objectivesTitle}</h3>
       <ul>{aptoProgram.objectives.map((objective, index) => <li
@@ -350,7 +386,7 @@ function ToolsStory() {
     const media = [{ src: tool.figure.src, alt: tool.figure.alt }, ...tool.galleryImages];
     return <article className="story-tool" key={tool.id} data-story-reveal="media">
       <div data-story-parallax={(.01 + index % 3 * .004).toFixed(3)} className="story-tool-gallery-wrap">
-        <ToolKenBurnsGallery galleryId={`story-${tool.id}`} images={media} caption={tool.figure.label} className="story-tool-gallery" />
+        <ToolKenBurnsGallery galleryId={`story-${tool.id}`} images={media} className="story-tool-gallery" />
       </div>
       <div className="story-tool-copy">
         <header>

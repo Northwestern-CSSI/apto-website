@@ -272,7 +272,7 @@ function ToolPoster({ tool, expanded, onToggle }: {
     data-gallery-count={media.length}
     style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
   >
-    <ToolKenBurnsGallery galleryId={`atlas-${tool.id}`} images={media} caption={tool.figure.label} className="atlas-tool-media" />
+    <ToolKenBurnsGallery galleryId={`atlas-${tool.id}`} images={media} className="atlas-tool-media" />
     <div className="atlas-tool-shade" aria-hidden="true" />
     <div className="atlas-tool-panel">
       <div className="atlas-tool-copy">

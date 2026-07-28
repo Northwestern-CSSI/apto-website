@@ -69,6 +69,9 @@ test("generated content follows the featured-institution order and supplied-imag
 test("Story gives project titles full card width and pairs lead-institution tools", async () => {
   const data = await content();
   const html = await (await render("/story")).text();
+  assert.equal((html.match(/class="story-outcome-depth"/g) ?? []).length, 3);
+  for (const outcome of ["Capability", "Production", "Use"]) assert.ok(html.includes(`>${outcome}<`));
+  assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
   assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5);
   // React's streamed payload can repeat serialized component markup. Require
@@ -89,6 +92,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="atlas-tool-resources"/g) ?? []).length >= data.tools.length);
+  assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
 });
 
