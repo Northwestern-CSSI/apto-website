@@ -91,6 +91,9 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(storySource, /const showHeroInset = false/);
   assert.match(storySource, /data-story-parallax="-0\.030"/);
   assert.match(storySource, /data-story-parallax="0\.072"/);
+  assert.match(storySource, /\{ speed: "0\.022", limit: "48" \}/);
+  assert.match(storySource, /\{ speed: "0\.095", limit: "88" \}/);
+  assert.match(storySource, /\{ speed: "0\.160", limit: "92" \}/);
   const styles = await readFile(new URL("../app/apto/story/story-site.css", import.meta.url), "utf8");
   assert.match(styles, /\.story-project-chapter > header\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
   assert.match(styles, /\.story-project-chapter h3\s*\{[\s\S]*?max-width:\s*100%/);

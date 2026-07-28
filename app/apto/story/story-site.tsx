@@ -259,9 +259,9 @@ function OutcomePanorama() {
   });
 
   const motion = [
-    { speed: "0.025", limit: "54" },
-    { speed: "0.105", limit: "100" },
-    { speed: "0.180", limit: "138" },
+    { speed: "0.022", limit: "48" },
+    { speed: "0.095", limit: "88" },
+    { speed: "0.160", limit: "92" },
   ] as const;
 
   return <div className="story-outcome-panorama" data-story-reveal="media">
