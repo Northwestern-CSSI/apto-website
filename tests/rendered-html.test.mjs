@@ -71,6 +71,10 @@ test("generated content follows the featured-institution order and supplied-imag
     "Dashboards",
     "AI Infrastructure",
   ]);
+  for (const tool of data.tools.filter((candidate) => candidate.participantId === "uchicago")) {
+    assert.ok(tool.summaryParagraphs.every((paragraph) => /^(?:Lorem ipsum|Sed posuere)/.test(paragraph)));
+    assert.ok(tool.resources.every((resource) => /^(?:Lorem ipsum|Cras mattis|Maecenas sed diam)/.test(resource.description)));
+  }
   for (const participantId of ["aperture", "insilicom", "macrocosm"]) {
     const placeholderTools = data.tools.filter((tool) => tool.participantId === participantId);
     assert.deepEqual(placeholderTools.map((tool) => tool.name), ["Tool A", "Tool B"]);

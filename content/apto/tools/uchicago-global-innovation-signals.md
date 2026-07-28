@@ -6,8 +6,8 @@
   "name": "AI Skills",
   "displayOrder": 2,
   "summaryParagraphs": [
-    "This tool maps the technical skills, research capabilities, and workforce movements shaping AI development across institutions, regions, industries, and application areas.",
-    "It reveals emerging concentrations of expertise, changing skill combinations, and the pathways through which knowledge moves from research teams into production and use."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
+    "Sed posuere consectetur est at lobortis. Maecenas faucibus mollis interdum, donec ullamcorper nulla non metus auctor fringilla."
   ],
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Builds a consistent vocabulary of AI skills from research, job, education, and organizational evidence while preserving links to the original sources.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/skills.svg", "alt": "AI skills vocabulary icon"}},
-    {"name": "Piece B", "description": "Maps combinations of expertise across institutions, regions, and application domains to reveal emerging capability clusters and changing workforce demand.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/network.svg", "alt": "Expertise cluster network icon"}},
-    {"name": "Piece C", "description": "Tracks movement of researchers and skills through collaboration and employment networks, supporting analysis of how knowledge diffuses into production and use.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evolution.svg", "alt": "Skill movement and diffusion icon"}}
+    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/skills.svg", "alt": "AI skills vocabulary icon"}},
+    {"name": "Piece B", "description": "Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/network.svg", "alt": "Expertise cluster network icon"}},
+    {"name": "Piece C", "description": "Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam id dolor id nibh ultricies vehicula.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evolution.svg", "alt": "Skill movement and diffusion icon"}}
   ]
 }
 ---
@@ -36,10 +36,10 @@
 
 ## Description
 
-This tool maps the technical skills, research capabilities, and workforce movements shaping AI development across institutions, regions, industries, and application areas.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
 
-It reveals emerging concentrations of expertise, changing skill combinations, and the pathways through which knowledge moves from research teams into production and use.
+Sed posuere consectetur est at lobortis. Maecenas faucibus mollis interdum, donec ullamcorper nulla non metus auctor fringilla.
 
 ## Use case
 
-Compare skill ecosystems and examine how movement of expertise may precede changes in AI capability, production, and adoption.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor.

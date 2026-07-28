@@ -6,8 +6,8 @@
   "name": "AI Infrastructure",
   "displayOrder": 6,
   "summaryParagraphs": [
-    "This tool measures the compute, energy, hardware, data, workforce, and organizational foundations that enable AI systems to be developed, scaled, and deployed.",
-    "It connects infrastructure inputs with technical performance and downstream use so users can compare constraints, dependencies, investment needs, and possible trajectories."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
+    "Sed posuere consectetur est at lobortis. Maecenas faucibus mollis interdum, donec ullamcorper nulla non metus auctor fringilla."
   ],
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Measures compute capacity, hardware availability, energy demand, data resources, and workforce inputs across organizations, regions, and time.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/processor.svg", "alt": "AI compute capacity icon"}},
-    {"name": "Piece B", "description": "Connects infrastructure investments with changes in technical performance and production capacity, revealing dependencies and possible bottlenecks.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/energy.svg", "alt": "AI infrastructure energy icon"}},
-    {"name": "Piece C", "description": "Supports scenario comparisons for scaling AI systems under different hardware, energy, data, workforce, and organizational constraints.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/infrastructure.svg", "alt": "AI systems infrastructure icon"}}
+    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/processor.svg", "alt": "AI compute capacity icon"}},
+    {"name": "Piece B", "description": "Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/energy.svg", "alt": "AI infrastructure energy icon"}},
+    {"name": "Piece C", "description": "Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam id dolor id nibh ultricies vehicula.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/infrastructure.svg", "alt": "AI systems infrastructure icon"}}
   ]
 }
 ---
@@ -36,10 +36,10 @@
 
 ## Description
 
-This tool measures the compute, energy, hardware, data, workforce, and organizational foundations that enable AI systems to be developed, scaled, and deployed.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
 
-It connects infrastructure inputs with technical performance and downstream use so users can compare constraints, dependencies, investment needs, and possible trajectories.
+Sed posuere consectetur est at lobortis. Maecenas faucibus mollis interdum, donec ullamcorper nulla non metus auctor fringilla.
 
 ## Use case
 
-Compare infrastructure requirements and examine how compute, energy, hardware, data, and workforce constraints shape AI trajectories.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor.

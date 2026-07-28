@@ -6,8 +6,8 @@
   "name": "Data",
   "displayOrder": 1,
   "summaryParagraphs": [
-    "This tool assembles research, patent, funding, workforce, organization, and market records into a consistent evidence layer for measuring technology outcomes across domains and time.",
-    "Connected provenance and shared definitions make the data ready for comparison, model testing, historical validation, and reuse across the broader research portfolio."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
+    "Sed posuere consectetur est at lobortis. Maecenas faucibus mollis interdum, donec ullamcorper nulla non metus auctor fringilla."
   ],
   "categories": ["Capability", "Production", "Use"],
   "figure": {
@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Organizes source records and shared identifiers so grants, publications, patents, organizations, workforce, and market evidence can be connected without losing provenance.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/dataset.svg", "alt": "Connected dataset icon"}},
-    {"name": "Piece B", "description": "Defines the schemas, quality checks, and transformation steps that turn heterogeneous records into comparable inputs for technology-outcome models.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/network.svg", "alt": "Linked data schema icon"}},
-    {"name": "Piece C", "description": "Profiles evidence coverage across technologies and time, making gaps, biases, and opportunities for new data collection visible before analysis begins.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evidence.svg", "alt": "Evidence quality and coverage icon"}}
+    {"name": "Piece A", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/dataset.svg", "alt": "Connected dataset icon"}},
+    {"name": "Piece B", "description": "Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/network.svg", "alt": "Linked data schema icon"}},
+    {"name": "Piece C", "description": "Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam id dolor id nibh ultricies vehicula.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evidence.svg", "alt": "Evidence quality and coverage icon"}}
   ]
 }
 ---
@@ -36,10 +36,10 @@
 
 ## Description
 
-This tool assembles research, patent, funding, workforce, organization, and market records into a consistent evidence layer for measuring technology outcomes across domains and time.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
 
-Connected provenance and shared definitions make the data ready for comparison, model testing, historical validation, and reuse across the broader research portfolio.
+Sed posuere consectetur est at lobortis. Maecenas faucibus mollis interdum, donec ullamcorper nulla non metus auctor fringilla.
 
 ## Use case
 
-Compare evidence coverage, prepare inputs for outcome models, and trace every measure back to its source.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor.
