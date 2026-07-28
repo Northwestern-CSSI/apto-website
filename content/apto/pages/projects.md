@@ -4,11 +4,11 @@
   "slug": "/projects",
   "metadataTitle": "Projects",
   "eyebrow": "Research portfolio",
-  "title": "Projects across the APTO cohort"
+  "title": "About Each Project in the Cohort"
 }
 ---
 
-# Projects across the APTO cohort
+# About Each Project in the Cohort
 
 ## Introduction
 

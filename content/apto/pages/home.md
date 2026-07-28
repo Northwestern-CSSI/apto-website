@@ -4,12 +4,12 @@
   "slug": "/",
   "metadataTitle": "Program home",
   "eyebrow": "Assessing and Predicting Technology Outcomes",
-  "title": "Evidence for better technology decisions"
+  "title": "About the APTO Program"
 }
 ---
 
-# Evidence for better technology decisions
+# About the APTO Program
 
 ## Introduction
 
-APTO is a National Science Foundation program developing causal models, datasets, and tools for understanding how science and technology investments shape future capability, production, and use. Explore the program, its five projects, the people behind them, and the evidence systems they are building.
+In 2023, the National Science Foundation established the Assessing and Predicting Technology Outcomes Program, or APTO for short, to develop causal models that can predict how science and technology investments shape future outcomes in technology capability, production, and use. By funding a collaborative cohort of research teams to build these models and supporting datasets and tools, APTO seeks to give decision makers the evidence base needed to strategize U.S. R&D investments effectively.

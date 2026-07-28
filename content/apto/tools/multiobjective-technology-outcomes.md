@@ -3,7 +3,8 @@
   "kind": "tool",
   "id": "multiobjective-technology-outcomes",
   "participantId": "northwestern",
-  "name": "Multiobjective Technology Outcomes",
+  "name": "Multi-Objective Technology Outcomes Tool",
+  "displayOrder": 3,
   "categories": [
     "Capability",
     "Production",
@@ -57,7 +58,7 @@
 }
 ---
 
-# Multiobjective Technology Outcomes
+# Multi-Objective Technology Outcomes Tool
 
 ## Description
 

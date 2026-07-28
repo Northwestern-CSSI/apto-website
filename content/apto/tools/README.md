@@ -27,6 +27,7 @@ or counter needs to be updated.
   "id": "example-technology-explorer",
   "participantId": "northwestern",
   "name": "Example Technology Explorer",
+  "displayOrder": 1,
   "categories": ["Capability", "Use"],
   "figure": {
     "kind": "knowledge-map",
@@ -87,6 +88,7 @@ The H1 must exactly match `name`. The body must contain exactly
 | --- | --- |
 | `id` | Unique lowercase kebab-case identifier |
 | `participantId` | Must match an organization ID |
+| `displayOrder` | Optional positive integer that orders one organization’s tools; tools without it remain alphabetical |
 | `categories` | One or more unique values: `Capability`, `Production`, `Use` |
 | `figure.kind` | Selects a semantic figure class; see allowed values below |
 | `figure.src` | `/apto/…` path matching an image under `content/apto/assets/` |

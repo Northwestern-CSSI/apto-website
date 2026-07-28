@@ -9,7 +9,7 @@
     "siteTitle": "APTO",
     "siteDescription": "Research, people, projects, and tools from the Assessing and Predicting Technology Outcomes program.",
     "socialImageSrc": "/apto/tools/photography/aggregating-01.jpg",
-    "socialImageAlt": "APTO — evidence for better technology decisions.",
+    "socialImageAlt": "APTO — About the APTO Program.",
     "themeChooserLabel": "Choose color theme",
     "themeSwitchActionPrefix": "Use"
   },

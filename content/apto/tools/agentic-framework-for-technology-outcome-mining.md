@@ -3,7 +3,8 @@
   "kind": "tool",
   "id": "agentic-framework-for-technology-outcome-mining",
   "participantId": "northwestern",
-  "name": "Agentic Framework for Technology Outcome Mining",
+  "name": "Agentic Framework For Technology Outcomes Tool",
+  "displayOrder": 2,
   "categories": [
     "Capability",
     "Production",
@@ -57,7 +58,7 @@
 }
 ---
 
-# Agentic Framework for Technology Outcome Mining
+# Agentic Framework For Technology Outcomes Tool
 
 ## Description
 

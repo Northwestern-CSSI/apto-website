@@ -21,6 +21,7 @@ type ToolResource = {
 type ToolSummary = {
   title: string;
   description: string;
+  eyebrow?: string;
   url?: string | null;
   linkLabel?: string;
 };
@@ -96,9 +97,9 @@ export function ToolResourcePath({
     </ol>
 
     <article className="apto-resource-summary" id={summaryId} aria-live="polite">
-      {activeResource
-        ? <p>{activeResource.status === "coming-soon" ? "Coming soon" : "Available"}</p>
-        : null}
+      {(activeResource || summary.eyebrow) && <p>{activeResource
+        ? activeResource.status === "coming-soon" ? "Coming soon" : "Available"
+        : summary.eyebrow}</p>}
       <Heading>{activeResource?.name ?? summary.title}</Heading>
       <span>{activeResource?.description ?? summary.description}</span>
       {activeResource && activeAvailable && activeResource.url

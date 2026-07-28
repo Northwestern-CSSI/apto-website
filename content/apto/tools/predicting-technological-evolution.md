@@ -3,7 +3,8 @@
   "kind": "tool",
   "id": "predicting-technological-evolution",
   "participantId": "northwestern",
-  "name": "Predicting Technological Evolution",
+  "name": "Predicting Technological Evolution Tool",
+  "displayOrder": 4,
   "categories": [
     "Capability",
     "Production",
@@ -87,7 +88,7 @@
 }
 ---
 
-# Predicting Technological Evolution
+# Predicting Technological Evolution Tool
 
 ## Description
 

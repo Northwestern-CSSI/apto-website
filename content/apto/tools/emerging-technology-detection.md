@@ -3,7 +3,8 @@
   "kind": "tool",
   "id": "emerging-technology-detection",
   "participantId": "northwestern",
-  "name": "Emerging Technology Detection",
+  "name": "Emerging Technology Detection Tool",
+  "displayOrder": 5,
   "categories": [
     "Capability",
     "Production",
@@ -57,7 +58,7 @@
 }
 ---
 
-# Emerging Technology Detection
+# Emerging Technology Detection Tool
 
 ## Description
 

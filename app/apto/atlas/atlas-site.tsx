@@ -171,30 +171,25 @@ function OrganizationIndex({ labelledBy }: { labelledBy: string }) {
 function ProgramPage() {
   return <main className="atlas-main atlas-program" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-home-title">
     <PageIntroduction section="home" />
-    <section className="atlas-program-mosaic" aria-label={aptoInterface.atlas.programMosaicLabel}>
-      {aptoProgram.landingGallery.map((image, index) => <figure key={image.src} data-program-visual="true">
+    <section className="atlas-program-mosaic atlas-building-mosaic" aria-label={aptoProgram.buildingTitle}>
+      {aptoProgram.buildingItems.map((item, index) => <figure key={item.title} data-program-visual="true">
         <img
           className={`motion-${index + 1}`}
-          src={withDeploymentBase(image.src)}
-          alt={image.alt}
+          src={withDeploymentBase(aptoProgram.landingGallery[index].src)}
+          alt={aptoProgram.landingGallery[index].alt}
           width="1536"
           height="1024"
           loading="eager"
           decoding="async"
         />
+        <figcaption><strong>{item.title}</strong><span>{item.description}</span></figcaption>
       </figure>)}
-    </section>
-
-    <section className="atlas-program-description" aria-labelledby="atlas-program-description-title">
-      <div>
-        <h2 id="atlas-program-description-title">{pageCopy("/about").title}</h2>
-        <p>{aptoProgram.description}</p>
-      </div>
     </section>
 
     <section className="atlas-objective-field" aria-labelledby="atlas-objectives-title">
       <header>
         <h2 id="atlas-objectives-title">{aptoProgram.objectivesTitle}</h2>
+        <p>{aptoProgram.impactIntroduction}</p>
       </header>
       <ol>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ol>
     </section>
@@ -223,7 +218,7 @@ function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
       <span className="atlas-project-identity">
         <ParticipantLogo participant={participant} />
         <span>
-          <small>{participant.displayName}</small>
+          <small>Led by {participant.displayName}</small>
           <em className="atlas-project-location">{participant.location}</em>
           <strong>{project.shortName}</strong>
         </span>
@@ -253,8 +248,7 @@ function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
 function ProjectsPage() {
   return <main className="atlas-main atlas-projects" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-projects-title">
     <PageIntroduction section="projects" />
-    <section className="atlas-project-portfolio" aria-labelledby="atlas-portfolio-title">
-      <header><h2 id="atlas-portfolio-title">Five approaches to technology outcomes</h2></header>
+    <section className="atlas-project-portfolio" aria-label="APTO project portfolio">
       <div>{aptoProjects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>
     </section>
   </main>;
@@ -282,6 +276,7 @@ function ToolPoster({ tool }: {
         summary={{
           title: tool.name,
           description: tool.description,
+          eyebrow: `Led by ${participant.displayName}`,
           url: tool.toolUrl,
           linkLabel: aptoInterface.tools.openToolLabel,
         }}
@@ -349,7 +344,13 @@ function CohortPage() {
   return <main className="atlas-main atlas-cohort" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-cohort-title">
     <PageIntroduction section="cohort" />
     <section className="atlas-leadership" aria-labelledby="atlas-leadership-title">
-      <header><h2 id="atlas-leadership-title">{aptoInterface.atlas.programLeadershipLabel}</h2></header>
+      <header className="atlas-leadership-heading">
+        <img src={withDeploymentBase(aptoInterface.footer.nsfLogoSrc)} alt={aptoInterface.footer.nsfLogoAlt} width="88" height="88" loading="lazy" decoding="async" />
+        <div>
+          <h2 id="atlas-leadership-title">{aptoInterface.atlas.programLeadershipLabel}</h2>
+          <p>U.S. National Science Foundation</p>
+        </div>
+      </header>
       <div>{aptoProgram.programTeam.map((person) => <PersonEntry person={person} key={person.id} />)}</div>
     </section>
     <section className="atlas-cohort-index" aria-labelledby="atlas-cohort-index-title">

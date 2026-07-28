@@ -4,12 +4,12 @@
   "slug": "/tools",
   "metadataTitle": "Tools",
   "eyebrow": "Research tools",
-  "title": "Tools for exploring technology outcomes"
+  "title": "Explore Our Tools"
 }
 ---
 
-# Tools for exploring technology outcomes
+# Explore Our Tools
 
 ## Introduction
 
-Explore the tools and broader capabilities being developed across APTO. Northwestern University’s work connects research pipelines, outcome mining, emerging-technology detection, multiobjective analysis, and forecasting; companion previews show how other cohort teams are approaching complementary questions. Each card also introduces the datasets, prototypes, and research outputs that form the tool’s supporting pieces.
+Each team has been working towards developing tool(s) that can assess and test various predictive models. Learn more about the work, progress, and outputs from each team.

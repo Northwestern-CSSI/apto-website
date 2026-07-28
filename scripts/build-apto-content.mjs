@@ -453,7 +453,11 @@ function validateProgram(document) {
       "id",
       "name",
       "acronym",
+      "buildingTitle",
+      "buildingIntroduction",
+      "buildingItems",
       "objectivesTitle",
+      "impactIntroduction",
       "objectives",
       "landingGallery",
       "lastVerified",
@@ -467,7 +471,19 @@ function validateProgram(document) {
   const name = requireString(metadata, "name", context);
   assert(h1 === name, `${context} H1 must match frontmatter name`);
   assert(metadata.acronym === "APTO", `${context}.acronym must be “APTO”`);
+  requireString(metadata, "buildingTitle", context);
+  requireString(metadata, "buildingIntroduction", context);
+  const buildingItems = requireArray(metadata, "buildingItems", context);
+  assert(buildingItems.length === 3, `${context}.buildingItems must contain exactly three program outputs`);
+  buildingItems.forEach((item, index) => {
+    const itemContext = `${context}.buildingItems[${index}]`;
+    requireObject(item, itemContext);
+    assertExactKeys(item, ["title", "description"], itemContext);
+    requireString(item, "title", itemContext);
+    requireString(item, "description", itemContext);
+  });
   requireString(metadata, "objectivesTitle", context);
+  requireString(metadata, "impactIntroduction", context);
   const objectives = requireArray(metadata, "objectives", context);
   assert(objectives.length > 0, `${context}.objectives must not be empty`);
   objectives.forEach((objective, index) => requireStringValue(objective, `${context}.objectives[${index}]`));
@@ -854,21 +870,23 @@ function validateProject(document) {
 function validateTool(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
+  const allowedKeys = [
+    "kind",
+    "id",
+    "participantId",
+    "name",
+    "categories",
+    "figure",
+    "galleryImages",
+    "resources",
+    "statusLabel",
+    "demoVideoUrl",
+    "toolUrl",
+  ];
+  if (Object.hasOwn(metadata, "displayOrder")) allowedKeys.push("displayOrder");
   assertExactKeys(
     metadata,
-    [
-      "kind",
-      "id",
-      "participantId",
-      "name",
-      "categories",
-      "figure",
-      "galleryImages",
-      "resources",
-      "statusLabel",
-      "demoVideoUrl",
-      "toolUrl",
-    ],
+    allowedKeys,
     `${context} frontmatter`,
   );
   assert(metadata.kind === "tool", `${context}.kind must be “tool”`);
@@ -876,6 +894,11 @@ function validateTool(document) {
   assertRecordIdMatchesFilename(file, id, context);
   const participantId = requireString(metadata, "participantId", context);
   const name = requireString(metadata, "name", context);
+  const displayOrder = metadata.displayOrder ?? null;
+  assert(
+    displayOrder === null || (Number.isInteger(displayOrder) && displayOrder > 0),
+    `${context}.displayOrder must be a positive integer when provided`,
+  );
   assert(h1 === name, `${context} H1 must match name`);
   const categories = requireArray(metadata, "categories", context);
   assert(categories.length > 0, `${context}.categories must not be empty`);
@@ -936,12 +959,13 @@ function validateTool(document) {
   return {
     sourceFile: file,
     tool: {
-      ...omitFields(metadata, ["kind"]),
+      ...omitFields(metadata, ["kind", "displayOrder"]),
       description: normalizeProse(description),
       useCase: normalizeProse(useCase),
     },
     id,
     participantId,
+    displayOrder,
   };
 }
 
@@ -1188,6 +1212,12 @@ async function buildContent() {
     assert(projectRecords.some((projectRecord) => projectRecord.participantId === participantId), `Participant “${participantId}” must have at least one project Markdown record`);
     assert(toolRecords.some((toolRecord) => toolRecord.participantId === participantId), `Participant “${participantId}” must have at least one tool Markdown record`);
     assert(record.participant.displayName.length > 0, `Participant “${participantId}” must have a display name`);
+    assertUnique(
+      toolRecords
+        .filter((toolRecord) => toolRecord.participantId === participantId && toolRecord.displayOrder !== null)
+        .map((toolRecord) => toolRecord.displayOrder),
+      `Participant “${participantId}” tool displayOrder values`,
+    );
   }
 
   const programTeam = personRecords
@@ -1196,16 +1226,17 @@ async function buildContent() {
     .sort((left, right) => compareAlphabetically(left.name, right.name));
   assert(programTeam.length > 0, "At least one program leadership person Markdown record is required");
 
-  const tools = toolRecords
-    .map((record) => record.tool)
+  const tools = [...toolRecords]
     .sort((left, right) => (
       compareParticipantIds(
-        left.participantId,
-        right.participantId,
-        participantById.get(left.participantId).participant.displayName,
-        participantById.get(right.participantId).participant.displayName,
-      ) || compareAlphabetically(left.name, right.name)
-    ));
+        left.tool.participantId,
+        right.tool.participantId,
+        participantById.get(left.tool.participantId).participant.displayName,
+        participantById.get(right.tool.participantId).participant.displayName,
+      ) || (left.displayOrder ?? Number.MAX_SAFE_INTEGER) - (right.displayOrder ?? Number.MAX_SAFE_INTEGER)
+        || compareAlphabetically(left.tool.name, right.tool.name)
+    ))
+    .map((record) => record.tool);
 
   const participants = participantRecords
     .map((record) => {

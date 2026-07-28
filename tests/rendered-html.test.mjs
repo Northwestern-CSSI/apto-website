@@ -49,6 +49,13 @@ test("generated content follows the featured-institution order and supplied-imag
   assert.deepEqual(data.projects.map((project) => project.participantId), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
   assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 5);
   assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 5);
+  assert.deepEqual(data.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name), [
+    "Aggregating Research Pipeline At Scale Tool",
+    "Agentic Framework For Technology Outcomes Tool",
+    "Multi-Objective Technology Outcomes Tool",
+    "Predicting Technological Evolution Tool",
+    "Emerging Technology Detection Tool",
+  ]);
   for (const tool of data.tools) {
     const media = [tool.figure, ...tool.galleryImages];
     assert.equal(media.length, 4, `${tool.name} should have four Ken Burns frames`);
@@ -86,7 +93,7 @@ test("generated content follows the featured-institution order and supplied-imag
   const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
   assert.deepEqual(
     northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
-    ["dashun-wang", "alicia-loffler", "benjamin-jones", "jian-cao", "yian-yin"],
+    ["dashun-wang", "benjamin-jones", "jian-cao", "mark-hersam", "yian-yin"],
   );
   assert.equal(data.convenings[0].location, "Washington, D.C.");
 });
@@ -95,7 +102,12 @@ test("Story gives project titles full card width and pairs lead-institution tool
   const data = await content();
   const html = await (await render("/story")).text();
   assert.equal((html.match(/class="story-outcome-depth"/g) ?? []).length, 3);
-  for (const outcome of ["Capability", "Production", "Use"]) assert.ok(html.includes(`>${outcome}<`));
+  for (const output of ["Technology Outcome Models", "Data Sets", "Tools"]) assert.ok(html.includes(output));
+  assert.match(html, /About the APTO Program/);
+  assert.match(html, /What We Are Building/);
+  assert.match(html, /Together, the APTO cohort is working to achieve/);
+  assert.match(html, /Led by Northwestern University/);
+  assert.doesNotMatch(html, /Tools from across the APTO cohort/i);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
   assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5);

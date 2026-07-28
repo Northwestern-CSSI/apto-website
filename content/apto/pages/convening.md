@@ -4,12 +4,12 @@
   "slug": "/convening",
   "metadataTitle": "Annual Convening | APTO",
   "eyebrow": "Annual convening",
-  "title": "Ideas, evidence, and people in conversation"
+  "title": "Our Annual Convenings"
 }
 ---
 
-# Ideas, evidence, and people in conversation
+# Our Annual Convenings
 
 ## Introduction
 
-The APTO annual convening creates time for teams to compare methods, connect evidence across projects, and shape a shared agenda for assessing and predicting technology outcomes.
+Each year, the cohort meets at the APTO Convening to share progress updates and explore opportunities to support each other and collaborate with one another. Explore our APTO Convenings over the years.

@@ -4,7 +4,24 @@
   "id": "apto",
   "name": "Assessing and Predicting Technology Outcomes",
   "acronym": "APTO",
+  "buildingTitle": "What We Are Building",
+  "buildingIntroduction": "APTO is building an integrated evidence base that connects causal models, new datasets, and practical tools for understanding and guiding technology outcomes.",
+  "buildingItems": [
+    {
+      "title": "Technology Outcome Models (causal, predictive models)",
+      "description": "We are building causal, predictive models to predict both future and historical states of technology outcomes across many technology areas so that investors have a compass for strategic investments in research and development in the United States."
+    },
+    {
+      "title": "Data Sets",
+      "description": "We are deriving and developing new datasets to test these technology outcome models."
+    },
+    {
+      "title": "Tools",
+      "description": "We are creating new tools to assess and predict technology capabilities, production, and use."
+    }
+  ],
   "objectivesTitle": "APTO’s impact",
+  "impactIntroduction": "Together, the APTO cohort is working to achieve the following goals and aim to have the following impact.",
   "objectives": [
     "Establish a new empirical foundation for mapping research investments to real-world technological advancements.",
     "Enable high-accuracy predictions and targeted interventions that can accelerate innovation.",
@@ -32,7 +49,7 @@
       "alt": "Technological evolution and forecasting represented through supplied conceptual photography"
     }
   ],
-  "lastVerified": "2026-07-27",
+  "lastVerified": "2026-07-28",
   "boilerplate": "This material is based upon work supported by the National Science Foundation under Grant Number 2404035. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.",
   "sources": [
     {
@@ -64,4 +81,4 @@
 
 ## Description
 
-In 2023, the National Science Foundation established the Assessing and Predicting Technology Outcomes program to develop causal models that can predict how science and technology investments shape future outcomes in technology capability, production, and use. By funding a collaborative cohort of research teams to build these models, supporting datasets, and practical tools, APTO seeks to give decision-makers the evidence base needed to strategize U.S. research-and-development investments effectively.
+In 2023, the National Science Foundation established the Assessing and Predicting Technology Outcomes Program, or APTO for short, to develop causal models that can predict how science and technology investments shape future outcomes in technology capability, production, and use. By funding a collaborative cohort of research teams to build these models and supporting datasets and tools, APTO seeks to give decision makers the evidence base needed to strategize U.S. R&D investments effectively.

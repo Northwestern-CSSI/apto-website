@@ -3,7 +3,8 @@
   "kind": "tool",
   "id": "aggregating-research-pipeline-at-scale",
   "participantId": "northwestern",
-  "name": "Aggregating Research Pipeline at Scale",
+  "name": "Aggregating Research Pipeline At Scale Tool",
+  "displayOrder": 1,
   "categories": [
     "Capability",
     "Production",
@@ -87,7 +88,7 @@
 }
 ---
 
-# Aggregating Research Pipeline at Scale
+# Aggregating Research Pipeline At Scale Tool
 
 ## Description
 

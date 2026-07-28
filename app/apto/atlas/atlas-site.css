@@ -244,15 +244,6 @@
   to { transform: scale(1.13) translate3d(-1.4%, -1%, 0); }
 }
 
-.atlas-program-description {
-  width: min(100%, 1320px);
-  margin: 0 auto clamp(74px, 9vw, 130px);
-  padding: 0 max(4vw, 28px);
-  display: grid;
-  grid-template-columns: .36fr 1fr;
-  gap: clamp(32px, 8vw, 128px);
-}
-.atlas-program-description > p,
 .atlas-objective-field header > p,
 .atlas-framework article header > p,
 .atlas-participants header > p,
@@ -265,9 +256,6 @@
   font-weight: 800;
   line-height: 1.35;
 }
-.atlas-program-description h2 { max-width: 690px; margin-bottom: 20px; font-size: clamp(1.8rem, 2.7vw, 2.55rem); font-weight: 650; letter-spacing: -.045em; line-height: 1.12; }
-.atlas-program-description div > p { max-width: 820px; color: var(--atlas-copy); font-size: 1.02rem; line-height: 1.75; }
-
 .atlas-objective-field {
   width: min(calc(100% - max(4vw, 28px)), 1440px);
   margin: 0 auto clamp(84px, 9vw, 136px);
@@ -570,7 +558,6 @@
   .atlas-page-intro > p { margin-bottom: 4px; }
   .atlas-page-intro h1 { max-width: 760px; }
   .atlas-page-intro > div { max-width: 760px; }
-  .atlas-program-description,
   .atlas-objective-field header,
   .atlas-framework article,
   .atlas-project-portfolio > header,
@@ -613,13 +600,11 @@
   .atlas-program-mosaic figure { grid-column: span 2; }
   .atlas-program-mosaic figure:nth-child(4) { grid-column: auto / span 2; }
   .atlas-program-mosaic figure:nth-child(5) { grid-column: 2 / span 2; }
-  .atlas-program-description,
   .atlas-framework,
   .atlas-participants,
   .atlas-cohort-index,
   .atlas-project-portfolio,
   .atlas-team-chapters { padding-right: 20px; padding-left: 20px; }
-  .atlas-program-description { margin-bottom: 72px; }
   .atlas-objective-field { width: calc(100% - 32px); padding: 32px 24px; }
   .atlas-framework article { padding: 32px 24px; }
   .atlas-framework dl,
@@ -682,15 +667,6 @@
 
 .atlas-page-intro > div {
   grid-column: 2;
-}
-
-.atlas-program-description {
-  grid-template-columns: 1fr;
-}
-
-.atlas-program-description > div {
-  grid-column: 1;
-  max-width: 860px;
 }
 
 .atlas-objective-field > header,
@@ -933,4 +909,60 @@
   }
   .atlas-tool-card { min-height: 500px; max-height: none; aspect-ratio: auto; }
   .atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 16px; padding: 16px; }
+}
+
+/* The program outputs use the same editorial figure treatment in both
+   themes: three equal visuals with readable content integrated into them. */
+.atlas-program-mosaic.atlas-building-mosaic {
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-auto-rows: clamp(470px,40vw,610px);
+}
+.atlas-building-mosaic figure:nth-child(n) { grid-column: auto; grid-row: auto; }
+.atlas-building-mosaic figure::after {
+  background: linear-gradient(0deg,rgb(2 19 36 / 95%) 0%,rgb(2 19 36 / 52%) 45%,transparent 78%);
+  box-shadow: inset 0 0 80px rgb(0 20 46 / 14%);
+}
+.atlas-building-mosaic figcaption {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: clamp(24px,3vw,40px);
+  color: #f7fbfd;
+}
+.atlas-building-mosaic figcaption strong {
+  display: block;
+  max-width: 23ch;
+  font-size: clamp(1.2rem,1.8vw,1.65rem);
+  line-height: 1.13;
+}
+.atlas-building-mosaic figcaption span {
+  display: block;
+  margin-top: 12px;
+  color: #cbdce6;
+  font-size: clamp(.74rem,.8vw,.86rem);
+  line-height: 1.58;
+}
+.atlas-objective-field header > p {
+  max-width: 620px;
+  color: #c8dae5;
+  font-size: .94rem;
+  font-weight: 500;
+  line-height: 1.7;
+}
+.atlas-leadership-heading { display: grid; grid-template-columns: 78px minmax(0,1fr); gap: 20px; align-items: center; }
+.atlas-leadership-heading > img { width: 78px; height: 78px; object-fit: contain; border-radius: 50%; background: #fff; }
+.atlas-leadership-heading h2 { margin: 0; }
+.atlas-leadership-heading p { margin: 7px 0 0; color: #c2d6e1; font-size: .78rem; line-height: 1.45; }
+
+@media (max-width: 900px) {
+  .atlas-program-mosaic.atlas-building-mosaic { grid-auto-rows: clamp(360px,48vw,470px); }
+}
+
+@media (max-width: 719px) {
+  .atlas-program-mosaic.atlas-building-mosaic { grid-template-columns: 1fr; grid-auto-rows: clamp(340px,100vw,470px); }
+  .atlas-building-mosaic figure:nth-child(n) { grid-column: 1; }
+  .atlas-leadership-heading { grid-template-columns: 64px minmax(0,1fr); }
+  .atlas-leadership-heading > img { width: 64px; height: 64px; }
 }

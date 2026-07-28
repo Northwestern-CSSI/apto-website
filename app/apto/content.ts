@@ -127,7 +127,14 @@ export type AptoProgram = {
   name: string;
   acronym: "APTO";
   description: string;
+  buildingTitle: string;
+  buildingIntroduction: string;
+  buildingItems: Array<{
+    title: string;
+    description: string;
+  }>;
   objectivesTitle: string;
+  impactIntroduction: string;
   objectives: string[];
   landingGallery: Array<{
     src: string;

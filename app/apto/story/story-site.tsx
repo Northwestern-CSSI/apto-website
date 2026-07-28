@@ -246,19 +246,6 @@ function StoryHeader({ activeSection, theme, onToggle }: {
 }
 
 function OutcomePanorama() {
-  const usedTools = new Set<string>();
-  const outcomes = [
-    { name: "Capability", description: "What a technology can do and how its technical performance changes." },
-    { name: "Production", description: "How a technology is made, scaled, supplied, and supported by organizations and infrastructure." },
-    { name: "Use", description: "How a technology is adopted, deployed, and translated into economic or societal outcomes." },
-  ] as const;
-  const lenses = outcomes.map((outcome) => {
-    const tool = aptoTools.find((candidate) => candidate.categories.includes(outcome.name) && !usedTools.has(candidate.id))
-      ?? aptoTools.find((candidate) => candidate.categories.includes(outcome.name));
-    if (tool) usedTools.add(tool.id);
-    return { outcome, tool };
-  });
-
   const motion = [
     { speed: "0.022", limit: "48" },
     { speed: "0.095", limit: "88" },
@@ -266,22 +253,22 @@ function OutcomePanorama() {
   ] as const;
 
   return <div className="story-outcome-panorama" data-story-reveal="media">
-    {lenses.map(({ outcome, tool }, index) => <div
+    {aptoProgram.buildingItems.map((item, index) => <div
       className="story-outcome-depth"
       data-story-parallax={motion[index].speed}
       data-story-parallax-limit={motion[index].limit}
-      key={outcome.name}
+      key={item.title}
     >
       <figure>
-        {tool && <img
-          src={withDeploymentBase(tool.galleryImages[0]?.src ?? tool.figure.src)}
-          alt=""
+        <img
+          src={withDeploymentBase(aptoProgram.landingGallery[index].src)}
+          alt={aptoProgram.landingGallery[index].alt}
           width="1536"
           height="1024"
           loading="lazy"
           decoding="async"
-        />}
-        <figcaption><strong>{outcome.name}</strong><span>{outcome.description}</span></figcaption>
+        />
+        <figcaption><strong>{item.title}</strong><span>{item.description}</span></figcaption>
       </figure>
     </div>)}
   </div>;
@@ -324,15 +311,17 @@ function StoryHero() {
 }
 
 function ProgramStory() {
-  const about = pageCopy("/about");
   return <section className="story-section story-program" id="story-program" data-story-section="program" aria-labelledby="story-program-title">
     <header className="story-section-heading" data-story-reveal="heading">
-      <h2 id="story-program-title">{about.title}</h2>
-      <span>{aptoProgram.description}</span>
+      <h2 id="story-program-title">{aptoProgram.buildingTitle}</h2>
+      <span>{aptoProgram.buildingIntroduction}</span>
     </header>
     <OutcomePanorama />
     <div className="story-objectives">
-      <h3 data-story-reveal="left">{aptoProgram.objectivesTitle}</h3>
+      <div className="story-objectives-copy" data-story-reveal="left">
+        <h3>{aptoProgram.objectivesTitle}</h3>
+        <p>{aptoProgram.impactIntroduction}</p>
+      </div>
       <ul>{aptoProgram.objectives.map((objective, index) => <li
         key={objective}
         data-story-reveal="right"
@@ -364,7 +353,7 @@ function ProjectsStory() {
             <header>
               {participant && <ParticipantLogo participant={participant} />}
               <div>
-                <p>{project.organization}</p>
+                <p>Led by {participant?.displayName ?? project.organization}</p>
                 <span className="story-project-location">{project.location}</span>
                 <h3>{project.shortName}</h3>
               </div>
@@ -396,6 +385,7 @@ function ToolsStory() {
 
   const toolCard = (tool: (typeof aptoTools)[number], index: number) => {
     const media = presentationMediaForTool(tool);
+    const participant = participantFor(tool.participantId);
     return <article className="story-tool" key={tool.id} data-story-reveal="media">
       <div data-story-parallax={(.01 + index % 3 * .004).toFixed(3)} className="story-tool-gallery-wrap">
         <ToolKenBurnsGallery galleryId={`story-${tool.id}`} images={media} className="story-tool-gallery" />
@@ -408,6 +398,7 @@ function ToolsStory() {
           summary={{
             title: tool.name,
             description: tool.description,
+            eyebrow: participant ? `Led by ${participant.displayName}` : undefined,
             url: tool.toolUrl,
             linkLabel: aptoInterface.tools.openToolLabel,
           }}
@@ -427,11 +418,8 @@ function ToolsStory() {
         {row.map((tool, columnIndex) => tool ? toolCard(tool, rowIndex * 2 + columnIndex) : null)}
       </div>)}
     </div>
-    <div className="story-supporting-tools">
-      <h3>Tools from across the APTO cohort</h3>
-      <div className="story-tool-grid">
-        {supportingTools.map((tool, index) => toolCard(tool, index))}
-      </div>
+    <div className="story-tool-grid story-tool-grid-compact" aria-label="Tools from participating organizations">
+      {supportingTools.map((tool, index) => toolCard(tool, index))}
     </div>
   </section>;
 }
@@ -456,7 +444,13 @@ function CohortStory() {
       <span>{cohort.introduction}</span>
     </header>
     <section className="story-program-team" aria-labelledby="story-program-team-title" data-story-reveal="up">
-      <h3 id="story-program-team-title">{aptoInterface.story.programLeadershipLabel}</h3>
+      <header>
+        <img src={withDeploymentBase(aptoInterface.footer.nsfLogoSrc)} alt={aptoInterface.footer.nsfLogoAlt} width="88" height="88" loading="lazy" decoding="async" />
+        <div>
+          <h3 id="story-program-team-title">{aptoInterface.story.programLeadershipLabel}</h3>
+          <p>U.S. National Science Foundation</p>
+        </div>
+      </header>
       <div>{aptoProgram.programTeam.map((person) => <StoryPerson person={person} key={person.id} />)}</div>
     </section>
     <div className="story-cohort-directory">

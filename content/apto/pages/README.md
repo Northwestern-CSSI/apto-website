@@ -25,11 +25,11 @@ record without also implementing a route.
   "slug": "/tools",
   "metadataTitle": "Tools",
   "eyebrow": "Research tools",
-  "title": "Tools for exploring technology outcomes"
+  "title": "Explore Our Tools"
 }
 ---
 
-# Tools for exploring technology outcomes
+# Explore Our Tools
 
 ## Introduction
 

@@ -2,14 +2,14 @@
 {
   "kind": "page",
   "slug": "/about",
-  "metadataTitle": "About the program",
-  "eyebrow": "About APTO",
-  "title": "About the APTO program"
+  "metadataTitle": "What We Are Building",
+  "eyebrow": "Program outputs",
+  "title": "What We Are Building"
 }
 ---
 
-# About the APTO program
+# What We Are Building
 
 ## Introduction
 
-APTO is building causal, predictive technology-outcome models; new datasets for testing those models; and tools for assessing and predicting technology capability, production, and use. Together these outputs are intended to give research investors a clearer compass for strategic decisions in the United States.
+APTO is building an integrated evidence base that connects causal models, new datasets, and practical tools for understanding and guiding technology outcomes.
