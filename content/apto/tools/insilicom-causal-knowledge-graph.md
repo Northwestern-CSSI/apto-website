@@ -15,21 +15,21 @@
   ],
   "figure": {
     "kind": "causal-graph",
-    "src": "/apto/tools/photography/aggregating-01.jpg",
+    "src": "/apto/tools/placeholders/sculptural-folds.jpg",
     "label": "Tool A",
     "alt": "Placeholder conceptual view for Insilicom Tool A"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/photography/aggregating-02.jpg",
+      "src": "/apto/tools/placeholders/perforated-facade.jpg",
       "alt": "Second placeholder conceptual view for Insilicom Tool A"
     },
     {
-      "src": "/apto/tools/photography/aggregating-03.jpg",
+      "src": "/apto/tools/placeholders/backlit-leaves.jpg",
       "alt": "Third placeholder conceptual view for Insilicom Tool A"
     },
     {
-      "src": "/apto/tools/photography/aggregating-04.jpg",
+      "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
       "alt": "Fourth placeholder conceptual view for Insilicom Tool A"
     }
   ],

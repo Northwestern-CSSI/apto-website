@@ -12,14 +12,14 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "signal-matrix",
-    "src": "/apto/tools/photography/emerging-01.jpg",
+    "src": "/apto/tools/placeholders/mineral-strata.jpg",
     "label": "AI skills",
     "alt": "Conceptual view of artificial-intelligence skills"
   },
   "galleryImages": [
-    {"src": "/apto/tools/photography/emerging-02.jpg", "alt": "Conceptual AI skills view across fields"},
-    {"src": "/apto/tools/photography/emerging-03.jpg", "alt": "Conceptual AI skills view across organizations"},
-    {"src": "/apto/tools/photography/emerging-04.jpg", "alt": "Conceptual AI skills view across time"}
+    {"src": "/apto/tools/placeholders/iridescent-mineral.jpg", "alt": "Conceptual AI skills view across fields"},
+    {"src": "/apto/tools/placeholders/sculptural-folds.jpg", "alt": "Conceptual AI skills view across organizations"},
+    {"src": "/apto/tools/placeholders/backlit-leaves.jpg", "alt": "Conceptual AI skills view across time"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,

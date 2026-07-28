@@ -12,14 +12,14 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "global-map",
-    "src": "/apto/tools/photography/aggregating-01.jpg",
+    "src": "/apto/tools/placeholders/colonnade.jpg",
     "label": "Data",
     "alt": "Conceptual view of linked science and technology data"
   },
   "galleryImages": [
-    {"src": "/apto/tools/photography/aggregating-02.jpg", "alt": "Conceptual data view with linked records"},
-    {"src": "/apto/tools/photography/aggregating-03.jpg", "alt": "Conceptual data view across organizations"},
-    {"src": "/apto/tools/photography/aggregating-04.jpg", "alt": "Conceptual data view across research pipelines"}
+    {"src": "/apto/tools/placeholders/concrete-stairwell.jpg", "alt": "Conceptual data view with linked records"},
+    {"src": "/apto/tools/placeholders/water-on-stone.jpg", "alt": "Conceptual data view across organizations"},
+    {"src": "/apto/tools/placeholders/glass-prisms.jpg", "alt": "Conceptual data view across research pipelines"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,

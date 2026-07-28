@@ -12,14 +12,14 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "global-map",
-    "src": "/apto/tools/photography/agentic-01.jpg",
+    "src": "/apto/tools/placeholders/perforated-facade.jpg",
     "label": "Dashboards",
     "alt": "Conceptual view of science and technology dashboards"
   },
   "galleryImages": [
-    {"src": "/apto/tools/photography/agentic-02.jpg", "alt": "Conceptual dashboard metrics view"},
-    {"src": "/apto/tools/photography/agentic-03.jpg", "alt": "Conceptual dashboard comparison view"},
-    {"src": "/apto/tools/photography/agentic-04.jpg", "alt": "Conceptual dashboard evidence view"}
+    {"src": "/apto/tools/placeholders/glass-prisms.jpg", "alt": "Conceptual dashboard metrics view"},
+    {"src": "/apto/tools/placeholders/iridescent-mineral.jpg", "alt": "Conceptual dashboard comparison view"},
+    {"src": "/apto/tools/placeholders/colonnade.jpg", "alt": "Conceptual dashboard evidence view"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,

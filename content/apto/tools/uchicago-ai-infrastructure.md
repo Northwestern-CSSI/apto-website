@@ -12,14 +12,14 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "agent-network",
-    "src": "/apto/tools/photography/agentic-03.jpg",
+    "src": "/apto/tools/placeholders/iridescent-mineral.jpg",
     "label": "AI infrastructure",
     "alt": "Conceptual view of artificial-intelligence infrastructure"
   },
   "galleryImages": [
-    {"src": "/apto/tools/photography/emerging-04.jpg", "alt": "Conceptual AI infrastructure network view"},
-    {"src": "/apto/tools/photography/multiobjective-03.jpg", "alt": "Conceptual AI infrastructure systems view"},
-    {"src": "/apto/tools/photography/predicting-04.jpg", "alt": "Conceptual AI infrastructure deployment view"}
+    {"src": "/apto/tools/placeholders/backlit-leaves.jpg", "alt": "Conceptual AI infrastructure network view"},
+    {"src": "/apto/tools/placeholders/moss-and-lichen.jpg", "alt": "Conceptual AI infrastructure systems view"},
+    {"src": "/apto/tools/placeholders/mineral-strata.jpg", "alt": "Conceptual AI infrastructure deployment view"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,

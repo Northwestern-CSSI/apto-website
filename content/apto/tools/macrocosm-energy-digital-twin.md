@@ -15,21 +15,21 @@
   ],
   "figure": {
     "kind": "agent-network",
-    "src": "/apto/tools/photography/predicting-01.jpg",
+    "src": "/apto/tools/placeholders/colonnade.jpg",
     "label": "Tool A",
     "alt": "Placeholder conceptual view for Macrocosm Tool A"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/photography/predicting-02.jpg",
+      "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
       "alt": "Second placeholder conceptual view for Macrocosm Tool A"
     },
     {
-      "src": "/apto/tools/photography/predicting-03.jpg",
+      "src": "/apto/tools/placeholders/perforated-facade.jpg",
       "alt": "Third placeholder conceptual view for Macrocosm Tool A"
     },
     {
-      "src": "/apto/tools/photography/predicting-04.jpg",
+      "src": "/apto/tools/placeholders/sculptural-folds.jpg",
       "alt": "Fourth placeholder conceptual view for Macrocosm Tool A"
     }
   ],

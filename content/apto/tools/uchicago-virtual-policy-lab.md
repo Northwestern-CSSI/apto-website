@@ -12,14 +12,14 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/photography/predicting-01.jpg",
+    "src": "/apto/tools/placeholders/concrete-stairwell.jpg",
     "label": "The Parable Tool",
     "alt": "Conceptual view of the Parable tool"
   },
   "galleryImages": [
-    {"src": "/apto/tools/photography/predicting-02.jpg", "alt": "Conceptual Parable scenario view"},
-    {"src": "/apto/tools/photography/predicting-03.jpg", "alt": "Conceptual Parable comparison view"},
-    {"src": "/apto/tools/photography/predicting-04.jpg", "alt": "Conceptual Parable evidence view"}
+    {"src": "/apto/tools/placeholders/sculptural-folds.jpg", "alt": "Conceptual Parable scenario view"},
+    {"src": "/apto/tools/placeholders/mineral-strata.jpg", "alt": "Conceptual Parable comparison view"},
+    {"src": "/apto/tools/placeholders/water-on-stone.jpg", "alt": "Conceptual Parable evidence view"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,

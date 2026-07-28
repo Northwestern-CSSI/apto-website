@@ -14,21 +14,21 @@
   ],
   "figure": {
     "kind": "evidence-stream",
-    "src": "/apto/tools/photography/agentic-01.jpg",
+    "src": "/apto/tools/placeholders/glass-prisms.jpg",
     "label": "Tool B",
     "alt": "Placeholder conceptual view for Insilicom Tool B"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/photography/agentic-02.jpg",
+      "src": "/apto/tools/placeholders/water-on-stone.jpg",
       "alt": "Second placeholder conceptual view for Insilicom Tool B"
     },
     {
-      "src": "/apto/tools/photography/agentic-03.jpg",
+      "src": "/apto/tools/placeholders/concrete-stairwell.jpg",
       "alt": "Third placeholder conceptual view for Insilicom Tool B"
     },
     {
-      "src": "/apto/tools/photography/agentic-04.jpg",
+      "src": "/apto/tools/placeholders/iridescent-mineral.jpg",
       "alt": "Fourth placeholder conceptual view for Insilicom Tool B"
     }
   ],

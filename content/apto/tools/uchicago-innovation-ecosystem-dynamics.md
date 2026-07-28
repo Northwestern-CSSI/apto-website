@@ -12,14 +12,14 @@
   "categories": ["Capability", "Production", "Use"],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/photography/multiobjective-01.jpg",
+    "src": "/apto/tools/placeholders/backlit-leaves.jpg",
     "label": "AI benchmarks",
     "alt": "Conceptual view of artificial-intelligence benchmarks"
   },
   "galleryImages": [
-    {"src": "/apto/tools/photography/multiobjective-02.jpg", "alt": "Conceptual AI benchmark comparison"},
-    {"src": "/apto/tools/photography/multiobjective-03.jpg", "alt": "Conceptual AI benchmark trajectory"},
-    {"src": "/apto/tools/photography/multiobjective-04.jpg", "alt": "Conceptual AI benchmark evidence view"}
+    {"src": "/apto/tools/placeholders/moss-and-lichen.jpg", "alt": "Conceptual AI benchmark comparison"},
+    {"src": "/apto/tools/placeholders/colonnade.jpg", "alt": "Conceptual AI benchmark trajectory"},
+    {"src": "/apto/tools/placeholders/perforated-facade.jpg", "alt": "Conceptual AI benchmark evidence view"}
   ],
   "statusLabel": "Research preview",
   "demoVideoUrl": null,

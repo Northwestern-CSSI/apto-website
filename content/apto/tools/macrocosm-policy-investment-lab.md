@@ -15,21 +15,21 @@
   ],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/photography/multiobjective-01.jpg",
+    "src": "/apto/tools/placeholders/mineral-strata.jpg",
     "label": "Tool B",
     "alt": "Placeholder conceptual view for Macrocosm Tool B"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/photography/multiobjective-02.jpg",
+      "src": "/apto/tools/placeholders/glass-prisms.jpg",
       "alt": "Second placeholder conceptual view for Macrocosm Tool B"
     },
     {
-      "src": "/apto/tools/photography/multiobjective-03.jpg",
+      "src": "/apto/tools/placeholders/water-on-stone.jpg",
       "alt": "Third placeholder conceptual view for Macrocosm Tool B"
     },
     {
-      "src": "/apto/tools/photography/multiobjective-04.jpg",
+      "src": "/apto/tools/placeholders/backlit-leaves.jpg",
       "alt": "Fourth placeholder conceptual view for Macrocosm Tool B"
     }
   ],

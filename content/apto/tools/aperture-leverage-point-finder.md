@@ -15,21 +15,21 @@
   ],
   "figure": {
     "kind": "signal-matrix",
-    "src": "/apto/tools/photography/multiobjective-01.jpg",
+    "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
     "label": "Tool B",
     "alt": "Placeholder conceptual view for Aperture Tool B"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/photography/multiobjective-02.jpg",
+      "src": "/apto/tools/placeholders/mineral-strata.jpg",
       "alt": "Second placeholder conceptual view for Aperture Tool B"
     },
     {
-      "src": "/apto/tools/photography/multiobjective-03.jpg",
+      "src": "/apto/tools/placeholders/glass-prisms.jpg",
       "alt": "Third placeholder conceptual view for Aperture Tool B"
     },
     {
-      "src": "/apto/tools/photography/multiobjective-04.jpg",
+      "src": "/apto/tools/placeholders/perforated-facade.jpg",
       "alt": "Fourth placeholder conceptual view for Aperture Tool B"
     }
   ],

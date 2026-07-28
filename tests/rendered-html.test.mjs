@@ -87,7 +87,8 @@ test("generated content follows the featured-institution order and supplied-imag
     const media = [tool.figure, ...tool.galleryImages];
     assert.equal(media.length, 4, `${tool.name} should have four Ken Burns frames`);
     assert.equal(new Set(media.map((image) => image.src)).size, 4, `${tool.name} frames should be distinct`);
-    assert.ok(media.every((image) => image.src.startsWith("/apto/tools/photography/")), `${tool.name} should use supplied tool photography`);
+    const mediaRoot = tool.participantId === "northwestern" ? "/apto/tools/photography/" : "/apto/tools/placeholders/";
+    assert.ok(media.every((image) => image.src.startsWith(mediaRoot)), `${tool.name} should use its designated photography collection`);
     assert.ok(tool.resources.length > 0, `${tool.name} should expose supporting pieces`);
     assert.equal(new Set(tool.resources.map((resource) => resource.image.src)).size, tool.resources.length, `${tool.name} supporting pieces should use distinct images`);
     for (const resource of tool.resources) {
@@ -95,6 +96,10 @@ test("generated content follows the featured-institution order and supplied-imag
       if (resource.status === "coming-soon") assert.equal(resource.url, null);
     }
   }
+  const nonNorthwesternTools = data.tools.filter((tool) => tool.participantId !== "northwestern");
+  const placeholderImages = new Set(nonNorthwesternTools.flatMap((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src)));
+  assert.equal(placeholderImages.size, 10);
+  assert.equal(new Set(nonNorthwesternTools.map((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src).join("|"))).size, nonNorthwesternTools.length);
   const agenticTool = data.tools.find((tool) => tool.id === "agentic-framework-for-technology-outcome-mining");
   assert.deepEqual(agenticTool.resources.map((resource) => resource.name), [
     "Perovskite Dataset",
@@ -169,7 +174,8 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/class="apto-resource-path apto-resource-path-story(?: is-featured)?"/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
   assert.doesNotMatch(html, /apto-resource-detail/);
-  assert.match(html, /class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="20"/);
+  const heroImageCount = new Set(data.tools.flatMap((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src))).size;
+  assert.match(html, new RegExp(`class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="${heroImageCount}"`));
   assert.doesNotMatch(html, /class="story-hero-detail-anchor"/);
   const storySource = await readFile(new URL("../app/apto/story/story-site.tsx", import.meta.url), "utf8");
   assert.match(storySource, /const showHeroInset = false/);
@@ -265,10 +271,8 @@ test("the shared gallery preserves reduced-motion support and true crossfades", 
   assert.match(styles, /\.is-incoming\s*\{\s*z-index:\s*2;\s*opacity:\s*1/);
 });
 
-test("placeholder tools use independently ordered Northwestern media", async () => {
+test("each tool presentation uses its independently ordered content media", async () => {
   const source = await readFile(new URL("../app/apto/tool-media.ts", import.meta.url), "utf8");
-  assert.match(source, /participantId === "northwestern"/);
-  assert.match(source, /placeholderSteps/);
-  assert.match(source, /placeholderIndex \* 7 \+ 3/);
-  assert.match(source, /Array\.from\(\{ length: 4 \}/);
+  assert.match(source, /return ownMedia\(tool\)/);
+  assert.doesNotMatch(source, /northwesternMedia|placeholderSteps|placeholderIndex/);
 });

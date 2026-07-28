@@ -15,21 +15,21 @@
   ],
   "figure": {
     "kind": "problem-landscape",
-    "src": "/apto/tools/photography/emerging-01.jpg",
+    "src": "/apto/tools/placeholders/water-on-stone.jpg",
     "label": "Tool A",
     "alt": "Placeholder conceptual view for Aperture Tool A"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/photography/emerging-02.jpg",
+      "src": "/apto/tools/placeholders/colonnade.jpg",
       "alt": "Second placeholder conceptual view for Aperture Tool A"
     },
     {
-      "src": "/apto/tools/photography/emerging-03.jpg",
+      "src": "/apto/tools/placeholders/sculptural-folds.jpg",
       "alt": "Third placeholder conceptual view for Aperture Tool A"
     },
     {
-      "src": "/apto/tools/photography/emerging-04.jpg",
+      "src": "/apto/tools/placeholders/concrete-stairwell.jpg",
       "alt": "Fourth placeholder conceptual view for Aperture Tool A"
     }
   ],
