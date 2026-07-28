@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Represents a proposed causal mechanism as a transparent chain of assumptions, relationships, and expected observations that users can inspect.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/predicting-01.jpg", "alt": "Conceptual visual for a transparent causal mechanism"}},
-    {"name": "Piece B", "description": "Compares competing explanations against the same evidence base, highlighting where accounts agree, diverge, or depend on unsupported assumptions.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/predicting-curves.png", "alt": "Conceptual visual for competing causal explanations"}},
-    {"name": "Piece C", "description": "Identifies the observations and model tests that would most clearly distinguish among plausible causal stories and improve future analysis.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/predicting-02.jpg", "alt": "Conceptual visual for causal model tests"}}
+    {"name": "Piece A", "description": "Represents a proposed causal mechanism as a transparent chain of assumptions, relationships, and expected observations that users can inspect.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/decision.svg", "alt": "Causal pathway icon"}},
+    {"name": "Piece B", "description": "Compares competing explanations against the same evidence base, highlighting where accounts agree, diverge, or depend on unsupported assumptions.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evolution.svg", "alt": "Competing scenario evolution icon"}},
+    {"name": "Piece C", "description": "Identifies the observations and model tests that would most clearly distinguish among plausible causal stories and improve future analysis.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evidence.svg", "alt": "Causal evidence test icon"}}
   ]
 }
 ---

@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Aligns technical performance measures across models, tasks, datasets, hardware, and reporting practices so comparisons remain meaningful across time.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-01.jpg", "alt": "Conceptual visual for aligned AI performance measures"}},
-    {"name": "Piece B", "description": "Connects benchmark gains with compute, energy, data, cost, and deployment requirements to expose tradeoffs that headline performance scores can hide.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/multiobjective-trajectories.png", "alt": "Conceptual visual for AI benchmark tradeoffs"}},
-    {"name": "Piece C", "description": "Tests whether benchmark trajectories correspond with later production and use outcomes, providing evidence for historical validation and forecasting.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/multiobjective-02.jpg", "alt": "Conceptual visual for AI benchmark validation"}}
+    {"name": "Piece A", "description": "Aligns technical performance measures across models, tasks, datasets, hardware, and reporting practices so comparisons remain meaningful across time.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/benchmark.svg", "alt": "AI performance benchmark icon"}},
+    {"name": "Piece B", "description": "Connects benchmark gains with compute, energy, data, cost, and deployment requirements to expose tradeoffs that headline performance scores can hide.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/prediction.svg", "alt": "AI benchmark trajectory icon"}},
+    {"name": "Piece C", "description": "Tests whether benchmark trajectories correspond with later production and use outcomes, providing evidence for historical validation and forecasting.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/decision.svg", "alt": "Benchmark validation decision icon"}}
   ]
 }
 ---

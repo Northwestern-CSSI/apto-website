@@ -44,8 +44,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/aggregating-01.jpg",
-        "alt": "Supplied research photograph illustrating an integrated research-data pipeline"
+        "src": "/apto/tools/icons/research-funding.svg",
+        "alt": "Research funding and institutional records icon"
       }
     },
     {
@@ -54,8 +54,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/aggregating-02.jpg",
-        "alt": "Supplied research photograph illustrating linked innovation records at scale"
+        "src": "/apto/tools/icons/innovation.svg",
+        "alt": "Innovation insight icon"
       }
     },
     {
@@ -64,8 +64,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/aggregating-03.jpg",
-        "alt": "Supplied research photograph illustrating connected science and technology evidence"
+        "src": "/apto/tools/icons/network.svg",
+        "alt": "Connected research network icon"
       }
     },
     {
@@ -74,8 +74,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/aggregating-04.jpg",
-        "alt": "Supplied research photograph illustrating manufacturing and research data integration"
+        "src": "/apto/tools/icons/algorithm-agent.svg",
+        "alt": "Agentic research query icon"
       }
     },
     {
@@ -84,8 +84,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+        "src": "/apto/tools/icons/manufacturing.svg",
+        "alt": "Manufacturing evidence icon"
       }
     }
   ]

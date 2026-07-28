@@ -42,8 +42,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/emerging-01.jpg",
-        "alt": "Supplied research photograph illustrating a landscape of emerging technical problems"
+        "src": "/apto/tools/icons/evidence.svg",
+        "alt": "Project evidence documentation icon"
       }
     },
     {
@@ -52,8 +52,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/emerging-landscape.png",
-        "alt": "Science embedding landscape used to identify emerging clusters of ideas"
+        "src": "/apto/tools/icons/map.svg",
+        "alt": "Technical problem landscape data preview icon"
       }
     }
   ]

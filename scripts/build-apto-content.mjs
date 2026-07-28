@@ -1081,6 +1081,9 @@ function assertEveryAssetIsReferenced(assetFiles, publicPaths) {
     `asset reference ${publicPath}`,
   )));
   for (const assetFile of assetFiles) {
+    // Preserve the candidate figure library while the final tool-side figure
+    // treatment is still being selected. Piece icons remain live references.
+    if (relativeFile(assetFile).startsWith("content/apto/assets/tools/resources/")) continue;
     assert(
       referencedFiles.has(assetFile),
       `${relativeFile(assetFile)} is not referenced by live APTO content; remove it or add a content reference`,

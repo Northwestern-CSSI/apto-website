@@ -42,8 +42,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/aggregating-01.jpg",
-        "alt": "Supplied research photograph illustrating relationships in a technology knowledge graph"
+        "src": "/apto/tools/icons/network.svg",
+        "alt": "Causal knowledge graph documentation icon"
       }
     },
     {
@@ -52,8 +52,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/aggregating-architecture.png",
-        "alt": "Architecture connecting large-scale research data, analytical systems, and decision tools"
+        "src": "/apto/tools/icons/dataset.svg",
+        "alt": "Knowledge graph data preview icon"
       }
     }
   ]

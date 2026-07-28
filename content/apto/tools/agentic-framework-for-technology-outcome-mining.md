@@ -44,8 +44,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/agentic-01.jpg",
-        "alt": "Supplied research photograph illustrating evidence mining across technical sources"
+        "src": "/apto/tools/icons/perovskite.svg",
+        "alt": "Layered perovskite material icon"
       }
     },
     {
@@ -54,8 +54,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/agentic-roles.png",
-        "alt": "Diagram of specialized AI agents coordinating evidence discovery, extraction, and review"
+        "src": "/apto/tools/icons/quantum.svg",
+        "alt": "Quantum circuit and qubit icon"
       }
     }
   ]

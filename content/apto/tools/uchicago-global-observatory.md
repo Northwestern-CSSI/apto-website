@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Organizes source records and shared identifiers so grants, publications, patents, organizations, workforce, and market evidence can be connected without losing provenance.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/aggregating-01.jpg", "alt": "Conceptual visual for connected data records"}},
-    {"name": "Piece B", "description": "Defines the schemas, quality checks, and transformation steps that turn heterogeneous records into comparable inputs for technology-outcome models.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/aggregating-architecture.png", "alt": "Conceptual visual for data schemas and quality checks"}},
-    {"name": "Piece C", "description": "Profiles evidence coverage across technologies and time, making gaps, biases, and opportunities for new data collection visible before analysis begins.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/aggregating-02.jpg", "alt": "Conceptual visual for evidence coverage"}}
+    {"name": "Piece A", "description": "Organizes source records and shared identifiers so grants, publications, patents, organizations, workforce, and market evidence can be connected without losing provenance.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/dataset.svg", "alt": "Connected dataset icon"}},
+    {"name": "Piece B", "description": "Defines the schemas, quality checks, and transformation steps that turn heterogeneous records into comparable inputs for technology-outcome models.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/network.svg", "alt": "Linked data schema icon"}},
+    {"name": "Piece C", "description": "Profiles evidence coverage across technologies and time, making gaps, biases, and opportunities for new data collection visible before analysis begins.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evidence.svg", "alt": "Evidence quality and coverage icon"}}
   ]
 }
 ---

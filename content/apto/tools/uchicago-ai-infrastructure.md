@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Measures compute capacity, hardware availability, energy demand, data resources, and workforce inputs across organizations, regions, and time.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-03.jpg", "alt": "Conceptual visual for AI infrastructure inputs"}},
-    {"name": "Piece B", "description": "Connects infrastructure investments with changes in technical performance and production capacity, revealing dependencies and possible bottlenecks.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-04.jpg", "alt": "Conceptual visual for AI infrastructure dependencies"}},
-    {"name": "Piece C", "description": "Supports scenario comparisons for scaling AI systems under different hardware, energy, data, workforce, and organizational constraints.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/predicting-04.jpg", "alt": "Conceptual visual for AI infrastructure scenarios"}}
+    {"name": "Piece A", "description": "Measures compute capacity, hardware availability, energy demand, data resources, and workforce inputs across organizations, regions, and time.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/processor.svg", "alt": "AI compute capacity icon"}},
+    {"name": "Piece B", "description": "Connects infrastructure investments with changes in technical performance and production capacity, revealing dependencies and possible bottlenecks.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/energy.svg", "alt": "AI infrastructure energy icon"}},
+    {"name": "Piece C", "description": "Supports scenario comparisons for scaling AI systems under different hardware, energy, data, workforce, and organizational constraints.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/infrastructure.svg", "alt": "AI systems infrastructure icon"}}
   ]
 }
 ---

@@ -80,7 +80,7 @@ test("generated content follows the featured-institution order and supplied-imag
     assert.ok(tool.resources.length > 0, `${tool.name} should expose supporting pieces`);
     assert.equal(new Set(tool.resources.map((resource) => resource.image.src)).size, tool.resources.length, `${tool.name} supporting pieces should use distinct images`);
     for (const resource of tool.resources) {
-      assert.match(resource.image.src, /^\/apto\/tools\/(?:resources|photography)\//);
+      assert.match(resource.image.src, /^\/apto\/tools\/icons\/[a-z0-9-]+\.svg$/);
       if (resource.status === "coming-soon") assert.equal(resource.url, null);
     }
   }
@@ -186,6 +186,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /\.apto-resource-route\s*>\s*li\s*\{[\s\S]*?flex:\s*0 1 25%/);
   assert.match(resourceStyles, /\.apto-resource-node\s*\{[\s\S]*?padding:\s*calc\(var\(--resource-gap\) \/ 2\)/);
   assert.match(resourceStyles, /\.apto-resource-path\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.76rem/);
+  assert.match(resourceStyles, /\.apto-resource-thumb img\[src\$="\.svg"\]/);
   const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);

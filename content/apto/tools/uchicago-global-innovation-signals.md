@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Builds a consistent vocabulary of AI skills from research, job, education, and organizational evidence while preserving links to the original sources.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-01.jpg", "alt": "Conceptual visual for an AI skills vocabulary"}},
-    {"name": "Piece B", "description": "Maps combinations of expertise across institutions, regions, and application domains to reveal emerging capability clusters and changing workforce demand.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/emerging-landscape.png", "alt": "Conceptual visual for AI expertise clusters"}},
-    {"name": "Piece C", "description": "Tracks movement of researchers and skills through collaboration and employment networks, supporting analysis of how knowledge diffuses into production and use.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/emerging-02.jpg", "alt": "Conceptual visual for AI skill movements"}}
+    {"name": "Piece A", "description": "Builds a consistent vocabulary of AI skills from research, job, education, and organizational evidence while preserving links to the original sources.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/skills.svg", "alt": "AI skills vocabulary icon"}},
+    {"name": "Piece B", "description": "Maps combinations of expertise across institutions, regions, and application domains to reveal emerging capability clusters and changing workforce demand.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/network.svg", "alt": "Expertise cluster network icon"}},
+    {"name": "Piece C", "description": "Tracks movement of researchers and skills through collaboration and employment networks, supporting analysis of how knowledge diffuses into production and use.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/evolution.svg", "alt": "Skill movement and diffusion icon"}}
   ]
 }
 ---

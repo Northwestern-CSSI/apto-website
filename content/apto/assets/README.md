@@ -1,9 +1,9 @@
 # Images, figures, logos, and headshots
 
 This folder is the source of truth for every image published by the APTO site.
-The content builder copies only supported images that are referenced by live
-content. An unreferenced image fails validation so unused files do not
-accumulate in the repository or deployment.
+The content builder copies supported images into the deployed site. With the
+exception of the candidate tool-side figures retained under `tools/resources/`,
+an unreferenced image fails validation so unused files do not accumulate.
 
 Never edit generated copies under `public/apto/`.
 
@@ -14,6 +14,7 @@ The public path mirrors the location beneath this folder:
 | Source file | Markdown reference |
 | --- | --- |
 | `assets/tools/photography/example.jpg` | `/apto/tools/photography/example.jpg` |
+| `assets/tools/icons/example.svg` | `/apto/tools/icons/example.svg` |
 | `assets/tools/resources/example.png` | `/apto/tools/resources/example.png` |
 | `assets/people/jane-doe.webp` | `/apto/people/jane-doe.webp` |
 | `assets/partners/example.svg` | `/apto/partners/example.svg` |
@@ -37,6 +38,16 @@ Use lowercase kebab-case filenames. Supported extensions are `.avif`, `.jpeg`,
 Approved and supplied conceptual photographs live in `tools/photography/`.
 Both public designs fill their media frames with these images, so keep the
 focal area suitable for responsive `object-fit: cover` cropping.
+
+## Supporting-piece icons
+
+Supporting-piece icons live in `tools/icons/` as 64 × 64 viewBox SVG files.
+Use the shared rounded-line visual language, cyan-purple-gold accents, and
+meaningful geometry. Every piece within one tool must reference a different
+icon. Keep raster images out of this folder.
+
+Candidate tool-side figures remain in `tools/resources/` while that separate
+visual treatment is being decided; they are not used as piece icons.
 
 ## Tool galleries
 

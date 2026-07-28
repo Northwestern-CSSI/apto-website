@@ -42,8 +42,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/predicting-01.jpg",
-        "alt": "Supplied research photograph illustrating a modeled energy-system trajectory"
+        "src": "/apto/tools/icons/energy.svg",
+        "alt": "Energy-system model documentation icon"
       }
     },
     {
@@ -52,8 +52,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/predicting-curves.png",
-        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+        "src": "/apto/tools/icons/infrastructure.svg",
+        "alt": "Energy infrastructure data preview icon"
       }
     }
   ]

@@ -44,8 +44,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/multiobjective-01.jpg",
-        "alt": "Supplied research photograph illustrating progress across multiple technology outcomes"
+        "src": "/apto/tools/icons/processor.svg",
+        "alt": "Processor evolution icon"
       }
     },
     {
@@ -54,8 +54,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/multiobjective-trajectories.png",
-        "alt": "Technology trajectories compared across multiple performance dimensions"
+        "src": "/apto/tools/icons/evolution.svg",
+        "alt": "Punctuated technology evolution icon"
       }
     }
   ]

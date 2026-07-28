@@ -42,8 +42,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/multiobjective-01.jpg",
-        "alt": "Supplied research photograph illustrating policy and investment scenario pathways"
+        "src": "/apto/tools/icons/decision.svg",
+        "alt": "Policy scenario documentation icon"
       }
     },
     {
@@ -52,8 +52,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/multiobjective-trajectories.png",
-        "alt": "Technology trajectories compared across multiple performance dimensions"
+        "src": "/apto/tools/icons/prediction.svg",
+        "alt": "Investment scenario data preview icon"
       }
     }
   ]

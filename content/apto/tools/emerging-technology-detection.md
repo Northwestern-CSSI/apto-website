@@ -44,8 +44,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/emerging-01.jpg",
-        "alt": "Supplied research photograph illustrating early signals of an emerging technology"
+        "src": "/apto/tools/icons/algorithm-agent.svg",
+        "alt": "Sparse autoencoder method icon"
       }
     },
     {
@@ -54,8 +54,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/emerging-landscape.png",
-        "alt": "Science map used to identify emerging clusters of ideas"
+        "src": "/apto/tools/icons/science.svg",
+        "alt": "Science maps icon"
       }
     }
   ]

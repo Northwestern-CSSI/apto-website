@@ -42,8 +42,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/multiobjective-01.jpg",
-        "alt": "Supplied research photograph illustrating multiple technology performance pathways"
+        "src": "/apto/tools/icons/discovery.svg",
+        "alt": "Project discovery documentation icon"
       }
     },
     {
@@ -52,8 +52,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/multiobjective-trajectories.png",
-        "alt": "Technology trajectories compared across multiple performance dimensions"
+        "src": "/apto/tools/icons/dataset.svg",
+        "alt": "Technology trajectory data preview icon"
       }
     }
   ]

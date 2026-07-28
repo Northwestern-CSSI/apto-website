@@ -25,9 +25,9 @@
   "demoVideoUrl": null,
   "toolUrl": null,
   "resources": [
-    {"name": "Piece A", "description": "Coordinates capability, production, and use indicators in a shared temporal view so progress and divergence can be compared without losing context.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-01.jpg", "alt": "Conceptual visual for coordinated technology indicators"}},
-    {"name": "Piece B", "description": "Connects geographic and organizational patterns with underlying evidence, supporting comparisons across institutions, regions, and technology domains.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/resources/agentic-roles.png", "alt": "Conceptual visual for geographic and organizational patterns"}},
-    {"name": "Piece C", "description": "Surfaces uncertainty, missing evidence, and model disagreement alongside headline indicators so users can judge the strength of each signal.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/photography/agentic-02.jpg", "alt": "Conceptual visual for uncertainty and model disagreement"}}
+    {"name": "Piece A", "description": "Coordinates capability, production, and use indicators in a shared temporal view so progress and divergence can be compared without losing context.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/dashboard.svg", "alt": "Technology dashboard icon"}},
+    {"name": "Piece B", "description": "Connects geographic and organizational patterns with underlying evidence, supporting comparisons across institutions, regions, and technology domains.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/map.svg", "alt": "Geographic evidence map icon"}},
+    {"name": "Piece C", "description": "Surfaces uncertainty, missing evidence, and model disagreement alongside headline indicators so users can judge the strength of each signal.", "status": "coming-soon", "url": null, "image": {"src": "/apto/tools/icons/uncertainty.svg", "alt": "Uncertainty and model disagreement icon"}}
   ]
 }
 ---

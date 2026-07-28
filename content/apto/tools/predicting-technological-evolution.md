@@ -44,8 +44,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/predicting-01.jpg",
-        "alt": "Supplied research photograph illustrating forecasting signals for technological evolution"
+        "src": "/apto/tools/icons/research-funding.svg",
+        "alt": "Research funding forecast icon"
       }
     },
     {
@@ -54,8 +54,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/predicting-02.jpg",
-        "alt": "Supplied research photograph illustrating linked innovation and commercialization evidence"
+        "src": "/apto/tools/icons/innovation.svg",
+        "alt": "Innovation signal icon"
       }
     },
     {
@@ -64,8 +64,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/predicting-03.jpg",
-        "alt": "Supplied research photograph illustrating competing technology forecast pathways"
+        "src": "/apto/tools/icons/decision.svg",
+        "alt": "Technology translation pathway icon"
       }
     },
     {
@@ -74,8 +74,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/photography/predicting-04.jpg",
-        "alt": "Supplied research photograph illustrating manufacturing evidence used in forecasting"
+        "src": "/apto/tools/icons/perovskite.svg",
+        "alt": "Perovskite forecast icon"
       }
     },
     {
@@ -84,8 +84,8 @@
       "status": "coming-soon",
       "url": null,
       "image": {
-        "src": "/apto/tools/resources/predicting-curves.png",
-        "alt": "Predicted state-of-the-art curves comparing future technology performance trajectories"
+        "src": "/apto/tools/icons/manufacturing.svg",
+        "alt": "Manufacturing forecast evidence icon"
       }
     }
   ]
