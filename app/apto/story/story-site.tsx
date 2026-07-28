@@ -26,13 +26,13 @@ import { ToolResourcePath } from "../tool-resource-path";
 import { ProgramIntroduction } from "../program-introduction";
 import { useAptoTheme } from "../use-apto-theme";
 
-type StorySection = "program" | "projects" | "tools" | "cohort" | "convening";
+type StorySection = "program" | "projects" | "tools" | "convening";
 type AptoParticipant = (typeof aptoParticipants)[number];
 type AptoPerson = AptoParticipant["people"][number];
 
-const storySections: StorySection[] = ["program", "projects", "tools", "cohort", "convening"];
+const storySections: StorySection[] = ["program", "projects", "tools", "convening"];
 
-function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/cohort" | "/convening") {
+function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/convening") {
   const page = aptoPages.find((candidate) => candidate.slug === slug);
   if (!page) throw new Error(`Missing Markdown page content for ${slug}`);
   return page;
@@ -223,7 +223,6 @@ function StoryHeader({ activeSection, theme, onToggle }: {
     program: aptoInterface.story.programLabel,
     projects: aptoInterface.primaryNavigation.find((item) => item.section === "projects")?.label ?? "Projects",
     tools: aptoInterface.primaryNavigation.find((item) => item.section === "tools")?.label ?? "Tools",
-    cohort: aptoInterface.primaryNavigation.find((item) => item.section === "cohort")?.label ?? "Cohort",
     convening: aptoInterface.primaryNavigation.find((item) => item.section === "convening")?.label ?? "Convening",
   };
   return <header className="story-header" data-testid="story-header">
@@ -343,6 +342,15 @@ function ProgramStory() {
   </>;
 }
 
+function StoryPerson({ person }: { person: AptoPerson }) {
+  return <article className="story-person">
+    {person.headshotUrl
+      ? <img src={withDeploymentBase(person.headshotUrl)} alt={person.headshotAlt} width="120" height="120" loading="lazy" decoding="async" />
+      : <span className="story-person-initials" aria-hidden="true">{person.initials}</span>}
+    <div><h4>{person.name}</h4><p>{person.role}</p>{person.profileUrl && <StoryExternalLink href={person.profileUrl}>{aptoInterface.people.viewProfileLabel}</StoryExternalLink>}</div>
+  </article>;
+}
+
 function ProjectsStory() {
   const projects = pageCopy("/projects");
   return <section className="story-section story-projects" id="story-projects" data-story-section="projects" aria-labelledby="story-projects-title">
@@ -373,10 +381,13 @@ function ProjectsStory() {
             <p>{project.summary}</p>
             <div className="story-project-meta">
               <span>{aptoInterface.projects.awardedPrefix} {project.awardedYear} {aptoInterface.projects.dateStatusSeparator} {project.statusLabel}</span>
-              <StoryExternalLink href={project.awardUrl}>{aptoInterface.projects.awardLabel} {project.awardId}</StoryExternalLink>
+              <div>
+                <StoryExternalLink href={project.awardUrl}>{aptoInterface.projects.awardLabel} {project.awardId}</StoryExternalLink>
+                {participant && <StoryExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</StoryExternalLink>}
+              </div>
             </div>
             <div className="story-project-people" aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}>
-              {project.people.map((person) => <span key={person.id}><strong>{person.name}</strong><small>{person.role}</small></span>)}
+              {project.people.map((person) => <StoryPerson person={person} key={person.id} />)}
             </div>
           </article>;
         })}
@@ -439,52 +450,6 @@ function ToolsStory() {
   </section>;
 }
 
-function StoryPerson({ person }: { person: AptoPerson | (typeof aptoProgram.programTeam)[number] }) {
-  return <article className="story-person">
-    {person.headshotUrl
-      ? <img src={withDeploymentBase(person.headshotUrl)} alt={person.headshotAlt} width="120" height="120" loading="lazy" decoding="async" />
-      : <span className="story-person-initials" aria-hidden="true">{person.initials}</span>}
-    <div><h4>{person.name}</h4><p>{person.role}</p>{person.profileUrl && <StoryExternalLink href={person.profileUrl}>{aptoInterface.people.viewProfileLabel}</StoryExternalLink>}</div>
-  </article>;
-}
-
-function CohortStory() {
-  const cohort = pageCopy("/cohort");
-  return <section className="story-section story-cohort" id="story-cohort" data-story-section="cohort" aria-labelledby="story-cohort-title">
-    <div className="story-cohort-art" data-story-parallax="-0.018" aria-hidden="true">
-      <img src={withDeploymentBase(aptoInterface.story.cohortArtSrc)} alt="" width="1400" height="900" loading="lazy" decoding="async" />
-    </div>
-    <header className="story-section-heading" data-story-reveal="heading">
-      <h2 id="story-cohort-title">{cohort.title}</h2>
-      <span>{cohort.introduction}</span>
-    </header>
-    <section className="story-program-team" aria-labelledby="story-program-team-title" data-story-reveal="up">
-      <header>
-        <img src={withDeploymentBase(aptoInterface.footer.nsfLogoSrc)} alt={aptoInterface.footer.nsfLogoAlt} width="88" height="88" loading="lazy" decoding="async" />
-        <div>
-          <h3 id="story-program-team-title">{aptoInterface.story.programLeadershipLabel}</h3>
-          <p>U.S. National Science Foundation</p>
-        </div>
-      </header>
-      <div>{aptoProgram.programTeam.map((person) => <StoryPerson person={person} key={person.id} />)}</div>
-    </section>
-    <div className="story-cohort-directory">
-      {aptoParticipants.map((participant) => <article
-        className="story-cohort-group"
-        key={participant.id}
-        data-story-reveal="up"
-        style={{ "--participant-accent": participant.accent } as CSSProperties}
-      >
-        <header>
-          <ParticipantLogo participant={participant} />
-          <div><h3>{participant.displayName}</h3><p>{participant.location}</p><StoryExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</StoryExternalLink></div>
-        </header>
-        <div className="story-cohort-people">{participant.people.map((person) => <StoryPerson person={person} key={person.id} />)}</div>
-      </article>)}
-    </div>
-  </section>;
-}
-
 function ConveningStory() {
   const page = pageCopy("/convening");
   return <section className="story-section story-convening" id="story-convening" data-story-section="convening" aria-labelledby="story-convening-title">
@@ -514,9 +479,17 @@ function StoryFooter() {
     <a className="story-footer-brand" href="#story-top"><strong>{aptoProgram.acronym}</strong><span>{aptoProgram.name}</span></a>
     <div className="story-footer-support">
       <img src={withDeploymentBase(aptoInterface.footer.nsfLogoSrc)} alt={aptoInterface.footer.nsfLogoAlt} width="64" height="64" loading="lazy" />
-      <div><strong>{aptoInterface.story.supportedByLabel}</strong><p>{aptoBoilerplate}</p></div>
+      <div><strong>{aptoInterface.story.supportedByLabel}</strong><p>{aptoInterface.footer.supportDescription}</p></div>
     </div>
+    <address className="story-footer-contacts">
+      <strong>{aptoInterface.footer.programContactsLabel}</strong>
+      <ul>{aptoProgram.programTeam.map((person) => <li key={person.id}>
+        <span>{person.name}, {person.role}</span>
+        {person.email && <a href={`mailto:${person.email}`}>{person.email}</a>}
+      </li>)}</ul>
+    </address>
     <div className="story-footer-links"><a href={aptoRoute("/atlas")}>Atlas view</a><a href="#story-top">{aptoInterface.footer.backToTopLabel} ↑</a></div>
+    <p className="story-footer-disclaimer">{aptoBoilerplate}</p>
   </footer>;
 }
 
@@ -534,7 +507,6 @@ export function AptoStoryPage() {
       <ProgramStory />
       <ProjectsStory />
       <ToolsStory />
-      <CohortStory />
       <ConveningStory />
     </main>
     <StoryFooter />

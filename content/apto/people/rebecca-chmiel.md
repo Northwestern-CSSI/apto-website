@@ -9,7 +9,8 @@
   "organization": "U.S. National Science Foundation",
   "headshotUrl": null,
   "headshotAlt": "Portrait of Rebecca Chmiel",
-  "profileUrl": null
+  "profileUrl": null,
+  "email": "rjchmiel@nsf.gov"
 }
 ---
 

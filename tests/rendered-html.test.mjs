@@ -30,7 +30,7 @@ test("publishes only the Story and Atlas presentation families", async () => {
   }
 
   for (const prefix of ["/atlas", "/apto/atlas"]) {
-    for (const suffix of ["", "/projects", "/tools", "/cohort", "/convening"]) {
+    for (const suffix of ["", "/projects", "/tools", "/convening"]) {
       const path = `${prefix}${suffix}`;
       const response = await render(path);
       assert.equal(response.status, 200, `${path} should render`);
@@ -38,7 +38,7 @@ test("publishes only the Story and Atlas presentation families", async () => {
     }
   }
 
-  for (const path of ["/projects", "/tools", "/cohort", "/convening", "/tools-lab", "/apto/projects", "/apto/tools-lab"]) {
+  for (const path of ["/projects", "/tools", "/cohort", "/convening", "/tools-lab", "/apto/projects", "/apto/cohort", "/apto/tools-lab", "/atlas/cohort", "/apto/atlas/cohort"]) {
     assert.equal((await render(path)).status, 404, `${path} should no longer expose a retired presentation`);
   }
 });
@@ -120,6 +120,12 @@ test("generated content follows the featured-institution order and supplied-imag
     northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
     ["dashun-wang", "benjamin-jones", "jian-cao", "mark-hersam", "yian-yin"],
   );
+  assert.deepEqual(data.program.programTeam.map((person) => [person.name, person.role]), [
+    ["Rebecca Chmiel", "Program Manager"],
+    ["Chaitanya Baru", "Program Contact"],
+    ["Megan Catterton", "Program Contact"],
+  ]);
+  assert.equal(data.program.programTeam.find((person) => person.id === "rebecca-chmiel").email, "rjchmiel@nsf.gov");
   assert.equal(data.convenings[0].location, "Washington, D.C.");
 });
 
@@ -138,6 +144,14 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/data-story-reveal="right"/g) ?? []).length >= data.program.objectives.length);
   assert.match(html, /Together, the APTO cohort is working to achieve/);
   assert.match(html, /Led by Northwestern University/);
+  assert.doesNotMatch(html, /story-cohort|story-nav-cohort|>Cohort</);
+  assert.ok((html.match(/class="story-project-people"/g) ?? []).length >= data.projects.length);
+  assert.ok((html.match(/class="story-person"/g) ?? []).length >= data.participants.reduce((sum, participant) => sum + participant.people.length, 0));
+  assert.match(html, /Program contacts/);
+  assert.match(html, /Rebecca Chmiel<!-- -->, <!-- -->Program Manager/);
+  assert.match(html, /Chaitanya Baru<!-- -->, <!-- -->Program Contact/);
+  assert.match(html, /Megan Catterton<!-- -->, <!-- -->Program Contact/);
+  assert.match(html, /href="mailto:rjchmiel@nsf.gov"/);
   assert.doesNotMatch(html, /Tools from across the APTO cohort/i);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
@@ -215,11 +229,15 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(atlasHomeHtml, /The first APTO cohort includes/);
   for (const organization of ["Northwestern University", "University of Chicago", "Apperture.AI", "Insilicom", "Macrocosm"]) assert.ok(atlasHomeHtml.includes(organization));
   for (const project of data.projects) assert.ok(atlasHomeHtml.includes(`/atlas/projects#atlas-project-${project.id}`));
+  const atlasProjectsHtml = await (await render("/atlas/projects")).text();
+  assert.ok((atlasProjectsHtml.match(/class="atlas-project-people"/g) ?? []).length >= data.projects.length);
+  assert.match(atlasProjectsHtml, /Program contacts/);
+  assert.match(atlasProjectsHtml, /href="mailto:rjchmiel@nsf.gov"/);
 });
 
 test("light and dark logo assets remain available in both presentations", async () => {
   const data = await content();
-  for (const path of ["/story", "/atlas/cohort"]) {
+  for (const path of ["/story", "/atlas/projects"]) {
     const html = await (await render(path)).text();
     for (const participant of data.participants) {
       for (const [theme, asset] of Object.entries(participant.logo.variants)) {

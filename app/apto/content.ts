@@ -21,6 +21,7 @@ export type AptoParticipantLogo = {
 
 export type AptoPersonRole =
   | "Program Manager"
+  | "Program Contact"
   | "Principal Investigator"
   | "Co-Principal Investigator";
 
@@ -34,11 +35,12 @@ export type AptoPerson = {
   headshotUrl: string | null;
   headshotAlt: string;
   profileUrl: string | null;
+  email: string | null;
 };
 
 export type AptoProgramPerson = AptoPerson & {
   participantId: null;
-  role: "Program Manager";
+  role: "Program Manager" | "Program Contact";
 };
 
 export type AptoFigureKind =
@@ -148,7 +150,6 @@ export type AptoProgram = {
 export type AptoPageSlug =
   | "/"
   | "/about"
-  | "/cohort"
   | "/convening"
   | "/projects"
   | "/tools";
@@ -161,7 +162,7 @@ export type AptoPage = {
   introduction: string;
 };
 
-export type AptoInterfaceSection = "home" | "cohort" | "convening" | "projects" | "tools";
+export type AptoInterfaceSection = "home" | "convening" | "projects" | "tools";
 
 export type AptoInterfaceContent = {
   directions: Array<{
@@ -183,9 +184,6 @@ export type AptoInterfaceContent = {
   home: {
     primaryActionLabel: string;
     secondaryActionLabel: string;
-    cohortEyebrow: string;
-    cohortTitle: string;
-    cohortLinkLabel: string;
     pathways: Array<{
       section: AptoInterfaceSection;
       title: string;
@@ -196,17 +194,14 @@ export type AptoInterfaceContent = {
     viewLabel: string;
     socialImageSrc: string;
     socialImageAlt: string;
-    cohortArtSrc: string;
     directoryLabel: string;
     navigationLabel: string;
     programLabel: string;
     projectsLabel: string;
     toolsLabel: string;
-    cohortLabel: string;
     projectStageTitle: string;
     projectStageDescription: string;
     toolCollectionLabel: string;
-    programLeadershipLabel: string;
     supportedByLabel: string;
   };
   atlas: {
@@ -224,8 +219,6 @@ export type AptoInterfaceContent = {
     toolCollectionLabel: string;
     toolDetailsLabel: string;
     closeDetailsLabel: string;
-    cohortIndexLabel: string;
-    programLeadershipLabel: string;
     supportedByLabel: string;
   };
   common: {
@@ -263,13 +256,12 @@ export type AptoInterfaceContent = {
     openToolLabel: string;
   };
   people: {
-    programTeamEyebrow: string;
-    programTeamTitle: string;
     viewProfileLabel: string;
   };
   footer: {
     supportTitle: string;
     supportDescription: string;
+    programContactsLabel: string;
     disclaimerTitle: string;
     backToTopLabel: string;
     nsfWebsiteUrl: string;

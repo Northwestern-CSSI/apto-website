@@ -26,11 +26,10 @@ updates both presentations.
 | Individual projects | `projects/*.md` |
 | Tools-page introduction | `pages/tools.md` |
 | Individual tools and their figures | `tools/*.md` |
-| Cohort-page introduction | `pages/cohort.md` |
 | Convening-page introduction | `pages/convening.md` |
 | Annual convening text and photography | `convenings/*.md` |
 | Organizations, logos, and locations | `participants/*.md` |
-| Program manager and investigators | `people/*.md` |
+| NSF program contacts and project investigators | `people/*.md` |
 | Navigation, buttons, filters, and footer | `interface.md` |
 | Figures, logos, headshots, NSF mark, and social image | `assets/` |
 
@@ -116,7 +115,7 @@ legal permission, brand approval, or whether remote links remain live.
 ## Special files
 
 - `interface.md` owns shared labels and navigation. The visible top navigation
-  must remain Program, Projects, Tools, Cohort, Convening. Its `story` block contains the
+  must remain Program, Projects, Tools, Convening. Its `story` block contains the
   labels used only by the alternate long-scroll presentation.
 - `program.md` owns substantive program language, the Atlas landing gallery,
   and the exact NSF disclaimer. Keep the five `landingGallery` visuals free of

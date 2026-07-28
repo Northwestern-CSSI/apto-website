@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/apto-website";
 const content = JSON.parse(await readFile(new URL("../app/apto/content.generated.json", import.meta.url), "utf8"));
 const storyPages = ["index.html", "story/index.html", "apto/story/index.html"];
-const atlasPages = ["", "projects/", "tools/", "cohort/", "convening/"].flatMap((suffix) => [
+const atlasPages = ["", "projects/", "tools/", "convening/"].flatMap((suffix) => [
   `atlas/${suffix}index.html`,
   `apto/atlas/${suffix}index.html`,
 ]);
@@ -16,7 +16,7 @@ for (const page of storyPages) {
   assert.match(html, /class="apto-story"/);
   assert.doesNotMatch(html, /concept-apto|Scroll to explore|story-map|us-map\.svg/i);
   assert.ok(html.includes(`href="${basePath}/atlas"`), `${page} needs the Atlas presentation link`);
-  for (const section of ["program", "projects", "tools", "cohort", "convening"]) {
+  for (const section of ["program", "projects", "tools", "convening"]) {
     assert.ok(html.includes(`href="#story-${section}"`), `${page} needs its ${section} anchor link`);
   }
   assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 6);
@@ -34,7 +34,7 @@ for (const page of atlasPages) {
   assert.ok(html.includes(`href="${basePath}/atlas"`));
   assert.ok(html.includes(`href="${basePath}/atlas/projects"`));
   assert.ok(html.includes(`href="${basePath}/atlas/tools"`));
-  assert.ok(html.includes(`href="${basePath}/atlas/cohort"`));
+  assert.ok(!html.includes(`href="${basePath}/atlas/cohort"`));
   assert.ok(html.includes(`href="${basePath}/atlas/convening"`));
   assert.ok(html.includes(`href="${basePath}/story"`));
   if (page.endsWith("tools/index.html")) {

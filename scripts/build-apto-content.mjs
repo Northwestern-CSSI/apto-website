@@ -53,13 +53,13 @@ const allowedParticipantKinds = new Set(["Company", "University"]);
 const allowedImageExtensions = new Set([".avif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const allowedPersonRoles = new Set([
   "Program Manager",
+  "Program Contact",
   "Principal Investigator",
   "Co-Principal Investigator",
 ]);
 const expectedDirectionIds = new Set(["nsfhome", "nsfnetwork"]);
 const expectedPages = new Map([
   ["about", { slug: "/about" }],
-  ["cohort", { slug: "/cohort" }],
   ["convening", { slug: "/convening" }],
   ["home", { slug: "/" }],
   ["projects", { slug: "/projects" }],
@@ -209,6 +209,17 @@ const investigatorRoleOrder = new Map([
 function comparePeopleByRole(left, right) {
   const leftPriority = investigatorRoleOrder.get(left.role) ?? 2;
   const rightPriority = investigatorRoleOrder.get(right.role) ?? 2;
+  return leftPriority - rightPriority || compareAlphabetically(left.name, right.name);
+}
+
+const programRoleOrder = new Map([
+  ["Program Manager", 0],
+  ["Program Contact", 1],
+]);
+
+function compareProgramContacts(left, right) {
+  const leftPriority = programRoleOrder.get(left.role) ?? 2;
+  const rightPriority = programRoleOrder.get(right.role) ?? 2;
   return leftPriority - rightPriority || compareAlphabetically(left.name, right.name);
 }
 
@@ -582,7 +593,7 @@ function validateInterface(document) {
   assert(study.socialImageSrc.startsWith("/apto/"), `${context}.study.socialImageSrc must begin with /apto/`);
 
   const primaryNavigation = requireArray(metadata, "primaryNavigation", context);
-  assert(primaryNavigation.length === 5, `${context}.primaryNavigation must contain five links`);
+  assert(primaryNavigation.length === 4, `${context}.primaryNavigation must contain four links`);
   const primaryNavigationSections = primaryNavigation.map((item, index) => {
     const itemContext = `${context}.primaryNavigation[${index}]`;
     requireObject(item, itemContext);
@@ -592,21 +603,18 @@ function validateInterface(document) {
   });
   assertExactSet(
     primaryNavigationSections,
-    new Set(["home", "projects", "tools", "cohort", "convening"]),
+    new Set(["home", "projects", "tools", "convening"]),
     `${context}.primaryNavigation sections`,
   );
   assert(
-    primaryNavigationSections.join(",") === "home,projects,tools,cohort,convening",
-    `${context}.primaryNavigation must be ordered Program, Projects, Tools, Cohort, Convening`,
+    primaryNavigationSections.join(",") === "home,projects,tools,convening",
+    `${context}.primaryNavigation must be ordered Program, Projects, Tools, Convening`,
   );
 
   const home = requireObject(metadata.home, `${context}.home`);
   const homeStrings = [
     "primaryActionLabel",
     "secondaryActionLabel",
-    "cohortEyebrow",
-    "cohortTitle",
-    "cohortLinkLabel",
   ];
   assertExactKeys(home, [...homeStrings, "pathways"], `${context}.home`);
   for (const key of homeStrings) requireString(home, key, `${context}.home`);
@@ -619,7 +627,7 @@ function validateInterface(document) {
       for (const key of ["title", "description"]) requireString(pathway, key, pathwayContext);
       return requireString(pathway, "section", pathwayContext);
     }),
-    new Set(["cohort", "projects", "tools"]),
+    new Set(["projects", "tools"]),
     `${context}.home.pathways sections`,
   );
 
@@ -629,23 +637,19 @@ function validateInterface(document) {
       "viewLabel",
       "socialImageSrc",
       "socialImageAlt",
-      "cohortArtSrc",
       "directoryLabel",
       "navigationLabel",
       "programLabel",
       "projectsLabel",
       "toolsLabel",
-      "cohortLabel",
       "projectStageTitle",
       "projectStageDescription",
       "toolCollectionLabel",
-      "programLeadershipLabel",
       "supportedByLabel",
     ],
     `${context}.story`,
   );
   assert(metadata.story.socialImageSrc.startsWith("/apto/"), `${context}.story.socialImageSrc must begin with /apto/`);
-  assert(metadata.story.cohortArtSrc.startsWith("/apto/"), `${context}.story.cohortArtSrc must begin with /apto/`);
 
   requireStringKeys(
     metadata.atlas,
@@ -664,8 +668,6 @@ function validateInterface(document) {
       "toolCollectionLabel",
       "toolDetailsLabel",
       "closeDetailsLabel",
-      "cohortIndexLabel",
-      "programLeadershipLabel",
       "supportedByLabel",
     ],
     `${context}.atlas`,
@@ -719,7 +721,7 @@ function validateInterface(document) {
   );
   requireStringKeys(
     metadata.people,
-    ["programTeamEyebrow", "programTeamTitle", "viewProfileLabel"],
+    ["viewProfileLabel"],
     `${context}.people`,
   );
   const footer = requireStringKeys(
@@ -727,6 +729,7 @@ function validateInterface(document) {
     [
       "supportTitle",
       "supportDescription",
+      "programContactsLabel",
       "disclaimerTitle",
       "backToTopLabel",
       "nsfWebsiteUrl",
@@ -786,9 +789,7 @@ function validateParticipant(document) {
 function validatePerson(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
-  assertExactKeys(
-    metadata,
-    [
+  const personKeys = [
       "kind",
       "id",
       "participantId",
@@ -799,9 +800,9 @@ function validatePerson(document) {
       "headshotUrl",
       "headshotAlt",
       "profileUrl",
-    ],
-    `${context} frontmatter`,
-  );
+    ];
+  if (Object.hasOwn(metadata, "email")) personKeys.push("email");
+  assertExactKeys(metadata, personKeys, `${context} frontmatter`);
   assert(metadata.kind === "person", `${context}.kind must be “person”`);
   const id = requireString(metadata, "id", context);
   assertRecordIdMatchesFilename(file, id, context);
@@ -812,19 +813,22 @@ function validatePerson(document) {
   if (metadata.participantId !== null) requireString(metadata, "participantId", context);
   const role = requireString(metadata, "role", context);
   assert(allowedPersonRoles.has(role), `${context}.role is not supported`);
+  const isProgramContact = role === "Program Manager" || role === "Program Contact";
   assert(
-    (role === "Program Manager" && metadata.participantId === null) ||
-      (role !== "Program Manager" && metadata.participantId !== null),
+    (isProgramContact && metadata.participantId === null) ||
+      (!isProgramContact && metadata.participantId !== null),
     `${context}.participantId must be null only for program leadership`,
   );
   assert(metadata.organization === null || typeof metadata.organization === "string", `${context}.organization must be null or a string`);
-  if (role === "Program Manager") requireString(metadata, "organization", context);
+  if (isProgramContact) requireString(metadata, "organization", context);
   else assert(metadata.organization === null, `${context}.organization must be null for investigators`);
   requireString(metadata, "initials", context);
   requireString(metadata, "headshotAlt", context);
   requireOptionalLocalImage(metadata.headshotUrl, `${context}.headshotUrl`);
   requireOptionalHttpsUrl(metadata.profileUrl, `${context}.profileUrl`);
-  return { sourceFile: file, person: omitFields(metadata, ["kind"]) };
+  const email = metadata.email ?? null;
+  assert(email === null || (typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)), `${context}.email must be a valid email address or null`);
+  return { sourceFile: file, person: { ...omitFields(metadata, ["kind", "email"]), email } };
 }
 
 function validateProject(document) {
@@ -1142,7 +1146,6 @@ async function buildContent() {
   for (const [publicPath, field] of [
     [interfaceRecord.study.socialImageSrc, "study.socialImageSrc"],
     [interfaceRecord.story.socialImageSrc, "story.socialImageSrc"],
-    [interfaceRecord.story.cohortArtSrc, "story.cohortArtSrc"],
     [interfaceRecord.atlas.socialImageSrc, "atlas.socialImageSrc"],
     [interfaceRecord.footer.nsfLogoSrc, "footer.nsfLogoSrc"],
   ]) {
@@ -1198,7 +1201,6 @@ async function buildContent() {
   assertEveryAssetIsReferenced(assetFiles, [
     interfaceRecord.study.socialImageSrc,
     interfaceRecord.story.socialImageSrc,
-    interfaceRecord.story.cohortArtSrc,
     interfaceRecord.atlas.socialImageSrc,
     interfaceRecord.footer.nsfLogoSrc,
     ...programRecord.program.landingGallery.map((image) => image.src),
@@ -1236,7 +1238,7 @@ async function buildContent() {
   const programTeam = personRecords
     .filter((record) => record.person.participantId === null)
     .map((record) => record.person)
-    .sort((left, right) => compareAlphabetically(left.name, right.name));
+    .sort(compareProgramContacts);
   assert(programTeam.length > 0, "At least one program leadership person Markdown record is required");
 
   const tools = [...toolRecords]

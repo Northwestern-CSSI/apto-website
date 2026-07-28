@@ -17,36 +17,28 @@
     { "label": "Program", "section": "home" },
     { "label": "Projects", "section": "projects" },
     { "label": "Tools", "section": "tools" },
-    { "label": "Cohort", "section": "cohort" },
     { "label": "Convening", "section": "convening" }
   ],
   "home": {
     "primaryActionLabel": "Explore the projects",
     "secondaryActionLabel": "How the program works",
-    "cohortEyebrow": "Participating organizations",
-    "cohortTitle": "Five teams working toward a shared evidence base",
-    "cohortLinkLabel": "Meet the cohort",
     "pathways": [
       { "section": "projects", "title": "Projects", "description": "The active APTO awards and the questions each team is pursuing." },
-      { "section": "tools", "title": "Tools", "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research." },
-      { "section": "cohort", "title": "Cohort", "description": "Participating organizations, program leadership, and the investigators leading each project." }
+      { "section": "tools", "title": "Tools", "description": "Exploration, forecasting, evidence, and scenario interfaces emerging from APTO research." }
     ]
   },
   "story": {
     "viewLabel": "APTO Continuum",
     "socialImageSrc": "/apto/tools/photography/agentic-01.jpg",
     "socialImageAlt": "An abstract evidence landscape connecting technology clusters and development trajectories.",
-    "cohortArtSrc": "/apto/tools/photography/emerging-02.jpg",
     "directoryLabel": "Atlas view",
     "navigationLabel": "APTO story sections",
     "programLabel": "Program",
     "projectsLabel": "Research portfolio",
     "toolsLabel": "Exploration tools",
-    "cohortLabel": "People and organizations",
     "projectStageTitle": "Five projects, one evidence base",
     "projectStageDescription": "Move through five complementary approaches to assessing and predicting technology outcomes.",
     "toolCollectionLabel": "research tools",
-    "programLeadershipLabel": "Program leadership",
     "supportedByLabel": "Supported by the U.S. National Science Foundation"
   },
   "atlas": {
@@ -64,8 +56,6 @@
     "toolCollectionLabel": "Tool gallery",
     "toolDetailsLabel": "View details",
     "closeDetailsLabel": "Close details",
-    "cohortIndexLabel": "Organization index",
-    "programLeadershipLabel": "Program leadership",
     "supportedByLabel": "Supported by the U.S. National Science Foundation"
   },
   "common": {
@@ -103,13 +93,12 @@
     "openToolLabel": "Open tool"
   },
   "people": {
-    "programTeamEyebrow": "Program team",
-    "programTeamTitle": "Program leadership",
     "viewProfileLabel": "View profile"
   },
   "footer": {
     "supportTitle": "Supported by the U.S. National Science Foundation",
     "supportDescription": "APTO is a portfolio of NSF-supported research projects.",
+    "programContactsLabel": "Program contacts",
     "disclaimerTitle": "NSF acknowledgement and disclaimer",
     "backToTopLabel": "Back to top",
     "nsfWebsiteUrl": "https://www.nsf.gov/",

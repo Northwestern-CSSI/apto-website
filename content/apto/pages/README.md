@@ -1,6 +1,6 @@
 # Editing page titles and introductions
 
-These six records control page metadata, page titles, and introductory
+These five records control page metadata, page titles, and introductory
 paragraphs. The legacy `eyebrow` field remains in the schema for compatibility
 but is not displayed:
 
@@ -10,10 +10,9 @@ but is not displayed:
 | `about.md` | Program-overview title and introduction |
 | `projects.md` | Projects-page introduction |
 | `tools.md` | Tools-page introduction |
-| `cohort.md` | Cohort-page introduction |
 | `convening.md` | Annual-convening introduction |
 
-The builder requires exactly these six filenames. Do not add another page
+The builder requires exactly these five filenames. Do not add another page
 record without also implementing a route.
 
 ## Record shape

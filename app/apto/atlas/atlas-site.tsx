@@ -29,20 +29,19 @@ import { ToolResourcePath } from "../tool-resource-path";
 import { ProgramIntroduction } from "../program-introduction";
 import { useAptoTheme } from "../use-apto-theme";
 
-export type AtlasSection = "home" | "projects" | "tools" | "cohort" | "convening";
+export type AtlasSection = "home" | "projects" | "tools" | "convening";
 
 type Participant = (typeof aptoParticipants)[number];
-type Person = Participant["people"][number] | (typeof aptoProgram.programTeam)[number];
+type Person = Participant["people"][number];
 
-const sectionSlugs: Record<AtlasSection, "\/" | "\/projects" | "\/tools" | "\/cohort" | "\/convening"> = {
+const sectionSlugs: Record<AtlasSection, "\/" | "\/projects" | "\/tools" | "\/convening"> = {
   home: "/",
   projects: "/projects",
   tools: "/tools",
-  cohort: "/cohort",
   convening: "/convening",
 };
 
-function pageCopy(slug: "\/" | "\/about" | "\/projects" | "\/tools" | "\/cohort" | "\/convening") {
+function pageCopy(slug: "\/" | "\/about" | "\/projects" | "\/tools" | "\/convening") {
   const page = aptoPages.find((candidate) => candidate.slug === slug);
   if (!page) throw new Error(`Missing Markdown page content for ${slug}`);
   return page;
@@ -164,14 +163,17 @@ function PageIntroduction({ section }: { section: AtlasSection }) {
 
 function OrganizationIndex({ labelledBy }: { labelledBy: string }) {
   return <div className="atlas-organization-index" aria-labelledby={labelledBy}>
-    {aptoParticipants.map((participant) => <a
-      href={atlasRoute("cohort") + `#atlas-team-${participant.id}`}
-      key={participant.id}
-      style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
-    >
-      <ParticipantLogo participant={participant} />
-      <strong>{participant.displayName}</strong>
-    </a>)}
+    {aptoParticipants.map((participant) => {
+      const project = aptoProjects.find((candidate) => candidate.participantId === participant.id);
+      return <a
+        href={`${atlasRoute("projects")}#atlas-project-${project?.id ?? participant.id}`}
+        key={participant.id}
+        style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
+      >
+        <ParticipantLogo participant={participant} />
+        <strong>{participant.displayName}</strong>
+      </a>;
+    })}
   </div>;
 }
 
@@ -207,8 +209,8 @@ function ProgramPage() {
 
     <section className="atlas-participants" aria-labelledby="atlas-participants-title">
       <header>
-        <h2 id="atlas-participants-title">A nationwide research cohort</h2>
-        <a href={atlasRoute("cohort")}>Meet the cohort <span aria-hidden="true">→</span></a>
+        <h2 id="atlas-participants-title">Participating organizations</h2>
+        <a href={atlasRoute("projects")}>Explore the projects <span aria-hidden="true">→</span></a>
       </header>
       <OrganizationIndex labelledBy="atlas-participants-title" />
     </section>
@@ -240,9 +242,9 @@ function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
     <div className="atlas-project-body">
       <div>
         <p>{project.summary}</p>
-        <ul aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}>
-          {project.people.map((person) => <li key={person.id}><strong>{person.name}</strong><span>{person.role}</span></li>)}
-        </ul>
+        <div className="atlas-project-people" aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}>
+          {project.people.map((person) => <PersonEntry person={person} key={person.id} />)}
+        </div>
         <nav aria-label={`${participant.displayName} project links`}>
           <ExternalLink href={project.awardUrl}>{aptoInterface.projects.awardLabel} {project.awardId}</ExternalLink>
           <ExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</ExternalLink>
@@ -352,48 +354,6 @@ function PersonEntry({ person }: { person: Person }) {
   </article>;
 }
 
-function CohortPage() {
-  return <main className="atlas-main atlas-cohort" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-cohort-title">
-    <PageIntroduction section="cohort" />
-    <section className="atlas-leadership" aria-labelledby="atlas-leadership-title">
-      <header className="atlas-leadership-heading">
-        <img src={withDeploymentBase(aptoInterface.footer.nsfLogoSrc)} alt={aptoInterface.footer.nsfLogoAlt} width="88" height="88" loading="lazy" decoding="async" />
-        <div>
-          <h2 id="atlas-leadership-title">{aptoInterface.atlas.programLeadershipLabel}</h2>
-          <p>U.S. National Science Foundation</p>
-        </div>
-      </header>
-      <div>{aptoProgram.programTeam.map((person) => <PersonEntry person={person} key={person.id} />)}</div>
-    </section>
-    <section className="atlas-cohort-index" aria-labelledby="atlas-cohort-index-title">
-      <header><h2 id="atlas-cohort-index-title">Five organizations, one program</h2></header>
-      <OrganizationIndex labelledBy="atlas-cohort-index-title" />
-    </section>
-    <section className="atlas-team-chapters" aria-label={aptoInterface.atlas.participantsLabel}>
-      {aptoParticipants.map((participant, index) => {
-        const project = aptoProjects.find((candidate) => candidate.participantId === participant.id);
-        return <article
-          className={`atlas-team-chapter${index % 2 ? " is-reversed" : ""}`}
-          id={`atlas-team-${participant.id}`}
-          key={participant.id}
-          style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
-        >
-          <div className="atlas-team-identity">
-            <ParticipantLogo participant={participant} />
-            <h2>{participant.displayName}</h2>
-            <p>{participant.location}</p>
-            {project && <span>{project.shortName}</span>}
-            <ExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</ExternalLink>
-          </div>
-          <div className="atlas-team-people">
-            {participant.people.map((person) => <PersonEntry person={person} key={person.id} />)}
-          </div>
-        </article>;
-      })}
-    </section>
-  </main>;
-}
-
 function ConveningPage() {
   return <main className="atlas-main atlas-convening" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-convening-title">
     <PageIntroduction section="convening" />
@@ -422,10 +382,17 @@ function AtlasFooter() {
       </a>
       <div><p>{aptoInterface.atlas.supportedByLabel}</p><span>{aptoInterface.footer.supportDescription}</span></div>
     </div>
-    <p>{aptoBoilerplate}</p>
+    <address className="atlas-footer-contacts">
+      <strong>{aptoInterface.footer.programContactsLabel}</strong>
+      <ul>{aptoProgram.programTeam.map((person) => <li key={person.id}>
+        <span>{person.name}, {person.role}</span>
+        {person.email && <a href={`mailto:${person.email}`}>{person.email}</a>}
+      </li>)}</ul>
+    </address>
     <nav aria-label={aptoInterface.accessibility.footerNavigationLabel}>
       {aptoInterface.primaryNavigation.map((item) => <a href={atlasRoute(item.section)} key={item.section}>{item.label}</a>)}
     </nav>
+    <p className="atlas-footer-disclaimer">{aptoBoilerplate}</p>
   </footer>;
 }
 
@@ -437,7 +404,6 @@ export function AtlasSitePage({ section }: { section: AtlasSection }) {
     {section === "home" && <ProgramPage />}
     {section === "projects" && <ProjectsPage />}
     {section === "tools" && <ToolsPage />}
-    {section === "cohort" && <CohortPage />}
     {section === "convening" && <ConveningPage />}
     <AtlasFooter />
   </div>;
