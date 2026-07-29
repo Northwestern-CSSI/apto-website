@@ -167,6 +167,8 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(html, /Led by Northwestern University/);
   assert.doesNotMatch(html, /story-cohort|story-nav-cohort|>Cohort</);
   assert.ok((html.match(/class="story-project-people"/g) ?? []).length >= data.projects.length);
+  assert.ok((html.match(/class="story-project-people" data-people-layout="grid"/g) ?? []).length >= 2);
+  assert.ok((html.match(/class="story-project-people" data-people-layout="rows"/g) ?? []).length >= 3);
   assert.ok((html.match(/class="story-person"/g) ?? []).length >= data.participants.reduce((sum, participant) => sum + participant.people.length, 0));
   assert.match(html, /Program contacts/);
   assert.match(html, /class="story-footer-contact-primary"/);
@@ -264,6 +266,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   for (const project of data.projects) assert.ok(atlasHomeHtml.includes(`/atlas/projects#atlas-project-${project.id}`));
   const atlasProjectsHtml = await (await render("/atlas/projects")).text();
   assert.ok((atlasProjectsHtml.match(/class="atlas-project-people"/g) ?? []).length >= data.projects.length);
+  assert.ok((atlasProjectsHtml.match(/class="atlas-project-people" data-people-layout="grid"/g) ?? []).length >= 2);
+  assert.ok((atlasProjectsHtml.match(/class="atlas-project-people" data-people-layout="rows"/g) ?? []).length >= 3);
   assert.match(atlasProjectsHtml, /Program contacts/);
   assert.match(atlasProjectsHtml, /class="atlas-footer-contact-primary"/);
   assert.match(atlasProjectsHtml, /class="atlas-footer-team"/);

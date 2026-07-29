@@ -473,7 +473,11 @@ function ProjectsStory() {
                 {participant && <StoryExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</StoryExternalLink>}
               </div>
             </div>
-            <div className="story-project-people" aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}>
+            <div
+              className="story-project-people"
+              data-people-layout={["northwestern", "uchicago"].includes(project.participantId) ? "grid" : "rows"}
+              aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}
+            >
               {project.people.map((person) => <StoryPerson person={person} key={person.id} />)}
             </div>
           </article>;

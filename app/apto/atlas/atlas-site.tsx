@@ -258,7 +258,11 @@ function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
     <div className="atlas-project-body">
       <div>
         <p>{project.summary}</p>
-        <div className="atlas-project-people" aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}>
+        <div
+          className="atlas-project-people"
+          data-people-layout={["northwestern", "uchicago"].includes(project.participantId) ? "grid" : "rows"}
+          aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}
+        >
           {project.people.map((person) => <PersonEntry person={person} key={person.id} />)}
         </div>
         <nav aria-label={`${participant.displayName} project links`}>
