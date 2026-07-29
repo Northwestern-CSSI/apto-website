@@ -10,7 +10,7 @@
     {
       "title": "Technology Outcome Models",
       "subtitle": "Causal, predictive models",
-      "description": "We are building causal, predictive models to predict both future and historical states of technology outcomes across many technology areas so that investors have a compass for strategic investments in research and development in the United States."
+      "description": "We are building models that reconstruct historical outcomes and forecast future trajectories across many technology areas, giving investors a compass for strategic research and development in the United States."
     },
     {
       "title": "Datasets",

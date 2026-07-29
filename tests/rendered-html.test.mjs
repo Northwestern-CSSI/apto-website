@@ -193,6 +193,8 @@ test("Story gives project titles full card width and pairs lead-institution tool
   const html = await (await render("/story")).text();
   assert.equal((html.match(/class="story-outcome-depth"/g) ?? []).length, 3);
   for (const output of ["Technology Outcome Models", "Causal, predictive models", "Datasets", "Tools"]) assert.ok(html.includes(output));
+  assert.match(html, /reconstruct historical outcomes and forecast future trajectories/);
+  assert.doesNotMatch(html, /causal, predictive models to predict/);
   assert.match(html, /About the APTO Program/);
   assert.match(html, /The first APTO cohort includes/);
   for (const organization of ["Northwestern University", "University of Chicago", "Apperture.AI", "Insilicom", "Macrocosm"]) assert.ok(html.includes(organization));
