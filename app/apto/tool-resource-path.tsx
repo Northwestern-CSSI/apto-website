@@ -141,9 +141,7 @@ export function ToolResourcePath({
 
     <article className={`apto-resource-summary${activeResource ? " is-showing-resource" : ""}`} id={summaryId} aria-live="polite">
       <div className="apto-resource-summary-copy">
-        {activeResource?.status === "coming-soon"
-          ? <p>Coming soon</p>
-          : !activeResource && summary.eyebrow ? <p>{summary.eyebrow}</p> : null}
+        {!activeResource && summary.eyebrow ? <p>{summary.eyebrow}</p> : null}
         <Heading>{activeResource?.name ?? summary.title}</Heading>
         {activeResource
           ? <span>{activeResource.description}</span>
@@ -161,14 +159,16 @@ export function ToolResourcePath({
                 {pointerInstruction(activeResource.actionLabel ?? "Open the link")}
               </span>
             </>
-          : !activeResource && summary.url
-            ? <a
-                href={summary.url}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${summary.linkLabel ?? "Open tool"} in a new tab`}
-              >{summary.linkLabel ?? "Open tool"} <span aria-hidden="true">↗</span></a>
-            : null}
+          : activeResource?.status === "coming-soon"
+            ? <span className="apto-resource-status-hint">Coming soon</span>
+            : !activeResource && summary.url
+              ? <a
+                  href={summary.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${summary.linkLabel ?? "Open tool"} in a new tab`}
+                >{summary.linkLabel ?? "Open tool"} <span aria-hidden="true">↗</span></a>
+              : null}
       </div>
       {activeResource && <figure className="apto-resource-summary-inset">
         <img

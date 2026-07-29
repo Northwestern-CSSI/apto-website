@@ -278,7 +278,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /window\.matchMedia\("\(hover: none\), \(pointer: coarse\)"\)/);
   assert.doesNotMatch(resourceSource, />Available</);
-  assert.match(resourceSource, /<p>Coming soon<\/p>/);
+  assert.doesNotMatch(resourceSource, /<p>Coming soon<\/p>/);
+  assert.match(resourceSource, /className="apto-resource-status-hint">Coming soon/);
   assert.match(resourceSource, /current === index \? null : index/);
   assert.match(resourceSource, /document\.addEventListener\("pointerdown", dismissOutsidePiece, true\)/);
   assert.match(resourceSource, /\.closest\("\.apto-resource-node, \.apto-resource-touch-action"\)/);
@@ -302,6 +303,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /@media \(hover: none\), \(pointer: coarse\)/);
   assert.match(resourceStyles, /\.apto-resource-summary-copy > \.apto-resource-touch-action\s*\{\s*display:\s*none/);
   assert.match(resourceStyles, /\.apto-resource-summary-copy > \.apto-resource-pointer-hint/);
+  assert.match(resourceStyles, /\.apto-resource-summary-copy > \.apto-resource-status-hint/);
+  assert.match(resourceStyles, /color:\s*#9cc8d6/);
   assert.doesNotMatch(resourceStyles, /rgb\(103 224 239/);
   const networkIcon = await readFile(new URL("../content/apto/assets/tools/icons/network.svg", import.meta.url), "utf8");
   const evidenceIcon = await readFile(new URL("../content/apto/assets/tools/icons/evidence.svg", import.meta.url), "utf8");
