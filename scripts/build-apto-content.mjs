@@ -472,7 +472,7 @@ function validateProgram(document) {
       "buildingItems",
       "objectivesTitle",
       "impactIntroduction",
-      "objectives",
+      "impactGroups",
       "landingGallery",
       "heroGallery",
       "lastVerified",
@@ -502,9 +502,20 @@ function validateProgram(document) {
   });
   requireString(metadata, "objectivesTitle", context);
   requireString(metadata, "impactIntroduction", context);
-  const objectives = requireArray(metadata, "objectives", context);
-  assert(objectives.length > 0, `${context}.objectives must not be empty`);
-  objectives.forEach((objective, index) => requireStringValue(objective, `${context}.objectives[${index}]`));
+  const impactGroups = requireArray(metadata, "impactGroups", context);
+  const expectedImpactParticipants = ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"];
+  assert(impactGroups.length === expectedImpactParticipants.length, `${context}.impactGroups must contain the five APTO participants`);
+  impactGroups.forEach((group, index) => {
+    const groupContext = `${context}.impactGroups[${index}]`;
+    requireObject(group, groupContext);
+    assertExactKeys(group, ["participantId", "entries"], groupContext);
+    const participantId = requireString(group, "participantId", groupContext);
+    assert(participantId === expectedImpactParticipants[index], `${groupContext}.participantId must be “${expectedImpactParticipants[index]}”`);
+    const entries = requireArray(group, "entries", groupContext);
+    const expectedEntryCount = index < 2 ? 3 : 2;
+    assert(entries.length === expectedEntryCount, `${groupContext}.entries must contain exactly ${expectedEntryCount} impact statements`);
+    entries.forEach((entry, entryIndex) => requireStringValue(entry, `${groupContext}.entries[${entryIndex}]`));
+  });
   const landingGallery = requireArray(metadata, "landingGallery", context);
   assert(landingGallery.length === 5, `${context}.landingGallery must contain five equally presented program visuals`);
   landingGallery.forEach((image, index) => {

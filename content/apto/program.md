@@ -23,10 +23,44 @@
   ],
   "objectivesTitle": "APTO’s impact",
   "impactIntroduction": "Together, the APTO cohort is working to achieve the following goals and aim to have the following impact.",
-  "objectives": [
-    "Establish a new empirical foundation for mapping research investments to real-world technological advancements.",
-    "Enable high-accuracy predictions and targeted interventions that can accelerate innovation.",
-    "Enhance understanding and prediction of research-and-development return on investment in the United States."
+  "impactGroups": [
+    {
+      "participantId": "northwestern",
+      "entries": [
+        "Establish a new empirical foundation for mapping research investments to real-world technological advancements.",
+        "Enable high-accuracy predictions and targeted interventions that can accelerate innovation.",
+        "Enhance understanding and prediction of research-and-development return on investment in the United States."
+      ]
+    },
+    {
+      "participantId": "uchicago",
+      "entries": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+      ]
+    },
+    {
+      "participantId": "aperture",
+      "entries": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      ]
+    },
+    {
+      "participantId": "insilicom",
+      "entries": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium."
+      ]
+    },
+    {
+      "participantId": "macrocosm",
+      "entries": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos."
+      ]
+    }
   ],
   "landingGallery": [
     {

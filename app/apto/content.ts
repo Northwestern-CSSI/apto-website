@@ -139,7 +139,10 @@ export type AptoProgram = {
   }>;
   objectivesTitle: string;
   impactIntroduction: string;
-  objectives: string[];
+  impactGroups: Array<{
+    participantId: AptoParticipantId;
+    entries: string[];
+  }>;
   landingGallery: Array<{
     src: string;
     alt: string;

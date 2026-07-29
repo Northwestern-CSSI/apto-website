@@ -106,6 +106,8 @@ function useStoryExperience(
     const revealElements = [...root.querySelectorAll<HTMLElement>("[data-story-reveal]")];
     const sectionElements = [...root.querySelectorAll<HTMLElement>("[data-story-section]")];
     const parallaxElements = [...root.querySelectorAll<HTMLElement>("[data-story-parallax]")];
+    const impactGroups = [...root.querySelectorAll<HTMLElement>("[data-story-impact-group]")];
+    const impactLogos = [...root.querySelectorAll<HTMLElement>("[data-story-impact-logo]")];
     const revealVectors: Record<string, readonly [number, number]> = {
       heading: [0, 0],
       left: [-18, 0],
@@ -178,6 +180,44 @@ function useStoryExperience(
           element.style.setProperty("--story-reveal-x", "0px");
           element.style.setProperty("--story-reveal-y", "0px");
           element.classList.add("is-visible");
+        });
+      }
+
+      if (impactGroups.length > 0) {
+        const marker = window.scrollY + headerHeight + Math.max(0, viewportHeight - headerHeight) * .48;
+        const centers = impactGroups.map((element) => documentTop(element) + element.offsetHeight / 2);
+        let impactPosition = 0;
+        if (centers.length > 1 && marker >= centers.at(-1)!) {
+          impactPosition = centers.length - 1;
+        } else if (centers.length > 1 && marker > centers[0]) {
+          for (let index = 0; index < centers.length - 1; index += 1) {
+            if (marker <= centers[index + 1]) {
+              const linear = clamp01((marker - centers[index]) / Math.max(1, centers[index + 1] - centers[index]));
+              const progress = reduceMotion ? (linear >= .5 ? 1 : 0) : linear * linear * (3 - 2 * linear);
+              impactPosition = index + progress;
+              break;
+            }
+          }
+        }
+        const currentIndex = Math.round(impactPosition);
+        impactGroups.forEach((element, index) => {
+          const distance = Math.abs(index - impactPosition);
+          const focus = reduceMotion ? 1 : Math.max(.34, 1 - distance * .56);
+          element.style.setProperty("--story-impact-focus", focus.toFixed(4));
+          element.classList.toggle("is-current", index === currentIndex);
+        });
+        impactLogos.forEach((element, index) => {
+          const delta = index - impactPosition;
+          const distance = Math.abs(delta);
+          const opacity = reduceMotion ? (index === currentIndex ? 1 : 0) : clamp01(1 - distance * 1.18);
+          const shift = reduceMotion ? 0 : delta < 0 ? delta * 86 : delta * 48;
+          const scale = reduceMotion ? 1 : .9 + opacity * .1;
+          const blur = reduceMotion ? 0 : Math.min(7, distance * 4.5);
+          element.style.setProperty("--story-impact-logo-opacity", opacity.toFixed(4));
+          element.style.setProperty("--story-impact-logo-x", `${shift.toFixed(2)}px`);
+          element.style.setProperty("--story-impact-logo-scale", scale.toFixed(4));
+          element.style.setProperty("--story-impact-logo-blur", `${blur.toFixed(2)}px`);
+          element.classList.toggle("is-current", index === currentIndex);
         });
       }
     };
@@ -333,11 +373,57 @@ function ProgramStory() {
         <span>{aptoProgram.impactIntroduction}</span>
       </header>
       <div className="story-impact-layout">
-        <ul className="story-impact-goals">{aptoProgram.objectives.map((objective, index) => <li
-          key={objective}
-          data-story-reveal="right"
-          data-story-reveal-order={index}
-        >{objective}</li>)}</ul>
+        <div className="story-impact-stream">
+          {aptoProgram.impactGroups.map((group, groupIndex) => {
+            const participant = participantFor(group.participantId);
+            if (!participant) return null;
+            return <section
+              className="story-impact-group"
+              data-story-impact-group
+              aria-labelledby={`story-impact-${participant.id}`}
+              style={{
+                "--story-impact-accent": participant.accent,
+                "--story-impact-focus": groupIndex === 0 ? 1 : .34,
+              } as CSSProperties}
+              key={participant.id}
+            >
+              <header>
+                <span className="story-impact-inline-logo"><ParticipantLogo participant={participant} /></span>
+                <h3 id={`story-impact-${participant.id}`}>{participant.displayName}</h3>
+              </header>
+              <ul className="story-impact-goals">
+                {group.entries.map((objective, index) => <li
+                  key={`${participant.id}-${index}`}
+                  data-story-reveal="right"
+                  data-story-reveal-order={index}
+                >{objective}</li>)}
+              </ul>
+            </section>;
+          })}
+        </div>
+        <aside className="story-impact-stage" aria-hidden="true">
+          <div className="story-impact-logo-stack">
+            {aptoProgram.impactGroups.map((group, index) => {
+              const participant = participantFor(group.participantId);
+              if (!participant) return null;
+              return <div
+                className="story-impact-logo"
+                data-story-impact-logo
+                style={{
+                  "--story-impact-accent": participant.accent,
+                  "--story-impact-logo-opacity": index === 0 ? 1 : 0,
+                  "--story-impact-logo-x": index === 0 ? "0px" : "48px",
+                  "--story-impact-logo-scale": index === 0 ? 1 : .9,
+                  "--story-impact-logo-blur": index === 0 ? "0px" : "4.5px",
+                } as CSSProperties}
+                key={participant.id}
+              >
+                <ParticipantLogo participant={participant} />
+                <strong>{participant.displayName}</strong>
+              </div>;
+            })}
+          </div>
+        </aside>
       </div>
     </section>
   </>;

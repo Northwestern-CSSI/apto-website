@@ -204,7 +204,23 @@ function ProgramPage() {
         <h2 id="atlas-objectives-title">{aptoProgram.objectivesTitle}</h2>
         <p>{aptoProgram.impactIntroduction}</p>
       </header>
-      <ol>{aptoProgram.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ol>
+      <div className="atlas-impact-groups">
+        {aptoProgram.impactGroups.map((group) => {
+          const participant = participantFor(group.participantId);
+          if (!participant) return null;
+          return <article
+            className="atlas-impact-group"
+            style={{ "--atlas-impact-accent": participant.accent } as CSSProperties}
+            key={participant.id}
+          >
+            <header>
+              <ParticipantLogo participant={participant} className="atlas-impact-logo" />
+              <h3>{participant.displayName}</h3>
+            </header>
+            <ul>{group.entries.map((objective, index) => <li key={`${participant.id}-${index}`}>{objective}</li>)}</ul>
+          </article>;
+        })}
+      </div>
     </section>
 
     <section className="atlas-participants" aria-labelledby="atlas-participants-title">

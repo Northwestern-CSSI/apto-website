@@ -1020,3 +1020,96 @@
   .atlas-leadership-heading { grid-template-columns: 64px minmax(0,1fr); }
   .atlas-leadership-heading > img { width: 64px; height: 64px; }
 }
+
+/* Institution-specific impact groups share the Markdown source used by the
+   Story view, while retaining Atlas's compact directory treatment. */
+.atlas-objective-field {
+  padding: clamp(30px,4vw,52px);
+  color: var(--atlas-ink);
+  background: color-mix(in srgb,var(--atlas-teal) 6%,var(--atlas-surface));
+  scroll-margin-top: calc(var(--atlas-header-height) + 14px);
+}
+[data-apto-theme="dark"] .atlas-objective-field {
+  color: #f5f9fb;
+  background: #081f34;
+}
+.atlas-objective-field > header {
+  margin-bottom: clamp(24px,3vw,38px);
+}
+.atlas-objective-field > header > p {
+  color: var(--atlas-copy);
+}
+[data-apto-theme="dark"] .atlas-objective-field > header > p { color: #c8dae5; }
+.atlas-impact-groups {
+  display: grid;
+  grid-template-columns: repeat(6,minmax(0,1fr));
+  gap: clamp(10px,1.4vw,18px);
+}
+.atlas-impact-group {
+  grid-column: span 2;
+  min-width: 0;
+  padding: clamp(16px,1.8vw,22px);
+  color: var(--atlas-ink);
+  background: linear-gradient(145deg,color-mix(in srgb,var(--atlas-impact-accent) 10%,var(--atlas-raised)),var(--atlas-raised) 78%);
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--atlas-impact-accent) 18%,transparent);
+}
+.atlas-impact-group:nth-child(-n+2) { grid-column: span 3; }
+[data-apto-theme="dark"] .atlas-impact-group {
+  color: #f5f9fb;
+  background: linear-gradient(145deg,color-mix(in srgb,var(--atlas-impact-accent) 14%,#0a263c),#0a263c 78%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--atlas-impact-accent) 30%,transparent);
+}
+.atlas-objective-field .atlas-impact-group > header {
+  margin: 0 0 14px;
+  display: grid;
+  grid-template-columns: 108px minmax(0,1fr);
+  align-items: center;
+  gap: 14px;
+}
+.atlas-impact-logo { width: 108px; height: 58px; }
+.atlas-objective-field .atlas-impact-group h3 {
+  margin: 0;
+  color: inherit;
+  font-size: clamp(.86rem,1vw,.98rem);
+  font-weight: 800;
+  letter-spacing: -.015em;
+  line-height: 1.25;
+}
+.atlas-impact-group ul {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  list-style: none;
+}
+.atlas-impact-group li {
+  position: relative;
+  padding: 0 0 0 17px;
+  color: var(--atlas-copy);
+  font-size: clamp(.72rem,.76vw,.8rem);
+  line-height: 1.48;
+}
+[data-apto-theme="dark"] .atlas-impact-group li { color: #c9dbe5; }
+.atlas-impact-group li::before {
+  content: "";
+  position: absolute;
+  top: .54em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  background: var(--atlas-impact-accent);
+  border-radius: 50%;
+}
+
+@media (max-width: 900px) {
+  .atlas-objective-field > header { grid-template-columns: 1fr; }
+  .atlas-impact-groups { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .atlas-impact-group:nth-child(n) { grid-column: auto; }
+  .atlas-impact-group:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 620px) {
+  .atlas-impact-groups { grid-template-columns: 1fr; }
+  .atlas-impact-group:last-child { grid-column: auto; }
+}

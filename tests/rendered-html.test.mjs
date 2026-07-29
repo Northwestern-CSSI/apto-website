@@ -54,6 +54,15 @@ test("generated content follows the featured-institution order and supplied-imag
     macrocosm: "#0D5C8F",
   });
   assert.deepEqual(data.projects.map((project) => project.participantId), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
+  assert.deepEqual(data.program.impactGroups.map((group) => [group.participantId, group.entries.length]), [
+    ["northwestern", 3],
+    ["uchicago", 3],
+    ["aperture", 2],
+    ["insilicom", 2],
+    ["macrocosm", 2],
+  ]);
+  assert.ok(data.program.impactGroups[0].entries.every((entry) => !entry.startsWith("Lorem ipsum")));
+  assert.ok(data.program.impactGroups.slice(1).flatMap((group) => group.entries).every((entry) => /^(?:Lorem ipsum|Ut enim|Duis aute|Excepteur|Sed ut|Nemo enim)/.test(entry)));
   assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 6);
   assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 6);
   assert.deepEqual(data.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name), [
@@ -151,7 +160,9 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(html, /What We Are Building/);
   assert.match(html, /class="story-section story-impact" id="story-impact"/);
   assert.match(html, /class="story-impact-layout"/);
-  assert.ok((html.match(/data-story-reveal="right"/g) ?? []).length >= data.program.objectives.length);
+  assert.equal((html.match(/data-story-impact-group="true"/g) ?? []).length, data.program.impactGroups.length);
+  assert.equal((html.match(/data-story-impact-logo="true"/g) ?? []).length, data.program.impactGroups.length);
+  assert.ok((html.match(/data-story-reveal="right"/g) ?? []).length >= data.program.impactGroups.flatMap((group) => group.entries).length);
   assert.match(html, /Together, the APTO cohort is working to achieve/);
   assert.match(html, /Led by Northwestern University/);
   assert.doesNotMatch(html, /story-cohort|story-nav-cohort|>Cohort</);
@@ -189,12 +200,16 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(styles, /\.story-project-chapter h3\s*\{[\s\S]*?max-width:\s*100%/);
   assert.match(styles, /--story-parallax-y:\s*var\(--story-shift,0px\)/);
   assert.match(styles, /calc\(var\(--story-reveal-y,0px\) \+ var\(--story-parallax-y,0px\)\)/);
+  assert.match(styles, /\.story-impact-stage\s*\{[\s\S]*?position:\s*sticky/);
+  assert.match(styles, /translate3d\(var\(--story-impact-logo-x,0px\),0,0\)/);
 });
 
 test("Atlas exposes supplied-image galleries and supporting pieces", async () => {
   const data = await content();
   const programHtml = await (await render("/atlas")).text();
   assert.match(programHtml, /class="atlas-objective-field" id="atlas-impact"/);
+  assert.equal((programHtml.match(/class="atlas-impact-group"/g) ?? []).length, data.program.impactGroups.length);
+  assert.equal((programHtml.match(/atlas-impact-logo/g) ?? []).length, data.program.impactGroups.length);
   const html = await (await render("/atlas/tools")).text();
   assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);
