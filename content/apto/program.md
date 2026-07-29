@@ -35,30 +35,30 @@
     {
       "participantId": "uchicago",
       "entries": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.",
+        "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Maecenas sed diam eget risus varius blandit sit amet non magna.",
+        "Aenean lacinia bibendum nulla sed consectetur, praesent commodo cursus magna. Vestibulum id ligula porta felis euismod semper, donec sed odio dui."
       ]
     },
     {
       "participantId": "aperture",
       "entries": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        "Maecenas faucibus mollis interdum, fusce dapibus tellus ac cursus commodo. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.",
+        "Cras mattis consectetur purus sit amet fermentum, donec sed odio dui. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh."
       ]
     },
     {
       "participantId": "insilicom",
       "entries": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium."
+        "Nullam quis risus eget urna mollis ornare vel eu leo. Aenean eu leo quam, pellentesque ornare sem lacinia quam venenatis vestibulum.",
+        "Etiam porta sem malesuada magna mollis euismod, curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod, vivamus sagittis lacus vel augue."
       ]
     },
     {
       "participantId": "macrocosm",
       "entries": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos."
+        "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.",
+        "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit sit amet non magna."
       ]
     }
   ],

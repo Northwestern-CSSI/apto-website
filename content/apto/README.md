@@ -102,6 +102,17 @@ npm run content:build
 npm run content:check
 ```
 
+To refresh provisional lorem-ipsum copy with deterministic, non-repeating
+passages across impact statements, tool summaries, and tool pieces, run:
+
+```bash
+npm run content:placeholders
+```
+
+The command updates only placeholder records and keeps each tool's readable
+Markdown description synchronized with its card summaries. Run `npm run verify`
+afterward.
+
 The generated file is `app/apto/content.generated.json`. Delivery copies of
 images are generated under `public/apto/`. Both locations are ignored by Git;
 never edit or commit them directly.

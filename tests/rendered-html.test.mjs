@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 let workerModule;
+const placeholderTextPattern = /\b(?:lorem|ipsum|consectetur|adipiscing|vivamus|aenean|maecenas|cras|donec|nullam|etiam|morbi|vestibulum|praesent|curabitur|pellentesque|duis|fusce)\b/i;
 
 async function render(pathname = "/") {
   if (!workerModule) {
@@ -62,7 +63,7 @@ test("generated content follows the featured-institution order and supplied-imag
     ["macrocosm", 2],
   ]);
   assert.ok(data.program.impactGroups[0].entries.every((entry) => !entry.startsWith("Lorem ipsum")));
-  assert.ok(data.program.impactGroups.slice(1).flatMap((group) => group.entries).every((entry) => /^(?:Lorem ipsum|Ut enim|Duis aute|Excepteur|Sed ut|Nemo enim)/.test(entry)));
+  assert.ok(data.program.impactGroups.slice(1).flatMap((group) => group.entries).every((entry) => placeholderTextPattern.test(entry)));
   assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 6);
   assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 6);
   assert.deepEqual(data.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name), [
@@ -82,13 +83,13 @@ test("generated content follows the featured-institution order and supplied-imag
     "AI Infrastructure",
   ]);
   for (const tool of data.tools.filter((candidate) => candidate.participantId === "uchicago")) {
-    assert.ok(tool.summaryParagraphs.every((paragraph) => /^(?:Lorem ipsum|Sed posuere)/.test(paragraph)));
-    assert.ok(tool.resources.every((resource) => /^(?:Lorem ipsum|Cras mattis|Maecenas sed diam)/.test(resource.description)));
+    assert.ok(tool.summaryParagraphs.every((paragraph) => placeholderTextPattern.test(paragraph)));
+    assert.ok(tool.resources.every((resource) => placeholderTextPattern.test(resource.description)));
   }
   for (const participantId of ["aperture", "insilicom", "macrocosm"]) {
     const placeholderTools = data.tools.filter((tool) => tool.participantId === participantId);
     assert.deepEqual(placeholderTools.map((tool) => tool.name), ["Tool A", "Tool B"]);
-    assert.ok(placeholderTools.every((tool) => tool.summaryParagraphs.every((paragraph) => /^Lorem ipsum|^Aliquam|^Curabitur|^Vestibulum|^Nullam|^Cras|^Nunc/.test(paragraph))));
+    assert.ok(placeholderTools.every((tool) => tool.summaryParagraphs.every((paragraph) => placeholderTextPattern.test(paragraph))));
     assert.ok(placeholderTools.every((tool) => tool.resources.map((resource) => resource.name).join(",") === "Piece A,Piece B"));
   }
   for (const tool of data.tools) {
@@ -109,6 +110,16 @@ test("generated content follows the featured-institution order and supplied-imag
   const placeholderImages = new Set(nonNorthwesternTools.flatMap((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src)));
   assert.equal(placeholderImages.size, 10);
   assert.equal(new Set(nonNorthwesternTools.map((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src).join("|"))).size, nonNorthwesternTools.length);
+  const placeholderTools = data.tools.filter((tool) => tool.participantId !== "northwestern" || tool.id === "northwestern-tool-a");
+  const placeholderCopy = [
+    ...data.program.impactGroups.filter((group) => group.participantId !== "northwestern").flatMap((group) => group.entries),
+    ...placeholderTools.flatMap((tool) => [
+      ...tool.summaryParagraphs,
+      ...tool.resources.map((resource) => resource.description),
+    ]),
+  ];
+  assert.equal(placeholderCopy.length, 68);
+  assert.equal(new Set(placeholderCopy).size, placeholderCopy.length, "every displayed placeholder passage should be distinct");
   const agenticTool = data.tools.find((tool) => tool.id === "agentic-framework-for-technology-outcome-mining");
   assert.deepEqual(agenticTool.resources.map((resource) => resource.name), [
     "Perovskite Dataset",

@@ -6,8 +6,8 @@
   "name": "Tool B",
   "displayOrder": 2,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, sapien vitae consequat posuere, sem justo facilisis arcu, sed fermentum erat magna non nisl.",
-    "Curabitur vitae mauris at lacus varius luctus. Suspendisse potenti, donec efficitur neque sed ipsum ullamcorper, vitae volutpat sapien tincidunt."
+    "Vestibulum id ligula porta felis euismod semper, integer posuere erat a ante. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.",
+    "Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna."
   ],
   "categories": [
     "Production",
@@ -39,7 +39,7 @@
   "resources": [
     {
       "name": "Piece A",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas porttitor ligula vitae neque cursus, sit amet facilisis arcu tincidunt.",
+      "description": "Sed posuere consectetur est at lobortis, aenean eu leo quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -49,7 +49,7 @@
     },
     {
       "name": "Piece B",
-      "description": "Praesent non lorem sed arcu feugiat feugiat. Vivamus aliquet, tortor at congue posuere, nibh erat consequat libero, vel commodo erat nibh id ipsum.",
+      "description": "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam, pellentesque ornare sem lacinia quam venenatis vestibulum.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -65,8 +65,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, sapien vitae consequat posuere, sem justo facilisis arcu, sed fermentum erat magna non nisl.
+Vestibulum id ligula porta felis euismod semper, integer posuere erat a ante. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.
+
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.
 
 ## Use case
 
-Curabitur vitae mauris at lacus varius luctus. Suspendisse potenti, donec efficitur neque sed ipsum ullamcorper, vitae volutpat sapien tincidunt.
+Curabitur blandit tempus porttitor, nulla vitae elit libero a pharetra augue. Etiam porta sem malesuada magna mollis euismod, vivamus sagittis lacus vel augue.

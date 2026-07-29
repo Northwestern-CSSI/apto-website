@@ -6,8 +6,8 @@
   "name": "Tool A",
   "displayOrder": 1,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat, lectus sed consequat feugiat, risus nulla volutpat sapien, at tristique neque magna non arcu.",
-    "Cras egestas nibh nec orci porttitor, vitae vestibulum lectus venenatis. Mauris pulvinar tellus at lacus finibus, eget tristique magna interdum."
+    "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod, vivamus sagittis lacus vel augue.",
+    "Curabitur blandit tempus porttitor, nulla vitae elit libero a pharetra augue. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis."
   ],
   "categories": [
     "Production",
@@ -39,7 +39,7 @@
   "resources": [
     {
       "name": "Piece A",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vestibulum odio id leo cursus, in elementum erat faucibus.",
+      "description": "Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas sed diam eget risus varius blandit sit amet non magna.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -49,7 +49,7 @@
     },
     {
       "name": "Piece B",
-      "description": "Nam quis enim nec ipsum volutpat egestas. Pellentesque maximus augue sed purus fermentum, vel efficitur neque suscipit.",
+      "description": "Duis mollis, est non commodo luctus, nisi erat porttitor ligula. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -65,8 +65,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat, lectus sed consequat feugiat, risus nulla volutpat sapien, at tristique neque magna non arcu.
+Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod, vivamus sagittis lacus vel augue.
+
+Curabitur blandit tempus porttitor, nulla vitae elit libero a pharetra augue. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.
 
 ## Use case
 
-Cras egestas nibh nec orci porttitor, vitae vestibulum lectus venenatis. Mauris pulvinar tellus at lacus finibus, eget tristique magna interdum.
+Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.

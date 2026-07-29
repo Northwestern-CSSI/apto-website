@@ -9,6 +9,7 @@
   "scripts": {
     "content:build": "node scripts/build-apto-content.mjs",
     "content:check": "node scripts/build-apto-content.mjs --check",
+    "content:placeholders": "node scripts/refresh-placeholder-copy.mjs",
     "predev": "npm run content:build",
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
     "prebuild": "npm run content:build",

@@ -6,8 +6,8 @@
   "name": "Tool A",
   "displayOrder": 1,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-    "Aliquam erat volutpat. Morbi posuere, mauris vitae aliquet volutpat, lorem sapien interdum lectus, non dignissim mauris neque vitae justo."
+    "Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.",
+    "Duis mollis, est non commodo luctus, nisi erat porttitor ligula. Maecenas sed diam eget risus varius blandit sit amet non magna."
   ],
   "categories": [
     "Capability",
@@ -39,7 +39,7 @@
   "resources": [
     {
       "name": "Piece A",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia felis eu libero volutpat, quis tincidunt mi ullamcorper.",
+      "description": "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -49,7 +49,7 @@
     },
     {
       "name": "Piece B",
-      "description": "Donec accumsan massa vel nibh fermentum, vel dignissim nisl tristique. Nulla facilisi, nam consequat erat vitae augue tempus interdum.",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -65,8 +65,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.
+
+Duis mollis, est non commodo luctus, nisi erat porttitor ligula. Maecenas sed diam eget risus varius blandit sit amet non magna.
 
 ## Use case
 
-Aliquam erat volutpat. Morbi posuere, mauris vitae aliquet volutpat, lorem sapien interdum lectus, non dignissim mauris neque vitae justo.
+Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.

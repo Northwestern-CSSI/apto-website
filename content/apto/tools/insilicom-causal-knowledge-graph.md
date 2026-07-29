@@ -6,8 +6,8 @@
   "name": "Tool A",
   "displayOrder": 1,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id justo vitae purus feugiat malesuada, vitae feugiat nibh gravida.",
-    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae, etiam convallis lorem sit amet neque consequat."
+    "Aenean lacinia bibendum nulla sed consectetur, praesent commodo cursus magna. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.",
+    "Maecenas faucibus mollis interdum, fusce dapibus tellus ac cursus commodo. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh."
   ],
   "categories": [
     "Capability",
@@ -39,7 +39,7 @@
   "resources": [
     {
       "name": "Piece A",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce malesuada risus non turpis dictum, vitae sagittis erat luctus.",
+      "description": "Cras mattis consectetur purus sit amet fermentum, donec sed odio dui. Aenean eu leo quam, pellentesque ornare sem lacinia quam venenatis vestibulum.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -49,7 +49,7 @@
     },
     {
       "name": "Piece B",
-      "description": "Phasellus sodales, sapien at condimentum faucibus, magna eros interdum nunc, non viverra neque velit at justo.",
+      "description": "Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod, vivamus sagittis lacus vel augue.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -65,8 +65,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id justo vitae purus feugiat malesuada, vitae feugiat nibh gravida.
+Aenean lacinia bibendum nulla sed consectetur, praesent commodo cursus magna. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.
+
+Maecenas faucibus mollis interdum, fusce dapibus tellus ac cursus commodo. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.
 
 ## Use case
 
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae, etiam convallis lorem sit amet neque consequat.
+Etiam porta sem malesuada magna mollis euismod, curabitur blandit tempus porttitor. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.

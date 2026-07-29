@@ -6,8 +6,8 @@
   "name": "Tool B",
   "displayOrder": 2,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis velit sed velit vestibulum, at hendrerit mi consequat.",
-    "Nullam consequat ligula sed augue commodo, eu ultrices nisl aliquet. Proin tristique nibh eget purus varius, nec elementum sem interdum."
+    "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna.",
+    "Donec id elit non mi porta gravida at eget metus. Vestibulum id ligula porta felis euismod semper, donec sed odio dui."
   ],
   "categories": [
     "Capability"
@@ -38,7 +38,7 @@
   "resources": [
     {
       "name": "Piece A",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer pretium est ac urna gravida, vitae consectetur nisi porttitor.",
+      "description": "Vestibulum id ligula porta felis euismod semper, integer posuere erat a ante. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -48,7 +48,7 @@
     },
     {
       "name": "Piece B",
-      "description": "Etiam eget augue non libero consequat feugiat. Sed commodo sem ut tellus malesuada, id volutpat mauris eleifend.",
+      "description": "Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -64,8 +64,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis velit sed velit vestibulum, at hendrerit mi consequat.
+Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna.
+
+Donec id elit non mi porta gravida at eget metus. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.
 
 ## Use case
 
-Nullam consequat ligula sed augue commodo, eu ultrices nisl aliquet. Proin tristique nibh eget purus varius, nec elementum sem interdum.
+Sed posuere consectetur est at lobortis, aenean eu leo quam. Aenean eu leo quam, pellentesque ornare sem lacinia quam venenatis vestibulum.

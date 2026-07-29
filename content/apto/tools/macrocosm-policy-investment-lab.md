@@ -6,8 +6,8 @@
   "name": "Tool B",
   "displayOrder": 2,
   "summaryParagraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor felis non nunc aliquam, vitae viverra erat scelerisque.",
-    "Nunc interdum lectus vitae est commodo, vel sagittis tortor dictum. Donec malesuada enim non libero tincidunt, sit amet laoreet lorem faucibus."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.",
+    "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna."
   ],
   "categories": [
     "Production",
@@ -39,7 +39,7 @@
   "resources": [
     {
       "name": "Piece A",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean suscipit dolor id turpis pretium, sit amet vestibulum nisi cursus.",
+      "description": "Aenean lacinia bibendum nulla sed consectetur, praesent commodo cursus magna. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -49,7 +49,7 @@
     },
     {
       "name": "Piece B",
-      "description": "Vivamus id risus at metus elementum tempor. Integer varius velit vitae odio aliquet, quis vulputate metus rhoncus.",
+      "description": "Maecenas faucibus mollis interdum, fusce dapibus tellus ac cursus commodo. Aenean eu leo quam, pellentesque ornare sem lacinia quam venenatis vestibulum.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -65,8 +65,10 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor felis non nunc aliquam, vitae viverra erat scelerisque.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper, donec sed odio dui.
+
+Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.
 
 ## Use case
 
-Nunc interdum lectus vitae est commodo, vel sagittis tortor dictum. Donec malesuada enim non libero tincidunt, sit amet laoreet lorem faucibus.
+Cras mattis consectetur purus sit amet fermentum, donec sed odio dui. Etiam porta sem malesuada magna mollis euismod, vivamus sagittis lacus vel augue.
