@@ -265,6 +265,10 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(programHtml, /class="atlas-objective-field" id="atlas-impact"/);
   assert.equal((programHtml.match(/class="atlas-impact-group"/g) ?? []).length, data.program.impactGroups.length);
   assert.equal((programHtml.match(/atlas-impact-logo/g) ?? []).length, data.program.impactGroups.length);
+  assert.ok(
+    programHtml.indexOf('class="atlas-participants"') < programHtml.indexOf('id="atlas-impact"'),
+    "Atlas should present the impact section later on the landing page, after the participating organizations",
+  );
   const html = await (await render("/atlas/tools")).text();
   assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= data.tools.length);
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);

@@ -198,6 +198,14 @@ function ProgramPage() {
       </figure>)}
     </section>
 
+    <section className="atlas-participants" aria-labelledby="atlas-participants-title">
+      <header>
+        <h2 id="atlas-participants-title">Participating organizations</h2>
+        <a href={atlasRoute("projects")}>Explore the projects <span aria-hidden="true">→</span></a>
+      </header>
+      <OrganizationIndex labelledBy="atlas-participants-title" />
+    </section>
+
     <section className="atlas-objective-field" id="atlas-impact" aria-labelledby="atlas-objectives-title">
       <header>
         <h2 id="atlas-objectives-title">{aptoProgram.objectivesTitle}</h2>
@@ -220,14 +228,6 @@ function ProgramPage() {
           </article>;
         })}
       </div>
-    </section>
-
-    <section className="atlas-participants" aria-labelledby="atlas-participants-title">
-      <header>
-        <h2 id="atlas-participants-title">Participating organizations</h2>
-        <a href={atlasRoute("projects")}>Explore the projects <span aria-hidden="true">→</span></a>
-      </header>
-      <OrganizationIndex labelledBy="atlas-participants-title" />
     </section>
   </main>;
 }
