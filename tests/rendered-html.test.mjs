@@ -106,6 +106,21 @@ test("generated content follows the featured-institution order and supplied-imag
       if (resource.status === "coming-soon") assert.equal(resource.url, null);
     }
   }
+  const sharedResourceIcons = new Map();
+  for (const tool of data.tools) {
+    for (const resource of tool.resources) {
+      if (/^Piece [A-Z]$/i.test(resource.name)) continue;
+      const key = resource.name.trim().toLocaleLowerCase("en-US");
+      const previous = sharedResourceIcons.get(key);
+      if (previous) {
+        assert.equal(resource.image.src, previous, `${resource.name} should reuse one canonical icon across tools`);
+      } else {
+        sharedResourceIcons.set(key, resource.image.src);
+      }
+    }
+  }
+  assert.equal(sharedResourceIcons.get("techbridge"), "/apto/tools/icons/decision.svg");
+  assert.equal(sharedResourceIcons.get("innovation insights"), "/apto/tools/icons/innovation.svg");
   const nonNorthwesternTools = data.tools.filter((tool) => tool.participantId !== "northwestern");
   const placeholderImages = new Set(nonNorthwesternTools.flatMap((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src)));
   assert.equal(placeholderImages.size, 10);

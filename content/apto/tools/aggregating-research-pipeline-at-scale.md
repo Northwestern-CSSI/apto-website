@@ -44,8 +44,8 @@
       "status": "available",
       "url": "https://niinstitute.kellogg.northwestern.edu/bridge",
       "image": {
-        "src": "/apto/tools/icons/research-funding.svg",
-        "alt": "Research funding and institutional records icon"
+        "src": "/apto/tools/icons/decision.svg",
+        "alt": "Technology translation pathway icon"
       }
     },
     {

@@ -55,7 +55,7 @@
       "url": "https://www.innovationinsights.org",
       "image": {
         "src": "/apto/tools/icons/innovation.svg",
-        "alt": "Innovation signal icon"
+        "alt": "Innovation insight icon"
       }
     },
     {

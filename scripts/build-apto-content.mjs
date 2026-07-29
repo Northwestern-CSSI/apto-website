@@ -1223,6 +1223,25 @@ async function buildContent() {
   toolRecords.forEach((record) => {
     assert(participantById.has(record.participantId), `${relativeFile(record.sourceFile)}.participantId does not join to a participant`);
   });
+  const sharedResourceIcons = new Map();
+  for (const record of toolRecords) {
+    for (const resource of record.tool.resources) {
+      if (/^Piece [A-Z]$/i.test(resource.name)) continue;
+      const resourceName = resource.name.trim().toLocaleLowerCase("en-US");
+      const previous = sharedResourceIcons.get(resourceName);
+      if (previous) {
+        assert(
+          resource.image.src === previous.src,
+          `${relativeFile(record.sourceFile)} resource “${resource.name}” must reuse ${previous.src}, the icon already assigned in ${relativeFile(previous.sourceFile)}`,
+        );
+      } else {
+        sharedResourceIcons.set(resourceName, {
+          src: resource.image.src,
+          sourceFile: record.sourceFile,
+        });
+      }
+    }
+  }
 
   const conveningRecords = conveningDocuments.map(validateConvening);
   assertUnique(conveningRecords.map((record) => record.convening.id), "convening ids");
