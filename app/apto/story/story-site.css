@@ -1061,6 +1061,7 @@
   .story-project-stage-active { min-height: 0; padding: 0; }
   .story-project-chapter { min-height: auto; }
   .story-tool-grid { grid-template-columns: 1fr; }
+  .story-tool { min-height: clamp(600px,68vw,650px); }
   .story-program-team { grid-template-columns: 1fr; }
   .story-program-team > div { max-width: 680px; justify-self: stretch; }
   .story-footer { grid-template-columns: minmax(150px,.45fr) minmax(260px,1fr); }

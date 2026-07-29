@@ -256,6 +256,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(styles, /calc\(var\(--story-reveal-y,0px\) \+ var\(--story-parallax-y,0px\)\)/);
   assert.match(styles, /\.story-impact-stage\s*\{[\s\S]*?position:\s*sticky/);
   assert.match(styles, /translate3d\(var\(--story-impact-logo-x,0px\),0,0\)/);
+  assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-tool\s*\{\s*min-height:\s*clamp\(600px,68vw,650px\)/);
 });
 
 test("Atlas exposes supplied-image galleries and supporting pieces", async () => {
@@ -275,6 +276,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
   const styles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
   assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1\.04/);
+  assert.match(styles, /@media \(max-width:\s*1180px\)[\s\S]*?\.atlas-tool-card\s*\{\s*aspect-ratio:\s*1\s*\/\s*1\.07/);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /window\.matchMedia\("\(hover: none\), \(pointer: coarse\)"\)/);
   assert.doesNotMatch(resourceSource, />Available</);

@@ -604,7 +604,7 @@
   .atlas-view-nav a,
   .atlas-view-nav span { padding: 0 6px; }
   .atlas-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .atlas-tool-card { aspect-ratio: 1 / 1.02; }
+  .atlas-tool-card { aspect-ratio: 1 / 1.07; }
   .atlas-tool-panel { height: 50%; }
   .atlas-program-mosaic { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: clamp(260px, 31vw, 350px); }
   .atlas-program-mosaic figure { grid-column: span 2; }
@@ -684,7 +684,7 @@
   .atlas-tool-toolbar fieldset { display: grid; }
   .atlas-tool-toolbar label { min-width: 0; }
   .atlas-tool-grid { grid-template-columns: 1fr; }
-  .atlas-tool-card { width: min(100%, 560px); max-height: 530px; margin: 0 auto; aspect-ratio: 1 / 1.02; }
+  .atlas-tool-card { width: min(100%, 560px); max-height: 565px; margin: 0 auto; aspect-ratio: 1 / 1.06; }
   .atlas-leadership { width: calc(100% - 32px); padding: 28px 22px; }
   .atlas-team-chapter { min-height: 0; padding: 28px 22px; }
   .atlas-team-people { grid-template-columns: 1fr; }
@@ -886,7 +886,7 @@
     width: 126px;
     height: 70px;
   }
-  .atlas-tool-card { min-height: 500px; max-height: none; aspect-ratio: auto; }
+  .atlas-tool-card { min-height: 540px; max-height: none; aspect-ratio: auto; }
   .atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 16px; padding: 16px 16px 0; }
 }
 
