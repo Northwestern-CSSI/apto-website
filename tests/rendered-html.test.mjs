@@ -202,7 +202,10 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(html, /class="story-impact-layout"/);
   assert.equal((html.match(/data-story-impact-group="true"/g) ?? []).length, data.program.impactGroups.length);
   assert.equal((html.match(/data-story-impact-logo="true"/g) ?? []).length, data.program.impactGroups.length);
-  assert.ok((html.match(/data-story-reveal="right"/g) ?? []).length >= data.program.impactGroups.flatMap((group) => group.entries).length);
+  assert.equal((html.match(/data-story-impact-row="right"/g) ?? []).length, Math.ceil(data.program.impactGroups.length / 2));
+  assert.equal((html.match(/data-story-impact-row="left"/g) ?? []).length, Math.floor(data.program.impactGroups.length / 2));
+  assert.ok((html.match(/data-story-reveal="right"/g) ?? []).length > 0);
+  assert.ok((html.match(/data-story-reveal="left"/g) ?? []).length > 0);
   assert.match(html, /Together, the APTO cohort is working to achieve/);
   assert.match(html, /Led by Northwestern University/);
   assert.doesNotMatch(html, /story-cohort|story-nav-cohort|>Cohort</);
@@ -268,6 +271,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(html, /atlas-tool-toggle|apto-resource-detail/);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
+  const styles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
+  assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1\.04/);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /window\.matchMedia\("\(hover: none\), \(pointer: coarse\)"\)/);
   assert.match(resourceSource, /current === index \? null : index/);

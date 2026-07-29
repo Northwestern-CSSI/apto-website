@@ -471,12 +471,19 @@
 .story-impact-layout {
   width: min(calc(100% - 48px),var(--story-max));
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0,.66fr) minmax(250px,.34fr);
-  align-items: start;
-  gap: clamp(38px,6vw,92px);
 }
 .story-impact-stream { min-width: 0; }
+.story-impact-row {
+  min-height: clamp(290px,42svh,390px);
+  display: grid;
+  grid-template-columns: minmax(0,.66fr) minmax(250px,.34fr);
+  align-items: stretch;
+  gap: clamp(38px,6vw,92px);
+}
+.story-impact-row + .story-impact-row { margin-top: clamp(10px,1.5vw,22px); }
+.story-impact-row.is-reversed { grid-template-columns: minmax(250px,.34fr) minmax(0,.66fr); }
+.story-impact-row.is-reversed .story-impact-group { grid-column: 2; grid-row: 1; }
+.story-impact-row.is-reversed .story-impact-stage { grid-column: 1; grid-row: 1; }
 .story-impact-group {
   --story-impact-focus: .34;
   min-height: clamp(290px,42svh,390px);
@@ -503,7 +510,7 @@
 .story-impact-stage {
   position: sticky;
   top: calc(var(--story-header-height) + 18px);
-  height: calc(100svh - var(--story-header-height) - 36px);
+  height: clamp(290px,42svh,390px);
   display: grid;
   place-items: center;
 }
@@ -1031,7 +1038,8 @@
   .story-section-heading h2,
   .story-section-heading > span { grid-column: 1; }
   .story-section-heading > p { padding-top: 0; }
-  .story-impact-layout { grid-template-columns: minmax(0,1fr) minmax(180px,.34fr); gap: 28px; }
+  .story-impact-row { grid-template-columns: minmax(0,1fr) minmax(180px,.34fr); gap: 28px; }
+  .story-impact-row.is-reversed { grid-template-columns: minmax(180px,.34fr) minmax(0,1fr); }
   .story-impact-logo .story-participant-logo { width: min(100%,210px); height: 112px; }
   .story-outcome-depth { min-height: clamp(280px,42vw,390px); }
   .story-framework { gap: 52px; }
@@ -1085,7 +1093,9 @@
   .story-tool-grid,
   .story-program-team,
   .story-cohort-directory { width: min(calc(100% - 36px),var(--story-max)); }
-  .story-impact-layout { grid-template-columns: 1fr; }
+  .story-impact-row,
+  .story-impact-row.is-reversed { min-height: 0; grid-template-columns: 1fr; }
+  .story-impact-row.is-reversed .story-impact-group { grid-column: 1; }
   .story-impact-stage { display: none; }
   .story-impact-group { min-height: 0; padding: 30px 0; }
   .story-impact-group > header { opacity: 1; }

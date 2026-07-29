@@ -210,7 +210,8 @@ function useStoryExperience(
           const delta = index - impactPosition;
           const distance = Math.abs(delta);
           const opacity = reduceMotion ? (index === currentIndex ? 1 : 0) : clamp01(1 - distance * 1.18);
-          const shift = reduceMotion ? 0 : delta < 0 ? delta * 86 : delta * 48;
+          const sideDirection = element.dataset.storyImpactSide === "left" ? -1 : 1;
+          const shift = reduceMotion ? 0 : sideDirection * (delta < 0 ? delta * 86 : delta * 48);
           const scale = reduceMotion ? 1 : .9 + opacity * .1;
           const blur = reduceMotion ? 0 : Math.min(7, distance * 4.5);
           element.style.setProperty("--story-impact-logo-opacity", opacity.toFixed(4));
@@ -377,53 +378,56 @@ function ProgramStory() {
           {aptoProgram.impactGroups.map((group, groupIndex) => {
             const participant = participantFor(group.participantId);
             if (!participant) return null;
-            return <section
-              className="story-impact-group"
-              data-story-impact-group
-              aria-labelledby={`story-impact-${participant.id}`}
-              style={{
-                "--story-impact-accent": participant.accent,
-                "--story-impact-focus": groupIndex === 0 ? 1 : .34,
-              } as CSSProperties}
+            const logoSide = groupIndex % 2 === 0 ? "right" : "left";
+            const revealDirection = logoSide === "right" ? "right" : "left";
+            return <div
+              className={`story-impact-row${logoSide === "left" ? " is-reversed" : ""}`}
+              data-story-impact-row={logoSide}
               key={participant.id}
             >
-              <header>
-                <span className="story-impact-inline-logo"><ParticipantLogo participant={participant} /></span>
-                <h3 id={`story-impact-${participant.id}`}>{participant.displayName}</h3>
-              </header>
-              <ul className="story-impact-goals">
-                {group.entries.map((objective, index) => <li
-                  key={`${participant.id}-${index}`}
-                  data-story-reveal="right"
-                  data-story-reveal-order={index}
-                >{objective}</li>)}
-              </ul>
-            </section>;
-          })}
-        </div>
-        <aside className="story-impact-stage" aria-hidden="true">
-          <div className="story-impact-logo-stack">
-            {aptoProgram.impactGroups.map((group, index) => {
-              const participant = participantFor(group.participantId);
-              if (!participant) return null;
-              return <div
-                className="story-impact-logo"
-                data-story-impact-logo
+              <section
+                className="story-impact-group"
+                data-story-impact-group
+                aria-labelledby={`story-impact-${participant.id}`}
                 style={{
                   "--story-impact-accent": participant.accent,
-                  "--story-impact-logo-opacity": index === 0 ? 1 : 0,
-                  "--story-impact-logo-x": index === 0 ? "0px" : "48px",
-                  "--story-impact-logo-scale": index === 0 ? 1 : .9,
-                  "--story-impact-logo-blur": index === 0 ? "0px" : "4.5px",
+                  "--story-impact-focus": groupIndex === 0 ? 1 : .34,
                 } as CSSProperties}
-                key={participant.id}
               >
-                <ParticipantLogo participant={participant} />
-                <strong>{participant.displayName}</strong>
-              </div>;
-            })}
-          </div>
-        </aside>
+                <header>
+                  <span className="story-impact-inline-logo"><ParticipantLogo participant={participant} /></span>
+                  <h3 id={`story-impact-${participant.id}`}>{participant.displayName}</h3>
+                </header>
+                <ul className="story-impact-goals">
+                  {group.entries.map((objective, index) => <li
+                    key={`${participant.id}-${index}`}
+                    data-story-reveal={revealDirection}
+                    data-story-reveal-order={index}
+                  >{objective}</li>)}
+                </ul>
+              </section>
+              <aside className="story-impact-stage" aria-hidden="true">
+                <div className="story-impact-logo-stack">
+                  <div
+                    className="story-impact-logo"
+                    data-story-impact-logo
+                    data-story-impact-side={logoSide}
+                    style={{
+                      "--story-impact-accent": participant.accent,
+                      "--story-impact-logo-opacity": groupIndex === 0 ? 1 : 0,
+                      "--story-impact-logo-x": groupIndex === 0 ? "0px" : logoSide === "right" ? "48px" : "-48px",
+                      "--story-impact-logo-scale": groupIndex === 0 ? 1 : .9,
+                      "--story-impact-logo-blur": groupIndex === 0 ? "0px" : "4.5px",
+                    } as CSSProperties}
+                  >
+                    <ParticipantLogo participant={participant} />
+                    <strong>{participant.displayName}</strong>
+                  </div>
+                </div>
+              </aside>
+            </div>;
+          })}
+        </div>
       </div>
     </section>
   </>;
