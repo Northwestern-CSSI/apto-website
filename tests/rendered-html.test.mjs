@@ -275,8 +275,9 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
   const styles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
-  assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1\.04/);
-  assert.match(styles, /@media \(max-width:\s*1180px\)[\s\S]*?\.atlas-tool-card\s*\{\s*aspect-ratio:\s*1\s*\/\s*1\.07/);
+  assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1\.20/);
+  assert.match(styles, /@media \(max-width:\s*1180px\)[\s\S]*?\.atlas-tool-card\s*\{\s*aspect-ratio:\s*1\s*\/\s*1\.16/);
+  assert.match(styles, /@media \(max-width:\s*520px\)[\s\S]*?\.atlas-tool-card\s*\{\s*min-height:\s*620px/);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /window\.matchMedia\("\(hover: none\), \(pointer: coarse\)"\)/);
   assert.doesNotMatch(resourceSource, />Available</);
