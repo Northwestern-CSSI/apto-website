@@ -275,6 +275,8 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(styles, /\.atlas-tool-card\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1\.04/);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /window\.matchMedia\("\(hover: none\), \(pointer: coarse\)"\)/);
+  assert.doesNotMatch(resourceSource, />Available</);
+  assert.match(resourceSource, /<p>Coming soon<\/p>/);
   assert.match(resourceSource, /current === index \? null : index/);
   assert.match(resourceSource, /document\.addEventListener\("pointerdown", dismissOutsidePiece, true\)/);
   assert.match(resourceSource, /\.closest\("\.apto-resource-node, \.apto-resource-touch-action"\)/);

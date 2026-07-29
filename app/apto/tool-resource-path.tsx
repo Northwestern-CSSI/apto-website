@@ -141,9 +141,9 @@ export function ToolResourcePath({
 
     <article className={`apto-resource-summary${activeResource ? " is-showing-resource" : ""}`} id={summaryId} aria-live="polite">
       <div className="apto-resource-summary-copy">
-        {(activeResource || summary.eyebrow) && <p>{activeResource
-          ? activeResource.status === "coming-soon" ? "Coming soon" : "Available"
-          : summary.eyebrow}</p>}
+        {activeResource?.status === "coming-soon"
+          ? <p>Coming soon</p>
+          : !activeResource && summary.eyebrow ? <p>{summary.eyebrow}</p> : null}
         <Heading>{activeResource?.name ?? summary.title}</Heading>
         {activeResource
           ? <span>{activeResource.description}</span>
