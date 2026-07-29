@@ -78,6 +78,7 @@ export type AptoTool = {
     description: string;
     status: "available" | "coming-soon";
     url: string | null;
+    actionLabel?: string;
     image: {
       src: string;
       alt: string;

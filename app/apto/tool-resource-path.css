@@ -246,6 +246,29 @@
   font-weight: 850;
 }
 
+.apto-resource-summary-copy > .apto-resource-touch-action {
+  display: none;
+}
+
+.apto-resource-summary-copy > .apto-resource-pointer-hint {
+  margin-top: 7px;
+  color: rgb(224 232 237 / 62%);
+  font-size: .61rem;
+  font-weight: 650;
+  letter-spacing: .01em;
+  filter: grayscale(1);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .apto-resource-summary-copy > .apto-resource-touch-action {
+    display: inline-flex;
+  }
+
+  .apto-resource-summary-copy > .apto-resource-pointer-hint {
+    display: none;
+  }
+}
+
 @media (max-width: 520px) {
   .apto-resource-route {
     min-height: 0;

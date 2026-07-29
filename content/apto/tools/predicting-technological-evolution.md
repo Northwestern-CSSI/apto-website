@@ -43,6 +43,7 @@
       "description": "Connects millions of research awards with later inventions and technical outcomes, enabling forward tracing from investment to impact and backward tracing from patents to their scientific foundations.",
       "status": "available",
       "url": "https://fundingthefrontier.com",
+      "actionLabel": "Open the portal",
       "image": {
         "src": "/apto/tools/icons/research-funding.svg",
         "alt": "Research funding forecast icon"
@@ -53,6 +54,7 @@
       "description": "Compares research and institutional signals that precede patents, licenses, startups, and technology adoption, helping users identify promising pathways and test which early indicators reliably anticipate translation.",
       "status": "available",
       "url": "https://www.innovationinsights.org",
+      "actionLabel": "Open the tool",
       "image": {
         "src": "/apto/tools/icons/innovation.svg",
         "alt": "Innovation insight icon"
@@ -63,6 +65,7 @@
       "description": "Provides governed institutional evidence on disclosures, patents, licenses, startups, researchers, and grants, supporting models of the pathways that connect research investment with market translation.",
       "status": "available",
       "url": "https://niinstitute.kellogg.northwestern.edu/bridge",
+      "actionLabel": "Open the tool",
       "image": {
         "src": "/apto/tools/icons/decision.svg",
         "alt": "Technology translation pathway icon"

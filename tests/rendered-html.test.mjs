@@ -104,6 +104,7 @@ test("generated content follows the featured-institution order and supplied-imag
     for (const resource of tool.resources) {
       assert.match(resource.image.src, /^\/apto\/tools\/icons\/[a-z0-9-]+\.svg$/);
       if (resource.status === "coming-soon") assert.equal(resource.url, null);
+      if (resource.url) assert.ok(resource.actionLabel?.length > 0, `${resource.name} should describe its linked destination`);
     }
   }
   const sharedResourceIcons = new Map();
@@ -255,7 +256,10 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
-  assert.match(resourceSource, /onMouseLeave=\{\(\) => setActiveIndex\(null\)\}/);
+  assert.match(resourceSource, /window\.matchMedia\("\(hover: none\), \(pointer: coarse\)"\)/);
+  assert.match(resourceSource, /current === index \? null : index/);
+  assert.match(resourceSource, /document\.addEventListener\("pointerdown", dismissOutsidePiece, true\)/);
+  assert.match(resourceSource, /\.closest\("\.apto-resource-node, \.apto-resource-touch-action"\)/);
   assert.match(resourceSource, /onMouseLeave:\s*resetAfterPointerExit/);
   assert.match(resourceSource, /nextTarget\.closest\("\.apto-resource-node"\)/);
   assert.match(resourceSource, /apto-resource-summary-inset/);
@@ -273,6 +277,9 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(resourceStyles, /\.apto-resource-node\s*\{[\s\S]*?padding:\s*calc\(var\(--resource-gap\) \/ 2\)/);
   assert.match(resourceStyles, /\.apto-resource-path\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.82rem/);
   assert.match(resourceStyles, /\.apto-resource-thumb img\[src\$="\.svg"\]/);
+  assert.match(resourceStyles, /@media \(hover: none\), \(pointer: coarse\)/);
+  assert.match(resourceStyles, /\.apto-resource-summary-copy > \.apto-resource-touch-action\s*\{\s*display:\s*none/);
+  assert.match(resourceStyles, /\.apto-resource-summary-copy > \.apto-resource-pointer-hint/);
   assert.doesNotMatch(resourceStyles, /rgb\(103 224 239/);
   const networkIcon = await readFile(new URL("../content/apto/assets/tools/icons/network.svg", import.meta.url), "utf8");
   const evidenceIcon = await readFile(new URL("../content/apto/assets/tools/icons/evidence.svg", import.meta.url), "utf8");
@@ -350,9 +357,21 @@ test("available tool pieces open externally without a blocked cursor for unavail
     .flatMap((tool) => tool.resources.map((resource) => resource.url).filter(Boolean)));
   expectedUrls.forEach((url) => assert.ok(northwesternUrls.has(url), `missing Northwestern resource URL: ${url}`));
 
+  const linkedPieceActions = new Map(data.tools
+    .flatMap((tool) => tool.resources)
+    .filter((resource) => resource.url)
+    .map((resource) => [resource.name, resource.actionLabel]));
+  assert.equal(linkedPieceActions.get("TechBridge"), "Open the tool");
+  assert.equal(linkedPieceActions.get("Innovation Insights"), "Open the tool");
+  assert.equal(linkedPieceActions.get("SciSciNet"), "Explore the dataset");
+  assert.equal(linkedPieceActions.get("SciSciGPT"), "Open the tool");
+  assert.equal(linkedPieceActions.get("Punctuated Progress"), "Read the paper");
+  assert.equal(linkedPieceActions.get("Funding the Frontier"), "Open the portal");
+
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
   assert.match(resourceSource, /target="_blank"\s+rel="noreferrer"/);
+  assert.doesNotMatch(resourceSource, /Open this piece/);
   assert.match(resourceStyles, /\.apto-resource-node\.is-coming-soon\s*\{\s*cursor:\s*default/);
   assert.doesNotMatch(resourceStyles, /cursor:\s*not-allowed/);
 });

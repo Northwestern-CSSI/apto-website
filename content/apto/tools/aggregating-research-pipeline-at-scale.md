@@ -43,6 +43,7 @@
       "description": "Connects governed institutional records across research investments, investigators, disclosures, patents, licenses, startups, and downstream outcomes, providing the translation evidence needed to trace how research moves toward practical use.",
       "status": "available",
       "url": "https://niinstitute.kellogg.northwestern.edu/bridge",
+      "actionLabel": "Open the tool",
       "image": {
         "src": "/apto/tools/icons/decision.svg",
         "alt": "Technology translation pathway icon"
@@ -53,6 +54,7 @@
       "description": "Turns the connected evidence base into comparative views of institutions, fields, funding programs, and time, helping users identify promising people, ideas, partnerships, and translation opportunities.",
       "status": "available",
       "url": "https://www.innovationinsights.org",
+      "actionLabel": "Open the tool",
       "image": {
         "src": "/apto/tools/icons/innovation.svg",
         "alt": "Innovation insight icon"
@@ -63,6 +65,7 @@
       "description": "Links publications, grants, patents, people, institutions, concepts, and organizations at scale, creating the research graph that supports consistent evidence queries and pipeline analysis.",
       "status": "available",
       "url": "https://northwestern-cssi.github.io/sciscinet/",
+      "actionLabel": "Explore the dataset",
       "image": {
         "src": "/apto/tools/icons/network.svg",
         "alt": "Connected research network icon"
@@ -73,6 +76,7 @@
       "description": "Provides a conversational interface for asking evidence-grounded questions across the connected research graph, with responses tied back to the records and relationships that support them.",
       "status": "available",
       "url": "https://sciscigpt.com",
+      "actionLabel": "Open the tool",
       "image": {
         "src": "/apto/tools/icons/algorithm-agent.svg",
         "alt": "Agentic research query icon"

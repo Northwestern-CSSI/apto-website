@@ -975,12 +975,17 @@ function validateTool(document) {
   resources.forEach((resource, index) => {
     const resourceContext = `${context}.resources[${index}]`;
     requireObject(resource, resourceContext);
-    assertExactKeys(resource, ["name", "description", "status", "url", "image"], resourceContext);
+    const expectedKeys = resource.actionLabel === undefined
+      ? ["name", "description", "status", "url", "image"]
+      : ["name", "description", "status", "url", "actionLabel", "image"];
+    assertExactKeys(resource, expectedKeys, resourceContext);
     requireString(resource, "name", resourceContext);
     requireString(resource, "description", resourceContext);
     const status = requireString(resource, "status", resourceContext);
     assert(new Set(["available", "coming-soon"]).has(status), `${resourceContext}.status must be “available” or “coming-soon”`);
     requireOptionalHttpsUrl(resource.url, `${resourceContext}.url`);
+    if (resource.url !== null) requireString(resource, "actionLabel", resourceContext);
+    assert(resource.url !== null || resource.actionLabel === undefined, `${resourceContext}.actionLabel is only used when url is present`);
     assert(status !== "coming-soon" || resource.url === null, `${resourceContext}.url must be null while status is “coming-soon”`);
     const image = requireObject(resource.image, `${resourceContext}.image`);
     assertExactKeys(image, ["src", "alt"], `${resourceContext}.image`);
@@ -1234,9 +1239,14 @@ async function buildContent() {
           resource.image.src === previous.src,
           `${relativeFile(record.sourceFile)} resource “${resource.name}” must reuse ${previous.src}, the icon already assigned in ${relativeFile(previous.sourceFile)}`,
         );
+        assert(
+          resource.actionLabel === previous.actionLabel,
+          `${relativeFile(record.sourceFile)} resource “${resource.name}” must reuse the action label “${previous.actionLabel}” from ${relativeFile(previous.sourceFile)}`,
+        );
       } else {
         sharedResourceIcons.set(resourceName, {
           src: resource.image.src,
+          actionLabel: resource.actionLabel,
           sourceFile: record.sourceFile,
         });
       }

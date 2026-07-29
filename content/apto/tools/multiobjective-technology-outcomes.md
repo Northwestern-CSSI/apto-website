@@ -53,6 +53,7 @@
       "description": "Models long plateaus and clustered breakthroughs across interacting technology outcomes, helping researchers compare near-term predictability, longer-term uncertainty, and the combinations of radical and incremental change that drive progress.",
       "status": "available",
       "url": "https://arxiv.org/abs/2605.16719",
+      "actionLabel": "Read the paper",
       "image": {
         "src": "/apto/tools/icons/evolution.svg",
         "alt": "Punctuated technology evolution icon"
