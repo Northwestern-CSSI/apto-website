@@ -1,7 +1,7 @@
 <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs><linearGradient id="g" x1="8" y1="9" x2="58" y2="59" gradientUnits="userSpaceOnUse"><stop stop-color="#9CC8D6"/><stop offset=".5" stop-color="#A8A7C2"/><stop offset="1" stop-color="#D1B879"/></linearGradient></defs>
-  <g stroke="url(#g)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m12 50.5 11 4.5 1-12 11 5c0-10 3.5-16 9-21M44 13l10 8-10 8V13Z"/>
-    <circle cx="12" cy="50.5" r="3.8"/><circle cx="23" cy="55" r="3.8"/><circle cx="24" cy="43" r="3.8"/><circle cx="35" cy="48" r="3.8"/><circle cx="44" cy="13" r="3.8"/><circle cx="54" cy="21" r="3.8"/><circle cx="44" cy="29" r="3.8"/>
+  <path d="m12 50.5 11 4.5 1-12 11 5c0-10 3.5-16 9-21M44 13l10 8-10 8V13Z" stroke="url(#g)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="url(#g)" stroke="#E8EEF1" stroke-width="1.1">
+    <circle cx="12" cy="50.5" r="4.5"/><circle cx="23" cy="55" r="4.5"/><circle cx="24" cy="43" r="4.5"/><circle cx="35" cy="48" r="4.5"/><circle cx="44" cy="13" r="4.5"/><circle cx="54" cy="21" r="4.5"/><circle cx="44" cy="29" r="4.5"/>
   </g>
 </svg>

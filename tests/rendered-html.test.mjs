@@ -303,11 +303,14 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.doesNotMatch(resourceStyles, /rgb\(103 224 239/);
   const networkIcon = await readFile(new URL("../content/apto/assets/tools/icons/network.svg", import.meta.url), "utf8");
   const evidenceIcon = await readFile(new URL("../content/apto/assets/tools/icons/evidence.svg", import.meta.url), "utf8");
+  const evolutionIcon = await readFile(new URL("../content/apto/assets/tools/icons/evolution.svg", import.meta.url), "utf8");
   const vividTheme = await readFile(new URL("../content/apto/assets/tools/icons/themes/vivid-gradient.md", import.meta.url), "utf8");
   assert.match(networkIcon, /<g fill="url\(#g\)"[^>]*><circle/);
   assert.match(networkIcon, /<circle[^>]+fill="#10283A"/);
   assert.match(evidenceIcon, /<circle[^>]+fill="url\(#g\)"/);
   assert.match(evidenceIcon, /<path d="m[^>]+stroke="#10283A"[^>]+stroke-width="3\.5"/);
+  assert.match(evolutionIcon, /<g fill="url\(#g\)" stroke="#E8EEF1" stroke-width="1\.1">/);
+  assert.match(evolutionIcon, /<circle cx="12" cy="50\.5" r="4\.5"/);
   for (const color of ["#67E0EF", "#9C8CF4", "#F3C751"]) assert.match(vividTheme, new RegExp(color));
   const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
   assert.match(atlasStyles, /\.atlas-project-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(6,/);
