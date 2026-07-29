@@ -24,7 +24,23 @@ export function ConveningGallery({
   className?: string;
 }) {
   const [activeImage, setActiveImage] = useState(0);
+  const [imageOrder, setImageOrder] = useState(() => convening.images.map((_, index) => index));
   const [motionReady, setMotionReady] = useState(false);
+  const imageCount = convening.images.length;
+  const orderedImages = imageOrder.map((index) => convening.images[index]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const tail = Array.from({ length: imageCount }, (_, index) => index).slice(1);
+      for (let index = tail.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [tail[index], tail[swapIndex]] = [tail[swapIndex], tail[index]];
+      }
+      setImageOrder([0, ...tail]);
+      setActiveImage(0);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [convening.id, imageCount]);
 
   useEffect(() => {
     let secondFrame = 0;
@@ -48,7 +64,7 @@ export function ConveningGallery({
 
   return <div className={`apto-convening-gallery ${className}`.trim()} data-gallery-count={convening.images.length}>
     <div className="apto-convening-gallery-media">
-      {convening.images.map((image, index) => {
+      {orderedImages.map((image, index) => {
         const plan = motionPlans[index % motionPlans.length];
         const isActive = index === activeImage;
         return <img
@@ -70,7 +86,7 @@ export function ConveningGallery({
       })}
     </div>
     <div className="apto-convening-gallery-progress" aria-label={`${convening.title} photographs`}>
-      {convening.images.map((image, index) => <button
+      {orderedImages.map((image, index) => <button
         type="button"
         key={image.src}
         className={index === activeImage ? "is-active" : ""}

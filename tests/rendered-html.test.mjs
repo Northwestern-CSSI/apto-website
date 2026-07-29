@@ -145,8 +145,21 @@ test("generated content follows the featured-institution order and supplied-imag
   const emergingTool = data.tools.find((tool) => tool.id === "emerging-technology-detection");
   assert.ok(emergingTool.resources.some((resource) => resource.name === "Science Maps"));
   assert.doesNotMatch(JSON.stringify(data.tools), /—/);
-  assert.equal(data.convenings[0].images.length, 4);
-  assert.ok(data.convenings[0].images.some((image) => image.src.endsWith("cohort-portrait.jpg")));
+  assert.equal(data.convenings[0].images.length, 7);
+  assert.ok(data.convenings[0].images[0].src.endsWith("img-4030-1.jpg"));
+  assert.deepEqual(data.convenings[0].images.map((image) => image.src.split("/").at(-1)).toSorted(), [
+    "img-3986-1.jpg",
+    "img-3989-1.jpg",
+    "img-3996-1.jpg",
+    "img-3998-1.jpg",
+    "img-4010-1.jpg",
+    "img-4013-1.jpg",
+    "img-4030-1.jpg",
+  ]);
+  const conveningGallerySource = await readFile(new URL("../app/apto/convening-gallery.tsx", import.meta.url), "utf8");
+  assert.match(conveningGallerySource, /const tail = Array\.from\(\{ length: imageCount \}[\s\S]*?\.slice\(1\)/);
+  assert.match(conveningGallerySource, /Math\.random\(\)/);
+  assert.match(conveningGallerySource, /setImageOrder\(\[0, \.\.\.tail\]\)/);
   const investigatorRank = new Map([["Principal Investigator", 0], ["Co-Principal Investigator", 1]]);
   for (const participant of data.participants) {
     assert.deepEqual(

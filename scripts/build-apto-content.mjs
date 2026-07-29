@@ -1034,7 +1034,7 @@ function validateConvening(document) {
   const title = requireString(metadata, "title", context);
   assert(h1 === title, `${context} H1 must match title`);
   const images = requireArray(metadata, "images", context);
-  assert(images.length === 4, `${context}.images must contain exactly four images`);
+  assert(images.length === 7, `${context}.images must contain exactly seven images`);
   images.forEach((image, index) => {
     const imageContext = `${context}.images[${index}]`;
     requireObject(image, imageContext);
@@ -1045,6 +1045,7 @@ function validateConvening(document) {
   });
   assertUnique(images.map((image) => image.src), `${context}.images sources`);
   assertUnique(images.map((image) => image.alt), `${context}.images descriptions`);
+  assert(images[0].src.endsWith("/img-4030-1.jpg"), `${context}.images[0] must be the fixed IMG_4030 opening photograph`);
   assert(
     sections.size === 2 && sections.has("Summary") && sections.has("Discussion"),
     `${context} must contain exactly “## Summary” and “## Discussion” sections`,
