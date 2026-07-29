@@ -141,8 +141,8 @@ test("generated content follows the featured-institution order and supplied-imag
   );
   assert.deepEqual(data.program.programTeam.map((person) => [person.name, person.role]), [
     ["Rebecca Chmiel", "Program Manager"],
-    ["Chaitanya Baru", "Program Contact"],
-    ["Megan Catterton", "Program Contact"],
+    ["Chaitanya Baru", "NSF Team"],
+    ["Megan Catterton", "NSF Team"],
   ]);
   assert.equal(data.program.programTeam.find((person) => person.id === "rebecca-chmiel").email, "rjchmiel@nsf.gov");
   assert.equal(data.convenings[0].location, "Washington, D.C.");
@@ -169,10 +169,17 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/class="story-project-people"/g) ?? []).length >= data.projects.length);
   assert.ok((html.match(/class="story-person"/g) ?? []).length >= data.participants.reduce((sum, participant) => sum + participant.people.length, 0));
   assert.match(html, /Program contacts/);
-  assert.match(html, /Rebecca Chmiel<!-- -->, <!-- -->Program Manager/);
-  assert.match(html, /Chaitanya Baru<!-- -->, <!-- -->Program Contact/);
-  assert.match(html, /Megan Catterton<!-- -->, <!-- -->Program Contact/);
+  assert.match(html, /class="story-footer-contact-primary"/);
+  assert.match(html, /Rebecca Chmiel/);
+  assert.match(html, /Program Manager/);
+  assert.match(html, /class="story-footer-team"/);
+  assert.match(html, /NSF team/);
+  assert.match(html, /Chaitanya Baru/);
+  assert.match(html, /Megan Catterton/);
+  assert.doesNotMatch(html, /Program Contact/);
   assert.match(html, /href="mailto:rjchmiel@nsf.gov"/);
+  assert.match(html, /class="story-footer-disclaimer"/);
+  assert.match(html, /This material is based upon work supported by the National Science Foundation under Grant Number 2404035\./);
   assert.doesNotMatch(html, /Tools from across the APTO cohort/i);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
@@ -258,6 +265,9 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   const atlasProjectsHtml = await (await render("/atlas/projects")).text();
   assert.ok((atlasProjectsHtml.match(/class="atlas-project-people"/g) ?? []).length >= data.projects.length);
   assert.match(atlasProjectsHtml, /Program contacts/);
+  assert.match(atlasProjectsHtml, /class="atlas-footer-contact-primary"/);
+  assert.match(atlasProjectsHtml, /class="atlas-footer-team"/);
+  assert.doesNotMatch(atlasProjectsHtml, /Program Contact/);
   assert.match(atlasProjectsHtml, /href="mailto:rjchmiel@nsf.gov"/);
 });
 

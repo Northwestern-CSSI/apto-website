@@ -53,7 +53,7 @@ const allowedParticipantKinds = new Set(["Company", "University"]);
 const allowedImageExtensions = new Set([".avif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const allowedPersonRoles = new Set([
   "Program Manager",
-  "Program Contact",
+  "NSF Team",
   "Principal Investigator",
   "Co-Principal Investigator",
 ]);
@@ -214,7 +214,7 @@ function comparePeopleByRole(left, right) {
 
 const programRoleOrder = new Map([
   ["Program Manager", 0],
-  ["Program Contact", 1],
+  ["NSF Team", 1],
 ]);
 
 function compareProgramContacts(left, right) {
@@ -842,14 +842,14 @@ function validatePerson(document) {
   if (metadata.participantId !== null) requireString(metadata, "participantId", context);
   const role = requireString(metadata, "role", context);
   assert(allowedPersonRoles.has(role), `${context}.role is not supported`);
-  const isProgramContact = role === "Program Manager" || role === "Program Contact";
+  const isProgramTeam = role === "Program Manager" || role === "NSF Team";
   assert(
-    (isProgramContact && metadata.participantId === null) ||
-      (!isProgramContact && metadata.participantId !== null),
+    (isProgramTeam && metadata.participantId === null) ||
+      (!isProgramTeam && metadata.participantId !== null),
     `${context}.participantId must be null only for program leadership`,
   );
   assert(metadata.organization === null || typeof metadata.organization === "string", `${context}.organization must be null or a string`);
-  if (isProgramContact) requireString(metadata, "organization", context);
+  if (isProgramTeam) requireString(metadata, "organization", context);
   else assert(metadata.organization === null, `${context}.organization must be null for investigators`);
   requireString(metadata, "initials", context);
   requireString(metadata, "headshotAlt", context);

@@ -5,7 +5,7 @@
   "participantId": null,
   "name": "Megan Catterton",
   "initials": "MC",
-  "role": "Program Contact",
+  "role": "NSF Team",
   "organization": "U.S. National Science Foundation",
   "headshotUrl": null,
   "headshotAlt": "Portrait of Megan Catterton",

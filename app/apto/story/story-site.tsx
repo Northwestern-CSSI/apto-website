@@ -562,6 +562,8 @@ function ConveningStory() {
 }
 
 function StoryFooter() {
+  const programManager = aptoProgram.programTeam.find((person) => person.role === "Program Manager");
+  const nsfTeam = aptoProgram.programTeam.filter((person) => person.role === "NSF Team");
   return <footer className="story-footer">
     <a className="story-footer-brand" href="#story-top"><strong>{aptoProgram.acronym}</strong><span>{aptoProgram.name}</span></a>
     <div className="story-footer-support">
@@ -570,10 +572,16 @@ function StoryFooter() {
     </div>
     <address className="story-footer-contacts">
       <strong>{aptoInterface.footer.programContactsLabel}</strong>
-      <ul>{aptoProgram.programTeam.map((person) => <li key={person.id}>
-        <span>{person.name}, {person.role}</span>
-        {person.email && <a href={`mailto:${person.email}`}>{person.email}</a>}
-      </li>)}</ul>
+      <ul>
+        {programManager && <li className="story-footer-contact-primary">
+          <span><b>{programManager.name}</b><small>{programManager.role}</small></span>
+          {programManager.email && <a href={`mailto:${programManager.email}`}>{programManager.email}</a>}
+        </li>}
+        {nsfTeam.length > 0 && <li className="story-footer-team">
+          <small>NSF team</small>
+          <span>{nsfTeam.map((person) => person.name).join(" · ")}</span>
+        </li>}
+      </ul>
     </address>
     <div className="story-footer-links"><a href={aptoRoute("/atlas")}>Atlas view</a><a href="#story-top">{aptoInterface.footer.backToTopLabel} ↑</a></div>
     <p className="story-footer-disclaimer">{aptoBoilerplate}</p>

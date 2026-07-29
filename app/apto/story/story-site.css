@@ -935,27 +935,46 @@
 .story-footer {
   padding: clamp(48px,6vw,80px) max(24px,calc((100vw - var(--story-max)) / 2));
   display: grid;
-  grid-template-columns: minmax(170px,.7fr) minmax(220px,.9fr) minmax(250px,1.2fr) auto;
-  gap: clamp(24px,4vw,58px);
+  grid-template-columns: minmax(112px,.38fr) minmax(230px,.9fr) minmax(260px,1fr) auto;
+  column-gap: clamp(24px,3.4vw,52px);
+  row-gap: 28px;
   align-items: start;
   color: var(--story-footer-ink);
   background: var(--story-footer-bg);
 }
 .story-footer-brand { display: inline-flex; flex-direction: column; gap: 5px; text-decoration: none; }
-.story-footer-brand strong { color: var(--story-footer-ink); font-size: 1.45rem; }
-.story-footer-brand span { max-width: 240px; color: var(--story-footer-copy); font-size: .72rem; line-height: 1.45; }
+.story-footer-brand strong { color: var(--story-footer-ink); font-size: 1.25rem; }
+.story-footer-brand span { max-width: 170px; color: var(--story-footer-copy); font-size: .66rem; line-height: 1.42; }
 .story-footer-support { display: grid; grid-template-columns: 60px minmax(0,1fr); gap: 18px; }
 .story-footer-support img { width: 60px; height: 60px; }
 .story-footer-support strong { display: block; margin-bottom: 9px; color: var(--story-footer-ink); font-size: .82rem; }
 .story-footer-support p { margin: 0; color: var(--story-footer-copy); font-size: .7rem; line-height: 1.58; }
 .story-footer-contacts { font-style: normal; }
 .story-footer-contacts > strong { display: block; margin-bottom: 9px; color: var(--story-footer-ink); font-size: .82rem; }
-.story-footer-contacts ul { margin: 0; padding: 0; display: grid; gap: 6px; list-style: none; }
-.story-footer-contacts li { display: flex; flex-wrap: wrap; gap: 3px 8px; color: var(--story-footer-copy); font-size: .69rem; line-height: 1.45; }
+.story-footer-contacts ul { margin: 0; padding: 0; display: grid; gap: 13px; list-style: none; }
+.story-footer-contacts li { color: var(--story-footer-copy); font-size: .69rem; line-height: 1.45; }
+.story-footer-contact-primary { display: grid; justify-items: start; gap: 4px; }
+.story-footer-contact-primary > span { display: flex; flex-wrap: wrap; gap: 0 4px; }
+.story-footer-contact-primary b { color: var(--story-footer-ink); font-size: .72rem; font-style: normal; }
+.story-footer-contact-primary small,
+.story-footer-team small { color: var(--story-footer-copy); font-size: .64rem; font-style: normal; }
+.story-footer-contact-primary small::before { content: "· "; }
+.story-footer-team { display: grid; gap: 2px; }
+.story-footer-team > span { color: var(--story-footer-ink); font-size: .68rem; font-style: normal; }
 .story-footer-contacts a { color: var(--story-footer-ink); font-weight: 750; }
 .story-footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; }
 .story-footer-links a { min-height: 44px; display: inline-flex; align-items: center; color: var(--story-footer-ink); font-size: .72rem; font-weight: 800; }
-.story-footer-disclaimer { grid-column: 1 / -1; max-width: 1160px; margin: 0; color: var(--story-footer-copy); font-size: .62rem; line-height: 1.55; }
+.story-footer-disclaimer {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-top: 18px;
+  color: var(--story-footer-copy);
+  border-top: 1px solid color-mix(in srgb,var(--story-footer-ink) 14%,transparent);
+  font-size: .62rem;
+  line-height: 1.55;
+}
 
 .apto-story.is-motion-ready [data-story-reveal] {
   opacity: var(--story-reveal-opacity,1);
@@ -1035,7 +1054,11 @@
   .story-tool-grid { grid-template-columns: 1fr; }
   .story-program-team { grid-template-columns: 1fr; }
   .story-program-team > div { max-width: 680px; justify-self: stretch; }
-  .story-footer { grid-template-columns: 1fr; }
+  .story-footer { grid-template-columns: minmax(150px,.45fr) minmax(260px,1fr); }
+  .story-footer-brand,
+  .story-footer-contacts { grid-column: 1; }
+  .story-footer-support,
+  .story-footer-links { grid-column: 2; }
   .story-footer-links { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
 }
 
@@ -1087,7 +1110,13 @@
   .story-cohort-group > header { grid-template-columns: auto minmax(0,1fr); gap: 16px; }
   .story-cohort-people,
   .story-program-team > div { grid-template-columns: 1fr; }
-  .story-footer { padding-inline: 18px; }
+  .story-footer { padding-inline: 18px; grid-template-columns: 1fr; gap: 24px; }
+  .story-footer-brand,
+  .story-footer-support,
+  .story-footer-contacts,
+  .story-footer-links { grid-column: 1; }
+  .story-footer-brand { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: baseline; gap: 12px; }
+  .story-footer-brand span { max-width: 210px; }
 }
 
 @media (max-width: 520px) {

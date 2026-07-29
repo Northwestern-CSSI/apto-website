@@ -5,7 +5,7 @@
   "participantId": null,
   "name": "Chaitanya Baru",
   "initials": "CB",
-  "role": "Program Contact",
+  "role": "NSF Team",
   "organization": "U.S. National Science Foundation",
   "headshotUrl": null,
   "headshotAlt": "Portrait of Chaitanya Baru",

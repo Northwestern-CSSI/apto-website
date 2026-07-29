@@ -55,16 +55,16 @@ missing headshot is replaced by the person’s initials.
 
 ## Rules
 
-- Allowed roles are `Program Manager`, `Program Contact`, `Principal
+- Allowed roles are `Program Manager`, `NSF Team`, `Principal
   Investigator`, and `Co-Principal Investigator`.
-- NSF program contacts use `participantId: null` and provide `organization`.
+- NSF program team members use `participantId: null` and provide `organization`.
 - Investigators use an existing `participantId` and `organization: null`.
 - Every participating organization must have exactly one principal
   investigator. It may have any number of co-principal investigators.
 - The H1 must exactly match `name`. Person records do not use H2 sections.
 - `profileUrl` must be an HTTPS URL or `null`.
 - `email` is optional and must be a valid email address or `null`; it is used
-  only for program contacts displayed in the footer.
+  only for program team members displayed in the footer.
 - Headshots must live under `content/apto/assets/` and use the matching
   `/apto/…` path; external headshot URLs are intentionally rejected.
 

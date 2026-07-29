@@ -554,8 +554,8 @@
 .atlas-footer {
   padding: clamp(46px, 6vw, 80px) max(4vw, 28px);
   display: grid;
-  grid-template-columns: minmax(230px,.8fr) minmax(280px,1.15fr) auto;
-  align-items: end;
+  grid-template-columns: minmax(240px,.9fr) minmax(270px,1fr) auto;
+  align-items: start;
   gap: clamp(26px, 4vw, 62px);
   color: #c5d7e2;
   background: #001a38;
@@ -567,10 +567,27 @@
 .atlas-footer-support span { margin-top: 4px; display: block; font-size: .65rem; line-height: 1.45; }
 .atlas-footer-contacts { font-style: normal; }
 .atlas-footer-contacts > strong { display: block; margin-bottom: 7px; color: #fff; font-size: .75rem; }
-.atlas-footer-contacts ul { margin: 0; padding: 0; display: grid; gap: 5px; list-style: none; }
-.atlas-footer-contacts li { display: flex; flex-wrap: wrap; gap: 3px 8px; font-size: .65rem; line-height: 1.45; }
+.atlas-footer-contacts ul { margin: 0; padding: 0; display: grid; gap: 12px; list-style: none; }
+.atlas-footer-contacts li { font-size: .65rem; line-height: 1.45; }
+.atlas-footer-contact-primary { display: grid; justify-items: start; gap: 4px; }
+.atlas-footer-contact-primary > span { display: flex; flex-wrap: wrap; gap: 0 4px; }
+.atlas-footer-contact-primary b { color: #fff; font-size: .7rem; font-style: normal; }
+.atlas-footer-contact-primary small,
+.atlas-footer-team small { color: #a9c1cf; font-size: .61rem; font-style: normal; }
+.atlas-footer-contact-primary small::before { content: "· "; }
+.atlas-footer-team { display: grid; gap: 2px; }
+.atlas-footer-team > span { color: #fff; font-size: .65rem; font-style: normal; }
 .atlas-footer-contacts a { color: #fff; font-weight: 750; }
-.atlas-footer-disclaimer { grid-column: 1 / -1; max-width: 1160px; font-size: .62rem; line-height: 1.6; }
+.atlas-footer-disclaimer {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-top: 18px;
+  border-top: 1px solid rgb(197 215 226 / 22%);
+  font-size: .62rem;
+  line-height: 1.6;
+}
 .atlas-footer > nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
 .atlas-footer > nav a { min-height: 44px; display: inline-flex; align-items: center; color: #fff; font-size: .7rem; font-weight: 750; text-decoration: none; }
 

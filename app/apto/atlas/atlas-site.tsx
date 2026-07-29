@@ -391,6 +391,8 @@ function ConveningPage() {
 }
 
 function AtlasFooter() {
+  const programManager = aptoProgram.programTeam.find((person) => person.role === "Program Manager");
+  const nsfTeam = aptoProgram.programTeam.filter((person) => person.role === "NSF Team");
   return <footer className="atlas-footer">
     <div className="atlas-footer-support">
       <a href={aptoInterface.footer.nsfWebsiteUrl} aria-label={aptoInterface.footer.nsfWebsiteAriaLabel}>
@@ -400,10 +402,16 @@ function AtlasFooter() {
     </div>
     <address className="atlas-footer-contacts">
       <strong>{aptoInterface.footer.programContactsLabel}</strong>
-      <ul>{aptoProgram.programTeam.map((person) => <li key={person.id}>
-        <span>{person.name}, {person.role}</span>
-        {person.email && <a href={`mailto:${person.email}`}>{person.email}</a>}
-      </li>)}</ul>
+      <ul>
+        {programManager && <li className="atlas-footer-contact-primary">
+          <span><b>{programManager.name}</b><small>{programManager.role}</small></span>
+          {programManager.email && <a href={`mailto:${programManager.email}`}>{programManager.email}</a>}
+        </li>}
+        {nsfTeam.length > 0 && <li className="atlas-footer-team">
+          <small>NSF team</small>
+          <span>{nsfTeam.map((person) => person.name).join(" · ")}</span>
+        </li>}
+      </ul>
     </address>
     <nav aria-label={aptoInterface.accessibility.footerNavigationLabel}>
       {aptoInterface.primaryNavigation.map((item) => <a href={atlasRoute(item.section)} key={item.section}>{item.label}</a>)}

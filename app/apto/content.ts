@@ -21,7 +21,7 @@ export type AptoParticipantLogo = {
 
 export type AptoPersonRole =
   | "Program Manager"
-  | "Program Contact"
+  | "NSF Team"
   | "Principal Investigator"
   | "Co-Principal Investigator";
 
@@ -40,7 +40,7 @@ export type AptoPerson = {
 
 export type AptoProgramPerson = AptoPerson & {
   participantId: null;
-  role: "Program Manager" | "Program Contact";
+  role: "Program Manager" | "NSF Team";
 };
 
 export type AptoFigureKind =
