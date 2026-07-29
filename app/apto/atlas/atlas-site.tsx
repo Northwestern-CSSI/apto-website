@@ -4,7 +4,6 @@
 /* eslint-disable @next/next/no-img-element */
 
 import ArrowUpRight from "lucide-react/dist/esm/icons/arrow-up-right.mjs";
-import ChevronDown from "lucide-react/dist/esm/icons/chevron-down.mjs";
 import Moon from "lucide-react/dist/esm/icons/moon.mjs";
 import Sun from "lucide-react/dist/esm/icons/sun.mjs";
 import { useState, type CSSProperties, type ReactNode } from "react";
@@ -236,53 +235,43 @@ function ProgramPage() {
 function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
   const participant = participantFor(project.participantId);
   if (!participant) return null;
-  const tool = aptoTools.find((candidate) => candidate.participantId === participant.id);
 
-  return <details
-    className="atlas-project-folio"
+  return <article
+    className="atlas-project-card"
     id={`atlas-project-${project.id}`}
     style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
   >
-    <summary>
-      <span className="atlas-project-identity">
-        <ParticipantLogo participant={participant} />
-        <span>
-          <small>Led by {participant.displayName}</small>
-          <em className="atlas-project-location">{participant.location}</em>
-          <strong>{project.shortName}</strong>
-        </span>
-      </span>
-      <span className="atlas-project-date">{aptoInterface.projects.awardedPrefix} {project.awardedYear} {aptoInterface.projects.dateStatusSeparator} {project.statusLabel}</span>
-      <span className="atlas-project-expand" aria-label={aptoInterface.projects.expandLabel}><ChevronDown aria-hidden="true" focusable="false" /></span>
-    </summary>
-    <div className="atlas-project-body">
+    <header>
+      <ParticipantLogo participant={participant} />
       <div>
-        <p>{project.summary}</p>
-        <div
-          className="atlas-project-people"
-          data-people-layout={["northwestern", "uchicago"].includes(project.participantId) ? "grid" : "rows"}
-          aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}
-        >
-          {project.people.map((person) => <PersonEntry person={person} key={person.id} />)}
-        </div>
-        <nav aria-label={`${participant.displayName} project links`}>
+        <p>Led by {participant.displayName}</p>
+        <span className="atlas-project-location">{participant.location}</span>
+        <h2>{project.shortName}</h2>
+      </div>
+    </header>
+    <p className="atlas-project-summary">{project.summary}</p>
+    <div className="atlas-project-meta">
+      <span>{aptoInterface.projects.awardedPrefix} {project.awardedYear} {aptoInterface.projects.dateStatusSeparator} {project.statusLabel}</span>
+      <nav aria-label={`${participant.displayName} project links`}>
           <ExternalLink href={project.awardUrl}>{aptoInterface.projects.awardLabel} {project.awardId}</ExternalLink>
           <ExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</ExternalLink>
-        </nav>
-      </div>
-      {tool && <figure>
-        <img src={withDeploymentBase(tool.galleryImages[0].src)} alt={tool.galleryImages[0].alt} width="1536" height="1024" loading="lazy" decoding="async" />
-        <figcaption>{participant.displayName}</figcaption>
-      </figure>}
+      </nav>
     </div>
-  </details>;
+    <div
+      className="atlas-project-people"
+      data-people-layout={["northwestern", "uchicago"].includes(project.participantId) ? "grid" : "rows"}
+      aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}
+    >
+      {project.people.map((person) => <PersonEntry person={person} key={person.id} />)}
+    </div>
+  </article>;
 }
 
 function ProjectsPage() {
   return <main className="atlas-main atlas-projects" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-projects-title">
     <PageIntroduction section="projects" />
     <section className="atlas-project-portfolio" aria-label="APTO project portfolio">
-      <div>{aptoProjects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>
+      <div className="atlas-project-grid">{aptoProjects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>
     </section>
   </main>;
 }

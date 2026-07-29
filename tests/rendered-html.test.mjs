@@ -257,6 +257,10 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(evidenceIcon, /<path d="m[^>]+stroke="#10283A"[^>]+stroke-width="3\.5"/);
   for (const color of ["#67E0EF", "#9C8CF4", "#F3C751"]) assert.match(vividTheme, new RegExp(color));
   const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
+  assert.match(atlasStyles, /\.atlas-project-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(6,/);
+  assert.match(atlasStyles, /\.atlas-project-card:nth-child\(-n \+ 2\)\s*\{\s*grid-column:\s*span 3/);
+  assert.match(atlasStyles, /\.atlas-project-card:nth-child\(n \+ 3\)\s*\{\s*grid-column:\s*span 2/);
+  assert.doesNotMatch(atlasStyles, /atlas-project-(?:folio|expand)/);
   assert.match(atlasStyles, /\.apto-resource-path-atlas\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.82rem/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);
@@ -265,6 +269,9 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   for (const organization of ["Northwestern University", "University of Chicago", "Apperture.AI", "Insilicom", "Macrocosm"]) assert.ok(atlasHomeHtml.includes(organization));
   for (const project of data.projects) assert.ok(atlasHomeHtml.includes(`/atlas/projects#atlas-project-${project.id}`));
   const atlasProjectsHtml = await (await render("/atlas/projects")).text();
+  assert.ok((atlasProjectsHtml.match(/class="atlas-project-card"/g) ?? []).length >= data.projects.length);
+  assert.match(atlasProjectsHtml, /class="atlas-project-grid"/);
+  assert.doesNotMatch(atlasProjectsHtml, /class="atlas-project-folio"|<details/);
   assert.ok((atlasProjectsHtml.match(/class="atlas-project-people"/g) ?? []).length >= data.projects.length);
   assert.ok((atlasProjectsHtml.match(/class="atlas-project-people" data-people-layout="grid"/g) ?? []).length >= 2);
   assert.ok((atlasProjectsHtml.match(/class="atlas-project-people" data-people-layout="rows"/g) ?? []).length >= 3);

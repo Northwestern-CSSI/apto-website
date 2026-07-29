@@ -375,46 +375,52 @@
   max-height: none;
   transform: translate(-50%, -50%);
 }
-.atlas-project-portfolio { width: min(100%, 1320px); margin: 0 auto clamp(92px, 11vw, 156px); padding: 0 max(4vw, 28px); }
-.atlas-project-portfolio > header { margin-bottom: 30px; display: grid; grid-template-columns: .36fr 1fr; gap: 30px; align-items: end; }
-.atlas-project-portfolio > header h2 { font-size: clamp(1.65rem, 2.35vw, 2.2rem); font-weight: 650; letter-spacing: -.04em; line-height: 1.15; }
-.atlas-project-portfolio > div { display: grid; gap: 14px; }
-.atlas-project-folio {
-  overflow: clip;
-  background:
-    radial-gradient(circle at 94% 8%,color-mix(in srgb,var(--atlas-participant-accent) 25%,transparent),transparent 38%),
-    linear-gradient(145deg,color-mix(in srgb,var(--atlas-participant-accent) 13%,var(--atlas-surface)),var(--atlas-surface) 62%);
-  border-radius: 9px;
-  box-shadow: inset 0 0 0 1px var(--atlas-line);
+.atlas-project-portfolio { width: min(100%, 1440px); margin: 0 auto clamp(92px, 11vw, 156px); padding: 0 max(4vw, 28px); }
+.atlas-project-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: stretch;
+  gap: clamp(16px, 2vw, 26px);
 }
-.atlas-project-folio summary { min-height: 158px; padding: 22px clamp(22px, 3vw, 38px); display: grid; grid-template-columns: minmax(0, 1fr) auto 48px; align-items: center; gap: 22px; cursor: pointer; list-style: none; }
-.atlas-project-folio summary::-webkit-details-marker { display: none; }
-.atlas-project-identity { min-width: 0; display: grid; grid-template-columns: 132px minmax(0, 1fr); align-items: center; gap: 24px; }
-.atlas-project-identity > .atlas-logo { height: 82px; }
-.atlas-project-identity small,
-.atlas-project-identity strong { display: block; }
-.atlas-project-identity small { margin-bottom: 2px; color: var(--atlas-ink); font-size: .74rem; font-weight: 800; }
-.atlas-project-location { margin: 0 0 8px; display: block; color: var(--atlas-copy); font-size: .68rem; font-style: normal; line-height: 1.35; }
-.atlas-project-identity strong { max-width: 650px; font-size: clamp(1.08rem, 1.6vw, 1.34rem); line-height: 1.3; }
-.atlas-project-date { color: var(--atlas-copy); font-size: .72rem; font-weight: 750; white-space: nowrap; }
-.atlas-project-expand { width: 44px; height: 44px; display: grid; place-items: center; color: var(--atlas-ink); background: color-mix(in srgb, var(--atlas-raised) 80%, transparent); border-radius: 50%; }
-.atlas-project-expand svg { width: 18px; transition: transform .2s ease; }
-.atlas-project-folio[open] .atlas-project-expand svg { transform: rotate(180deg); }
-.atlas-project-body { padding: 0 clamp(22px, 3vw, 38px) clamp(30px, 4vw, 50px); display: grid; grid-template-columns: 1fr minmax(320px, .75fr); gap: clamp(34px, 6vw, 90px); }
-.atlas-project-body > div > p { max-width: 760px; color: var(--atlas-copy); line-height: 1.72; }
-.atlas-project-people { margin: 27px 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
-.atlas-project-people[data-people-layout="rows"] { grid-template-columns: minmax(0,1fr); }
-.atlas-project-people .atlas-person { background: color-mix(in srgb,var(--atlas-participant-accent) 8%,var(--atlas-raised)); }
-.atlas-project-body nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
-.atlas-project-body nav a,
+.atlas-project-card {
+  min-width: 0;
+  height: 100%;
+  padding: clamp(24px, 2.7vw, 38px);
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 94% 6%, color-mix(in srgb, var(--atlas-participant-accent) 27%, transparent), transparent 37%),
+    linear-gradient(145deg, color-mix(in srgb, var(--atlas-participant-accent) 12%, var(--atlas-surface)), var(--atlas-surface) 62%);
+  border-radius: 9px;
+  box-shadow: inset 0 0 0 1px var(--atlas-line), var(--atlas-shadow);
+  scroll-margin-top: calc(var(--atlas-header-height) + 22px);
+}
+.atlas-project-card:nth-child(-n + 2) { grid-column: span 3; }
+.atlas-project-card:nth-child(n + 3) { grid-column: span 2; }
+.atlas-project-card > header {
+  margin-bottom: clamp(16px, 2vw, 24px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+.atlas-project-card > header .atlas-logo { width: 148px; height: 82px; justify-self: start; }
+.atlas-project-card > header > div { min-width: 0; width: 100%; }
+.atlas-project-card > header p { margin-bottom: 2px; color: var(--atlas-ink); font-size: .74rem; font-weight: 800; }
+.atlas-project-location { margin-bottom: 9px; display: block; color: var(--atlas-copy); font-size: .68rem; line-height: 1.35; }
+.atlas-project-card h2 { max-width: 100%; font-size: clamp(1.45rem, 2.05vw, 2.08rem); font-weight: 650; letter-spacing: -.04em; line-height: 1.12; text-wrap: balance; }
+.atlas-project-summary { flex: 1 1 auto; color: var(--atlas-copy); font-size: clamp(.88rem, 1vw, .98rem); line-height: 1.7; }
+.atlas-project-meta { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 18px; color: var(--atlas-copy); font-size: .72rem; }
+.atlas-project-meta > nav { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.atlas-project-meta a,
 .atlas-team-identity > a,
-.atlas-person a { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; color: var(--atlas-blue); font-size: .75rem; font-weight: 800; text-decoration: none; }
-.atlas-project-body nav svg,
+.atlas-person a { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; color: var(--atlas-blue); font-size: .72rem; font-weight: 800; text-decoration: none; }
+.atlas-project-meta svg,
 .atlas-team-identity > a svg,
 .atlas-person a svg { width: 14px; }
-.atlas-project-body figure { position: relative; min-height: 260px; overflow: hidden; border-radius: 7px; }
-.atlas-project-body figure img { width: 100%; height: 100%; object-fit: cover; }
-.atlas-project-body figure figcaption { position: absolute; right: 12px; bottom: 12px; padding: 5px 8px; color: #fff; background: rgb(1 15 28 / 78%); border-radius: 3px; font-size: .62rem; font-weight: 800; }
+.atlas-project-people { margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.atlas-project-people[data-people-layout="rows"] { grid-template-columns: minmax(0, 1fr); }
+.atlas-project-people .atlas-person { background: color-mix(in srgb, var(--atlas-participant-accent) 8%, var(--atlas-raised)); }
 
 .atlas-tool-collection { width: min(100%, 1540px); margin: 0 auto clamp(100px, 10vw, 160px); padding: 0 max(3vw, 22px); }
 .atlas-tool-toolbar { margin-bottom: 28px; padding: 20px 22px; display: grid; grid-template-columns: minmax(220px, 1fr) auto auto; align-items: end; gap: 24px; background: color-mix(in srgb, var(--atlas-raised) 75%, transparent); border-radius: 8px; }
@@ -634,10 +640,6 @@
   .atlas-participants > header,
   .atlas-cohort-index > header { grid-template-columns: 1fr; }
   .atlas-organization-index { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .atlas-project-folio summary { grid-template-columns: minmax(0, 1fr) 48px; }
-  .atlas-project-date { grid-column: 1; grid-row: 2; padding-left: 156px; }
-  .atlas-project-expand { grid-column: 2; grid-row: 1 / 3; }
-  .atlas-project-body { grid-template-columns: 1fr; }
   .atlas-tool-toolbar { grid-template-columns: 1fr; align-items: stretch; }
   .atlas-tool-toolbar fieldset { grid-column: 1; grid-row: auto; }
   .atlas-tool-count { grid-column: 1; }
@@ -676,11 +678,6 @@
   .atlas-framework article:last-child dl { grid-template-columns: 1fr; }
   .atlas-organization-index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .atlas-organization-index > a { grid-template-rows: 88px auto; padding: 11px; }
-  .atlas-project-folio summary { min-height: 142px; padding: 17px; gap: 12px; }
-  .atlas-project-identity { grid-template-columns: 88px minmax(0, 1fr); gap: 14px; }
-  .atlas-project-identity > .atlas-logo { height: 66px; }
-  .atlas-project-date { padding-left: 102px; }
-  .atlas-project-body { padding: 0 17px 30px; }
   .atlas-project-people { grid-template-columns: 1fr; }
   .atlas-tool-collection { padding: 0 16px; }
   .atlas-tool-toolbar { padding: 17px; }
@@ -710,7 +707,6 @@
 
 @media (forced-colors: active) {
   .atlas-theme-track,
-  .atlas-project-expand,
   .atlas-person-initials { forced-color-adjust: none; border: 2px solid CanvasText; }
   .atlas-tool-shade { background: linear-gradient(transparent, Canvas 70%); }
   .atlas-tool-panel { background: Canvas; border: 2px solid CanvasText; }
@@ -739,41 +735,6 @@
 .atlas-project-portfolio > header,
 .atlas-cohort-index > header {
   grid-template-columns: 1fr auto;
-}
-
-.atlas-project-portfolio > div {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  align-items: start;
-  gap: clamp(14px, 1.8vw, 24px);
-}
-
-.atlas-project-folio {
-  height: 100%;
-  overflow: hidden;
-}
-
-.atlas-project-folio:nth-child(-n + 2) { grid-column: span 3; }
-.atlas-project-folio:nth-child(n + 3) { grid-column: span 2; }
-
-.atlas-project-folio summary {
-  height: 100%;
-  min-height: 164px;
-  grid-template-columns: minmax(0, 1fr) 48px;
-  align-content: center;
-}
-
-.atlas-project-date {
-  grid-column: 1;
-  padding-left: 148px;
-}
-
-.atlas-project-expand {
-  grid-column: 2;
-  grid-row: 1 / 3;
-}
-
-.atlas-project-body {
-  grid-template-columns: 1fr;
 }
 
 .atlas-tool-toolbar {
@@ -880,63 +841,17 @@
     text-align: left;
   }
 
-  .atlas-project-folio:nth-child(n) { grid-column: span 6; }
+  .atlas-project-card:nth-child(n) { grid-column: span 6; }
   .atlas-convening-copy { grid-template-columns: 1fr; align-content: space-between; }
 }
 
 @media (max-width: 719px) {
-  .atlas-project-portfolio > div { grid-template-columns: 1fr; }
-  .atlas-project-folio:nth-child(n) { grid-column: auto; }
+  .atlas-project-grid { grid-template-columns: 1fr; }
+  .atlas-project-card:nth-child(n) { grid-column: auto; }
   .atlas-convening-list { padding-right: 16px; padding-left: 16px; }
   .atlas-convening-card { min-height: 690px; }
   .atlas-convening-copy { padding: 22px; }
   .atlas-convening-copy > strong { font-size: clamp(5rem, 25vw, 9rem); }
-}
-
-/* Stack each project identity vertically so the project title sits below the
-   logo and can use the full text column at every portfolio width. */
-.atlas-project-folio summary {
-  grid-template-columns: minmax(0, 1fr) 48px;
-  grid-template-rows: auto auto;
-  align-content: start;
-  align-items: start;
-}
-
-.atlas-project-identity {
-  grid-column: 1;
-  grid-row: 1;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: start;
-  gap: 18px;
-}
-
-.atlas-project-identity > .atlas-logo {
-  width: 148px;
-  height: 82px;
-  justify-self: start;
-}
-
-.atlas-project-identity > span {
-  min-width: 0;
-}
-
-.atlas-project-identity strong {
-  max-width: 100%;
-  font-size: clamp(1.12rem, 1.55vw, 1.42rem);
-  text-wrap: balance;
-}
-
-.atlas-project-date {
-  grid-column: 1;
-  grid-row: 2;
-  padding-left: 0;
-}
-
-.atlas-project-expand {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: start;
-  justify-self: end;
 }
 
 /* Shared tool media keeps Atlas and Story on the same independently timed,
@@ -967,7 +882,7 @@
 .apto-resource-path-atlas.is-featured .apto-resource-summary-copy > span { font-size: .82rem; line-height: 1.42; }
 
 @media (max-width: 520px) {
-  .atlas-project-identity > .atlas-logo {
+  .atlas-project-card > header .atlas-logo {
     width: 126px;
     height: 70px;
   }
