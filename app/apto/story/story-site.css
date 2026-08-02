@@ -319,7 +319,7 @@
   position: relative;
   min-height: 520px;
   overflow: hidden;
-  background: #061625;
+  background: transparent;
   box-shadow: var(--story-shadow);
 }
 .story-hero-image::after {

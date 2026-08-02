@@ -254,6 +254,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(styles, /\.story-project-chapter h3\s*\{[\s\S]*?max-width:\s*100%/);
   assert.match(styles, /--story-parallax-y:\s*var\(--story-shift,0px\)/);
   assert.match(styles, /calc\(var\(--story-reveal-y,0px\) \+ var\(--story-parallax-y,0px\)\)/);
+  assert.match(styles, /\.story-hero-image\s*\{[\s\S]*?background:\s*transparent/);
   assert.match(styles, /\.story-impact-stage\s*\{[\s\S]*?position:\s*sticky/);
   assert.match(styles, /translate3d\(var\(--story-impact-logo-x,0px\),0,0\)/);
   assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-tool\s*\{\s*min-height:\s*clamp\(600px,68vw,650px\)/);
