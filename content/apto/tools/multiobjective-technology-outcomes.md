@@ -6,8 +6,8 @@
   "name": "Multi-Objective Technology Outcomes Tool",
   "displayOrder": 3,
   "summaryParagraphs": [
-    "Technological innovation rarely advances through a single capability. Progress often depends on coordinated improvements across multiple dimensions, where gains in one capability may enable, constrain, or trade off against another. These interactions define a shifting Pareto frontier: the best attainable combinations of technology outcomes.",
-    "This tool measures those coupled dynamics across perovskites, superconducting technologies, artificial intelligence, processors, manufacturing, and other domains. A cross-domain analysis of millions of solutions has already revealed punctuated progress, providing an empirical foundation for comparing pathways, breakthroughs, tradeoffs, and uncertainty across technologies."
+    "Technological innovation rarely advances through a single capability. Progress often depends on coordinated improvements across multiple dimensions, where gains in one may enable, constrain, or trade off against another. Together, these interactions define a shifting Pareto frontier of attainable outcomes.",
+    "This tool measures these dynamics across perovskites, superconducting technologies, AI, processors, manufacturing, and other domains. Analysis of millions of solutions has already revealed punctuated progress, providing an empirical basis for comparing pathways, breakthroughs, tradeoffs, and uncertainty."
   ],
   "categories": [
     "Capability",
