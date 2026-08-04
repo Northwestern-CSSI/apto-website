@@ -259,7 +259,8 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(styles, /translate3d\(var\(--story-impact-logo-x,0px\),0,0\)/);
   assert.match(styles, /@media \(max-width:\s*900px\)[\s\S]*?\.story-tool\s*\{\s*min-height:\s*clamp\(600px,68vw,650px\)/);
   assert.match(styles, /\.story-tool \.apto-resource-path-story\s*\{\s*grid-template-rows:\s*53% 47%/);
-  assert.match(styles, /@media \(min-width:\s*921px\) and \(max-width:\s*1180px\)[\s\S]*?\.story-tool-matrix \.story-tool\s*\{\s*min-height:\s*680px/);
+  assert.match(styles, /@media \(min-width:\s*921px\) and \(max-width:\s*1500px\)[\s\S]*?min-height:\s*clamp\(600px,\s*calc\(840px - 16vw\),\s*660px\)/);
+  assert.match(styles, /@media \(max-width:\s*920px\)[\s\S]*?min-height:\s*clamp\(540px,\s*calc\(800px - 40vw\),\s*640px\)/);
 });
 
 test("Atlas exposes supplied-image galleries and supporting pieces", async () => {
