@@ -6,8 +6,8 @@
   "name": "Emerging Technology Detection Tool",
   "displayOrder": 5,
   "summaryParagraphs": [
-    "This tool detects emerging technologies before names and markets stabilize by identifying unusual combinations of ideas in scientific literature and tracking how those combinations persist and spread.",
-    "Validation against market and performance records distinguishes sustained trajectories from isolated activity, giving decision-makers earlier evidence about research opportunities and international momentum."
+    "This tool identifies emerging technologies before names and markets stabilize by detecting unusual combinations of scientific ideas and tracking whether those combinations persist, spread, and develop into coherent technical trajectories.",
+    "Tests in artificial intelligence and perovskite solar cells included technologies that advanced and technologies that stalled. This helps distinguish durable trajectories from transient activity and gives decision-makers earlier evidence about research opportunities and international momentum."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "SAE Method",
-      "description": "Uses sparse autoencoders to identify persistent, unusual combinations of concepts before an emerging technology has a stable name, then tracks whether those combinations spread across papers, fields, countries, and time.",
+      "description": "Uses sparse autoencoders to detect persistent, unusual combinations of scientific concepts before an emerging technology has a stable name. It then tracks their diffusion across papers, fields, countries, and time.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Science Maps",
-      "description": "Maps scientific concepts and their movement across papers, fields, countries, and time, helping users inspect emerging clusters, compare international momentum, and distinguish sustained trajectories from isolated activity.",
+      "description": "Maps scientific concepts and their movement across papers, fields, countries, and time. The resulting signals support international comparisons and help distinguish sustained technological trajectories from isolated research activity.",
       "status": "coming-soon",
       "url": null,
       "image": {

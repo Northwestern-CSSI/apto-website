@@ -6,8 +6,8 @@
   "name": "Aggregating Research Pipeline At Scale Tool",
   "displayOrder": 1,
   "summaryParagraphs": [
-    "This connected evidence system unifies grants, publications, patents, institutional records, technical performance, manufacturing, organizations, companies, and evidence of real-world use.",
-    "It links people, ideas, funding, institutions, and time so researchers and decision-makers can trace outcomes, compare innovation pipelines, and identify promising paths from research to adoption."
+    "This connected evidence system brings grants, publications, patents, governed institutional records, technical performance, manufacturing, organizations, companies, and evidence of real-world use into a traceable research-to-market pipeline.",
+    "Live resources including TechBridge, SciSciNet, SciSciGPT, and Innovation Insights already expose key parts of this pipeline, enabling researchers to measure outcomes, build predictors, and identify promising paths from investment to impact."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "TechBridge",
-      "description": "Connects governed institutional records across research investments, investigators, disclosures, patents, licenses, startups, and downstream outcomes, providing the translation evidence needed to trace how research moves toward practical use.",
+      "description": "Connects governed university records on research investments, investigators, disclosures, patents, licenses, and startups. These linked records provide traceable evidence for modeling how research moves toward commercial and societal use.",
       "status": "available",
       "url": "https://niinstitute.kellogg.northwestern.edu/bridge",
       "actionLabel": "Open the tool",
@@ -51,7 +51,7 @@
     },
     {
       "name": "Innovation Insights",
-      "description": "Turns the connected evidence base into comparative views of institutions, fields, funding programs, and time, helping users identify promising people, ideas, partnerships, and translation opportunities.",
+      "description": "Transforms connected research and translation data into comparative views of institutions, fields, programs, and time. It helps users identify promising people, ideas, partnerships, and pathways from investment to impact.",
       "status": "available",
       "url": "https://www.innovationinsights.org",
       "actionLabel": "Open the tool",
@@ -62,7 +62,7 @@
     },
     {
       "name": "SciSciNet",
-      "description": "Links publications, grants, patents, people, institutions, concepts, and organizations at scale, creating the research graph that supports consistent evidence queries and pipeline analysis.",
+      "description": "Links publications, grants, patents, people, institutions, concepts, and organizations at scale. This research graph supports measurement of upstream activity, construction of predictors, and analysis of downstream technology outcomes.",
       "status": "available",
       "url": "https://northwestern-cssi.github.io/sciscinet/",
       "actionLabel": "Explore the dataset",
@@ -73,7 +73,7 @@
     },
     {
       "name": "SciSciGPT",
-      "description": "Provides a conversational interface for asking evidence-grounded questions across the connected research graph, with responses tied back to the records and relationships that support them.",
+      "description": "Provides an evidence-grounded conversational interface to the connected research graph. Users can investigate complex questions while retaining links to the records, entities, and relationships supporting each result.",
       "status": "available",
       "url": "https://sciscigpt.com",
       "actionLabel": "Open the tool",
@@ -84,7 +84,7 @@
     },
     {
       "name": "Manufacturing Dataset",
-      "description": "Structures manufacturing methods, design choices, organizations, production conditions, and measured performance so models can examine how technical decisions and scale-up constraints shape outcomes.",
+      "description": "Structures manufacturing methods, design choices, production conditions, organizations, and measured performance into model-ready records. The dataset supports tests of how technical decisions and scale-up constraints shape technology outcomes.",
       "status": "coming-soon",
       "url": null,
       "image": {

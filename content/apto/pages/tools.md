@@ -12,4 +12,4 @@
 
 ## Introduction
 
-Each team has been working towards developing tool(s) that can assess and test various predictive models. Learn more about the work, progress, and outputs from each team.
+APTO teams are building an integrated set of datasets, models, and research tools that turns fragmented evidence into measurable technology outcomes. Explore how each tool creates evidence, tests predictions, and supports decisions about technology capability, production, use, and R&D investment.

@@ -6,8 +6,8 @@
   "name": "Agentic Framework For Technology Outcomes Tool",
   "displayOrder": 2,
   "summaryParagraphs": [
-    "This agentic framework converts publications, patents, and technical documents into validated technology-outcome data by finding evidence, extracting quantitative performance and design choices, and checking unsupported claims.",
-    "Expert review keeps each record grounded while the workflow scales detailed measurement across perovskite cells, superconducting qubits, manufacturing, and additional technology domains."
+    "This agentic framework transforms publications, patents, and technical documents into model-ready technology-outcome data by locating relevant evidence, extracting quantitative performance and design choices, normalizing records, and flagging unsupported claims.",
+    "Already applied to perovskite solar cells and now extending to superconducting qubits and manufacturing, the framework combines source provenance with expert review to produce consistent datasets for measuring capabilities and testing predictive models."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "Perovskite Dataset",
-      "description": "Structures extracted perovskite performance measures, material architectures, fabrication choices, and experimental design decisions with source provenance, supporting consistent comparisons of technological trajectories and model validation.",
+      "description": "Structures source-linked evidence on perovskite performance, material architectures, fabrication methods, and experimental choices. It enables consistent measurement, historical comparison, and validation of models that predict device capability.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Quantum Dataset",
-      "description": "Structures extracted quantum-computing performance measures, hardware architectures, implementation choices, and system-design decisions with source provenance, enabling researchers to trace progress and test predictive models across systems.",
+      "description": "Structures source-linked records of superconducting-qubit performance, including coherence time, gate fidelity, device parameters, researchers, and funding sources. It supports identifying breakthroughs, comparing technical pathways, and testing models for scalable, fault-tolerant quantum computing.",
       "status": "coming-soon",
       "url": null,
       "image": {

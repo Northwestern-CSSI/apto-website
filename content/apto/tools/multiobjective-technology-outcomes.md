@@ -6,8 +6,8 @@
   "name": "Multi-Objective Technology Outcomes Tool",
   "displayOrder": 3,
   "summaryParagraphs": [
-    "This tool measures technological progress across interacting capability, production, and use outcomes, revealing when improvement in one dimension reinforces or constrains another.",
-    "Cross-domain evidence identifies punctuated breakthroughs, tradeoffs, complementarities, and uncertainty across perovskites, superconducting technologies, AI, processors, manufacturing, and other evolving systems."
+    "Technological innovation rarely advances through a single capability. Progress often depends on coordinated improvements across multiple dimensions, where gains in one capability may enable, constrain, or trade off against another. These interactions define a shifting Pareto frontier: the best attainable combinations of technology outcomes.",
+    "This tool measures those coupled dynamics across perovskites, superconducting technologies, artificial intelligence, processors, manufacturing, and other domains. A cross-domain analysis of millions of solutions has already revealed punctuated progress, providing an empirical foundation for comparing pathways, breakthroughs, tradeoffs, and uncertainty across technologies."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "CPU Evolution",
-      "description": "Connects processor design shifts with changes in performance, cost, production requirements, and use, creating a multi-metric record for comparing reinforcing advances and consequential tradeoffs over time.",
+      "description": "Connects changes in processor architecture with performance, cost, production requirements, and use. The resulting multi-outcome record supports tests of when technical advances reinforce one another or introduce consequential tradeoffs.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Punctuated Progress",
-      "description": "Models long plateaus and clustered breakthroughs across interacting technology outcomes, helping researchers compare near-term predictability, longer-term uncertainty, and the combinations of radical and incremental change that drive progress.",
+      "description": "Presents evidence from millions of solutions that technological progress often alternates between extended plateaus and clustered breakthroughs. This establishes a testable framework for comparing predictability, uncertainty, and technological change across domains.",
       "status": "available",
       "url": "https://arxiv.org/abs/2605.16719",
       "actionLabel": "Read the paper",

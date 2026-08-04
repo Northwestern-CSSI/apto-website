@@ -6,8 +6,8 @@
   "name": "Predicting Technological Evolution Tool",
   "displayOrder": 4,
   "summaryParagraphs": [
-    "This forecasting system combines mechanistic and transformer models with research, design, patent, licensing, startup, and historical performance evidence to compare technical pathways and predict technology outcomes.",
-    "It estimates performance and commercialization potential, connects investments to inventions and institutions, and identifies promising configurations for perovskite cells, superconducting qubits, and future applications."
+    "This forecasting system combines mechanistic, causal, and machine-learning models with research, design, performance, patent, licensing, and startup evidence to predict technical progress, commercialization, and the pathways connecting research investments to outcomes.",
+    "Funding the Frontier already turns this approach into a working research environment connecting millions of grants and patents. Together with technology-specific forecasts, the system supports historical testing, cross-domain comparison, and decisions about promising technology pathways."
   ],
   "categories": [
     "Capability",
@@ -40,7 +40,7 @@
   "resources": [
     {
       "name": "Funding the Frontier",
-      "description": "Connects millions of research awards with later inventions and technical outcomes, enabling forward tracing from investment to impact and backward tracing from patents to their scientific foundations.",
+      "description": "Connects approximately 7 million research awards with 160 million patents through 1.8 billion citation relationships. Users can trace investments forward to technical impact, trace inventions back to their scientific foundations, and compare research pathways.",
       "status": "available",
       "url": "https://fundingthefrontier.com",
       "actionLabel": "Open the portal",
@@ -51,7 +51,7 @@
     },
     {
       "name": "Innovation Insights",
-      "description": "Compares research and institutional signals that precede patents, licenses, startups, and technology adoption, helping users identify promising pathways and test which early indicators reliably anticipate translation.",
+      "description": "Identifies research and institutional signals that precede patents, licenses, startups, and adoption. Comparative analysis reveals which early indicators consistently predict translation across fields, institutions, and time.",
       "status": "available",
       "url": "https://www.innovationinsights.org",
       "actionLabel": "Open the tool",
@@ -62,7 +62,7 @@
     },
     {
       "name": "TechBridge",
-      "description": "Provides governed institutional evidence on disclosures, patents, licenses, startups, researchers, and grants, supporting models of the pathways that connect research investment with market translation.",
+      "description": "Supplies governed institutional evidence on grants, researchers, disclosures, patents, licenses, and startups. These records support the development and historical validation of models connecting research investments with market translation.",
       "status": "available",
       "url": "https://niinstitute.kellogg.northwestern.edu/bridge",
       "actionLabel": "Open the tool",
@@ -73,7 +73,7 @@
     },
     {
       "name": "Perovskite Forecast",
-      "description": "Tests future perovskite performance under alternative material, architecture, and device-design pathways, allowing users to compare configurations and identify combinations with strong predicted outcomes.",
+      "description": "Combines material composition, architecture, device design, and historical performance to forecast future efficiency pathways. It supports comparisons of candidate configurations and tests whether models recover observed technological trajectories.",
       "status": "coming-soon",
       "url": null,
       "image": {
@@ -83,7 +83,7 @@
     },
     {
       "name": "Manufacturing Data",
-      "description": "Links manufacturing methods, technical choices, scale-up conditions, organizations, and production constraints so forecasting models can evaluate how feasible production pathways shape technical and downstream outcomes.",
+      "description": "Links manufacturing methods, technical choices, scale-up conditions, organizations, and production constraints. Models can use this evidence to evaluate how feasible production pathways shape capability, commercialization, and downstream use.",
       "status": "coming-soon",
       "url": null,
       "image": {
