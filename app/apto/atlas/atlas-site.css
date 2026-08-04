@@ -873,6 +873,7 @@
 .atlas-tool-media.apto-tool-gallery > img.is-current.is-leaving { opacity: 0; }
 .atlas-tool-media.apto-tool-gallery > img.is-incoming { opacity: 1; }
 .atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 18px; height: 100%; padding: 18px 18px 0; }
+.atlas-tool-card .apto-resource-path-atlas { grid-template-rows: 50% 50%; }
 .apto-resource-path-atlas .apto-resource-route { min-height: 0; }
 .apto-resource-path-atlas .apto-resource-summary { min-height: 0; }
 .apto-resource-path-atlas .apto-resource-summary-copy { padding-top: 15px; padding-bottom: 14px; }

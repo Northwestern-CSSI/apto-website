@@ -335,6 +335,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(atlasStyles, /\.atlas-project-card:nth-child\(n \+ 3\)\s*\{\s*grid-column:\s*span 2/);
   assert.doesNotMatch(atlasStyles, /atlas-project-(?:folio|expand)/);
   assert.match(atlasStyles, /\.apto-resource-path-atlas\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.82rem/);
+  assert.match(atlasStyles, /\.atlas-tool-card \.apto-resource-path-atlas\s*\{\s*grid-template-rows:\s*50% 50%/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-node strong/);
   const atlasHomeHtml = await (await render("/atlas")).text();
@@ -353,6 +354,14 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(atlasProjectsHtml, /class="atlas-footer-team"/);
   assert.doesNotMatch(atlasProjectsHtml, /Program Contact/);
   assert.match(atlasProjectsHtml, /href="mailto:rjchmiel@nsf.gov"/);
+
+  const atlasToolsHtml = await (await render("/atlas/tools")).text();
+  const northwesternTools = data.tools.filter((tool) => tool.participantId === "northwestern");
+  const uchicagoTools = data.tools.filter((tool) => tool.participantId === "uchicago");
+  const expectedFeaturedOrder = northwesternTools.flatMap((tool, index) => [tool, uchicagoTools[index]].filter(Boolean));
+  const featuredTitlePositions = expectedFeaturedOrder.map((tool) => atlasToolsHtml.indexOf(tool.name));
+  assert.ok(featuredTitlePositions.every((position) => position >= 0), "Atlas should render every featured tool");
+  assert.deepEqual(featuredTitlePositions, featuredTitlePositions.toSorted((left, right) => left - right), "Atlas should alternate Northwestern and University of Chicago tools");
 });
 
 test("light and dark logo assets remain available in both presentations", async () => {

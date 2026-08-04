@@ -50,6 +50,23 @@ function participantFor(id: string) {
   return aptoParticipants.find((participant) => participant.id === id);
 }
 
+const atlasOrderedTools = (() => {
+  const northwestern = aptoTools.filter((tool) => tool.participantId === "northwestern");
+  const uchicago = aptoTools.filter((tool) => tool.participantId === "uchicago");
+  const featured: Array<(typeof aptoTools)[number]> = [];
+  const rowCount = Math.max(northwestern.length, uchicago.length);
+
+  for (let index = 0; index < rowCount; index += 1) {
+    if (northwestern[index]) featured.push(northwestern[index]);
+    if (uchicago[index]) featured.push(uchicago[index]);
+  }
+
+  return [
+    ...featured,
+    ...aptoTools.filter((tool) => !["northwestern", "uchicago"].includes(tool.participantId)),
+  ];
+})();
+
 function atlasRoute(section: AtlasSection) {
   return aptoRoute(section === "home" ? "/atlas" : `/atlas/${section}`);
 }
@@ -312,7 +329,7 @@ function ToolPoster({ tool }: {
 function ToolsPage() {
   const [organization, setOrganization] = useState("all");
   const [category, setCategory] = useState("all");
-  const filteredTools = aptoTools.filter((tool) => (
+  const filteredTools = atlasOrderedTools.filter((tool) => (
     (organization === "all" || tool.participantId === organization)
     && (category === "all" || tool.categories.includes(category as "Capability" | "Production" | "Use"))
   ));
