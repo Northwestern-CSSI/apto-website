@@ -177,7 +177,7 @@ test("generated content follows the featured-institution order and supplied-imag
   const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
   assert.deepEqual(
     northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
-    ["dashun-wang", "alicia-loffler", "benjamin-jones", "jian-cao", "yian-yin"],
+    ["dashun-wang", "benjamin-jones", "jian-cao", "mark-hersam", "yian-yin"],
   );
   assert.deepEqual(data.program.programTeam.map((person) => [person.name, person.role]), [
     ["Rebecca Chmiel", "Program Manager"],
