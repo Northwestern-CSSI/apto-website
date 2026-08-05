@@ -9,7 +9,7 @@
   "organization": null,
   "headshotUrl": "/apto/people/mark-hersam.jpg",
   "headshotAlt": "Portrait of Mark C. Hersam",
-  "profileUrl": "https://www.mccormick.northwestern.edu/research-faculty/directory/profiles/hersam-mark.html"
+  "profileUrl": null
 }
 ---
 
