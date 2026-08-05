@@ -16,22 +16,22 @@
   ],
   "figure": {
     "kind": "global-map",
-    "src": "/apto/tools/placeholders/perforated-facade.jpg",
+    "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
     "label": "Dashboards",
-    "alt": "Conceptual view of science and technology dashboards"
+    "alt": "Earth viewed from orbit beside a spacecraft"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/glass-prisms.jpg",
-      "alt": "Conceptual dashboard metrics view"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     },
     {
-      "src": "/apto/tools/placeholders/iridescent-mineral.jpg",
-      "alt": "Conceptual dashboard comparison view"
+      "src": "/apto/tools/placeholders/sean-benesh-climber.jpg",
+      "alt": "Rock climber ascending a steep cliff"
     },
     {
-      "src": "/apto/tools/placeholders/colonnade.jpg",
-      "alt": "Conceptual dashboard evidence view"
+      "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
+      "alt": "Drill bit cutting metal amid sparks"
     }
   ],
   "statusLabel": "Research preview",

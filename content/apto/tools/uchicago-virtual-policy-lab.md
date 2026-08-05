@@ -16,22 +16,22 @@
   ],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/placeholders/concrete-stairwell.jpg",
+    "src": "/apto/tools/placeholders/sean-benesh-climber.jpg",
     "label": "The Parable Tool",
-    "alt": "Conceptual view of the Parable tool"
+    "alt": "Rock climber ascending a steep cliff"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/sculptural-folds.jpg",
-      "alt": "Conceptual Parable scenario view"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     },
     {
-      "src": "/apto/tools/placeholders/mineral-strata.jpg",
-      "alt": "Conceptual Parable comparison view"
+      "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+      "alt": "Close view of a multicolored mineral sample"
     },
     {
-      "src": "/apto/tools/placeholders/water-on-stone.jpg",
-      "alt": "Conceptual Parable evidence view"
+      "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+      "alt": "Earth viewed from orbit beside a spacecraft"
     }
   ],
   "statusLabel": "Research preview",

@@ -16,22 +16,22 @@
   ],
   "figure": {
     "kind": "agent-network",
-    "src": "/apto/tools/placeholders/iridescent-mineral.jpg",
+    "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
     "label": "AI infrastructure",
-    "alt": "Conceptual view of artificial-intelligence infrastructure"
+    "alt": "Illuminated circuit-board pattern"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/backlit-leaves.jpg",
-      "alt": "Conceptual AI infrastructure network view"
+      "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
+      "alt": "Drill bit cutting metal amid sparks"
     },
     {
-      "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
-      "alt": "Conceptual AI infrastructure systems view"
+      "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+      "alt": "Earth viewed from orbit beside a spacecraft"
     },
     {
-      "src": "/apto/tools/placeholders/mineral-strata.jpg",
-      "alt": "Conceptual AI infrastructure deployment view"
+      "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+      "alt": "Close view of a multicolored mineral sample"
     }
   ],
   "statusLabel": "Research preview",

@@ -14,22 +14,22 @@
   ],
   "figure": {
     "kind": "evidence-stream",
-    "src": "/apto/tools/placeholders/glass-prisms.jpg",
+    "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
     "label": "Tool B",
-    "alt": "Placeholder conceptual view for Insilicom Tool B"
+    "alt": "Close view of a multicolored mineral sample"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/water-on-stone.jpg",
-      "alt": "Second placeholder conceptual view for Insilicom Tool B"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     },
     {
-      "src": "/apto/tools/placeholders/concrete-stairwell.jpg",
-      "alt": "Third placeholder conceptual view for Insilicom Tool B"
+      "src": "/apto/tools/placeholders/sean-benesh-climber.jpg",
+      "alt": "Rock climber ascending a steep cliff"
     },
     {
-      "src": "/apto/tools/placeholders/iridescent-mineral.jpg",
-      "alt": "Fourth placeholder conceptual view for Insilicom Tool B"
+      "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+      "alt": "Earth viewed from orbit beside a spacecraft"
     }
   ],
   "statusLabel": "Research preview",

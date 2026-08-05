@@ -124,7 +124,13 @@ test("generated content follows the featured-institution order and supplied-imag
   assert.equal(sharedResourceIcons.get("innovation insights"), "/apto/tools/icons/innovation.svg");
   const nonNorthwesternTools = data.tools.filter((tool) => tool.participantId !== "northwestern");
   const placeholderImages = new Set(nonNorthwesternTools.flatMap((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src)));
-  assert.equal(placeholderImages.size, 10);
+  assert.deepEqual([...placeholderImages].toSorted(), [
+    "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+    "/apto/tools/placeholders/greg-rosenke-machining.jpg",
+    "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+    "/apto/tools/placeholders/sean-benesh-climber.jpg",
+    "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+  ]);
   assert.equal(new Set(nonNorthwesternTools.map((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src).join("|"))).size, nonNorthwesternTools.length);
   const placeholderTools = data.tools.filter((tool) => tool.participantId !== "northwestern" || tool.id === "northwestern-tool-a");
   const placeholderCopy = [

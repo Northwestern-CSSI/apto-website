@@ -15,22 +15,22 @@
   ],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/placeholders/mineral-strata.jpg",
+    "src": "/apto/tools/placeholders/sean-benesh-climber.jpg",
     "label": "Tool B",
-    "alt": "Placeholder conceptual view for Macrocosm Tool B"
+    "alt": "Rock climber ascending a steep cliff"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/glass-prisms.jpg",
-      "alt": "Second placeholder conceptual view for Macrocosm Tool B"
+      "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+      "alt": "Earth viewed from orbit beside a spacecraft"
     },
     {
-      "src": "/apto/tools/placeholders/water-on-stone.jpg",
-      "alt": "Third placeholder conceptual view for Macrocosm Tool B"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     },
     {
-      "src": "/apto/tools/placeholders/backlit-leaves.jpg",
-      "alt": "Fourth placeholder conceptual view for Macrocosm Tool B"
+      "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
+      "alt": "Drill bit cutting metal amid sparks"
     }
   ],
   "statusLabel": "Research preview",

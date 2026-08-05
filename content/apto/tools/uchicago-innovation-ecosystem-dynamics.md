@@ -16,22 +16,22 @@
   ],
   "figure": {
     "kind": "scenario-curves",
-    "src": "/apto/tools/placeholders/backlit-leaves.jpg",
+    "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
     "label": "AI benchmarks",
-    "alt": "Conceptual view of artificial-intelligence benchmarks"
+    "alt": "Drill bit cutting metal amid sparks"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
-      "alt": "Conceptual AI benchmark comparison"
+      "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+      "alt": "Close view of a multicolored mineral sample"
     },
     {
-      "src": "/apto/tools/placeholders/colonnade.jpg",
-      "alt": "Conceptual AI benchmark trajectory"
+      "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+      "alt": "Earth viewed from orbit beside a spacecraft"
     },
     {
-      "src": "/apto/tools/placeholders/perforated-facade.jpg",
-      "alt": "Conceptual AI benchmark evidence view"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     }
   ],
   "statusLabel": "Research preview",

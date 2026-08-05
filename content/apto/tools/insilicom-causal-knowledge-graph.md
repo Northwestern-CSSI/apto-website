@@ -15,22 +15,22 @@
   ],
   "figure": {
     "kind": "causal-graph",
-    "src": "/apto/tools/placeholders/sculptural-folds.jpg",
+    "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
     "label": "Tool A",
-    "alt": "Placeholder conceptual view for Insilicom Tool A"
+    "alt": "Illuminated circuit-board pattern"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/perforated-facade.jpg",
-      "alt": "Second placeholder conceptual view for Insilicom Tool A"
+      "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+      "alt": "Earth viewed from orbit beside a spacecraft"
     },
     {
-      "src": "/apto/tools/placeholders/backlit-leaves.jpg",
-      "alt": "Third placeholder conceptual view for Insilicom Tool A"
+      "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+      "alt": "Close view of a multicolored mineral sample"
     },
     {
-      "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
-      "alt": "Fourth placeholder conceptual view for Insilicom Tool A"
+      "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
+      "alt": "Drill bit cutting metal amid sparks"
     }
   ],
   "statusLabel": "Research preview",

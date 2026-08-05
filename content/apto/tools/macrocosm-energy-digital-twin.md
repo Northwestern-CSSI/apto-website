@@ -15,22 +15,22 @@
   ],
   "figure": {
     "kind": "agent-network",
-    "src": "/apto/tools/placeholders/colonnade.jpg",
+    "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
     "label": "Tool A",
-    "alt": "Placeholder conceptual view for Macrocosm Tool A"
+    "alt": "Earth viewed from orbit beside a spacecraft"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
-      "alt": "Second placeholder conceptual view for Macrocosm Tool A"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     },
     {
-      "src": "/apto/tools/placeholders/perforated-facade.jpg",
-      "alt": "Third placeholder conceptual view for Macrocosm Tool A"
+      "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
+      "alt": "Drill bit cutting metal amid sparks"
     },
     {
-      "src": "/apto/tools/placeholders/sculptural-folds.jpg",
-      "alt": "Fourth placeholder conceptual view for Macrocosm Tool A"
+      "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+      "alt": "Close view of a multicolored mineral sample"
     }
   ],
   "statusLabel": "Research preview",

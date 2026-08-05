@@ -16,22 +16,22 @@
   ],
   "figure": {
     "kind": "signal-matrix",
-    "src": "/apto/tools/placeholders/mineral-strata.jpg",
+    "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
     "label": "AI skills",
-    "alt": "Conceptual view of artificial-intelligence skills"
+    "alt": "Illuminated circuit-board pattern"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/iridescent-mineral.jpg",
-      "alt": "Conceptual AI skills view across fields"
+      "src": "/apto/tools/placeholders/sean-benesh-climber.jpg",
+      "alt": "Rock climber ascending a steep cliff"
     },
     {
-      "src": "/apto/tools/placeholders/sculptural-folds.jpg",
-      "alt": "Conceptual AI skills view across organizations"
+      "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
+      "alt": "Drill bit cutting metal amid sparks"
     },
     {
-      "src": "/apto/tools/placeholders/backlit-leaves.jpg",
-      "alt": "Conceptual AI skills view across time"
+      "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
+      "alt": "Earth viewed from orbit beside a spacecraft"
     }
   ],
   "statusLabel": "Research preview",

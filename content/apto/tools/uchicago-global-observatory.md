@@ -16,22 +16,22 @@
   ],
   "figure": {
     "kind": "global-map",
-    "src": "/apto/tools/placeholders/colonnade.jpg",
+    "src": "/apto/tools/placeholders/nasa-earth-orbit.jpg",
     "label": "Data",
-    "alt": "Conceptual view of linked science and technology data"
+    "alt": "Earth viewed from orbit beside a spacecraft"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/concrete-stairwell.jpg",
-      "alt": "Conceptual data view with linked records"
+      "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+      "alt": "Close view of a multicolored mineral sample"
     },
     {
-      "src": "/apto/tools/placeholders/water-on-stone.jpg",
-      "alt": "Conceptual data view across organizations"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     },
     {
-      "src": "/apto/tools/placeholders/glass-prisms.jpg",
-      "alt": "Conceptual data view across research pipelines"
+      "src": "/apto/tools/placeholders/sean-benesh-climber.jpg",
+      "alt": "Rock climber ascending a steep cliff"
     }
   ],
   "statusLabel": "Research preview",

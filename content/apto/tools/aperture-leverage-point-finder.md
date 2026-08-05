@@ -15,22 +15,22 @@
   ],
   "figure": {
     "kind": "signal-matrix",
-    "src": "/apto/tools/placeholders/moss-and-lichen.jpg",
+    "src": "/apto/tools/placeholders/greg-rosenke-machining.jpg",
     "label": "Tool B",
-    "alt": "Placeholder conceptual view for Aperture Tool B"
+    "alt": "Drill bit cutting metal amid sparks"
   },
   "galleryImages": [
     {
-      "src": "/apto/tools/placeholders/mineral-strata.jpg",
-      "alt": "Second placeholder conceptual view for Aperture Tool B"
+      "src": "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
+      "alt": "Illuminated circuit-board pattern"
     },
     {
-      "src": "/apto/tools/placeholders/glass-prisms.jpg",
-      "alt": "Third placeholder conceptual view for Aperture Tool B"
+      "src": "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
+      "alt": "Close view of a multicolored mineral sample"
     },
     {
-      "src": "/apto/tools/placeholders/perforated-facade.jpg",
-      "alt": "Fourth placeholder conceptual view for Aperture Tool B"
+      "src": "/apto/tools/placeholders/sean-benesh-climber.jpg",
+      "alt": "Rock climber ascending a steep cliff"
     }
   ],
   "statusLabel": "Research preview",
