@@ -1248,9 +1248,12 @@
 }
 
 .story-project-chapter {
+  grid-row: span 4;
+  grid-template-rows: subgrid;
   min-height: 410px;
   height: 100%;
   padding: clamp(24px, 2.7vw, 38px);
+  display: grid;
   justify-content: flex-start;
 }
 
@@ -1434,10 +1437,20 @@
    complete card width in both the two- and three-column portfolio rows. */
 .story-project-chapter > header {
   min-height: 0;
-  margin-bottom: clamp(16px, 2vw, 24px);
+  margin-bottom: 0;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 18px;
+}
+
+.story-project-chapter > p,
+.story-project-people {
+  margin-block: 0;
+}
+
+.story-project-meta,
+.story-project-people {
+  align-self: start;
 }
 
 .story-project-chapter > header .story-participant-logo {

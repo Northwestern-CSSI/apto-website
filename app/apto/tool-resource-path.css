@@ -56,7 +56,13 @@
   transition: opacity .24s ease, filter .28s ease, transform .28s ease;
 }
 
-.apto-resource-node.is-available { cursor: pointer; }
+.apto-resource-node.is-available,
+.apto-resource-node.is-available .apto-resource-thumb,
+.apto-resource-node.is-available .apto-resource-thumb img,
+.apto-resource-node.is-available strong,
+.apto-resource-summary-copy > a {
+  cursor: pointer;
+}
 .apto-resource-node.is-coming-soon { cursor: default; }
 .apto-resource-path.has-active-resource .apto-resource-node:not(.is-active) {
   opacity: .24;

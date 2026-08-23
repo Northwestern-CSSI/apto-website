@@ -335,7 +335,10 @@ function ToolsPage({ participantOrder }: { participantOrder: readonly string[] }
     aptoPresentationTools.filter((tool) => !["northwestern", "uchicago"].includes(tool.participantId)),
     participantOrder,
   );
-  const orderedTools = [...featuredRows(aptoPresentationTools, participantOrder).flat(), ...supportingTools];
+  const featuredTools = featuredRows(aptoPresentationTools, participantOrder)
+    .flat()
+    .filter((tool): tool is (typeof aptoPresentationTools)[number] => Boolean(tool));
+  const orderedTools = [...featuredTools, ...supportingTools];
   const filteredTools = orderedTools.filter((tool) => (
     (organization === "all" || tool.participantId === organization)
     && (category === "all" || tool.categories.includes(category as "Capability" | "Production" | "Use"))

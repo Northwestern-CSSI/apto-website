@@ -48,16 +48,12 @@ function isParticipantOrders(value: unknown): value is ParticipantOrders {
   });
 }
 
-function sameParticipantOrder(left: readonly string[], right: readonly string[]) {
-  return left.length === right.length && left.every((participantId, index) => participantId === right[index]);
-}
-
 function nextParticipantOrders(previous: ParticipantOrders | undefined) {
   const next = createParticipantOrders();
   if (!previous) return next;
 
   for (const section of participantSections) {
-    if (sameParticipantOrder(previous[section], next[section])) {
+    if (previous[section][0] === next[section][0]) {
       next[section] = participantOrderForOccurrence(next[section], 1);
     }
   }
@@ -93,12 +89,12 @@ export function featuredRows<T extends { participantId: string }>(
     items.filter((item) => item.participantId === participantId),
   ])) as Record<(typeof featuredParticipantIds)[number], T[]>;
   const rowCount = Math.max(...featuredParticipantIds.map((participantId) => featuredItems[participantId].length));
+  const rowOrder = participantOrder.slice(0, 2);
 
   return Array.from({ length: rowCount }, (_, rowIndex) => {
-    const rowOrder = participantOrderForOccurrence(participantOrder, rowIndex).slice(0, 2);
-    return rowOrder
-      .map((participantId) => featuredItems[participantId as (typeof featuredParticipantIds)[number]]?.[rowIndex])
-      .filter((item): item is T => Boolean(item));
+    return rowOrder.map((participantId) => (
+      featuredItems[participantId as (typeof featuredParticipantIds)[number]]?.[rowIndex]
+    ));
   });
 }
 

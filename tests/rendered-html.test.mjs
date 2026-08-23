@@ -64,7 +64,7 @@ test("generated content follows the featured-institution order and supplied-imag
   ]);
   assert.ok(data.program.impactGroups[0].entries.every((entry) => !entry.startsWith("Lorem ipsum")));
   assert.ok(data.program.impactGroups.slice(1).flatMap((group) => group.entries).every((entry) => placeholderTextPattern.test(entry)));
-  assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 6);
+  assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 5);
   assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 6);
   assert.deepEqual(data.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name), [
     "Aggregating Research Pipeline At Scale Tool",
@@ -72,7 +72,6 @@ test("generated content follows the featured-institution order and supplied-imag
     "Multi-Objective Technology Outcomes Tool",
     "Predicting Technological Evolution Tool",
     "Emerging Technology Detection Tool",
-    "Tool A",
   ]);
   assert.deepEqual(data.tools.filter((tool) => tool.participantId === "uchicago").map((tool) => tool.name), [
     "Data",
@@ -132,7 +131,7 @@ test("generated content follows the featured-institution order and supplied-imag
     "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
   ]);
   assert.equal(new Set(nonNorthwesternTools.map((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src).join("|"))).size, nonNorthwesternTools.length);
-  const placeholderTools = data.tools.filter((tool) => tool.participantId !== "northwestern" || tool.id === "northwestern-tool-a");
+  const placeholderTools = data.tools.filter((tool) => tool.participantId !== "northwestern");
   const placeholderCopy = [
     ...data.program.impactGroups.filter((group) => group.participantId !== "northwestern").flatMap((group) => group.entries),
     ...placeholderTools.flatMap((tool) => [
@@ -140,7 +139,7 @@ test("generated content follows the featured-institution order and supplied-imag
       ...tool.resources.map((resource) => resource.description),
     ]),
   ];
-  assert.equal(placeholderCopy.length, 68);
+  assert.equal(placeholderCopy.length, 63);
   assert.equal(new Set(placeholderCopy).size, placeholderCopy.length, "every displayed placeholder passage should be distinct");
   const agenticTool = data.tools.find((tool) => tool.id === "agentic-framework-for-technology-outcome-mining");
   assert.deepEqual(agenticTool.resources.map((resource) => resource.name), [
@@ -237,7 +236,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.doesNotMatch(html, /Tools from across the APTO cohort/i);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
-  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 6);
+  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5);
   assert.match(html, /<h3>AI Tools<\/h3>/);
   assert.doesNotMatch(html, /<h3>(?:AI Skills|AI Benchmarks|AI Infrastructure)<\/h3>/);
   for (const area of ["AI Skills", "AI Benchmarks", "AI Infrastructure"]) assert.ok(html.includes(area));
@@ -262,6 +261,8 @@ test("Story gives project titles full card width and pairs lead-institution tool
   const styles = await readFile(new URL("../app/apto/story/story-site.css", import.meta.url), "utf8");
   assert.match(styles, /\.story-project-chapter > header\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
   assert.match(styles, /\.story-project-chapter h3\s*\{[\s\S]*?max-width:\s*100%/);
+  assert.match(styles, /\.story-project-chapter\s*\{[\s\S]*?grid-row:\s*span 4;[\s\S]*?grid-template-rows:\s*subgrid/);
+  assert.match(styles, /\.story-project-chapter > p,\s*\.story-project-people\s*\{\s*margin-block:\s*0/);
   assert.match(styles, /--story-parallax-y:\s*var\(--story-shift,0px\)/);
   assert.match(styles, /calc\(var\(--story-reveal-y,0px\) \+ var\(--story-parallax-y,0px\)\)/);
   assert.match(styles, /\.story-hero-image\s*\{[\s\S]*?background:\s*transparent/);
@@ -432,12 +433,17 @@ test("available tool pieces open externally without a blocked cursor for unavail
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
   assert.match(resourceSource, /target="_blank"\s+rel="noreferrer"/);
   assert.doesNotMatch(resourceSource, /Open this piece/);
+  assert.match(resourceStyles, /\.apto-resource-node\.is-available[\s\S]*?cursor:\s*pointer/);
+  assert.match(resourceStyles, /\.apto-resource-node\.is-available \.apto-resource-thumb img/);
   assert.match(resourceStyles, /\.apto-resource-node\.is-coming-soon\s*\{\s*cursor:\s*default/);
   assert.doesNotMatch(resourceStyles, /cursor:\s*not-allowed/);
 });
 
 test("each tool presentation uses its independently ordered content media", async () => {
   const source = await readFile(new URL("../app/apto/tool-media.ts", import.meta.url), "utf8");
+  const orderSource = await readFile(new URL("../app/apto/participant-order.ts", import.meta.url), "utf8");
   assert.match(source, /return ownMedia\(tool\)/);
   assert.doesNotMatch(source, /northwesternMedia|placeholderSteps|placeholderIndex/);
+  assert.match(orderSource, /const rowOrder = participantOrder\.slice\(0, 2\)/);
+  assert.doesNotMatch(orderSource, /participantOrderForOccurrence\(participantOrder, rowIndex\)/);
 });

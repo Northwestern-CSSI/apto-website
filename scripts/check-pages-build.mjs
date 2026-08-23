@@ -21,7 +21,7 @@ for (const page of storyPages) {
   for (const section of ["program", "projects", "tools", "convening"]) {
     assert.ok(html.includes(`href="#story-${section}"`), `${page} needs its ${section} anchor link`);
   }
-  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 6);
+  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5);
   assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= presentationToolCount);
   assert.ok((html.match(/class="apto-resource-path apto-resource-path-story(?: is-featured)?"/g) ?? []).length >= presentationToolCount);
   assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= presentationToolCount);
