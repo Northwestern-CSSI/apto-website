@@ -196,6 +196,7 @@ test("generated content follows the featured-institution order and supplied-imag
 
 test("Story gives project titles full card width and pairs lead-institution tools", async () => {
   const data = await content();
+  const presentationToolCount = data.tools.length - 2;
   const html = await (await render("/story")).text();
   assert.equal((html.match(/class="story-outcome-depth"/g) ?? []).length, 3);
   for (const output of ["Technology Outcome Models", "Causal, predictive models", "Datasets", "Tools"]) assert.ok(html.includes(output));
@@ -237,13 +238,16 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
   assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 6);
+  assert.match(html, /<h3>AI Tools<\/h3>/);
+  assert.doesNotMatch(html, /<h3>(?:AI Skills|AI Benchmarks|AI Infrastructure)<\/h3>/);
+  for (const area of ["AI Skills", "AI Benchmarks", "AI Infrastructure"]) assert.ok(html.includes(area));
   // React's streamed payload can repeat serialized component markup. Require
   // at least one rendered gallery/resource group per tool without depending
   // on that framework-level transport detail.
-  assert.ok((html.match(/class="apto-tool-gallery story-tool-gallery"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story(?: is-featured)?"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="apto-tool-gallery story-tool-gallery"/g) ?? []).length >= presentationToolCount);
+  assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= presentationToolCount);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-story(?: is-featured)?"/g) ?? []).length >= presentationToolCount);
+  assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= presentationToolCount);
   assert.doesNotMatch(html, /apto-resource-detail/);
   const heroImageCount = data.program.heroGallery.length;
   assert.match(html, new RegExp(`class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="${heroImageCount}"`));
@@ -271,6 +275,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
 
 test("Atlas exposes supplied-image galleries and supporting pieces", async () => {
   const data = await content();
+  const presentationToolCount = data.tools.length - 2;
   const programHtml = await (await render("/atlas")).text();
   assert.match(programHtml, /class="atlas-objective-field" id="atlas-impact"/);
   assert.equal((programHtml.match(/class="atlas-impact-group"/g) ?? []).length, data.program.impactGroups.length);
@@ -280,11 +285,11 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
     "Atlas should present the impact section later on the landing page, after the participating organizations",
   );
   const html = await (await render("/atlas/tools")).text();
-  assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas(?: is-featured)?"/g) ?? []).length >= data.tools.length);
-  assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= data.tools.length);
+  assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= presentationToolCount);
+  assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= presentationToolCount);
+  assert.ok((html.match(/data-gallery-count="4"/g) ?? []).length >= presentationToolCount);
+  assert.ok((html.match(/class="apto-resource-path apto-resource-path-atlas(?: is-featured)?"/g) ?? []).length >= presentationToolCount);
+  assert.ok((html.match(/class="apto-resource-summary"/g) ?? []).length >= presentationToolCount);
   assert.doesNotMatch(html, /atlas-tool-toggle|apto-resource-detail/);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.doesNotMatch(html, /atlas-tool-(?:progress|pagination|dots|indicator)/i);
@@ -365,12 +370,9 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(atlasProjectsHtml, /href="mailto:rjchmiel@nsf.gov"/);
 
   const atlasToolsHtml = await (await render("/atlas/tools")).text();
-  const northwesternTools = data.tools.filter((tool) => tool.participantId === "northwestern");
-  const uchicagoTools = data.tools.filter((tool) => tool.participantId === "uchicago");
-  const expectedFeaturedOrder = northwesternTools.flatMap((tool, index) => [tool, uchicagoTools[index]].filter(Boolean));
-  const featuredTitlePositions = expectedFeaturedOrder.map((tool) => atlasToolsHtml.indexOf(tool.name));
-  assert.ok(featuredTitlePositions.every((position) => position >= 0), "Atlas should render every featured tool");
-  assert.deepEqual(featuredTitlePositions, featuredTitlePositions.toSorted((left, right) => left - right), "Atlas should alternate Northwestern and University of Chicago tools");
+  assert.match(atlasToolsHtml, /<h2>AI Tools<\/h2>/);
+  assert.doesNotMatch(atlasToolsHtml, /<h2>(?:AI Skills|AI Benchmarks|AI Infrastructure)<\/h2>/);
+  assert.ok((atlasToolsHtml.match(/class="atlas-tool-card"/g) ?? []).length >= presentationToolCount);
 });
 
 test("light and dark logo assets remain available in both presentations", async () => {

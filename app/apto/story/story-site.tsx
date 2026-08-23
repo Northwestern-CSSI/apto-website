@@ -15,7 +15,6 @@ import {
   aptoParticipants,
   aptoProgram,
   aptoProjects,
-  aptoTools,
 } from "../content";
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
@@ -24,6 +23,15 @@ import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
 import { ProgramIntroduction } from "../program-introduction";
+import {
+  featuredRows,
+  formatParticipantList,
+  orderByParticipant,
+  orderParticipantMentions,
+  participantOrderForOccurrence,
+  useParticipantOrders,
+} from "../participant-order";
+import { aptoPresentationTools } from "../presentation-tools";
 import { useAptoTheme } from "../use-apto-theme";
 
 type StorySection = "program" | "projects" | "tools" | "convening";
@@ -319,9 +327,9 @@ function OutcomePanorama() {
   </div>;
 }
 
-function StoryHero() {
+function StoryHero({ participantOrder }: { participantOrder: readonly string[] }) {
   const home = pageCopy("/");
-  const heroTool = aptoTools.find((tool) => tool.figure.kind === "knowledge-map") ?? aptoTools[0];
+  const heroTool = aptoPresentationTools.find((tool) => tool.figure.kind === "knowledge-map") ?? aptoPresentationTools[0];
   const heroDetail = heroTool.galleryImages[0];
   // Retain the inset implementation for a future re-enable without loading or
   // displaying it in the current design.
@@ -331,6 +339,7 @@ function StoryHero() {
       <h1 id="story-title">{home.title}</h1>
       <ProgramIntroduction
         introduction={home.introduction}
+        participantOrder={participantOrder}
         projectHref={(projectId) => `#story-project-${projectId}`}
       />
     </div>
@@ -359,7 +368,11 @@ function StoryHero() {
   </section>;
 }
 
-function ProgramStory() {
+function ProgramStory({ participantOrder }: { participantOrder: readonly string[] }) {
+  const impactGroups = orderByParticipant(
+    aptoProgram.impactGroups,
+    participantOrderForOccurrence(participantOrder, 1),
+  );
   return <>
     <section className="story-section story-program" id="story-program" data-story-section="program" aria-labelledby="story-program-title">
       <header className="story-section-heading" data-story-reveal="heading">
@@ -375,7 +388,7 @@ function ProgramStory() {
       </header>
       <div className="story-impact-layout">
         <div className="story-impact-stream">
-          {aptoProgram.impactGroups.map((group, groupIndex) => {
+          {impactGroups.map((group, groupIndex) => {
             const participant = participantFor(group.participantId);
             if (!participant) return null;
             const logoSide = groupIndex % 2 === 0 ? "right" : "left";
@@ -442,16 +455,20 @@ function StoryPerson({ person }: { person: AptoPerson }) {
   </article>;
 }
 
-function ProjectsStory() {
+function ProjectsStory({ participantOrder }: { participantOrder: readonly string[] }) {
   const projects = pageCopy("/projects");
+  const orderedProjects = orderByParticipant(
+    aptoProjects,
+    participantOrderForOccurrence(participantOrder, 1),
+  );
   return <section className="story-section story-projects" id="story-projects" data-story-section="projects" aria-labelledby="story-projects-title">
     <header className="story-section-heading" data-story-reveal="heading">
       <h2 id="story-projects-title">{projects.title}</h2>
-      <span>{projects.introduction}</span>
+      <span>{orderParticipantMentions(projects.introduction, participantOrder)}</span>
     </header>
     <div className="story-projects-layout">
       <div className="story-project-chapters">
-        {aptoProjects.map((project) => {
+        {orderedProjects.map((project) => {
           const participant = participantFor(project.participantId);
           return <article
             className="story-project-chapter"
@@ -491,17 +508,15 @@ function ProjectsStory() {
   </section>;
 }
 
-function ToolsStory() {
+function ToolsStory({ participantOrder }: { participantOrder: readonly string[] }) {
   const tools = pageCopy("/tools");
-  const northwesternTools = aptoTools.filter((tool) => tool.participantId === "northwestern");
-  const uchicagoTools = aptoTools.filter((tool) => tool.participantId === "uchicago");
-  const supportingTools = aptoTools.filter((tool) => !["northwestern", "uchicago"].includes(tool.participantId));
-  const pairedRows = Array.from(
-    { length: Math.max(northwesternTools.length, uchicagoTools.length) },
-    (_, index) => [northwesternTools[index], uchicagoTools[index]] as const,
+  const pairedRows = featuredRows(aptoPresentationTools, participantOrder);
+  const supportingTools = orderByParticipant(
+    aptoPresentationTools.filter((tool) => !["northwestern", "uchicago"].includes(tool.participantId)),
+    participantOrder,
   );
 
-  const toolCard = (tool: (typeof aptoTools)[number], index: number) => {
+  const toolCard = (tool: (typeof aptoPresentationTools)[number], index: number) => {
     const media = presentationMediaForTool(tool);
     const participant = participantFor(tool.participantId);
     return <article className="story-tool" key={tool.id} data-story-reveal="media">
@@ -532,7 +547,7 @@ function ToolsStory() {
       <h2 id="story-tools-title">{tools.title}</h2>
       <span>{tools.introduction}</span>
     </header>
-    <div className="story-tool-matrix" aria-label="Northwestern University and University of Chicago tools">
+    <div className="story-tool-matrix" aria-label={`${formatParticipantList(participantOrder.slice(0, 2))} tools`}>
       {pairedRows.map((row, rowIndex) => <div className="story-tool-pair" key={`tool-row-${rowIndex}`}>
         {row.map((tool, columnIndex) => tool
           ? toolCard(tool, rowIndex * 2 + columnIndex)
@@ -600,16 +615,17 @@ export function AptoStoryPage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<StorySection>("program");
   const { theme, toggleTheme } = useAptoTheme("light");
+  const participantOrders = useParticipantOrders();
   useStoryExperience(rootRef, setActiveSection);
 
   return <div className="apto-story" ref={rootRef} data-theme={theme}>
     <a className="story-skip-link" href="#story-main">{aptoInterface.accessibility.skipLinkLabel}</a>
     <StoryHeader activeSection={activeSection} theme={theme} onToggle={toggleTheme} />
     <main id="story-main" tabIndex={-1}>
-      <StoryHero />
-      <ProgramStory />
-      <ProjectsStory />
-      <ToolsStory />
+      <StoryHero participantOrder={participantOrders.program} />
+      <ProgramStory participantOrder={participantOrders.program} />
+      <ProjectsStory participantOrder={participantOrders.projects} />
+      <ToolsStory participantOrder={participantOrders.tools} />
       <ConveningStory />
     </main>
     <StoryFooter />

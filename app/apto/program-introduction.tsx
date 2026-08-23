@@ -1,4 +1,5 @@
 import { aptoProjects } from "./content";
+import { orderParticipantMentions } from "./participant-order";
 
 const cohortLinkLabels = new Map([
   ["Northwestern University", "northwestern"],
@@ -12,12 +13,15 @@ const cohortLabelPattern = /(Northwestern University|University of Chicago|Apper
 
 export function ProgramIntroduction({
   introduction,
+  participantOrder,
   projectHref,
 }: {
   introduction: string;
+  participantOrder: readonly string[];
   projectHref: (projectId: string) => string;
 }) {
-  return <p className="apto-program-introduction">{introduction.split(cohortLabelPattern).map((part, index) => {
+  const orderedIntroduction = orderParticipantMentions(introduction, participantOrder);
+  return <p className="apto-program-introduction">{orderedIntroduction.split(cohortLabelPattern).map((part, index) => {
     const participantId = cohortLinkLabels.get(part);
     if (!participantId) return part;
     const project = aptoProjects.find((candidate) => candidate.participantId === participantId);

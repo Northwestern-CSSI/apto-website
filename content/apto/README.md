@@ -65,8 +65,11 @@ must match an organization’s `id` in `participants/`.
 ## Presentation order
 
 Northwestern University and the University of Chicago are the two featured
-institutions and are presented first. Aperture, Insilicom, and Macrocosm then
-follow alphabetically. People and tools remain alphabetical within each
+institutions and are presented as the leading group. On each page load, their
+order is randomized by section and alternates in repeated paired layouts.
+Apperture.AI, Insilicom, and Macrocosm form a second group whose order is
+shuffled independently in each section. The content builder retains a stable
+canonical order, and people and tools keep their configured order within each
 institution. Do not add number prefixes or manual sequence fields.
 
 ## Images

@@ -17,7 +17,6 @@ import {
   aptoParticipants,
   aptoProgram,
   aptoProjects,
-  aptoTools,
 } from "../content";
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
@@ -26,6 +25,14 @@ import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
 import { ProgramIntroduction } from "../program-introduction";
+import {
+  featuredRows,
+  orderByParticipant,
+  orderParticipantMentions,
+  participantOrderForOccurrence,
+  useParticipantOrders,
+} from "../participant-order";
+import { aptoPresentationTools } from "../presentation-tools";
 import { useAptoTheme } from "../use-apto-theme";
 
 export type AtlasSection = "home" | "projects" | "tools" | "convening";
@@ -49,23 +56,6 @@ function pageCopy(slug: "\/" | "\/about" | "\/projects" | "\/tools" | "\/conveni
 function participantFor(id: string) {
   return aptoParticipants.find((participant) => participant.id === id);
 }
-
-const atlasOrderedTools = (() => {
-  const northwestern = aptoTools.filter((tool) => tool.participantId === "northwestern");
-  const uchicago = aptoTools.filter((tool) => tool.participantId === "uchicago");
-  const featured: Array<(typeof aptoTools)[number]> = [];
-  const rowCount = Math.max(northwestern.length, uchicago.length);
-
-  for (let index = 0; index < rowCount; index += 1) {
-    if (northwestern[index]) featured.push(northwestern[index]);
-    if (uchicago[index]) featured.push(uchicago[index]);
-  }
-
-  return [
-    ...featured,
-    ...aptoTools.filter((tool) => !["northwestern", "uchicago"].includes(tool.participantId)),
-  ];
-})();
 
 function atlasRoute(section: AtlasSection) {
   return aptoRoute(section === "home" ? "/atlas" : `/atlas/${section}`);
@@ -162,7 +152,7 @@ function AtlasHeader({ section, theme, onToggle }: {
   </header>;
 }
 
-function PageIntroduction({ section }: { section: AtlasSection }) {
+function PageIntroduction({ section, participantOrder }: { section: AtlasSection; participantOrder: readonly string[] }) {
   const slug = sectionSlugs[section];
   const page = pageCopy(slug);
   return <header className="atlas-page-intro">
@@ -170,16 +160,17 @@ function PageIntroduction({ section }: { section: AtlasSection }) {
     <div>{section === "home"
       ? <ProgramIntroduction
           introduction={page.introduction}
+          participantOrder={participantOrder}
           projectHref={(projectId) => `${atlasRoute("projects")}#atlas-project-${projectId}`}
         />
-      : <p>{page.introduction}</p>}
+      : <p>{orderParticipantMentions(page.introduction, participantOrder)}</p>}
     </div>
   </header>;
 }
 
-function OrganizationIndex({ labelledBy }: { labelledBy: string }) {
+function OrganizationIndex({ labelledBy, participantOrder }: { labelledBy: string; participantOrder: readonly string[] }) {
   return <div className="atlas-organization-index" aria-labelledby={labelledBy}>
-    {aptoParticipants.map((participant) => {
+    {participantOrder.map((participantId) => participantFor(participantId)).filter((participant): participant is Participant => Boolean(participant)).map((participant) => {
       const project = aptoProjects.find((candidate) => candidate.participantId === participant.id);
       return <a
         href={`${atlasRoute("projects")}#atlas-project-${project?.id ?? participant.id}`}
@@ -193,9 +184,13 @@ function OrganizationIndex({ labelledBy }: { labelledBy: string }) {
   </div>;
 }
 
-function ProgramPage() {
+function ProgramPage({ participantOrder }: { participantOrder: readonly string[] }) {
+  const impactGroups = orderByParticipant(
+    aptoProgram.impactGroups,
+    participantOrderForOccurrence(participantOrder, 2),
+  );
   return <main className="atlas-main atlas-program" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-home-title">
-    <PageIntroduction section="home" />
+    <PageIntroduction section="home" participantOrder={participantOrder} />
     <section className="atlas-program-mosaic atlas-building-mosaic" aria-label={aptoProgram.buildingTitle}>
       {aptoProgram.buildingItems.map((item, index) => <figure key={item.title} data-program-visual="true">
         <img
@@ -220,7 +215,10 @@ function ProgramPage() {
         <h2 id="atlas-participants-title">Participating organizations</h2>
         <a href={atlasRoute("projects")}>Explore the projects <span aria-hidden="true">→</span></a>
       </header>
-      <OrganizationIndex labelledBy="atlas-participants-title" />
+      <OrganizationIndex
+        labelledBy="atlas-participants-title"
+        participantOrder={participantOrderForOccurrence(participantOrder, 1)}
+      />
     </section>
 
     <section className="atlas-objective-field" id="atlas-impact" aria-labelledby="atlas-objectives-title">
@@ -229,7 +227,7 @@ function ProgramPage() {
         <p>{aptoProgram.impactIntroduction}</p>
       </header>
       <div className="atlas-impact-groups">
-        {aptoProgram.impactGroups.map((group) => {
+        {impactGroups.map((group) => {
           const participant = participantFor(group.participantId);
           if (!participant) return null;
           return <article
@@ -284,17 +282,21 @@ function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
   </article>;
 }
 
-function ProjectsPage() {
+function ProjectsPage({ participantOrder }: { participantOrder: readonly string[] }) {
+  const projects = orderByParticipant(
+    aptoProjects,
+    participantOrderForOccurrence(participantOrder, 1),
+  );
   return <main className="atlas-main atlas-projects" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-projects-title">
-    <PageIntroduction section="projects" />
+    <PageIntroduction section="projects" participantOrder={participantOrder} />
     <section className="atlas-project-portfolio" aria-label="APTO project portfolio">
-      <div className="atlas-project-grid">{aptoProjects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>
+      <div className="atlas-project-grid">{projects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>
     </section>
   </main>;
 }
 
 function ToolPoster({ tool }: {
-  tool: (typeof aptoTools)[number];
+  tool: (typeof aptoPresentationTools)[number];
 }) {
   const participant = participantFor(tool.participantId);
   const media = presentationMediaForTool(tool);
@@ -326,16 +328,21 @@ function ToolPoster({ tool }: {
   </article>;
 }
 
-function ToolsPage() {
+function ToolsPage({ participantOrder }: { participantOrder: readonly string[] }) {
   const [organization, setOrganization] = useState("all");
   const [category, setCategory] = useState("all");
-  const filteredTools = atlasOrderedTools.filter((tool) => (
+  const supportingTools = orderByParticipant(
+    aptoPresentationTools.filter((tool) => !["northwestern", "uchicago"].includes(tool.participantId)),
+    participantOrder,
+  );
+  const orderedTools = [...featuredRows(aptoPresentationTools, participantOrder).flat(), ...supportingTools];
+  const filteredTools = orderedTools.filter((tool) => (
     (organization === "all" || tool.participantId === organization)
     && (category === "all" || tool.categories.includes(category as "Capability" | "Production" | "Use"))
   ));
 
   return <main className="atlas-main atlas-tools" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-tools-title">
-    <PageIntroduction section="tools" />
+    <PageIntroduction section="tools" participantOrder={participantOrder} />
     <section className="atlas-tool-collection" aria-labelledby="atlas-tool-collection-title">
       <header className="atlas-tool-toolbar">
         <div><h2 id="atlas-tool-collection-title">Explore the collection</h2></div>
@@ -348,7 +355,7 @@ function ToolsPage() {
               onChange={(event) => setOrganization(event.target.value)}
             >
               <option value="all">{aptoInterface.tools.allOrganizationsLabel}</option>
-              {aptoParticipants.map((participant) => <option key={participant.id} value={participant.id}>{participant.displayName}</option>)}
+              {participantOrder.map((participantId) => participantFor(participantId)).filter((participant): participant is Participant => Boolean(participant)).map((participant) => <option key={participant.id} value={participant.id}>{participant.displayName}</option>)}
             </select>
           </label>
           <label>
@@ -380,9 +387,9 @@ function PersonEntry({ person }: { person: Person }) {
   </article>;
 }
 
-function ConveningPage() {
+function ConveningPage({ participantOrder }: { participantOrder: readonly string[] }) {
   return <main className="atlas-main atlas-convening" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-convening-title">
-    <PageIntroduction section="convening" />
+    <PageIntroduction section="convening" participantOrder={participantOrder} />
     <section className="atlas-convening-list" aria-label="Annual convenings">
       {aptoConvenings.map((convening) => <article className="atlas-convening-card" key={convening.id}>
         <ConveningGallery convening={convening} className="atlas-convening-gallery" />
@@ -432,13 +439,14 @@ function AtlasFooter() {
 
 export function AtlasSitePage({ section }: { section: AtlasSection }) {
   const { theme, toggleTheme } = useAptoTheme("light");
+  const participantOrders = useParticipantOrders();
   return <div className="apto-atlas" data-theme={theme} data-testid="apto-atlas-root">
     <a className="atlas-skip-link" href="#atlas-main">{aptoInterface.accessibility.skipLinkLabel}</a>
     <AtlasHeader section={section} theme={theme} onToggle={toggleTheme} />
-    {section === "home" && <ProgramPage />}
-    {section === "projects" && <ProjectsPage />}
-    {section === "tools" && <ToolsPage />}
-    {section === "convening" && <ConveningPage />}
+    {section === "home" && <ProgramPage participantOrder={participantOrders.program} />}
+    {section === "projects" && <ProjectsPage participantOrder={participantOrders.projects} />}
+    {section === "tools" && <ToolsPage participantOrder={participantOrders.tools} />}
+    {section === "convening" && <ConveningPage participantOrder={participantOrders.program} />}
     <AtlasFooter />
   </div>;
 }

@@ -1,7 +1,8 @@
 # Adding or editing projects
 
-Each Markdown file in this folder is one APTO project. Project entries are
-presented alphabetically by their concise visible `shortName`.
+Each Markdown file in this folder is one APTO project. The content build keeps
+project entries in a stable order, while the public presentations reorder them
+with their participating organizations on every page load.
 
 ## Complete template
 

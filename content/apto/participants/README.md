@@ -1,7 +1,10 @@
 # Adding or editing organizations
 
 Each Markdown file in this folder is one participating institution or company.
-Organizations are displayed alphabetically without a ranking field.
+The content build keeps a stable canonical order without a ranking field. In
+the public presentations, the two featured universities form the first group
+and the three supporting organizations form the second; each group is
+shuffled independently by section on every page load.
 
 ## Complete template
 
