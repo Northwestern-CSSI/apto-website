@@ -105,6 +105,7 @@ function StoryThemeToggle({ theme, onToggle }: { theme: AptoTheme; onToggle: () 
 function useStoryExperience(
   rootRef: React.RefObject<HTMLDivElement | null>,
   setActiveSection: (section: StorySection) => void,
+  impactOrderKey: string,
 ) {
   useEffect(() => {
     const root = rootRef.current;
@@ -260,7 +261,7 @@ function useStoryExperience(
       if (frame) window.cancelAnimationFrame(frame);
       root.classList.remove("is-motion-ready");
     };
-  }, [rootRef, setActiveSection]);
+  }, [rootRef, setActiveSection, impactOrderKey]);
 }
 
 function StoryHeader({ activeSection, theme, onToggle }: {
@@ -616,7 +617,7 @@ export function AptoStoryPage() {
   const [activeSection, setActiveSection] = useState<StorySection>("program");
   const { theme, toggleTheme } = useAptoTheme("light");
   const participantOrders = useParticipantOrders();
-  useStoryExperience(rootRef, setActiveSection);
+  useStoryExperience(rootRef, setActiveSection, participantOrders.program.join("|"));
 
   return <div className="apto-story" ref={rootRef} data-theme={theme}>
     <a className="story-skip-link" href="#story-main">{aptoInterface.accessibility.skipLinkLabel}</a>
