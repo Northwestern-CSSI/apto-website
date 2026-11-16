@@ -169,6 +169,7 @@ export type AptoPage = {
   eyebrow: string;
   title: string;
   introduction: string;
+  atlasIntroduction?: string;
 };
 
 export type AptoInterfaceSection = "home" | "convening" | "projects" | "tools";

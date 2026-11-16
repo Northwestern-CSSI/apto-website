@@ -262,7 +262,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.match(storySource, /\[rootRef, setActiveSection, impactOrderKey\]/);
   const styles = await readFile(new URL("../app/apto/story/story-site.css", import.meta.url), "utf8");
   assert.match(styles, /\.story-project-chapter > header\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
-  assert.match(styles, /\.story-project-chapter h3\s*\{[\s\S]*?max-width:\s*100%/);
+  assert.match(styles, /\.story-project-chapter > header :is\(h2,\s*h3\)\s*\{[\s\S]*?max-width:\s*100%/);
   assert.match(styles, /\.story-project-chapter\s*\{[\s\S]*?grid-row:\s*span 4;[\s\S]*?grid-template-rows:\s*subgrid/);
   assert.match(styles, /\.story-project-chapter > p,\s*\.story-project-people\s*\{\s*margin-block:\s*0/);
   assert.match(styles, /--story-parallax-y:\s*var\(--story-shift,0px\)/);
@@ -283,10 +283,14 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(programHtml, /class="atlas-objective-field" id="atlas-impact"/);
   assert.equal((programHtml.match(/class="atlas-impact-group"/g) ?? []).length, data.program.impactGroups.length);
   assert.equal((programHtml.match(/atlas-impact-logo/g) ?? []).length, data.program.impactGroups.length);
-  assert.ok(
-    programHtml.indexOf('class="atlas-participants"') < programHtml.indexOf('id="atlas-impact"'),
-    "Atlas should present the impact section later on the landing page, after the participating organizations",
-  );
+  const about = programHtml.indexOf('id="atlas-home-title"');
+  const building = programHtml.indexOf('id="atlas-building-title"');
+  const impact = programHtml.indexOf('id="atlas-objectives-title"');
+  assert.ok(about >= 0 && about < building && building < impact);
+  assert.match(programHtml, /data-testid="atlas-nav-home">Program<\/a>/);
+  assert.match(programHtml, /aria-current="page" data-testid="atlas-nav-home"/);
+  assert.match(programHtml, /href="\/apto\/atlas\/projects" data-testid="atlas-nav-projects"/);
+  assert.doesNotMatch(programHtml, /class="story-project-chapters"|class="atlas-tool-collection"|class="atlas-convening-list"/);
   const html = await (await render("/atlas/tools")).text();
   assert.ok((html.match(/class="atlas-tool-card/g) ?? []).length >= presentationToolCount);
   assert.ok((html.match(/class="apto-tool-gallery atlas-tool-media"/g) ?? []).length >= presentationToolCount);
@@ -347,10 +351,6 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(evolutionIcon, /<circle cx="12" cy="50\.5" r="4\.5"/);
   for (const color of ["#67E0EF", "#9C8CF4", "#F3C751"]) assert.match(vividTheme, new RegExp(color));
   const atlasStyles = await readFile(new URL("../app/apto/atlas/atlas-site.css", import.meta.url), "utf8");
-  assert.match(atlasStyles, /\.atlas-project-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(6,/);
-  assert.match(atlasStyles, /\.atlas-project-card:nth-child\(-n \+ 2\)\s*\{\s*grid-column:\s*span 3/);
-  assert.match(atlasStyles, /\.atlas-project-card:nth-child\(n \+ 3\)\s*\{\s*grid-column:\s*span 2/);
-  assert.doesNotMatch(atlasStyles, /atlas-project-(?:folio|expand)/);
   assert.match(atlasStyles, /\.apto-resource-path-atlas\.is-featured \.apto-resource-summary-copy > span\s*\{[\s\S]*?font-size:\s*\.82rem/);
   assert.match(atlasStyles, /\.atlas-tool-card \.apto-resource-path-atlas\s*\{\s*grid-template-rows:\s*50% 50%/);
   assert.doesNotMatch(atlasStyles, /apto-resource-path-atlas \.apto-resource-thumb/);
@@ -360,12 +360,15 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   for (const organization of ["Northwestern University", "University of Chicago", "Apperture.AI", "Insilicom", "Macrocosm"]) assert.ok(atlasHomeHtml.includes(organization));
   for (const project of data.projects) assert.ok(atlasHomeHtml.includes(`/atlas/projects#atlas-project-${project.id}`));
   const atlasProjectsHtml = await (await render("/atlas/projects")).text();
-  assert.ok((atlasProjectsHtml.match(/class="atlas-project-card"/g) ?? []).length >= data.projects.length);
-  assert.match(atlasProjectsHtml, /class="atlas-project-grid"/);
-  assert.doesNotMatch(atlasProjectsHtml, /class="atlas-project-folio"|<details/);
-  assert.ok((atlasProjectsHtml.match(/class="atlas-project-people"/g) ?? []).length >= data.projects.length);
-  assert.ok((atlasProjectsHtml.match(/class="atlas-project-people" data-people-layout="grid"/g) ?? []).length >= 2);
-  assert.ok((atlasProjectsHtml.match(/class="atlas-project-people" data-people-layout="rows"/g) ?? []).length >= 3);
+  assert.equal((atlasProjectsHtml.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
+  assert.match(atlasProjectsHtml, /class="story-project-chapters"/);
+  assert.match(atlasProjectsHtml, /<h1 id="atlas-projects-title">/);
+  assert.match(atlasProjectsHtml, /aria-current="page" data-testid="atlas-nav-projects"/);
+  assert.doesNotMatch(atlasProjectsHtml, /<details/);
+  for (const project of data.projects) assert.ok(atlasProjectsHtml.includes(`id="atlas-project-${project.id}"`));
+  assert.ok((atlasProjectsHtml.match(/class="story-project-people"/g) ?? []).length >= data.projects.length);
+  assert.ok((atlasProjectsHtml.match(/class="story-project-people" data-people-layout="grid"/g) ?? []).length >= 2);
+  assert.ok((atlasProjectsHtml.match(/class="story-project-people" data-people-layout="rows"/g) ?? []).length >= 3);
   assert.match(atlasProjectsHtml, /Program contacts/);
   assert.match(atlasProjectsHtml, /class="atlas-footer-contact-primary"/);
   assert.match(atlasProjectsHtml, /class="atlas-footer-team"/);

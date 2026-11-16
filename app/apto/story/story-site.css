@@ -1,4 +1,5 @@
-.apto-story {
+.apto-story,
+.apto-atlas {
   --story-header-height: 72px;
   --story-max: 1440px;
   --story-canvas: #f5f3ed;
@@ -47,12 +48,16 @@
   --story-logo-line: rgba(0,37,84,.14);
   --story-logo-shadow: 0 8px 24px rgba(0,37,84,.07);
   --story-logo-canvas-light: #ffffff;
+}
+
+.apto-story {
   min-height: 100vh;
   color: var(--story-ink);
   background: var(--story-canvas);
 }
 
 [data-apto-theme="dark"] .apto-story,
+[data-apto-theme="dark"] .apto-atlas,
 .nsf-apto-network .apto-story {
   --story-canvas: #061625;
   --story-surface: #0a2238;
@@ -183,7 +188,7 @@
 }
 .story-header nav a:hover,
 .story-header nav a:focus-visible { color: var(--story-header-ink); background: var(--story-header-hover); }
-.story-header nav a[aria-current="location"] {
+.story-header nav a[aria-current] {
   color: #002554;
   background: var(--story-gold);
 }
@@ -390,7 +395,7 @@
   align-items: start;
 }
 .story-section-heading > p { grid-column: 1; padding-top: 10px; }
-.story-section-heading h2 {
+.story-section-heading > :is(h1, h2) {
   grid-column: 2;
   margin-bottom: 8px;
   color: var(--story-ink);
@@ -620,7 +625,7 @@
   color: var(--story-projects-ink);
   background: var(--story-projects-bg);
 }
-.story-projects .story-section-heading h2 { color: var(--story-projects-ink); }
+.story-projects .story-section-heading > :is(h1, h2) { color: var(--story-projects-ink); }
 .story-projects .story-section-heading > span { color: var(--story-projects-copy); }
 .story-projects-layout {
   width: min(calc(100% - 48px),var(--story-max));
@@ -782,7 +787,7 @@
 }
 .story-project-chapter header p { margin-bottom: 2px; color: var(--story-projects-ink); font-size: .76rem; font-weight: 800; }
 .story-project-location { margin-bottom: 9px; display: block; color: var(--story-projects-muted); font-size: .69rem; line-height: 1.35; }
-.story-project-chapter h3 { margin: 0; color: var(--story-projects-ink); font-size: clamp(1.45rem,2.6vw,2.3rem); letter-spacing: -.03em; line-height: 1.12; }
+.story-project-chapter > header :is(h2, h3) { margin: 0; color: var(--story-projects-ink); font-size: clamp(1.45rem,2.6vw,2.3rem); letter-spacing: -.03em; line-height: 1.12; }
 .story-project-chapter > p { max-width: 68ch; margin-bottom: 26px; color: var(--story-projects-copy); font-size: clamp(.96rem,1.15vw,1.06rem); line-height: 1.75; }
 .story-project-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; color: var(--story-projects-muted); font-size: .77rem; }
 .story-project-meta > div { display: flex; flex-wrap: wrap; gap: 8px 22px; }
@@ -790,7 +795,7 @@
 .story-project-people { margin-top: 24px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
 .story-project-people[data-people-layout="rows"] { grid-template-columns: minmax(0,1fr); }
 .story-project-people .story-person { background: color-mix(in srgb,var(--project-accent) 8%,var(--story-projects-surface)); }
-.story-project-people .story-person h4 { color: var(--story-projects-ink); }
+.story-project-people .story-person :is(h3, h4) { color: var(--story-projects-ink); }
 .story-project-people .story-person p { color: var(--story-projects-muted); }
 
 .story-tools { padding: clamp(90px,10vw,150px) 0; background: var(--story-canvas); }
@@ -877,7 +882,7 @@
 }
 .story-cohort-art img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .story-cohort .story-section-heading { position: relative; z-index: 2; }
-.story-cohort .story-section-heading h2 { color: var(--story-cohort-ink); }
+.story-cohort .story-section-heading > :is(h1, h2) { color: var(--story-cohort-ink); }
 .story-cohort .story-section-heading > span { color: var(--story-cohort-copy); }
 .story-program-team,
 .story-cohort-directory {
@@ -940,7 +945,7 @@
 .story-person-initials { width: 54px; height: 54px; border-radius: 50%; }
 .story-person > img { object-fit: cover; }
 .story-person-initials { display: grid; place-items: center; color: #002554; background: var(--story-gold); font-size: .72rem; font-weight: 850; }
-.story-person h4 { margin-bottom: 3px; color: var(--story-cohort-ink); font-size: .82rem; }
+.story-person :is(h3, h4) { margin-bottom: 3px; color: var(--story-cohort-ink); font-size: .82rem; }
 .story-person p { margin-bottom: 0; color: var(--story-cohort-muted); font-size: .7rem; }
 .story-person a { min-height: 30px; display: inline-flex; align-items: center; color: var(--story-cyan); font-size: .66rem; font-weight: 800; }
 
@@ -1011,7 +1016,7 @@
 }
 
 @media (max-width: 900px) {
-  .apto-story { --story-header-height: 112px; }
+  .apto-story, .apto-atlas { --story-header-height: 112px; }
   .story-header {
     min-height: var(--story-header-height);
     padding: 9px 18px 8px;
@@ -1039,7 +1044,7 @@
   .story-section-heading,
   .story-framework { grid-template-columns: 1fr; }
   .story-section-heading > p,
-  .story-section-heading h2,
+  .story-section-heading > :is(h1, h2),
   .story-section-heading > span { grid-column: 1; }
   .story-section-heading > p { padding-top: 0; }
   .story-impact-row { grid-template-columns: minmax(0,1fr) minmax(180px,.34fr); gap: 28px; }
@@ -1182,7 +1187,7 @@
   .story-person,
   .story-impact-goals li,
   .story-framework dl > div { color: CanvasText; background: Canvas; box-shadow: none; }
-  .story-header nav a[aria-current="location"] { color: HighlightText; background: Highlight; }
+  .story-header nav a[aria-current] { color: HighlightText; background: Highlight; }
   .story-cohort-art,
   .story-hero-detail-anchor { display: none; }
   .story-project-index a { color: CanvasText; background: Canvas; border: 1px solid CanvasText; }
@@ -1217,7 +1222,7 @@
   gap: clamp(28px, 5vw, 82px);
 }
 
-.story-section-heading h2 {
+.story-section-heading > :is(h1, h2) {
   grid-column: 1;
   justify-self: end;
   max-width: 18ch;
@@ -1402,7 +1407,7 @@
     grid-template-columns: 1fr;
   }
 
-  .story-section-heading h2,
+  .story-section-heading > :is(h1, h2),
   .story-section-heading > span {
     grid-column: 1;
     max-width: none;
@@ -1462,7 +1467,7 @@
   min-width: 0;
 }
 
-.story-project-chapter h3 {
+.story-project-chapter > header :is(h2, h3) {
   max-width: 100%;
   font-size: clamp(1.55rem, 2.15vw, 2.2rem);
   text-wrap: balance;

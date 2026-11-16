@@ -3,10 +3,7 @@
 /* Content-managed images use intrinsic dimensions and deployment-aware URLs. */
 /* eslint-disable @next/next/no-img-element */
 
-import ArrowUpRight from "lucide-react/dist/esm/icons/arrow-up-right.mjs";
-import Moon from "lucide-react/dist/esm/icons/moon.mjs";
-import Sun from "lucide-react/dist/esm/icons/sun.mjs";
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useState, type CSSProperties } from "react";
 
 import {
   aptoBoilerplate,
@@ -16,13 +13,13 @@ import {
   aptoPages,
   aptoParticipants,
   aptoProgram,
-  aptoProjects,
 } from "../content";
+import { AptoHeader } from "../apto-header";
+import { ProjectPortfolio } from "../project-portfolio";
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
-import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
-import { presentationMediaForTool } from "../tool-media";
+import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
 import { ProgramIntroduction } from "../program-introduction";
 import {
@@ -38,16 +35,8 @@ import { useAptoTheme } from "../use-apto-theme";
 export type AtlasSection = "home" | "projects" | "tools" | "convening";
 
 type Participant = (typeof aptoParticipants)[number];
-type Person = Participant["people"][number];
 
-const sectionSlugs: Record<AtlasSection, "\/" | "\/projects" | "\/tools" | "\/convening"> = {
-  home: "/",
-  projects: "/projects",
-  tools: "/tools",
-  convening: "/convening",
-};
-
-function pageCopy(slug: "\/" | "\/about" | "\/projects" | "\/tools" | "\/convening") {
+function pageCopy(slug: "/" | "/tools" | "/convening") {
   const page = aptoPages.find((candidate) => candidate.slug === slug);
   if (!page) throw new Error(`Missing Markdown page content for ${slug}`);
   return page;
@@ -61,20 +50,13 @@ function atlasRoute(section: AtlasSection) {
   return aptoRoute(section === "home" ? "/atlas" : `/atlas/${section}`);
 }
 
-function ExternalLink({ href, children, className }: {
-  href: string;
-  children: ReactNode;
-  className?: string;
-}) {
-  return <a className={className} href={href}>
-    <span>{children}</span>
-    <ArrowUpRight aria-hidden="true" focusable="false" />
-  </a>;
-}
+const atlasNavigation = aptoInterface.primaryNavigation.map((item) => ({
+  ...item,
+  href: atlasRoute(item.section),
+}));
 
-function ParticipantLogo({ participant, eager = false, className = "" }: {
+function ParticipantLogo({ participant, className = "" }: {
   participant: Participant;
-  eager?: boolean;
   className?: string;
 }) {
   return <span
@@ -88,7 +70,7 @@ function ParticipantLogo({ participant, eager = false, className = "" }: {
         alt=""
         width={participant.logo.variants.light.width}
         height={participant.logo.variants.light.height}
-        loading={eager ? "eager" : "lazy"}
+        loading="lazy"
         decoding="async"
       />
       <img
@@ -97,128 +79,67 @@ function ParticipantLogo({ participant, eager = false, className = "" }: {
         alt=""
         width={participant.logo.variants.dark.width}
         height={participant.logo.variants.dark.height}
-        loading={eager ? "eager" : "lazy"}
+        loading="lazy"
         decoding="async"
       />
     </span>
   </span>;
 }
 
-function ThemeToggle({ theme, onToggle }: { theme: AptoTheme; onToggle: () => void }) {
-  const lightLabel = aptoInterface.directions.find((direction) => direction.id === "nsfhome")?.label ?? "Light";
-  const darkLabel = aptoInterface.directions.find((direction) => direction.id === "nsfnetwork")?.label ?? "Dark";
-  const nextLabel = theme === "dark" ? lightLabel : darkLabel;
-
-  return <button
-    className="atlas-theme-toggle"
-    type="button"
-    role="switch"
-    aria-checked={theme === "dark"}
-    aria-label={`${aptoInterface.study.themeChooserLabel}: ${darkLabel}`}
-    title={`${aptoInterface.study.themeSwitchActionPrefix} ${nextLabel}`}
-    onClick={onToggle}
-    data-testid="atlas-theme-toggle"
-  >
-    <Sun aria-hidden="true" focusable="false" />
-    <span className="atlas-theme-track" aria-hidden="true"><i /></span>
-    <Moon aria-hidden="true" focusable="false" />
-  </button>;
-}
-
-function AtlasHeader({ section, theme, onToggle }: {
-  section: AtlasSection;
-  theme: AptoTheme;
-  onToggle: () => void;
+function PageIntroduction({ section, participantOrder }: {
+  section: "tools" | "convening";
+  participantOrder: readonly string[];
 }) {
-  return <header className="atlas-header" data-testid="atlas-header">
-    <a className="atlas-brand" href={atlasRoute("home")} aria-label="APTO Atlas home">
-      <strong>{aptoProgram.acronym}</strong>
-      <span>{aptoProgram.name}</span>
-    </a>
-    <nav className="atlas-primary-nav" aria-label={aptoInterface.atlas.navigationLabel}>
-      {aptoInterface.primaryNavigation.map((item) => <a
-        key={item.section}
-        href={atlasRoute(item.section)}
-        aria-current={section === item.section ? "page" : undefined}
-      >{item.label}</a>)}
-    </nav>
-    <div className="atlas-header-actions">
-      <nav className="atlas-view-nav" aria-label={aptoInterface.atlas.viewNavigationLabel}>
-        <span aria-current="page">{aptoInterface.atlas.viewLabel.replace("APTO ", "")}</span>
-        <a href={aptoRoute("/story")}>{aptoInterface.atlas.continuumLabel}</a>
-      </nav>
-      <ThemeToggle theme={theme} onToggle={onToggle} />
-    </div>
-  </header>;
-}
-
-function PageIntroduction({ section, participantOrder }: { section: AtlasSection; participantOrder: readonly string[] }) {
-  const slug = sectionSlugs[section];
-  const page = pageCopy(slug);
+  const page = pageCopy(`/${section}`);
   return <header className="atlas-page-intro">
     <h1 id={`atlas-${section}-title`}>{page.title}</h1>
-    <div>{section === "home"
-      ? <ProgramIntroduction
-          introduction={page.introduction}
-          participantOrder={participantOrder}
-          projectHref={(projectId) => `${atlasRoute("projects")}#atlas-project-${projectId}`}
-        />
-      : <p>{orderParticipantMentions(page.introduction, participantOrder)}</p>}
-    </div>
+    <div><p>{orderParticipantMentions(page.introduction, participantOrder)}</p></div>
   </header>;
-}
-
-function OrganizationIndex({ labelledBy, participantOrder }: { labelledBy: string; participantOrder: readonly string[] }) {
-  return <div className="atlas-organization-index" aria-labelledby={labelledBy}>
-    {participantOrder.map((participantId) => participantFor(participantId)).filter((participant): participant is Participant => Boolean(participant)).map((participant) => {
-      const project = aptoProjects.find((candidate) => candidate.participantId === participant.id);
-      return <a
-        href={`${atlasRoute("projects")}#atlas-project-${project?.id ?? participant.id}`}
-        key={participant.id}
-        style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
-      >
-        <ParticipantLogo participant={participant} />
-        <strong>{participant.displayName}</strong>
-      </a>;
-    })}
-  </div>;
 }
 
 function ProgramPage({ participantOrder }: { participantOrder: readonly string[] }) {
+  const home = pageCopy("/");
   const impactGroups = orderByParticipant(
     aptoProgram.impactGroups,
-    participantOrderForOccurrence(participantOrder, 2),
+    participantOrderForOccurrence(participantOrder, 1),
   );
   return <main className="atlas-main atlas-program" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-home-title">
-    <PageIntroduction section="home" participantOrder={participantOrder} />
-    <section className="atlas-program-mosaic atlas-building-mosaic" aria-label={aptoProgram.buildingTitle}>
-      {aptoProgram.buildingItems.map((item, index) => <figure key={item.title} data-program-visual="true">
-        <img
-          className={`motion-${index + 1}`}
-          src={withDeploymentBase(aptoProgram.landingGallery[index].src)}
-          alt={aptoProgram.landingGallery[index].alt}
-          width="1536"
-          height="1024"
-          loading="eager"
-          decoding="async"
+    <section className="atlas-program-hero" aria-labelledby="atlas-home-title">
+      <div className="atlas-program-copy">
+        <h1 id="atlas-home-title">{home.title}</h1>
+        <ProgramIntroduction
+          introduction={home.atlasIntroduction ?? home.introduction}
+          participantOrder={participantOrder}
+          projectHref={(projectId) => `${atlasRoute("projects")}#atlas-project-${projectId}`}
         />
-        <figcaption>
-          <strong>{item.title}</strong>
-          {item.subtitle && <small>{item.subtitle}</small>}
-          <span>{item.description}</span>
-        </figcaption>
-      </figure>)}
+      </div>
+      <div className="atlas-program-visual">
+        <ToolKenBurnsGallery galleryId="atlas-hero" images={storyHeroMedia} eager randomOrder />
+      </div>
     </section>
 
-    <section className="atlas-participants" aria-labelledby="atlas-participants-title">
-      <header>
-        <h2 id="atlas-participants-title">Participating organizations</h2>
-        <a href={atlasRoute("projects")}>Explore the projects <span aria-hidden="true">→</span></a>
+    <section className="atlas-building" id="atlas-building" aria-labelledby="atlas-building-title">
+      <header className="atlas-program-heading">
+        <h2 id="atlas-building-title">{aptoProgram.buildingTitle}</h2>
+        <p>{aptoProgram.buildingIntroduction}</p>
       </header>
-      <OrganizationIndex
-        labelledBy="atlas-participants-title"
-        participantOrder={participantOrderForOccurrence(participantOrder, 1)}
-      />
+      <div className="atlas-building-mosaic">
+        {aptoProgram.buildingItems.map((item, index) => <figure key={item.title} data-program-visual="true">
+          <img
+            src={withDeploymentBase(aptoProgram.landingGallery[index].src)}
+            alt={aptoProgram.landingGallery[index].alt}
+            width="1536"
+            height="1024"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <strong>{item.title}</strong>
+            {item.subtitle && <small>{item.subtitle}</small>}
+            <span>{item.description}</span>
+          </figcaption>
+        </figure>)}
+      </div>
     </section>
 
     <section className="atlas-objective-field" id="atlas-impact" aria-labelledby="atlas-objectives-title">
@@ -243,54 +164,6 @@ function ProgramPage({ participantOrder }: { participantOrder: readonly string[]
           </article>;
         })}
       </div>
-    </section>
-  </main>;
-}
-
-function ProjectFolio({ project }: { project: (typeof aptoProjects)[number] }) {
-  const participant = participantFor(project.participantId);
-  if (!participant) return null;
-
-  return <article
-    className="atlas-project-card"
-    id={`atlas-project-${project.id}`}
-    style={{ "--atlas-participant-accent": participant.accent } as CSSProperties}
-  >
-    <header>
-      <ParticipantLogo participant={participant} />
-      <div>
-        <p>Led by {participant.displayName}</p>
-        <span className="atlas-project-location">{participant.location}</span>
-        <h2>{project.shortName}</h2>
-      </div>
-    </header>
-    <p className="atlas-project-summary">{project.summary}</p>
-    <div className="atlas-project-meta">
-      <span>{aptoInterface.projects.awardedPrefix} {project.awardedYear} {aptoInterface.projects.dateStatusSeparator} {project.statusLabel}</span>
-      <nav aria-label={`${participant.displayName} project links`}>
-          <ExternalLink href={project.awardUrl}>{aptoInterface.projects.awardLabel} {project.awardId}</ExternalLink>
-          <ExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</ExternalLink>
-      </nav>
-    </div>
-    <div
-      className="atlas-project-people"
-      data-people-layout={["northwestern", "uchicago"].includes(project.participantId) ? "grid" : "rows"}
-      aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}
-    >
-      {project.people.map((person) => <PersonEntry person={person} key={person.id} />)}
-    </div>
-  </article>;
-}
-
-function ProjectsPage({ participantOrder }: { participantOrder: readonly string[] }) {
-  const projects = orderByParticipant(
-    aptoProjects,
-    participantOrderForOccurrence(participantOrder, 1),
-  );
-  return <main className="atlas-main atlas-projects" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-projects-title">
-    <PageIntroduction section="projects" participantOrder={participantOrder} />
-    <section className="atlas-project-portfolio" aria-label="APTO project portfolio">
-      <div className="atlas-project-grid">{projects.map((project) => <ProjectFolio project={project} key={project.id} />)}</div>
     </section>
   </main>;
 }
@@ -381,15 +254,6 @@ function ToolsPage({ participantOrder }: { participantOrder: readonly string[] }
   </main>;
 }
 
-function PersonEntry({ person }: { person: Person }) {
-  return <article className="atlas-person">
-    {person.headshotUrl
-      ? <img src={withDeploymentBase(person.headshotUrl)} alt={person.headshotAlt} width="112" height="112" loading="lazy" decoding="async" />
-      : <span className="atlas-person-initials" aria-hidden="true">{person.initials}</span>}
-    <div><h3>{person.name}</h3><p>{person.role}</p>{person.profileUrl && <ExternalLink href={person.profileUrl}>{aptoInterface.people.viewProfileLabel}</ExternalLink>}</div>
-  </article>;
-}
-
 function ConveningPage({ participantOrder }: { participantOrder: readonly string[] }) {
   return <main className="atlas-main atlas-convening" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-convening-title">
     <PageIntroduction section="convening" participantOrder={participantOrder} />
@@ -445,9 +309,18 @@ export function AtlasSitePage({ section }: { section: AtlasSection }) {
   const participantOrders = useParticipantOrders();
   return <div className="apto-atlas" data-theme={theme} data-testid="apto-atlas-root">
     <a className="atlas-skip-link" href="#atlas-main">{aptoInterface.accessibility.skipLinkLabel}</a>
-    <AtlasHeader section={section} theme={theme} onToggle={toggleTheme} />
+    <AptoHeader
+      view="atlas"
+      brandHref={atlasRoute("home")}
+      navigationLabel={aptoInterface.atlas.navigationLabel}
+      items={atlasNavigation}
+      activeSection={section}
+      alternateView={{ href: aptoRoute("/story"), label: aptoInterface.atlas.continuumLabel }}
+      theme={theme}
+      onToggle={toggleTheme}
+    />
     {section === "home" && <ProgramPage participantOrder={participantOrders.program} />}
-    {section === "projects" && <ProjectsPage participantOrder={participantOrders.projects} />}
+    {section === "projects" && <ProjectPortfolio view="atlas" participantOrder={participantOrders.projects} />}
     {section === "tools" && <ToolsPage participantOrder={participantOrders.tools} />}
     {section === "convening" && <ConveningPage participantOrder={participantOrders.program} />}
     <AtlasFooter />

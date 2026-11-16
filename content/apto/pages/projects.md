@@ -12,4 +12,4 @@
 
 ## Introduction
 
-Browse active NSF awards whose official titles begin with APTO. Expand a project to read its research summary, meet its investigators, visit the organization, or open the corresponding NSF award. Northwestern University and the University of Chicago are the featured teams; Apperture.AI, Insilicom, and Macrocosm complete the collection.
+Browse active NSF awards whose official titles begin with APTO. Read each project’s research summary, meet its investigators, and follow links to the organization and its NSF award. Northwestern University and the University of Chicago are the featured teams; Apperture.AI, Insilicom, and Macrocosm complete the collection.

@@ -3,9 +3,7 @@
 /* Content-managed images use intrinsic dimensions and deployment-aware URLs. */
 /* eslint-disable @next/next/no-img-element */
 
-import Moon from "lucide-react/dist/esm/icons/moon.mjs";
-import Sun from "lucide-react/dist/esm/icons/sun.mjs";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 import {
   aptoBoilerplate,
@@ -14,11 +12,12 @@ import {
   aptoPages,
   aptoParticipants,
   aptoProgram,
-  aptoProjects,
 } from "../content";
+import { AptoHeader } from "../apto-header";
+import { ParticipantLogo } from "../participant-logo";
+import { ProjectPortfolio } from "../project-portfolio";
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
-import type { AptoTheme } from "../theme";
 import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
@@ -27,7 +26,6 @@ import {
   featuredRows,
   formatParticipantList,
   orderByParticipant,
-  orderParticipantMentions,
   participantOrderForOccurrence,
   useParticipantOrders,
 } from "../participant-order";
@@ -35,10 +33,16 @@ import { aptoPresentationTools } from "../presentation-tools";
 import { useAptoTheme } from "../use-apto-theme";
 
 type StorySection = "program" | "projects" | "tools" | "convening";
-type AptoParticipant = (typeof aptoParticipants)[number];
-type AptoPerson = AptoParticipant["people"][number];
 
 const storySections: StorySection[] = ["program", "projects", "tools", "convening"];
+const storyNavigation = aptoInterface.primaryNavigation.map((item) => {
+  const section = item.section === "home" ? "program" : item.section;
+  return {
+    section,
+    label: section === "program" ? aptoInterface.story.programLabel : item.label,
+    href: `#story-${section}`,
+  };
+});
 
 function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/convening") {
   const page = aptoPages.find((candidate) => candidate.slug === slug);
@@ -48,58 +52,6 @@ function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/convening") 
 
 function participantFor(id: string) {
   return aptoParticipants.find((participant) => participant.id === id);
-}
-
-function ParticipantLogo({ participant, eager = false }: { participant: AptoParticipant; eager?: boolean }) {
-  return <span
-    className={`story-participant-logo logo-${participant.id} logo-kind-${participant.logo.kind}`}
-    aria-hidden="true"
-  >
-    <span className="story-logo-canvas">
-      <img
-        className="story-logo-asset is-light"
-        src={withDeploymentBase(participant.logo.variants.light.src)}
-        width={participant.logo.variants.light.width}
-        height={participant.logo.variants.light.height}
-        alt=""
-        loading={eager ? "eager" : "lazy"}
-        decoding="async"
-      />
-      <img
-        className="story-logo-asset is-dark"
-        src={withDeploymentBase(participant.logo.variants.dark.src)}
-        width={participant.logo.variants.dark.width}
-        height={participant.logo.variants.dark.height}
-        alt=""
-        loading={eager ? "eager" : "lazy"}
-        decoding="async"
-      />
-    </span>
-  </span>;
-}
-
-function StoryExternalLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
-  return <a className={className} href={href}>{children}<span aria-hidden="true"> ↗</span></a>;
-}
-
-function StoryThemeToggle({ theme, onToggle }: { theme: AptoTheme; onToggle: () => void }) {
-  const lightLabel = aptoInterface.directions.find((direction) => direction.id === "nsfhome")?.label ?? "Light";
-  const darkLabel = aptoInterface.directions.find((direction) => direction.id === "nsfnetwork")?.label ?? "Dark";
-  const nextLabel = theme === "dark" ? lightLabel : darkLabel;
-  return <button
-    className="story-theme-toggle"
-    type="button"
-    role="switch"
-    aria-checked={theme === "dark"}
-    aria-label={`${aptoInterface.study.themeChooserLabel}: ${darkLabel}`}
-    title={`${aptoInterface.study.themeSwitchActionPrefix} ${nextLabel}`}
-    onClick={onToggle}
-    data-testid="story-theme-toggle"
-  >
-    <Sun aria-hidden="true" focusable="false" />
-    <span aria-hidden="true" />
-    <Moon aria-hidden="true" focusable="false" />
-  </button>;
 }
 
 function useStoryExperience(
@@ -264,37 +216,6 @@ function useStoryExperience(
   }, [rootRef, setActiveSection, impactOrderKey]);
 }
 
-function StoryHeader({ activeSection, theme, onToggle }: {
-  activeSection: StorySection;
-  theme: AptoTheme;
-  onToggle: () => void;
-}) {
-  const navLabels: Record<StorySection, string> = {
-    program: aptoInterface.story.programLabel,
-    projects: aptoInterface.primaryNavigation.find((item) => item.section === "projects")?.label ?? "Projects",
-    tools: aptoInterface.primaryNavigation.find((item) => item.section === "tools")?.label ?? "Tools",
-    convening: aptoInterface.primaryNavigation.find((item) => item.section === "convening")?.label ?? "Convening",
-  };
-  return <header className="story-header" data-testid="story-header">
-    <a className="story-brand" href="#story-top" aria-label="APTO story home">
-      <strong>{aptoProgram.acronym}</strong>
-      <span>{aptoProgram.name}</span>
-    </a>
-    <nav aria-label={aptoInterface.story.navigationLabel}>
-      {storySections.map((section) => <a
-        key={section}
-        href={`#story-${section}`}
-        aria-current={activeSection === section ? "location" : undefined}
-        data-testid={`story-nav-${section}`}
-      >{navLabels[section]}</a>)}
-    </nav>
-    <div className="story-header-actions">
-      <a className="story-directory-link" href={aptoRoute("/atlas")}>Atlas view</a>
-      <StoryThemeToggle theme={theme} onToggle={onToggle} />
-    </div>
-  </header>;
-}
-
 function OutcomePanorama() {
   const motion = [
     { speed: "0.022", limit: "48" },
@@ -447,68 +368,6 @@ function ProgramStory({ participantOrder }: { participantOrder: readonly string[
   </>;
 }
 
-function StoryPerson({ person }: { person: AptoPerson }) {
-  return <article className="story-person">
-    {person.headshotUrl
-      ? <img src={withDeploymentBase(person.headshotUrl)} alt={person.headshotAlt} width="120" height="120" loading="lazy" decoding="async" />
-      : <span className="story-person-initials" aria-hidden="true">{person.initials}</span>}
-    <div><h4>{person.name}</h4><p>{person.role}</p>{person.profileUrl && <StoryExternalLink href={person.profileUrl}>{aptoInterface.people.viewProfileLabel}</StoryExternalLink>}</div>
-  </article>;
-}
-
-function ProjectsStory({ participantOrder }: { participantOrder: readonly string[] }) {
-  const projects = pageCopy("/projects");
-  const orderedProjects = orderByParticipant(
-    aptoProjects,
-    participantOrderForOccurrence(participantOrder, 1),
-  );
-  return <section className="story-section story-projects" id="story-projects" data-story-section="projects" aria-labelledby="story-projects-title">
-    <header className="story-section-heading" data-story-reveal="heading">
-      <h2 id="story-projects-title">{projects.title}</h2>
-      <span>{orderParticipantMentions(projects.introduction, participantOrder)}</span>
-    </header>
-    <div className="story-projects-layout">
-      <div className="story-project-chapters">
-        {orderedProjects.map((project) => {
-          const participant = participantFor(project.participantId);
-          return <article
-            className="story-project-chapter"
-            id={`story-project-${project.id}`}
-            key={project.id}
-            data-project-id={project.id}
-            data-story-reveal="up"
-            style={{ "--project-accent": participant?.accent ?? "var(--story-teal)" } as CSSProperties}
-          >
-            <header>
-              {participant && <ParticipantLogo participant={participant} />}
-              <div>
-                <p>Led by {participant?.displayName ?? project.organization}</p>
-                <span className="story-project-location">{project.location}</span>
-                <h3>{project.shortName}</h3>
-              </div>
-            </header>
-            <p>{project.summary}</p>
-            <div className="story-project-meta">
-              <span>{aptoInterface.projects.awardedPrefix} {project.awardedYear} {aptoInterface.projects.dateStatusSeparator} {project.statusLabel}</span>
-              <div>
-                <StoryExternalLink href={project.awardUrl}>{aptoInterface.projects.awardLabel} {project.awardId}</StoryExternalLink>
-                {participant && <StoryExternalLink href={participant.website}>{aptoInterface.common.organizationWebsiteLabel}</StoryExternalLink>}
-              </div>
-            </div>
-            <div
-              className="story-project-people"
-              data-people-layout={["northwestern", "uchicago"].includes(project.participantId) ? "grid" : "rows"}
-              aria-label={aptoInterface.accessibility.projectInvestigatorsLabel}
-            >
-              {project.people.map((person) => <StoryPerson person={person} key={person.id} />)}
-            </div>
-          </article>;
-        })}
-      </div>
-    </div>
-  </section>;
-}
-
 function ToolsStory({ participantOrder }: { participantOrder: readonly string[] }) {
   const tools = pageCopy("/tools");
   const pairedRows = featuredRows(aptoPresentationTools, participantOrder);
@@ -621,11 +480,20 @@ export function AptoStoryPage() {
 
   return <div className="apto-story" ref={rootRef} data-theme={theme}>
     <a className="story-skip-link" href="#story-main">{aptoInterface.accessibility.skipLinkLabel}</a>
-    <StoryHeader activeSection={activeSection} theme={theme} onToggle={toggleTheme} />
+    <AptoHeader
+      view="story"
+      brandHref="#story-top"
+      navigationLabel={aptoInterface.story.navigationLabel}
+      items={storyNavigation}
+      activeSection={activeSection}
+      alternateView={{ href: aptoRoute("/atlas"), label: aptoInterface.story.directoryLabel }}
+      theme={theme}
+      onToggle={toggleTheme}
+    />
     <main id="story-main" tabIndex={-1}>
       <StoryHero participantOrder={participantOrders.program} />
       <ProgramStory participantOrder={participantOrders.program} />
-      <ProjectsStory participantOrder={participantOrders.projects} />
+      <ProjectPortfolio view="story" participantOrder={participantOrders.projects} />
       <ToolsStory participantOrder={participantOrders.tools} />
       <ConveningStory />
     </main>

@@ -442,7 +442,11 @@ function validatePage(document) {
   const title = requireString(metadata, "title", context);
   assert(slug === expected.slug, `${context}.slug must be “${expected.slug}”`);
   assert(h1 === title, `${context} H1 must match frontmatter title`);
-  assert(sections.size === 1 && sections.has("Introduction"), `${context} must contain exactly one “## Introduction” section`);
+  const atlasIntroduction = slug === "/" ? sections.get("Atlas Introduction") : undefined;
+  assert(
+    sections.size === (atlasIntroduction ? 2 : 1) && sections.has("Introduction"),
+    `${context} must contain “## Introduction”; the home page may also contain “## Atlas Introduction”`,
+  );
   const introduction = sections.get("Introduction");
   assert(introduction, `${context} must contain a non-empty “## Introduction” section`);
   return {
@@ -453,6 +457,7 @@ function validatePage(document) {
       eyebrow: requireString(metadata, "eyebrow", context),
       title,
       introduction: normalizeProse(introduction),
+      ...(atlasIntroduction && { atlasIntroduction: normalizeProse(atlasIntroduction) }),
     },
   };
 }

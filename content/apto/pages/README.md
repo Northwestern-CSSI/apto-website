@@ -36,8 +36,9 @@ Write a concise introduction that helps visitors understand what is on the
 page and what they can do there.
 ```
 
-The H1 must exactly match `title`, and each record must contain exactly one
-`## Introduction` section.
+The H1 must exactly match `title`, and each record must contain an
+`## Introduction` section. The home record can also include an
+`## Atlas Introduction` section for the Atlas homepage hero.
 
 On the homepage, the hero uses `home.md`, while the program overview uses the
 title from `about.md` and the longer description from `../program.md`.
