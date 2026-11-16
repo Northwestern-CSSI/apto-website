@@ -569,7 +569,8 @@
 
 @media (width > 700px) {
   .apto-atlas .story-outcome-depth:nth-child(3) {
-    --story-panel-offset: clamp(20px, 2vw, 32px);
+    /* Balance the upward parallax as the spacing below the intro narrows. */
+    --story-panel-offset: clamp(32px, calc(110px - 7vw), 58px);
   }
 }
 
