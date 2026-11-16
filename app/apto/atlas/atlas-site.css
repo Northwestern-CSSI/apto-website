@@ -567,6 +567,12 @@
 .apto-atlas .story-outcome-panorama img { position: absolute; inset: 0; }
 .apto-atlas .story-outcome-panorama figcaption { position: relative; width: 100%; }
 
+@media (width > 700px) {
+  .apto-atlas .story-outcome-depth:nth-child(3) {
+    --story-panel-offset: clamp(20px, 2vw, 32px);
+  }
+}
+
 .atlas-leadership-heading { display: grid; grid-template-columns: 78px minmax(0,1fr); gap: 20px; align-items: center; }
 .atlas-leadership-heading > img { width: 78px; height: 78px; object-fit: contain; border-radius: 50%; background: #fff; }
 .atlas-leadership-heading h2 { margin: 0; }
