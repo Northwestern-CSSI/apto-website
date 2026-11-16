@@ -1,6 +1,7 @@
 /* Content-managed images use intrinsic dimensions and deployment-aware URLs. */
 /* eslint-disable @next/next/no-img-element */
 
+import ChevronDown from "lucide-react/dist/esm/icons/chevron-down.mjs";
 import type { CSSProperties } from "react";
 
 import { aptoPages, aptoParticipants, aptoProgram } from "../content";
@@ -47,7 +48,7 @@ function OutcomePanorama() {
 
 type ProgramProps = { view: "story" | "atlas"; participantOrder: readonly string[] };
 
-function ProgramHero({ view, participantOrder }: ProgramProps) {
+function ProgramHero({ view, participantOrder, buildingId }: ProgramProps & { buildingId: string }) {
   const home = aptoPages.find((page) => page.slug === "/");
   if (!home) throw new Error("Missing Markdown page content for /");
   const isAtlas = view === "atlas";
@@ -57,7 +58,7 @@ function ProgramHero({ view, participantOrder }: ProgramProps) {
   // Retain the inset implementation for a future re-enable without loading or
   // displaying it in the current design.
   const showHeroInset = false;
-  return <section className="story-hero" id={`${view}-top`} aria-labelledby={titleId}>
+  const heroContent = <>
     <div className="story-hero-copy" data-story-reveal="heading" data-story-parallax="-0.030" data-story-parallax-limit="48">
       <h1 id={titleId}>{home.title}</h1>
       <ProgramIntroduction
@@ -90,6 +91,15 @@ function ProgramHero({ view, participantOrder }: ProgramProps) {
         </span>}
       </div>
     </figure>
+  </>;
+
+  return <section className="story-hero" id={`${view}-top`} aria-labelledby={titleId}>
+    {isAtlas ? <>
+      <div className="atlas-hero-content">{heroContent}</div>
+      <a className="atlas-hero-scroll" href={`#${buildingId}`} aria-label={`Continue to ${aptoProgram.buildingTitle}`}>
+        <ChevronDown size={30} strokeWidth={1.7} aria-hidden="true" focusable="false" />
+      </a>
+    </> : heroContent}
   </section>;
 }
 
@@ -101,8 +111,14 @@ export function ProgramSections({ view, participantOrder }: ProgramProps) {
     participantOrderForOccurrence(participantOrder, 1),
   );
   return <>
-    <ProgramHero view={view} participantOrder={participantOrder} />
-    <section className="story-section story-program" id={buildingId} data-story-section="program" aria-labelledby={`${buildingId}-title`}>
+    <ProgramHero view={view} participantOrder={participantOrder} buildingId={buildingId} />
+    <section
+      className="story-section story-program"
+      id={buildingId}
+      data-story-section="program"
+      aria-labelledby={`${buildingId}-title`}
+      tabIndex={view === "atlas" ? -1 : undefined}
+    >
       <header className="story-section-heading" data-story-reveal="heading">
         <h2 id={`${buildingId}-title`}>{aptoProgram.buildingTitle}</h2>
         <span>{aptoProgram.buildingIntroduction}</span>

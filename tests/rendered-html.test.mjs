@@ -294,6 +294,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   const building = programHtml.indexOf('id="atlas-building-title"');
   const impact = programHtml.indexOf('id="atlas-impact-title"');
   assert.ok(about >= 0 && about < building && building < impact);
+  assert.match(programHtml, /class="atlas-hero-scroll" href="#atlas-building" aria-label="Continue to What We Are Building"/);
   assert.match(programHtml, /data-testid="atlas-nav-home">Program<\/a>/);
   assert.match(programHtml, /aria-current="page" data-testid="atlas-nav-home"/);
   assert.match(programHtml, /href="\/apto\/atlas\/projects" data-testid="atlas-nav-projects"/);
