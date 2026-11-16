@@ -251,15 +251,13 @@ test("Story gives project titles full card width and pairs lead-institution tool
   const heroImageCount = data.program.heroGallery.length;
   assert.match(html, new RegExp(`class="apto-tool-gallery story-hero-primary"[^>]*data-gallery-count="${heroImageCount}"`));
   assert.doesNotMatch(html, /class="story-hero-detail-anchor"/);
-  const storySource = await readFile(new URL("../app/apto/story/story-site.tsx", import.meta.url), "utf8");
-  assert.match(storySource, /const showHeroInset = false/);
-  assert.match(storySource, /data-story-parallax="-0\.030"/);
-  assert.match(storySource, /data-story-parallax="0\.072"/);
-  assert.match(storySource, /\{ speed: "0\.022", limit: "48" \}/);
-  assert.match(storySource, /\{ speed: "0\.095", limit: "88" \}/);
-  assert.match(storySource, /\{ speed: "0\.160", limit: "92" \}/);
-  assert.match(storySource, /useStoryExperience\(rootRef, setActiveSection, participantOrders\.program\.join\("\|"\)\)/);
-  assert.match(storySource, /\[rootRef, setActiveSection, impactOrderKey\]/);
+  const programSource = await readFile(new URL("../app/apto/story/program-sections.tsx", import.meta.url), "utf8");
+  assert.match(programSource, /const showHeroInset = false/);
+  assert.match(programSource, /data-story-parallax="-0\.030"/);
+  assert.match(programSource, /data-story-parallax="0\.072"/);
+  assert.match(programSource, /\{ speed: "0\.022", limit: "48" \}/);
+  assert.match(programSource, /\{ speed: "0\.095", limit: "88" \}/);
+  assert.match(programSource, /\{ speed: "0\.160", limit: "92" \}/);
   const styles = await readFile(new URL("../app/apto/story/story-site.css", import.meta.url), "utf8");
   assert.match(styles, /\.story-project-chapter > header\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
   assert.match(styles, /\.story-project-chapter > header :is\(h2,\s*h3\)\s*\{[\s\S]*?max-width:\s*100%/);
@@ -280,12 +278,19 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   const data = await content();
   const presentationToolCount = data.tools.length - 2;
   const programHtml = await (await render("/atlas")).text();
-  assert.match(programHtml, /class="atlas-objective-field" id="atlas-impact"/);
-  assert.equal((programHtml.match(/class="atlas-impact-group"/g) ?? []).length, data.program.impactGroups.length);
-  assert.equal((programHtml.match(/atlas-impact-logo/g) ?? []).length, data.program.impactGroups.length);
+  assert.match(programHtml, /class="story-section story-impact" id="atlas-impact"/);
+  assert.match(programHtml, /class="story-hero-copy" data-story-reveal="heading" data-story-parallax="-0\.030"/);
+  assert.deepEqual(
+    [...programHtml.matchAll(/class="story-outcome-depth" data-story-parallax="([^"]+)"/g)].map((match) => match[1]),
+    ["0.022", "0.095", "0.160"],
+  );
+  assert.equal((programHtml.match(/data-story-impact-group="true"/g) ?? []).length, data.program.impactGroups.length);
+  assert.equal((programHtml.match(/data-story-impact-logo="true"/g) ?? []).length, data.program.impactGroups.length);
+  assert.match(programHtml, /data-story-reveal="left" data-story-reveal-order="1"/);
+  assert.match(programHtml, /data-story-reveal="right" data-story-reveal-order="1"/);
   const about = programHtml.indexOf('id="atlas-home-title"');
   const building = programHtml.indexOf('id="atlas-building-title"');
-  const impact = programHtml.indexOf('id="atlas-objectives-title"');
+  const impact = programHtml.indexOf('id="atlas-impact-title"');
   assert.ok(about >= 0 && about < building && building < impact);
   assert.match(programHtml, /data-testid="atlas-nav-home">Program<\/a>/);
   assert.match(programHtml, /aria-current="page" data-testid="atlas-nav-home"/);

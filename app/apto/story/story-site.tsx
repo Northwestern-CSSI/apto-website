@@ -3,7 +3,7 @@
 /* Content-managed images use intrinsic dimensions and deployment-aware URLs. */
 /* eslint-disable @next/next/no-img-element */
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useRef, useState } from "react";
 
 import {
   aptoBoilerplate,
@@ -14,27 +14,24 @@ import {
   aptoProgram,
 } from "../content";
 import { AptoHeader } from "../apto-header";
-import { ParticipantLogo } from "../participant-logo";
 import { ProjectPortfolio } from "../project-portfolio";
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import { ToolKenBurnsGallery } from "../tool-gallery";
-import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
+import { presentationMediaForTool } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
-import { ProgramIntroduction } from "../program-introduction";
 import {
   featuredRows,
   formatParticipantList,
   orderByParticipant,
-  participantOrderForOccurrence,
   useParticipantOrders,
 } from "../participant-order";
 import { aptoPresentationTools } from "../presentation-tools";
 import { useAptoTheme } from "../use-apto-theme";
 
-type StorySection = "program" | "projects" | "tools" | "convening";
+import { ProgramSections } from "./program-sections";
+import { useStoryExperience, type StorySection } from "./use-story-experience";
 
-const storySections: StorySection[] = ["program", "projects", "tools", "convening"];
 const storyNavigation = aptoInterface.primaryNavigation.map((item) => {
   const section = item.section === "home" ? "program" : item.section;
   return {
@@ -44,7 +41,7 @@ const storyNavigation = aptoInterface.primaryNavigation.map((item) => {
   };
 });
 
-function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/convening") {
+function pageCopy(slug: "/tools" | "/convening") {
   const page = aptoPages.find((candidate) => candidate.slug === slug);
   if (!page) throw new Error(`Missing Markdown page content for ${slug}`);
   return page;
@@ -52,320 +49,6 @@ function pageCopy(slug: "/" | "/about" | "/projects" | "/tools" | "/convening") 
 
 function participantFor(id: string) {
   return aptoParticipants.find((participant) => participant.id === id);
-}
-
-function useStoryExperience(
-  rootRef: React.RefObject<HTMLDivElement | null>,
-  setActiveSection: (section: StorySection) => void,
-  impactOrderKey: string,
-) {
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let reduceMotion = motionPreference.matches;
-    const revealElements = [...root.querySelectorAll<HTMLElement>("[data-story-reveal]")];
-    const sectionElements = [...root.querySelectorAll<HTMLElement>("[data-story-section]")];
-    const parallaxElements = [...root.querySelectorAll<HTMLElement>("[data-story-parallax]")];
-    const impactGroups = [...root.querySelectorAll<HTMLElement>("[data-story-impact-group]")];
-    const impactLogos = [...root.querySelectorAll<HTMLElement>("[data-story-impact-logo]")];
-    const revealVectors: Record<string, readonly [number, number]> = {
-      heading: [0, 0],
-      left: [-18, 0],
-      right: [18, 0],
-      media: [0, 16],
-      up: [0, 26],
-    };
-    const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
-    const documentTop = (element: HTMLElement) => {
-      let top = 0;
-      let current: HTMLElement | null = element;
-      while (current) {
-        top += current.offsetTop;
-        current = current.offsetParent as HTMLElement | null;
-      }
-      return top;
-    };
-    let frame = 0;
-    const updateScrollState = () => {
-      frame = 0;
-      const headerHeight = Number.parseFloat(getComputedStyle(root).getPropertyValue("--story-header-height")) || 72;
-      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
-      const sectionLine = headerHeight + viewportHeight * 0.2;
-      let nextSection: StorySection = "program";
-      sectionElements.forEach((element) => {
-        const candidate = element.dataset.storySection as StorySection | undefined;
-        if (candidate && storySections.includes(candidate) && element.getBoundingClientRect().top <= sectionLine) {
-          nextSection = candidate;
-        }
-      });
-      setActiveSection(nextSection);
-
-      if (!reduceMotion) {
-        const revealStart = viewportHeight * 0.92;
-        const revealEnd = Math.max(headerHeight + 24, viewportHeight * 0.59);
-        const revealDistance = Math.max(1, revealStart - revealEnd);
-        revealElements.forEach((element) => {
-          const screenTop = documentTop(element) - window.scrollY;
-          const order = Number(element.dataset.storyRevealOrder ?? "0");
-          const stagger = Number.isFinite(order) ? order * 18 : 0;
-          const linearProgress = clamp01((revealStart - screenTop - stagger) / revealDistance);
-          const progress = linearProgress * linearProgress * (3 - 2 * linearProgress);
-          const [baseX, baseY] = revealVectors[element.dataset.storyReveal ?? "up"] ?? revealVectors.up;
-          const remaining = 1 - progress;
-          element.style.setProperty("--story-reveal-progress", progress.toFixed(4));
-          element.style.setProperty("--story-reveal-opacity", progress.toFixed(4));
-          element.style.setProperty("--story-reveal-x", `${(baseX * remaining).toFixed(2)}px`);
-          element.style.setProperty("--story-reveal-y", `${(baseY * remaining).toFixed(2)}px`);
-          element.classList.toggle("is-visible", progress >= 0.995);
-        });
-
-        parallaxElements.forEach((element) => {
-          const rect = element.getBoundingClientRect();
-          const centerDelta = rect.top + rect.height / 2 - viewportHeight / 2;
-          const speed = Number(element.dataset.storyParallax ?? "0.06");
-          const requestedLimit = Number(element.dataset.storyParallaxLimit ?? "48");
-          const limit = Number.isFinite(requestedLimit) ? Math.max(0, requestedLimit) : 48;
-          const shift = Math.max(-limit, Math.min(limit, -centerDelta * speed));
-          const progress = clamp01((viewportHeight - rect.top) / (viewportHeight + rect.height));
-          element.style.setProperty("--story-shift", `${shift.toFixed(2)}px`);
-          element.style.setProperty("--story-shift-soft", `${(shift * .38).toFixed(2)}px`);
-          element.style.setProperty("--story-shift-reverse", `${(-shift * .68).toFixed(2)}px`);
-          element.style.setProperty("--story-local-progress", progress.toFixed(4));
-          element.style.setProperty("--story-scale", (1.035 + progress * .04).toFixed(4));
-        });
-      } else {
-        revealElements.forEach((element) => {
-          element.style.setProperty("--story-reveal-progress", "1");
-          element.style.setProperty("--story-reveal-opacity", "1");
-          element.style.setProperty("--story-reveal-x", "0px");
-          element.style.setProperty("--story-reveal-y", "0px");
-          element.classList.add("is-visible");
-        });
-      }
-
-      if (impactGroups.length > 0) {
-        const marker = window.scrollY + headerHeight + Math.max(0, viewportHeight - headerHeight) * .48;
-        const centers = impactGroups.map((element) => documentTop(element) + element.offsetHeight / 2);
-        let impactPosition = 0;
-        if (centers.length > 1 && marker >= centers.at(-1)!) {
-          impactPosition = centers.length - 1;
-        } else if (centers.length > 1 && marker > centers[0]) {
-          for (let index = 0; index < centers.length - 1; index += 1) {
-            if (marker <= centers[index + 1]) {
-              const linear = clamp01((marker - centers[index]) / Math.max(1, centers[index + 1] - centers[index]));
-              const progress = reduceMotion ? (linear >= .5 ? 1 : 0) : linear * linear * (3 - 2 * linear);
-              impactPosition = index + progress;
-              break;
-            }
-          }
-        }
-        const currentIndex = Math.round(impactPosition);
-        impactGroups.forEach((element, index) => {
-          const distance = Math.abs(index - impactPosition);
-          const focus = reduceMotion ? 1 : Math.max(.34, 1 - distance * .56);
-          element.style.setProperty("--story-impact-focus", focus.toFixed(4));
-          element.classList.toggle("is-current", index === currentIndex);
-        });
-        impactLogos.forEach((element, index) => {
-          const delta = index - impactPosition;
-          const distance = Math.abs(delta);
-          const opacity = reduceMotion ? (index === currentIndex ? 1 : 0) : clamp01(1 - distance * 1.18);
-          const sideDirection = element.dataset.storyImpactSide === "left" ? -1 : 1;
-          const shift = reduceMotion ? 0 : sideDirection * (delta < 0 ? delta * 86 : delta * 48);
-          const scale = reduceMotion ? 1 : .9 + opacity * .1;
-          const blur = reduceMotion ? 0 : Math.min(7, distance * 4.5);
-          element.style.setProperty("--story-impact-logo-opacity", opacity.toFixed(4));
-          element.style.setProperty("--story-impact-logo-x", `${shift.toFixed(2)}px`);
-          element.style.setProperty("--story-impact-logo-scale", scale.toFixed(4));
-          element.style.setProperty("--story-impact-logo-blur", `${blur.toFixed(2)}px`);
-          element.classList.toggle("is-current", index === currentIndex);
-        });
-      }
-    };
-    const handleScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(updateScrollState);
-    };
-    const handleMotionPreference = (event: MediaQueryListEvent) => {
-      reduceMotion = event.matches;
-      if (frame) window.cancelAnimationFrame(frame);
-      frame = 0;
-      updateScrollState();
-      root.classList.toggle("is-motion-ready", !reduceMotion);
-    };
-    // Scrollspy remains functional when motion is reduced; only decorative
-    // transforms are omitted in that preference.
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-    window.visualViewport?.addEventListener("resize", handleScroll);
-    motionPreference.addEventListener("change", handleMotionPreference);
-    const resizeObserver = "ResizeObserver" in window ? new ResizeObserver(handleScroll) : undefined;
-    resizeObserver?.observe(root);
-    updateScrollState();
-    root.classList.toggle("is-motion-ready", !reduceMotion);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-      window.visualViewport?.removeEventListener("resize", handleScroll);
-      motionPreference.removeEventListener("change", handleMotionPreference);
-      resizeObserver?.disconnect();
-      if (frame) window.cancelAnimationFrame(frame);
-      root.classList.remove("is-motion-ready");
-    };
-  }, [rootRef, setActiveSection, impactOrderKey]);
-}
-
-function OutcomePanorama() {
-  const motion = [
-    { speed: "0.022", limit: "48" },
-    { speed: "0.095", limit: "88" },
-    { speed: "0.160", limit: "92" },
-  ] as const;
-
-  return <div className="story-outcome-panorama" data-story-reveal="media">
-    {aptoProgram.buildingItems.map((item, index) => <div
-      className="story-outcome-depth"
-      data-story-parallax={motion[index].speed}
-      data-story-parallax-limit={motion[index].limit}
-      key={item.title}
-    >
-      <figure>
-        <img
-          src={withDeploymentBase(aptoProgram.landingGallery[index].src)}
-          alt={aptoProgram.landingGallery[index].alt}
-          width="1536"
-          height="1024"
-          loading="lazy"
-          decoding="async"
-        />
-        <figcaption>
-          <strong>{item.title}</strong>
-          {item.subtitle && <small>{item.subtitle}</small>}
-          <span>{item.description}</span>
-        </figcaption>
-      </figure>
-    </div>)}
-  </div>;
-}
-
-function StoryHero({ participantOrder }: { participantOrder: readonly string[] }) {
-  const home = pageCopy("/");
-  const heroTool = aptoPresentationTools.find((tool) => tool.figure.kind === "knowledge-map") ?? aptoPresentationTools[0];
-  const heroDetail = heroTool.galleryImages[0];
-  // Retain the inset implementation for a future re-enable without loading or
-  // displaying it in the current design.
-  const showHeroInset = false;
-  return <section className="story-hero" id="story-top" aria-labelledby="story-title">
-    <div className="story-hero-copy" data-story-reveal="heading" data-story-parallax="-0.030" data-story-parallax-limit="48">
-      <h1 id="story-title">{home.title}</h1>
-      <ProgramIntroduction
-        introduction={home.introduction}
-        participantOrder={participantOrder}
-        projectHref={(projectId) => `#story-project-${projectId}`}
-      />
-    </div>
-    <figure className="story-hero-visual" data-story-reveal="media" data-story-parallax="0.072" data-story-parallax-limit="92">
-      <div className="story-hero-image">
-        <ToolKenBurnsGallery
-          galleryId="story-hero"
-          images={storyHeroMedia}
-          className="story-hero-primary"
-          eager
-          randomStart
-          randomOrder
-        />
-        {showHeroInset && heroDetail && <span
-          className="story-hero-detail-anchor"
-          data-story-parallax="0.095"
-          data-story-parallax-limit="76"
-          aria-hidden="true"
-        >
-          <span className="story-hero-detail">
-            <img src={withDeploymentBase(heroDetail.src)} alt="" width="1536" height="1024" decoding="async" />
-          </span>
-        </span>}
-      </div>
-    </figure>
-  </section>;
-}
-
-function ProgramStory({ participantOrder }: { participantOrder: readonly string[] }) {
-  const impactGroups = orderByParticipant(
-    aptoProgram.impactGroups,
-    participantOrderForOccurrence(participantOrder, 1),
-  );
-  return <>
-    <section className="story-section story-program" id="story-program" data-story-section="program" aria-labelledby="story-program-title">
-      <header className="story-section-heading" data-story-reveal="heading">
-        <h2 id="story-program-title">{aptoProgram.buildingTitle}</h2>
-        <span>{aptoProgram.buildingIntroduction}</span>
-      </header>
-      <OutcomePanorama />
-    </section>
-    <section className="story-section story-impact" id="story-impact" data-story-section="program" aria-labelledby="story-impact-title">
-      <header className="story-section-heading" data-story-reveal="heading">
-        <h2 id="story-impact-title">{aptoProgram.objectivesTitle}</h2>
-        <span>{aptoProgram.impactIntroduction}</span>
-      </header>
-      <div className="story-impact-layout">
-        <div className="story-impact-stream">
-          {impactGroups.map((group, groupIndex) => {
-            const participant = participantFor(group.participantId);
-            if (!participant) return null;
-            const logoSide = groupIndex % 2 === 0 ? "right" : "left";
-            const revealDirection = logoSide === "right" ? "right" : "left";
-            return <div
-              className={`story-impact-row${logoSide === "left" ? " is-reversed" : ""}`}
-              data-story-impact-row={logoSide}
-              key={participant.id}
-            >
-              <section
-                className="story-impact-group"
-                data-story-impact-group
-                aria-labelledby={`story-impact-${participant.id}`}
-                style={{
-                  "--story-impact-accent": participant.accent,
-                  "--story-impact-focus": groupIndex === 0 ? 1 : .34,
-                } as CSSProperties}
-              >
-                <header>
-                  <span className="story-impact-inline-logo"><ParticipantLogo participant={participant} /></span>
-                  <h3 id={`story-impact-${participant.id}`}>{participant.displayName}</h3>
-                </header>
-                <ul className="story-impact-goals">
-                  {group.entries.map((objective, index) => <li
-                    key={`${participant.id}-${index}`}
-                    data-story-reveal={revealDirection}
-                    data-story-reveal-order={index}
-                  >{objective}</li>)}
-                </ul>
-              </section>
-              <aside className="story-impact-stage" aria-hidden="true">
-                <div className="story-impact-logo-stack">
-                  <div
-                    className="story-impact-logo"
-                    data-story-impact-logo
-                    data-story-impact-side={logoSide}
-                    style={{
-                      "--story-impact-accent": participant.accent,
-                      "--story-impact-logo-opacity": groupIndex === 0 ? 1 : 0,
-                      "--story-impact-logo-x": groupIndex === 0 ? "0px" : logoSide === "right" ? "48px" : "-48px",
-                      "--story-impact-logo-scale": groupIndex === 0 ? 1 : .9,
-                      "--story-impact-logo-blur": groupIndex === 0 ? "0px" : "4.5px",
-                    } as CSSProperties}
-                  >
-                    <ParticipantLogo participant={participant} />
-                    <strong>{participant.displayName}</strong>
-                  </div>
-                </div>
-              </aside>
-            </div>;
-          })}
-        </div>
-      </div>
-    </section>
-  </>;
 }
 
 function ToolsStory({ participantOrder }: { participantOrder: readonly string[] }) {
@@ -476,7 +159,7 @@ export function AptoStoryPage() {
   const [activeSection, setActiveSection] = useState<StorySection>("program");
   const { theme, toggleTheme } = useAptoTheme("light");
   const participantOrders = useParticipantOrders();
-  useStoryExperience(rootRef, setActiveSection, participantOrders.program.join("|"));
+  useStoryExperience(rootRef, participantOrders.program.join("|"), setActiveSection);
 
   return <div className="apto-story" ref={rootRef} data-theme={theme}>
     <a className="story-skip-link" href="#story-main">{aptoInterface.accessibility.skipLinkLabel}</a>
@@ -491,8 +174,7 @@ export function AptoStoryPage() {
       onToggle={toggleTheme}
     />
     <main id="story-main" tabIndex={-1}>
-      <StoryHero participantOrder={participantOrders.program} />
-      <ProgramStory participantOrder={participantOrders.program} />
+      <ProgramSections view="story" participantOrder={participantOrders.program} />
       <ProjectPortfolio view="story" participantOrder={participantOrders.projects} />
       <ToolsStory participantOrder={participantOrders.tools} />
       <ConveningStory />

@@ -3,7 +3,7 @@
 /* Content-managed images use intrinsic dimensions and deployment-aware URLs. */
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 
 import {
   aptoBoilerplate,
@@ -19,24 +19,24 @@ import { ProjectPortfolio } from "../project-portfolio";
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import { ToolKenBurnsGallery } from "../tool-gallery";
-import { presentationMediaForTool, storyHeroMedia } from "../tool-media";
+import { presentationMediaForTool } from "../tool-media";
 import { ToolResourcePath } from "../tool-resource-path";
-import { ProgramIntroduction } from "../program-introduction";
 import {
   featuredRows,
   orderByParticipant,
   orderParticipantMentions,
-  participantOrderForOccurrence,
   useParticipantOrders,
 } from "../participant-order";
 import { aptoPresentationTools } from "../presentation-tools";
 import { useAptoTheme } from "../use-apto-theme";
+import { ProgramSections } from "../story/program-sections";
+import { useStoryExperience } from "../story/use-story-experience";
 
 export type AtlasSection = "home" | "projects" | "tools" | "convening";
 
 type Participant = (typeof aptoParticipants)[number];
 
-function pageCopy(slug: "/" | "/tools" | "/convening") {
+function pageCopy(slug: "/tools" | "/convening") {
   const page = aptoPages.find((candidate) => candidate.slug === slug);
   if (!page) throw new Error(`Missing Markdown page content for ${slug}`);
   return page;
@@ -55,37 +55,6 @@ const atlasNavigation = aptoInterface.primaryNavigation.map((item) => ({
   href: atlasRoute(item.section),
 }));
 
-function ParticipantLogo({ participant, className = "" }: {
-  participant: Participant;
-  className?: string;
-}) {
-  return <span
-    className={`atlas-logo logo-${participant.id} logo-kind-${participant.logo.kind} ${className}`.trim()}
-    aria-hidden="true"
-  >
-    <span className="atlas-logo-canvas">
-      <img
-        className="atlas-logo-asset is-light"
-        src={withDeploymentBase(participant.logo.variants.light.src)}
-        alt=""
-        width={participant.logo.variants.light.width}
-        height={participant.logo.variants.light.height}
-        loading="lazy"
-        decoding="async"
-      />
-      <img
-        className="atlas-logo-asset is-dark"
-        src={withDeploymentBase(participant.logo.variants.dark.src)}
-        alt=""
-        width={participant.logo.variants.dark.width}
-        height={participant.logo.variants.dark.height}
-        loading="lazy"
-        decoding="async"
-      />
-    </span>
-  </span>;
-}
-
 function PageIntroduction({ section, participantOrder }: {
   section: "tools" | "convening";
   participantOrder: readonly string[];
@@ -98,73 +67,11 @@ function PageIntroduction({ section, participantOrder }: {
 }
 
 function ProgramPage({ participantOrder }: { participantOrder: readonly string[] }) {
-  const home = pageCopy("/");
-  const impactGroups = orderByParticipant(
-    aptoProgram.impactGroups,
-    participantOrderForOccurrence(participantOrder, 1),
-  );
-  return <main className="atlas-main atlas-program" id="atlas-main" tabIndex={-1} aria-labelledby="atlas-home-title">
-    <section className="atlas-program-hero" aria-labelledby="atlas-home-title">
-      <div className="atlas-program-copy">
-        <h1 id="atlas-home-title">{home.title}</h1>
-        <ProgramIntroduction
-          introduction={home.atlasIntroduction ?? home.introduction}
-          participantOrder={participantOrder}
-          projectHref={(projectId) => `${atlasRoute("projects")}#atlas-project-${projectId}`}
-        />
-      </div>
-      <div className="atlas-program-visual">
-        <ToolKenBurnsGallery galleryId="atlas-hero" images={storyHeroMedia} eager randomOrder />
-      </div>
-    </section>
+  const mainRef = useRef<HTMLElement>(null);
+  useStoryExperience(mainRef, participantOrder.join("|"));
 
-    <section className="atlas-building" id="atlas-building" aria-labelledby="atlas-building-title">
-      <header className="atlas-program-heading">
-        <h2 id="atlas-building-title">{aptoProgram.buildingTitle}</h2>
-        <p>{aptoProgram.buildingIntroduction}</p>
-      </header>
-      <div className="atlas-building-mosaic">
-        {aptoProgram.buildingItems.map((item, index) => <figure key={item.title} data-program-visual="true">
-          <img
-            src={withDeploymentBase(aptoProgram.landingGallery[index].src)}
-            alt={aptoProgram.landingGallery[index].alt}
-            width="1536"
-            height="1024"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>
-            <strong>{item.title}</strong>
-            {item.subtitle && <small>{item.subtitle}</small>}
-            <span>{item.description}</span>
-          </figcaption>
-        </figure>)}
-      </div>
-    </section>
-
-    <section className="atlas-objective-field" id="atlas-impact" aria-labelledby="atlas-objectives-title">
-      <header>
-        <h2 id="atlas-objectives-title">{aptoProgram.objectivesTitle}</h2>
-        <p>{aptoProgram.impactIntroduction}</p>
-      </header>
-      <div className="atlas-impact-groups">
-        {impactGroups.map((group) => {
-          const participant = participantFor(group.participantId);
-          if (!participant) return null;
-          return <article
-            className="atlas-impact-group"
-            style={{ "--atlas-impact-accent": participant.accent } as CSSProperties}
-            key={participant.id}
-          >
-            <header>
-              <ParticipantLogo participant={participant} className="atlas-impact-logo" />
-              <h3>{participant.displayName}</h3>
-            </header>
-            <ul>{group.entries.map((objective, index) => <li key={`${participant.id}-${index}`}>{objective}</li>)}</ul>
-          </article>;
-        })}
-      </div>
-    </section>
+  return <main className="apto-story" ref={mainRef} id="atlas-main" tabIndex={-1} aria-labelledby="atlas-home-title">
+    <ProgramSections view="atlas" participantOrder={participantOrder} />
   </main>;
 }
 
