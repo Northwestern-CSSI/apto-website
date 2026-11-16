@@ -48,7 +48,7 @@ function OutcomePanorama() {
 
 type ProgramProps = { view: "story" | "atlas"; participantOrder: readonly string[] };
 
-function ProgramHero({ view, participantOrder, buildingId }: ProgramProps & { buildingId: string }) {
+function ProgramHero({ view, participantOrder }: ProgramProps) {
   const home = aptoPages.find((page) => page.slug === "/");
   if (!home) throw new Error("Missing Markdown page content for /");
   const isAtlas = view === "atlas";
@@ -94,35 +94,40 @@ function ProgramHero({ view, participantOrder, buildingId }: ProgramProps & { bu
   </>;
 
   return <section className="story-hero" id={`${view}-top`} aria-labelledby={titleId}>
-    {isAtlas ? <>
-      <div className="atlas-hero-content">{heroContent}</div>
-      <a className="atlas-hero-scroll" href={`#${buildingId}`} aria-label={`Continue to ${aptoProgram.buildingTitle}`}>
-        <ChevronDown size={30} strokeWidth={1.7} aria-hidden="true" focusable="false" />
-      </a>
-    </> : heroContent}
+    {isAtlas ? <div className="atlas-hero-content">{heroContent}</div> : heroContent}
   </section>;
 }
 
 export function ProgramSections({ view, participantOrder }: ProgramProps) {
-  const buildingId = view === "atlas" ? "atlas-building" : "story-program";
+  const isAtlas = view === "atlas";
+  const buildingId = isAtlas ? "atlas-building" : "story-program";
   const impactId = `${view}-impact`;
   const impactGroups = orderByParticipant(
     aptoProgram.impactGroups,
     participantOrderForOccurrence(participantOrder, 1),
   );
+  const hero = <ProgramHero view={view} participantOrder={participantOrder} />;
+  const buildingHeading = <header className="story-section-heading" data-story-reveal={isAtlas ? undefined : "heading"}>
+    <h2 id={`${buildingId}-title`}>{aptoProgram.buildingTitle}</h2>
+    <span>{aptoProgram.buildingIntroduction}</span>
+  </header>;
   return <>
-    <ProgramHero view={view} participantOrder={participantOrder} buildingId={buildingId} />
+    {isAtlas ? <div className="atlas-opening">
+      {hero}
+      <div className="story-section atlas-building-intro" id={buildingId} tabIndex={-1}>
+        {buildingHeading}
+        <a className="atlas-hero-scroll" href={`#${buildingId}`} aria-label={`Continue to ${aptoProgram.buildingTitle}`}>
+          <ChevronDown size={30} strokeWidth={1.7} aria-hidden="true" focusable="false" />
+        </a>
+      </div>
+    </div> : hero}
     <section
       className="story-section story-program"
-      id={buildingId}
+      id={isAtlas ? undefined : buildingId}
       data-story-section="program"
       aria-labelledby={`${buildingId}-title`}
-      tabIndex={view === "atlas" ? -1 : undefined}
     >
-      <header className="story-section-heading" data-story-reveal="heading">
-        <h2 id={`${buildingId}-title`}>{aptoProgram.buildingTitle}</h2>
-        <span>{aptoProgram.buildingIntroduction}</span>
-      </header>
+      {!isAtlas && buildingHeading}
       <OutcomePanorama />
     </section>
     <section className="story-section story-impact" id={impactId} data-story-section="program" aria-labelledby={`${impactId}-title`}>

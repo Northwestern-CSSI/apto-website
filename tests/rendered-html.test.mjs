@@ -292,9 +292,12 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(programHtml, /data-story-reveal="right" data-story-reveal-order="1"/);
   const about = programHtml.indexOf('id="atlas-home-title"');
   const building = programHtml.indexOf('id="atlas-building-title"');
+  const opening = programHtml.indexOf('class="atlas-opening"');
+  const panorama = programHtml.indexOf('class="story-outcome-panorama"');
   const impact = programHtml.indexOf('id="atlas-impact-title"');
-  assert.ok(about >= 0 && about < building && building < impact);
-  assert.match(programHtml, /class="atlas-hero-scroll" href="#atlas-building" aria-label="Continue to What We Are Building"/);
+  assert.ok(opening >= 0 && opening < about && about < building && building < panorama && panorama < impact);
+  assert.match(programHtml, /id="atlas-building" tabindex="-1"><header class="story-section-heading">/);
+  assert.match(programHtml, /class="atlas-hero-scroll" href="#atlas-building" aria-label="Continue to What We Are Building"[^>]*>.*?<\/a><\/div><\/div><section class="story-section story-program"/s);
   assert.match(programHtml, /data-testid="atlas-nav-home">Program<\/a>/);
   assert.match(programHtml, /aria-current="page" data-testid="atlas-nav-home"/);
   assert.match(programHtml, /href="\/apto\/atlas\/projects" data-testid="atlas-nav-projects"/);

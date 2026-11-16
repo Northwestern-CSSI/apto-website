@@ -50,6 +50,7 @@ export function useStoryExperience(
     let frame = 0;
     const updateScrollState = () => {
       frame = 0;
+      root.classList.toggle("has-scrolled", window.scrollY > 0);
       const headerHeight = Number.parseFloat(getComputedStyle(root).getPropertyValue("--story-header-height")) || 72;
       const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
       if (setActiveSection) {
@@ -174,7 +175,7 @@ export function useStoryExperience(
       motionPreference.removeEventListener("change", handleMotionPreference);
       resizeObserver?.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
-      root.classList.remove("is-motion-ready");
+      root.classList.remove("is-motion-ready", "has-scrolled");
     };
   }, [rootRef, impactOrderKey, setActiveSection, revealEarlier]);
 }
