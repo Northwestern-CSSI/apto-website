@@ -37,6 +37,11 @@
   will-change: opacity, transform;
 }
 
+/* Keep the pan margin even when the page caps regular images at 100%. */
+.apto-convening-gallery .apto-convening-gallery-media > img {
+  max-width: none;
+}
+
 .apto-convening-gallery-media img.is-visible {
   z-index: 1;
   opacity: 1;

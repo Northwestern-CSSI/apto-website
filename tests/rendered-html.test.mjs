@@ -165,6 +165,8 @@ test("generated content follows the featured-institution order and supplied-imag
   assert.match(conveningGallerySource, /const tail = Array\.from\(\{ length: imageCount \}[\s\S]*?\.slice\(1\)/);
   assert.match(conveningGallerySource, /Math\.random\(\)/);
   assert.match(conveningGallerySource, /setImageOrder\(\[0, \.\.\.tail\]\)/);
+  const conveningGalleryStyles = await readFile(new URL("../app/apto/convening-gallery.css", import.meta.url), "utf8");
+  assert.match(conveningGalleryStyles, /\.apto-convening-gallery \.apto-convening-gallery-media > img\s*\{\s*max-width:\s*none/);
   const investigatorRank = new Map([["Principal Investigator", 0], ["Co-Principal Investigator", 1]]);
   for (const participant of data.participants) {
     assert.deepEqual(
