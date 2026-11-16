@@ -564,7 +564,13 @@
 .apto-atlas .story-program { padding-block-start: clamp(66px, 7vw, 108px); }
 .apto-atlas .story-outcome-depth { min-height: clamp(280px, 41vw, 620px); }
 .apto-atlas .story-outcome-depth > figure { display: flex; align-items: flex-end; }
-.apto-atlas .story-outcome-panorama img { position: absolute; inset: 0; }
+.apto-atlas .story-outcome-panorama img {
+  /* Cover the frame throughout the photo's up-to-35px vertical pan. */
+  --story-image-overscan: max(6%, 36px);
+  position: absolute;
+  inset: calc(-1 * var(--story-image-overscan)) 0 auto;
+  height: calc(100% + 2 * var(--story-image-overscan));
+}
 .apto-atlas .story-outcome-panorama figcaption { position: relative; width: 100%; }
 
 @media (width > 700px) {
@@ -590,4 +596,8 @@
 
 @media (max-width: 700px) {
   .apto-atlas .story-outcome-depth { min-height: clamp(304px, 80vw, 380px); }
+  .apto-atlas .story-outcome-depth > figure {
+    transform: none;
+    will-change: auto;
+  }
 }
