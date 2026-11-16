@@ -14,12 +14,13 @@ import {
   aptoParticipants,
   aptoProgram,
 } from "../content";
-import { AptoHeader } from "../apto-header";
+import { AptoHeader, AptoViewActions } from "../apto-header";
 import { ProjectPortfolio } from "../project-portfolio";
 import { ConveningGallery } from "../convening-gallery";
 import { aptoRoute, withDeploymentBase } from "../paths";
 import { ToolKenBurnsGallery } from "../tool-gallery";
 import { presentationMediaForTool } from "../tool-media";
+import type { AptoTheme } from "../theme";
 import { ToolResourcePath } from "../tool-resource-path";
 import {
   featuredRows,
@@ -54,6 +55,7 @@ const atlasNavigation = aptoInterface.primaryNavigation.map((item) => ({
   ...item,
   href: atlasRoute(item.section),
 }));
+const continuumView = { href: aptoRoute("/story"), label: aptoInterface.atlas.continuumLabel };
 
 function PageIntroduction({ section, participantOrder }: {
   section: "tools" | "convening";
@@ -181,7 +183,7 @@ function ConveningPage({ participantOrder }: { participantOrder: readonly string
   </main>;
 }
 
-function AtlasFooter() {
+function AtlasFooter({ theme, onToggle }: { theme: AptoTheme; onToggle: () => void }) {
   const programManager = aptoProgram.programTeam.find((person) => person.role === "Program Manager");
   const nsfTeam = aptoProgram.programTeam.filter((person) => person.role === "NSF Team");
   return <footer className="atlas-footer">
@@ -208,6 +210,13 @@ function AtlasFooter() {
       {aptoInterface.primaryNavigation.map((item) => <a href={atlasRoute(item.section)} key={item.section}>{item.label}</a>)}
     </nav>
     <p className="atlas-footer-disclaimer">{aptoBoilerplate}</p>
+    <AptoViewActions
+      alternateView={continuumView}
+      theme={theme}
+      onToggle={onToggle}
+      className="atlas-footer-actions"
+      testIdPrefix="atlas-footer"
+    />
   </footer>;
 }
 
@@ -222,7 +231,7 @@ export function AtlasSitePage({ section }: { section: AtlasSection }) {
       navigationLabel={aptoInterface.atlas.navigationLabel}
       items={atlasNavigation}
       activeSection={section}
-      alternateView={{ href: aptoRoute("/story"), label: aptoInterface.atlas.continuumLabel }}
+      alternateView={continuumView}
       theme={theme}
       onToggle={toggleTheme}
     />
@@ -230,6 +239,6 @@ export function AtlasSitePage({ section }: { section: AtlasSection }) {
     {section === "projects" && <ProjectPortfolio view="atlas" participantOrder={participantOrders.projects} />}
     {section === "tools" && <ToolsPage participantOrder={participantOrders.tools} />}
     {section === "convening" && <ConveningPage participantOrder={participantOrders.program} />}
-    <AtlasFooter />
+    <AtlasFooter theme={theme} onToggle={toggleTheme} />
   </div>;
 }

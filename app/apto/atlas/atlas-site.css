@@ -296,6 +296,7 @@
 }
 .atlas-footer > nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
 .atlas-footer > nav a { min-height: 44px; display: inline-flex; align-items: center; color: #fff; font-size: .7rem; font-weight: 750; text-decoration: none; }
+.atlas-footer-actions { display: none; }
 
 /* Give the longest summaries room where the three-column cards are narrowest. */
 @media (1180px < width < 1280px) {
@@ -595,6 +596,39 @@
 }
 
 @media (max-width: 700px) {
+  .apto-atlas,
+  .apto-atlas > .apto-story { --story-header-height: 56px; }
+  .apto-atlas .story-header {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: clamp(6px, 2vw, 16px);
+    padding: 6px clamp(8px, 2.5vw, 18px);
+  }
+  .apto-atlas .story-brand {
+    min-height: 44px;
+    align-items: center;
+  }
+  .apto-atlas .story-header nav {
+    grid-column: 2;
+    grid-row: 1;
+    gap: clamp(2px, 1vw, 7px);
+  }
+  .apto-atlas .story-header nav a {
+    min-width: 44px;
+    padding-inline: clamp(6px, 1.8vw, 13px);
+    white-space: nowrap;
+  }
+  .apto-atlas .story-header-actions { display: none; }
+  .atlas-footer-actions {
+    --story-header-ink: #fff;
+    --story-header-copy: #a9c1cf;
+    --story-toggle-bg: rgb(255 255 255 / 5%);
+    --story-toggle-line: rgb(255 255 255 / 16%);
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 8px;
+  }
   .apto-atlas .story-outcome-depth { min-height: clamp(304px, 80vw, 380px); }
   .apto-atlas .story-outcome-depth > figure {
     transform: none;

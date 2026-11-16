@@ -4,37 +4,46 @@ import Sun from "lucide-react/dist/esm/icons/sun.mjs";
 import { aptoInterface, aptoProgram } from "./content";
 import type { AptoTheme } from "./theme";
 
-function ThemeToggle({ view, theme, onToggle }: { view: "atlas" | "story"; theme: AptoTheme; onToggle: () => void }) {
+type ViewActionsProps = {
+  alternateView: { href: string; label: string };
+  theme: AptoTheme;
+  onToggle: () => void;
+};
+
+export function AptoViewActions({ alternateView, theme, onToggle, className, testIdPrefix }: ViewActionsProps & {
+  className: string;
+  testIdPrefix: string;
+}) {
   const lightLabel = aptoInterface.directions.find((direction) => direction.id === "nsfhome")?.label ?? "Light";
   const darkLabel = aptoInterface.directions.find((direction) => direction.id === "nsfnetwork")?.label ?? "Dark";
   const nextLabel = theme === "dark" ? lightLabel : darkLabel;
-  return <button
-    className="story-theme-toggle"
-    type="button"
-    role="switch"
-    aria-checked={theme === "dark"}
-    aria-label={`${aptoInterface.study.themeChooserLabel}: ${darkLabel}`}
-    title={`${aptoInterface.study.themeSwitchActionPrefix} ${nextLabel}`}
-    onClick={onToggle}
-    data-testid={`${view}-theme-toggle`}
-  >
-    <Sun aria-hidden="true" focusable="false" />
-    <span aria-hidden="true" />
-    <Moon aria-hidden="true" focusable="false" />
-  </button>;
+  return <div className={className}>
+    <a className="story-directory-link" href={alternateView.href}>{alternateView.label}</a>
+    <button
+      className="story-theme-toggle"
+      type="button"
+      role="switch"
+      aria-checked={theme === "dark"}
+      aria-label={`${aptoInterface.study.themeChooserLabel}: ${darkLabel}`}
+      title={`${aptoInterface.study.themeSwitchActionPrefix} ${nextLabel}`}
+      onClick={onToggle}
+      data-testid={`${testIdPrefix}-theme-toggle`}
+    >
+      <Sun aria-hidden="true" focusable="false" />
+      <span aria-hidden="true" />
+      <Moon aria-hidden="true" focusable="false" />
+    </button>
+  </div>;
 }
 
 type NavigationItem = { section: string; label: string; href: string };
 
-export function AptoHeader({ view, brandHref, navigationLabel, items, activeSection, alternateView, theme, onToggle }: {
+export function AptoHeader({ view, brandHref, navigationLabel, items, activeSection, alternateView, theme, onToggle }: ViewActionsProps & {
   view: "atlas" | "story";
   brandHref: string;
   navigationLabel: string;
   items: readonly NavigationItem[];
   activeSection: string;
-  alternateView: { href: string; label: string };
-  theme: AptoTheme;
-  onToggle: () => void;
 }) {
   return <header className="story-header" data-testid={`${view}-header`}>
     <a className="story-brand" href={brandHref} aria-label={view === "atlas" ? "APTO Atlas home" : "APTO story home"}>
@@ -49,9 +58,12 @@ export function AptoHeader({ view, brandHref, navigationLabel, items, activeSect
         data-testid={`${view}-nav-${section}`}
       >{label}</a>)}
     </nav>
-    <div className="story-header-actions">
-      <a className="story-directory-link" href={alternateView.href}>{alternateView.label}</a>
-      <ThemeToggle view={view} theme={theme} onToggle={onToggle} />
-    </div>
+    <AptoViewActions
+      alternateView={alternateView}
+      theme={theme}
+      onToggle={onToggle}
+      className="story-header-actions"
+      testIdPrefix={view}
+    />
   </header>;
 }
