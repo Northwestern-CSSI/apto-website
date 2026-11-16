@@ -1,6 +1,6 @@
 # Adding or editing tools
 
-Each Markdown file in this folder is one public-facing research tool. The
+Each Markdown file in a team's `tools/` folder is one public-facing research tool. The
 Northwestern collection uses broad capability names, while other participating
 teams may use provisional research-tool mockups until their final tools are
 available. The website discovers new files automatically; no source-code list
@@ -10,9 +10,9 @@ or counter needs to be updated.
 
 1. Copy an existing tool file and rename it with lowercase kebab-case.
 2. Set `id` to the same kebab-case value.
-3. Set `participantId` to an ID from `../participants/`.
-4. Add four supplied or approved conceptual images under
-   `../assets/tools/photography/`: one `figure` plus three `galleryImages`.
+3. Set `participantId` to the team folder name and save the record in its `tools/` subfolder.
+4. Put four approved images in the team's `assets/tools/photography/` for the
+   `figure` and three `galleryImages`. You can also link to shared photos.
 5. Add one or more supporting pieces under `resources`. A coming-soon piece
    must use `"status": "coming-soon"` and `"url": null`.
 6. Add exactly two concise `summaryParagraphs` for the cards, then complete the
@@ -93,16 +93,16 @@ The H1 must exactly match `name`. The body must contain exactly
 | Field | Rule |
 | --- | --- |
 | `id` | Unique lowercase kebab-case identifier |
-| `participantId` | Must match an organization ID |
-| `displayOrder` | Optional positive integer that orders one organization’s tools; tools without it remain alphabetical |
-| `summaryParagraphs` | Exactly two concise paragraphs shown in the fixed-height card summary region; retain complete detail in the Markdown body |
+| `participantId` | Must match the team folder and its `organization.md` ID |
+| `displayOrder` | Optional positive integer for ordering the team's tools. Other tools stay alphabetical |
+| `summaryParagraphs` | Exactly two concise paragraphs shown on the card. Keep the full detail in the Markdown body |
 | `categories` | One or more unique values: `Capability`, `Production`, `Use` |
 | `figure.kind` | Selects a semantic figure class; see allowed values below |
-| `figure.src` | `/apto/…` path matching an image under `content/apto/assets/` |
+| `figure.src` | `/apto/…` path relative to a team or shared `assets/` folder |
 | `figure.label` | Short visible caption |
 | `figure.alt` | Meaningful description of the visual information |
 | `galleryImages` | Exactly three `{ "src", "alt" }` entries; the standard tool figure provides the fourth cycling frame |
-| `galleryImages[].src` | `/apto/tools/photography/…` path matching an image under `content/apto/assets/tools/photography/` |
+| `galleryImages[].src` | `/apto/tools/photography/…` or another public path to the image |
 | `galleryImages[].alt` | Meaningful alternative text for that image; entries must not repeat one another |
 | `resources` | One or more small supporting outputs displayed directly above the tool summary; each output must use a distinct SVG from `/apto/tools/icons/` within that tool |
 | `resources[].status` | `available` or `coming-soon`; coming-soon entries must not have a URL, while available pieces open their URL in a new tab |
@@ -151,8 +151,9 @@ and APTO Continuum tool cards. Every tool must have exactly three entries. The
 standard `figure` supplies the fourth frame, and both designs cycle smoothly
 through all four images with independent Ken Burns timing.
 
-- Store these files in `content/apto/assets/tools/photography/` and reference
-  them as `/apto/tools/photography/filename.ext`.
+- For team-specific photos, use `teams/<team-id>/assets/tools/photography/` and
+  reference them as `/apto/tools/photography/filename.ext`. Include the team ID
+  in new filenames to avoid conflicting paths.
 - Prefer a landscape image around 1536 × 1024 pixels. Atlas crops with
   `object-fit: cover`, so keep the focal subject near the center and leave safe
   space around important details.
@@ -165,9 +166,9 @@ through all four images with independent Ken Burns timing.
   Do not describe a purely decorative style, and do not copy the tool name.
 - Within one tool, keep all four frames distinct. Imagery may be shared across
   provisional tools when an approved team-specific set is not yet available.
-- To replace provisional artwork, add the approved file, update the matching
-  `src` and `alt` in the tool Markdown, remove the now-unused file, and run
-  `npm run verify`.
+- To replace provisional artwork, add the approved file and update its `src`
+  and `alt` in the tool record. Remove the previous file once all references
+  have been replaced, then run `npm run verify`.
 - Large JPEG, PNG, or WebP files should be optimized before commit. Confirm
   publication rights and review the crop in both light and dark themes.
 

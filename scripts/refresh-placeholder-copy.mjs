@@ -1,9 +1,6 @@
-import { readFile, readdir, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const contentRoot = path.join(projectRoot, "content", "apto");
+import { featuredParticipantOrder, markdownFiles, teamDirectories } from "./apto-content-paths.mjs";
 
 const openings = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -68,26 +65,28 @@ function syncToolBody(body, summaryParagraphs, useCase) {
   return updated;
 }
 
-async function refreshProgram() {
-  const filePath = path.join(contentRoot, "program.md");
-  const source = await readFile(filePath, "utf8");
-  const { metadata, body } = splitMarkdown(source, filePath);
-
-  for (const group of metadata.impactGroups ?? []) {
-    if (group.participantId !== "northwestern") {
-      group.entries = group.entries.map(() => nextPlaceholder());
-    }
+async function refreshImpacts(teamPaths) {
+  const orderedTeams = teamPaths.toSorted((left, right) => (
+    (featuredParticipantOrder.get(path.basename(left)) ?? 2) -
+    (featuredParticipantOrder.get(path.basename(right)) ?? 2)
+  ));
+  for (const team of orderedTeams) {
+    const filePath = path.join(team, "impact.md");
+    const source = await readFile(filePath, "utf8");
+    const { metadata, body } = splitMarkdown(source, filePath);
+    if (!metadata.entries.some((entry) => placeholderPattern.test(entry))) continue;
+    metadata.entries = metadata.entries.map((entry) => (
+      placeholderPattern.test(entry) ? nextPlaceholder() : entry
+    ));
+    await writeFile(filePath, joinMarkdown(metadata, body));
   }
-
-  await writeFile(filePath, joinMarkdown(metadata, body));
 }
 
-async function refreshTools() {
-  const toolsRoot = path.join(contentRoot, "tools");
-  const filenames = (await readdir(toolsRoot)).filter((name) => name.endsWith(".md") && name !== "README.md").sort();
+async function refreshTools(teamPaths) {
+  const toolFiles = (await Promise.all(teamPaths.map((team) => markdownFiles(path.join(team, "tools"))))).flat();
+  toolFiles.sort((left, right) => path.basename(left).localeCompare(path.basename(right), "en"));
 
-  for (const filename of filenames) {
-    const filePath = path.join(toolsRoot, filename);
+  for (const filePath of toolFiles) {
     const source = await readFile(filePath, "utf8");
     const { metadata, body } = splitMarkdown(source, filePath);
     const hasPlaceholder = (metadata.summaryParagraphs ?? []).some((paragraph) => placeholderPattern.test(paragraph))
@@ -107,7 +106,8 @@ async function refreshTools() {
   }
 }
 
-await refreshProgram();
-await refreshTools();
+const teams = await teamDirectories();
+await refreshImpacts(teams);
+await refreshTools(teams);
 
 console.log(`Refreshed ${generatedCopy.size} distinct placeholder passages.`);

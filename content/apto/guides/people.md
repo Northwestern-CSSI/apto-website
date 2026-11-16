@@ -1,7 +1,7 @@
 # Adding or editing people
 
-Each Markdown file in this folder is one program contact, principal
-investigator, or co-principal investigator. Within each organization, people
+Store investigator records in the team's `people/` folder. Store NSF program
+contacts in [`program-team/`](../program-team/). Within each organization, people
 are displayed by role: principal investigator first, co-principal investigators
 second, and any other supported roles after them. Names are alphabetical within
 the same role.
@@ -18,7 +18,7 @@ the same role.
   "initials": "JD",
   "role": "Co-Principal Investigator",
   "organization": null,
-  "headshotUrl": "/apto/headshots/jane-doe.webp",
+  "headshotUrl": "/apto/people/northwestern-jane-doe.webp",
   "headshotAlt": "Portrait of Jane Doe",
   "profileUrl": "https://example.edu/jane-doe",
   "email": null
@@ -58,15 +58,16 @@ missing headshot is replaced by the person’s initials.
 - Allowed roles are `Program Manager`, `NSF Team`, `Principal
   Investigator`, and `Co-Principal Investigator`.
 - NSF program team members use `participantId: null` and provide `organization`.
-- Investigators use an existing `participantId` and `organization: null`.
+- Investigators use their team folder name as `participantId` and set `organization` to `null`.
 - Every participating organization must have exactly one principal
   investigator. It may have any number of co-principal investigators.
 - The H1 must exactly match `name`. Person records do not use H2 sections.
 - `profileUrl` must be an HTTPS URL or `null`.
-- `email` is optional and must be a valid email address or `null`; it is used
-  only for program team members displayed in the footer.
-- Headshots must live under `content/apto/assets/` and use the matching
-  `/apto/…` path; external headshot URLs are intentionally rejected.
+- `email` is optional and must be a valid email address or `null`. The site
+  displays it only for program contacts in the footer.
+- Put team headshots in the team's `assets/people/` and link with
+  `/apto/people/filename.ext`. Put NSF contact headshots in the shared
+  `content/apto/assets/people/`.
 
 For a headshot, use a consistent square crop around 800 × 800 pixels, keep the
 face centered with comfortable margin, confirm permission to publish it, and

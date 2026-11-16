@@ -23,45 +23,6 @@
   ],
   "objectivesTitle": "APTO’s impact",
   "impactIntroduction": "Together, the APTO cohort is working to achieve the following goals and aim to have the following impact.",
-  "impactGroups": [
-    {
-      "participantId": "northwestern",
-      "entries": [
-        "Establish a new empirical foundation for mapping research investments to real-world technological advancements.",
-        "Enable high-accuracy predictions and targeted interventions that can accelerate innovation.",
-        "Enhance understanding and prediction of research-and-development return on investment in the United States."
-      ]
-    },
-    {
-      "participantId": "uchicago",
-      "entries": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.",
-        "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Maecenas sed diam eget risus varius blandit sit amet non magna.",
-        "Aenean lacinia bibendum nulla sed consectetur, praesent commodo cursus magna. Vestibulum id ligula porta felis euismod semper, donec sed odio dui."
-      ]
-    },
-    {
-      "participantId": "aperture",
-      "entries": [
-        "Maecenas faucibus mollis interdum, fusce dapibus tellus ac cursus commodo. Nulla vitae elit libero, a pharetra augue, praesent commodo cursus magna.",
-        "Cras mattis consectetur purus sit amet fermentum, donec sed odio dui. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh."
-      ]
-    },
-    {
-      "participantId": "insilicom",
-      "entries": [
-        "Nullam quis risus eget urna mollis ornare vel eu leo. Aenean eu leo quam, pellentesque ornare sem lacinia quam venenatis vestibulum.",
-        "Etiam porta sem malesuada magna mollis euismod, curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod, vivamus sagittis lacus vel augue."
-      ]
-    },
-    {
-      "participantId": "macrocosm",
-      "entries": [
-        "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec ullamcorper nulla non metus auctor fringilla, sed posuere consectetur est at lobortis.",
-        "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit sit amet non magna."
-      ]
-    }
-  ],
   "landingGallery": [
     {
       "src": "/apto/tools/photography/aggregating-01.jpg",

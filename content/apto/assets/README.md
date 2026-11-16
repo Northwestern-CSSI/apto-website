@@ -1,27 +1,30 @@
 # Images, figures, logos, and headshots
 
-This folder is the source of truth for every image published by the APTO site.
-The content builder copies supported images into the deployed site. With the
-exception of the candidate tool-side figures retained under `tools/resources/`,
-an unreferenced image fails validation so unused files do not accumulate.
+This folder holds shared APTO images. Each [team](../teams/README.md) has an
+`assets/` folder for its logos, headshots, and team-specific tool artwork.
+Unreferenced images fail validation. The existing candidate figures in
+`tools/resources/` can remain while their presentation is being decided.
 
 Never edit generated copies under `public/apto/`.
 
 ## Paths
 
-The public path mirrors the location beneath this folder:
+The public path starts with `/apto/` and mirrors the path inside the team's
+`assets/` or the program's shared `assets/`.
 
-| Source file | Markdown reference |
+| Source file relative to `content/apto/` | Markdown reference |
 | --- | --- |
-| `assets/tools/photography/example.jpg` | `/apto/tools/photography/example.jpg` |
-| `assets/tools/icons/example.svg` | `/apto/tools/icons/example.svg` |
-| `assets/tools/resources/example.png` | `/apto/tools/resources/example.png` |
-| `assets/people/jane-doe.webp` | `/apto/people/jane-doe.webp` |
-| `assets/partners/example.svg` | `/apto/partners/example.svg` |
+| `teams/northwestern/assets/tools/photography/agentic-01.jpg` | `/apto/tools/photography/agentic-01.jpg` |
+| `assets/tools/icons/network.svg` | `/apto/tools/icons/network.svg` |
+| `teams/northwestern/assets/tools/resources/agentic-roles.png` | `/apto/tools/resources/agentic-roles.png` |
+| `teams/northwestern/assets/people/jian-cao.jpg` | `/apto/people/jian-cao.jpg` |
+| `teams/uchicago/assets/partners/uchicago.png` | `/apto/partners/uchicago.png` |
 | `assets/convenings/2026/example.jpg` | `/apto/convenings/2026/example.jpg` |
 
-Use lowercase kebab-case filenames. Supported extensions are `.avif`, `.jpeg`,
-`.jpg`, `.png`, `.svg`, and `.webp`. Animated GIF is intentionally unsupported.
+Use lowercase kebab-case filenames. Prefix new team-specific filenames with
+the team ID to keep public paths unique. Store one copy of shared artwork and
+reuse its path. Supported extensions are `.avif`, `.jpeg`, `.jpg`, `.png`,
+`.svg`, and `.webp`.
 
 ## Tool figures
 
@@ -35,13 +38,14 @@ Use lowercase kebab-case filenames. Supported extensions are `.avif`, `.jpeg`,
 - Do not communicate an essential result only through color or only inside the
   image.
 
-Approved and supplied conceptual photographs live in `tools/photography/`.
+Store team photos in the team's `assets/tools/photography/`.
 Both public designs fill their media frames with these images, so keep the
 focal area suitable for responsive `object-fit: cover` cropping.
 
 ## Supporting-piece icons
 
-Supporting-piece icons live in `tools/icons/` as 64 × 64 viewBox SVG files.
+Shared supporting-piece icons live here in `tools/icons/`. Team-specific
+icons live in the team's `assets/tools/icons/`. Use 64 × 64 viewBox SVG files.
 Use the shared rounded-line visual language, quiet blue-slate-sand accents, and
 meaningful geometry. Every piece within one tool must reference a different
 icon. Keep raster images out of this folder.
@@ -50,14 +54,15 @@ Archived visual treatments live in `tools/icons/themes/`. The original vivid
 cyan-purple-gold recipe is preserved in `themes/vivid-gradient.md`; live icons
 currently use its quieter blue-slate-sand variant.
 
-Candidate tool-side figures remain in `tools/resources/` while that separate
-visual treatment is being decided; they are not used as piece icons.
+Candidate tool-side figures live in Northwestern's
+[`assets/tools/resources/`](../teams/northwestern/assets/tools/resources/).
 
 ## Tool galleries
 
 APTO Atlas and APTO Continuum use image-led tool cards. Their source imagery
-lives in `tools/photography/` and is referenced from each tool record through a
-required `galleryImages` array containing exactly three `{ "src", "alt" }`
+lives in the teams' `assets/tools/photography/` and the shared
+[`tools/placeholders/`](tools/placeholders/). Each tool record has a
+`galleryImages` array containing exactly three `{ "src", "alt" }`
 entries.
 
 - Prefer a landscape composition around 1536 × 1024 pixels with the focal area
@@ -69,26 +74,26 @@ entries.
 - Keep the four media paths within each tool unique. Provisional tools may reuse
   an approved image set until the corresponding team supplies its own figures.
 - Keep important information out of the crop edges and out of embedded text.
-- When a project team supplies an approved figure, place it in this folder, update the tool
-  Markdown reference and alt text, and remove the replaced file so it does not
-  fail the unused-asset check.
+- When a team supplies an approved figure, place it in the team's assets and
+  update the tool's image path and alt text. Remove the old file once all
+  references have been replaced.
 - Optimize files before commit and verify their rights, factual accuracy, and
   appearance in both themes.
 
-See [Adding or editing tools](../tools/README.md) for the complete frontmatter
+See [Adding or editing tools](../guides/tools.md) for the complete frontmatter
 template and replacement steps.
 
-## Atlas landing gallery
+## Program imagery
 
-The five equal-weight landing visuals are selected in `../program.md` through
-`landingGallery`. Use project-idea imagery without organization names, logos,
-or embedded labels so the landing composition does not imply preference among
-participants. All five images are cropped responsively and receive a slow,
-continuous pan; keep important details away from every edge.
+[`program.md`](../program.md) selects the homepage visuals through
+`heroGallery` and `landingGallery`. The hero photographs live here in
+`hero/`. The landing records reuse Northwestern team photography, and the
+first three illustrate What We Are Building. Keep important details away from
+the crop edges.
 
 ## Annual convening photography
 
-Store each year’s four photographs under `convenings/<year>/` and reference
+Store each year’s photographs under `convenings/<year>/` and reference
 them from the matching record in `../convenings/`. Use wide, crop-safe images
 without embedded text. The shared gallery applies an animated pan and dissolve
 and exposes keyboard-operable image indicators; reduced-motion users receive a
@@ -114,14 +119,14 @@ altering the site.
 - Prefer SVG for logos when an approved vector is available; otherwise use a
   transparent PNG or WebP.
 - Preserve official proportions, clear space, colors, and minimum sizes.
-- Store paired light- and dark-surface variants in this folder when the
-  organization provides them. Prefer transparent or reversed artwork for the
+- Store paired light- and dark-surface variants in the team's
+  `assets/partners/`. Prefer transparent or reversed artwork for the
   dark variant so a white rectangle is never required behind the mark.
 - Record both variants and their exact intrinsic dimensions in the participant
   record. A transparent full-color mark may be reused for both themes when its
   contrast is sufficient.
 - Record the source URL, source label, mark type, approval status, and approval
-  boolean in `participants/*.md`.
+  boolean in the team's `organization.md`.
 - Verify the mark in both website themes and in both presentations. The
   shared renderer switches assets by theme; do not add organization-specific
   filters or casual recoloring in presentation CSS.

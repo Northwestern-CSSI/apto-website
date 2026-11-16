@@ -23,10 +23,11 @@ under `content/apto/`.
 
 Common tasks:
 
-- [Add or edit a tool](content/apto/tools/README.md)
-- [Add or edit a project](content/apto/projects/README.md)
-- [Add or edit a person](content/apto/people/README.md)
-- [Add or edit an organization](content/apto/participants/README.md)
+- [Find a team's content and editing guide](content/apto/teams/README.md)
+- [Add or edit a tool](content/apto/guides/tools.md)
+- [Add or edit a project](content/apto/guides/projects.md)
+- [Add or edit a person](content/apto/guides/people.md)
+- [Add or edit an organization](content/apto/guides/organizations.md)
 - [Edit page titles and introductions](content/apto/pages/README.md)
 - [Add or edit an annual convening](content/apto/convenings/README.md)
 - [Add figures, logos, or headshots](content/apto/assets/README.md)
@@ -81,6 +82,7 @@ NEXT_PUBLIC_BASE_PATH=/apto-website npm run check:pages
 | Path | Purpose |
 | --- | --- |
 | `content/apto/` | Editable website content and source images |
+| `content/apto/teams/` | Team records, artwork, and editing guides |
 | `app/apto/` | Shared APTO components, theme, styles, and generated content |
 | `app/{story,atlas}/` | Canonical routes used by GitHub Pages |
 | `app/apto/{story,atlas}/` | `/apto` aliases used by the existing deployment |

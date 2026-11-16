@@ -1,8 +1,8 @@
 # Adding or editing projects
 
-Each Markdown file in this folder is one APTO project. The content build keeps
-project entries in a stable order, while the public presentations reorder them
-with their participating organizations on every page load.
+Each Markdown file in a team's `projects/` folder is one APTO project. The
+content build keeps project entries in a stable order, while the public
+presentations reorder them with their participating organizations on every page load.
 
 ## Complete template
 
@@ -31,7 +31,7 @@ language. Keep the summary factual and grounded in the award information.
 
 ## Rules
 
-- `participantId` must match an organization in `../participants/`.
+- `participantId` must match the team folder and its `organization.md` ID.
 - The lowercase kebab-case `id` must match the filename.
 - `awardId` must contain exactly seven digits.
 - `officialTitle` must begin with `APTO:` and exactly match the H1.
@@ -39,7 +39,6 @@ language. Keep the summary factual and grounded in the award information.
 - `awardedYear` is a four-digit year; the visible date is generated as
   “Awarded in 2024 – Ongoing.”
 - The body requires one nonempty, plain-text `## Summary` section.
-- Investigator names are joined automatically from `../people/`; do not list
-  them again in the project file.
+- The site pulls investigator names from the same team's `people/` folder.
 
 Always verify award details against the NSF record before publishing.

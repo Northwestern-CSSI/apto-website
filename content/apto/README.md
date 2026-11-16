@@ -7,12 +7,11 @@ updates both presentations.
 
 ## Quick workflow
 
-1. Edit an existing Markdown record or copy a similar record into the correct
-   folder.
+1. Open your [team folder](teams/README.md) and follow its editing guide.
 2. Give new files a lowercase kebab-case name, such as
    `technology-trajectory-forecaster.md`.
-3. Put new figures, logos, and headshots under `assets/` and reference them with
-   an `/apto/…` path.
+3. Put your team's figures, logos, and headshots under that team's `assets/`.
+   Use an `/apto/…` path based on the file's path inside `assets/`.
 4. From the repository root, run `npm run verify`.
 5. Open a pull request. Merging to `main` publishes GitHub Pages automatically.
 
@@ -21,24 +20,28 @@ updates both presentations.
 | Website content | Source |
 | --- | --- |
 | Homepage title and introduction | `pages/home.md` |
-| Program description, objectives, landing gallery, NSF language, sources | `program.md` |
+| Program description, section introductions, landing gallery, NSF language, sources | [program.md](program.md) |
 | Projects-page introduction | `pages/projects.md` |
-| Individual projects | `projects/*.md` |
+| Team project descriptions and awards | `teams/<team-id>/projects/*.md` |
 | Tools-page introduction | `pages/tools.md` |
-| Individual tools and their figures | `tools/*.md` |
+| Team tools and supporting pieces | `teams/<team-id>/tools/*.md` |
 | Convening-page introduction | `pages/convening.md` |
 | Annual convening text and photography | `convenings/*.md` |
-| Organizations, logos, and locations | `participants/*.md` |
-| NSF program contacts and project investigators | `people/*.md` |
+| Team name, website, logo references, and location | `teams/<team-id>/organization.md` |
+| Team impact statements | `teams/<team-id>/impact.md` |
+| Project investigators | `teams/<team-id>/people/*.md` |
+| NSF program contacts | [program-team/](program-team/) |
 | Navigation, buttons, filters, and footer | `interface.md` |
-| Figures, logos, headshots, NSF mark, and social image | `assets/` |
+| Team-specific figures, logos, and headshots | `teams/<team-id>/assets/` |
+| Shared photography, icons, NSF mark, and convening photos | [assets/](assets/) |
 
 Detailed guides:
 
-- [Tools](tools/README.md)
-- [Projects](projects/README.md)
-- [People](people/README.md)
-- [Organizations](participants/README.md)
+- [Team folders](teams/README.md)
+- [Tools](guides/tools.md)
+- [Projects](guides/projects.md)
+- [People](guides/people.md)
+- [Organizations](guides/organizations.md)
 - [Page text](pages/README.md)
 - [Annual convenings](convenings/README.md)
 - [Images and figures](assets/README.md)
@@ -51,16 +54,19 @@ Markdown. This is JSON, not YAML:
 - Use double quotes.
 - Do not add comments or trailing commas.
 - Do not add unknown fields; missing or extra fields fail validation.
-- Use a unique lowercase kebab-case `id` and matching filename.
-- Include exactly one `#` heading matching the visible record name or title.
+- Use a unique lowercase kebab-case `id` matching the filename for projects,
+  people, and tools. In `organization.md`, `id` matches the team folder.
+- Include exactly one `#` heading. Match the record's name or title where its
+  guide specifies it.
 - Use only the `##` sections listed in the folder-specific guide.
 - Treat prose under `##` headings as plain text. Inline Markdown, lists, and
   multiple paragraphs are not rendered; the builder normalizes the section to
   one paragraph. Structured lists belong in the JSON fields documented by the
   folder-specific guide.
 
-Records are joined through IDs. A `participantId` in a person, project, or tool
-must match an organization’s `id` in `participants/`.
+Records are joined through IDs. For a team investigator, project, or tool,
+`participantId` must match the enclosing team folder and its
+`organization.md` ID. NSF program contacts use `participantId: null`.
 
 ## Presentation order
 
@@ -77,18 +83,19 @@ institution. Do not add number prefixes or manual sequence fields.
 A reference such as:
 
 ```json
-"src": "/apto/tools/example-figure.webp"
+"src": "/apto/tools/photography/example-figure.webp"
 ```
 
 maps to this source file:
 
 ```text
-content/apto/assets/tools/example-figure.webp
+content/apto/teams/<team-id>/assets/tools/photography/example-figure.webp
 ```
 
-The builder copies only supported, referenced images into `public/apto/`.
-Unreferenced images fail validation so the repository does not accumulate
-unused files. See the [image and figure guide](assets/README.md).
+The path after `/apto/` is relative to an `assets/` folder. The build combines
+team and shared assets under `public/apto/` and rejects duplicate public paths.
+Put an image used by several teams in the shared `assets/` folder and reuse
+its path. See the [image and figure guide](assets/README.md).
 
 ## Generate and check content
 
@@ -131,8 +138,8 @@ legal permission, brand approval, or whether remote links remain live.
 - `interface.md` owns shared labels and navigation. The visible top navigation
   must remain Program, Projects, Tools, Convening. Its `story` block contains the
   labels used only by the alternate long-scroll presentation.
-- `program.md` owns substantive program language, the Atlas landing gallery,
-  and the exact NSF disclaimer. Keep the five `landingGallery` visuals free of
-  organization names and marks; they receive equal space on the landing page.
+- `program.md` owns program-level copy, the homepage image selections, and
+  the exact NSF disclaimer. Each team's impact statements live in its
+  `impact.md`.
 - Retired designs and experiments are preserved in the project-level archive,
   outside this public website repository.

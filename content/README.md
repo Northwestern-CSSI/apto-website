@@ -4,5 +4,6 @@ Website content is grouped by program. APTO is currently the only program:
 
 - **[Edit APTO content](apto/README.md)**
 
-Do not put generated build files in this directory. Source images belong beside
-their program’s content, under that program’s `assets/` folder.
+Team source images live in each team's `assets/` folder. Program-wide images
+live in the program's shared `assets/` folder. Build output goes outside
+`content/`.
