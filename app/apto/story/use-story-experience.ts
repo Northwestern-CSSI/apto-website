@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 
 const storySections = ["program", "projects", "tools", "convening"] as const;
 export type StorySection = (typeof storySections)[number];
@@ -6,8 +6,12 @@ export type StorySection = (typeof storySections)[number];
 export function useStoryExperience(
   rootRef: RefObject<HTMLElement | null>,
   impactOrderKey: string,
-  setActiveSection?: (section: StorySection) => void,
+  { setActiveSection, revealEarlier = false }: {
+    setActiveSection?: (section: StorySection) => void;
+    revealEarlier?: boolean;
+  } = {},
 ) {
+  const visibleOnLoad = useRef(new WeakSet<HTMLElement>());
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -35,6 +39,14 @@ export function useStoryExperience(
       }
       return top;
     };
+    if (revealEarlier) {
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      // Keep content already painted by the server visible when scroll effects start.
+      revealElements.forEach((element) => {
+        const { top, bottom } = element.getBoundingClientRect();
+        if (top < viewportHeight && bottom > 0) visibleOnLoad.current.add(element);
+      });
+    }
     let frame = 0;
     const updateScrollState = () => {
       frame = 0;
@@ -53,15 +65,15 @@ export function useStoryExperience(
       }
 
       if (!reduceMotion) {
-        const revealStart = viewportHeight * 0.92;
-        const revealEnd = Math.max(headerHeight + 24, viewportHeight * 0.59);
+        const revealStart = viewportHeight * (revealEarlier ? 1.12 : 0.92);
+        const revealEnd = Math.max(headerHeight + 24, viewportHeight * (revealEarlier ? 0.75 : 0.59));
         const revealDistance = Math.max(1, revealStart - revealEnd);
         revealElements.forEach((element) => {
           const screenTop = documentTop(element) - window.scrollY;
           const order = Number(element.dataset.storyRevealOrder ?? "0");
           const stagger = Number.isFinite(order) ? order * 18 : 0;
           const linearProgress = clamp01((revealStart - screenTop - stagger) / revealDistance);
-          const progress = linearProgress * linearProgress * (3 - 2 * linearProgress);
+          const progress = visibleOnLoad.current.has(element) ? 1 : linearProgress * linearProgress * (3 - 2 * linearProgress);
           const [baseX, baseY] = revealVectors[element.dataset.storyReveal ?? "up"] ?? revealVectors.up;
           const remaining = 1 - progress;
           element.style.setProperty("--story-reveal-progress", progress.toFixed(4));
@@ -164,5 +176,5 @@ export function useStoryExperience(
       if (frame) window.cancelAnimationFrame(frame);
       root.classList.remove("is-motion-ready");
     };
-  }, [rootRef, impactOrderKey, setActiveSection]);
+  }, [rootRef, impactOrderKey, setActiveSection, revealEarlier]);
 }

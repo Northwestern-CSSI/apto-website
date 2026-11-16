@@ -68,7 +68,7 @@ function PageIntroduction({ section, participantOrder }: {
 
 function ProgramPage({ participantOrder }: { participantOrder: readonly string[] }) {
   const mainRef = useRef<HTMLElement>(null);
-  useStoryExperience(mainRef, participantOrder.join("|"));
+  useStoryExperience(mainRef, participantOrder.join("|"), { revealEarlier: true });
 
   return <main className="apto-story" ref={mainRef} id="atlas-main" tabIndex={-1} aria-labelledby="atlas-home-title">
     <ProgramSections view="atlas" participantOrder={participantOrder} />

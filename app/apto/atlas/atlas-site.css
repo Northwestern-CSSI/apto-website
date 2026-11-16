@@ -131,7 +131,7 @@
 .atlas-tool-toolbar select { min-height: 44px; padding: 0 38px 0 12px; color: var(--atlas-ink); background: var(--atlas-surface); border: 1px solid var(--atlas-line-strong); border-radius: 5px; font-size: .76rem; font-weight: 700; }
 .atlas-tool-count { min-width: 108px; color: var(--atlas-copy); font-size: .72rem; text-align: right; }
 .atlas-tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); }
-.atlas-tool-card { position: relative; min-width: 0; min-height: clamp(600px, calc(950px - 25vw), 650px); aspect-ratio: 1 / 1.20; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
+.atlas-tool-card { position: relative; width: 100%; min-width: 0; min-height: clamp(600px, calc(950px - 25vw), 650px); aspect-ratio: 1 / 1.20; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
 .atlas-tool-card::after { content: ""; position: absolute; z-index: 4; inset: 0; border: 1px solid rgb(255 255 255 / 14%); border-radius: inherit; pointer-events: none; }
 .atlas-tool-media,
 .atlas-tool-media img,
@@ -296,6 +296,11 @@
 }
 .atlas-footer > nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
 .atlas-footer > nav a { min-height: 44px; display: inline-flex; align-items: center; color: #fff; font-size: .7rem; font-weight: 750; text-decoration: none; }
+
+/* Give the longest summaries room where the three-column cards are narrowest. */
+@media (1180px < width < 1280px) {
+  .atlas-tool-card { min-height: clamp(630px, calc(2045px - 110vw), 744px); }
+}
 
 @media (max-width: 1180px) {
   .atlas-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -549,13 +554,18 @@
 
 .apto-atlas .story-hero {
   min-height: auto;
-  padding-block: clamp(38px, 5vw, 76px);
+  padding-block: clamp(32px, 4.5vw, 66px);
 }
 .apto-atlas .story-hero-copy > .apto-program-introduction { margin-bottom: 0; }
-.apto-atlas .story-hero-visual { padding-bottom: 16px; }
+.apto-atlas .story-hero-visual { padding-bottom: 12px; }
 .apto-atlas :is(.story-hero-image, .story-hero-primary) {
-  min-height: clamp(310px, 31vw, 460px);
+  min-height: clamp(292px, 29vw, 430px);
 }
+.apto-atlas .story-program { padding-block-start: clamp(66px, 7vw, 108px); }
+.apto-atlas .story-outcome-depth { min-height: clamp(280px, 41vw, 620px); }
+.apto-atlas .story-outcome-depth > figure { display: flex; align-items: flex-end; }
+.apto-atlas .story-outcome-panorama img { position: absolute; inset: 0; }
+.apto-atlas .story-outcome-panorama figcaption { position: relative; width: 100%; }
 
 .atlas-leadership-heading { display: grid; grid-template-columns: 78px minmax(0,1fr); gap: 20px; align-items: center; }
 .atlas-leadership-heading > img { width: 78px; height: 78px; object-fit: contain; border-radius: 50%; background: #fff; }
@@ -563,10 +573,14 @@
 .atlas-leadership-heading p { margin: 7px 0 0; color: var(--atlas-copy); font-size: .78rem; line-height: 1.45; }
 
 @media (max-width: 719px) {
-  .apto-atlas .story-hero { gap: 24px; }
+  .apto-atlas .story-hero { gap: 22px; }
   .apto-atlas :is(.story-hero-image, .story-hero-primary) {
-    min-height: clamp(220px, 62vw, 340px);
+    min-height: clamp(208px, 58vw, 314px);
   }
   .atlas-leadership-heading { grid-template-columns: 64px minmax(0,1fr); }
   .atlas-leadership-heading > img { width: 64px; height: 64px; }
+}
+
+@media (max-width: 700px) {
+  .apto-atlas .story-outcome-depth { min-height: clamp(304px, 80vw, 380px); }
 }

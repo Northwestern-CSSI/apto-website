@@ -159,7 +159,7 @@ export function AptoStoryPage() {
   const [activeSection, setActiveSection] = useState<StorySection>("program");
   const { theme, toggleTheme } = useAptoTheme("light");
   const participantOrders = useParticipantOrders();
-  useStoryExperience(rootRef, participantOrders.program.join("|"), setActiveSection);
+  useStoryExperience(rootRef, participantOrders.program.join("|"), { setActiveSection });
 
   return <div className="apto-story" ref={rootRef} data-theme={theme}>
     <a className="story-skip-link" href="#story-main">{aptoInterface.accessibility.skipLinkLabel}</a>
