@@ -1,8 +1,8 @@
-import { aptoStoryMetadata } from "./apto/story/metadata";
-import { AptoStoryPage } from "./apto/story/story-site";
+import { AtlasSitePage } from "./apto/atlas/atlas-site";
+import { atlasMetadataFor } from "./apto/atlas/metadata";
 
-export const metadata = aptoStoryMetadata;
+export const metadata = atlasMetadataFor("/");
 
 export default function Home() {
-  return <AptoStoryPage />;
+  return <AtlasSitePage section="home" />;
 }

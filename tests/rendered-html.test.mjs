@@ -44,13 +44,17 @@ function programManager(data) {
 }
 
 test("publishes only the Story and Atlas presentation families", async () => {
-  for (const path of ["/", "/story", "/apto/story"]) {
+  for (const path of ["/story", "/apto/story"]) {
     const response = await render(path);
     assert.equal(response.status, 200, `${path} should render`);
     const html = await response.text();
     assert.match(html, /class="apto-story"/);
     assert.doesNotMatch(html, /concept-apto|Scroll to explore|story-map|us-map\.svg/i);
   }
+
+  const home = await render("/");
+  assert.equal(home.status, 200, "/ should render");
+  assert.match(await home.text(), /class="apto-atlas"/, "/ should open the Atlas presentation");
 
   for (const prefix of ["/atlas", "/apto/atlas"]) {
     for (const suffix of ["", "/projects", "/tools", "/convening"]) {

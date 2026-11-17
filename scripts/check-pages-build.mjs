@@ -11,11 +11,12 @@ const presentationToolCount = presentationCards.length;
 const featuredToolRowCount = Math.max(...["northwestern", "uchicago"].map((id) => (
   presentationCards.filter((card) => card.participantId === id).length
 )));
-const storyPages = ["index.html", "story/index.html", "apto/story/index.html"];
-const atlasPages = ["", "projects/", "tools/", "convening/"].flatMap((suffix) => [
+const storyPages = ["story/index.html", "apto/story/index.html"];
+// The site root opens the Atlas presentation.
+const atlasPages = ["index.html", ...["", "projects/", "tools/", "convening/"].flatMap((suffix) => [
   `atlas/${suffix}index.html`,
   `apto/atlas/${suffix}index.html`,
-]);
+])];
 const escapedBasePath = basePath.slice(1).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const unprefixedPath = new RegExp(`(?:href|src)="\\/(?!${escapedBasePath}(?:\\/|"))`);
 

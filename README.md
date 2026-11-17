@@ -9,11 +9,11 @@ themes.
 - Website: <https://northwestern-cssi.github.io/apto-website/>
 - Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/story>
 - Main pages: Program, Projects, Tools, and Convening
-- Long-scroll presentation: `/` or `/story` on GitHub Pages and `/story` or
+- Gallery presentation (default): `/` or `/atlas` on GitHub Pages and `/` or
+  `/apto/atlas` on the existing APTO deployment, with matching `/projects`,
+  `/tools`, and `/convening` subpages under the Atlas path
+- Long-scroll presentation: `/story` on GitHub Pages and `/story` or
   `/apto/story` on the existing APTO deployment
-- Gallery presentation: `/atlas` on GitHub Pages and `/apto/atlas`
-  on the existing APTO deployment, with matching `/projects`, `/tools`,
-  and `/convening` subpages
 
 ## Edit website content
 
