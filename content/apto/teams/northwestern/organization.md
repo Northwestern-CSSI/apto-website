@@ -10,14 +10,14 @@
     "kind": "wordmark",
     "variants": {
       "light": {
-        "src": "/apto/partners/northwestern.png",
-        "width": 368,
-        "height": 69
+        "src": "/apto/partners/northwestern.svg",
+        "width": 416,
+        "height": 78
       },
       "dark": {
-        "src": "/apto/partners/northwestern-dark.png",
-        "width": 368,
-        "height": 69
+        "src": "/apto/partners/northwestern-dark.svg",
+        "width": 416,
+        "height": 78
       }
     },
     "sourceUrl": "https://www.northwestern.edu/brand/images/horizontal-wordmark.png",
