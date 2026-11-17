@@ -444,8 +444,9 @@
 }
 
 .atlas-convening-copy {
-  position: absolute;
-  inset: 0;
+  /* The copy sizes the card, so long text grows the card instead of clipping,
+     and the bottom padding keeps the gallery progress clear of the text. */
+  position: relative;
   z-index: 3;
   padding: clamp(28px, 5vw, 72px);
   display: grid;
@@ -454,7 +455,9 @@
   gap: clamp(32px, 6vw, 100px);
   color: white;
   pointer-events: none;
+  min-height: inherit;
 }
+  padding-bottom: calc(clamp(1rem, 3vw, 2rem) + 2.25rem);
 
 .atlas-convening-copy > strong {
   align-self: start;
@@ -521,7 +524,7 @@
 @media (max-width: 719px) {
   .atlas-convening-list { padding-right: 16px; padding-left: 16px; }
   .atlas-convening-card { min-height: 690px; }
-  .atlas-convening-copy { padding: 22px; }
+  .atlas-convening-copy { padding-inline: 22px; padding-top: 22px; }
   .atlas-convening-copy > strong { font-size: clamp(5rem, 25vw, 9rem); }
 }
 
