@@ -554,7 +554,7 @@
 .apto-resource-path-atlas.is-featured .apto-resource-summary-copy > span { font-size: .82rem; line-height: 1.42; }
 
 @media (max-width: 520px) {
-  .atlas-tool-card { min-height: clamp(676px, calc(1186px - 110vw), 900px); max-height: none; aspect-ratio: auto; }
+  .atlas-tool-card { min-height: clamp(720px, calc(1332px - 144.2vw), 900px); max-height: none; aspect-ratio: auto; }
   .atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 16px; padding: 16px 16px 0; }
 }
 

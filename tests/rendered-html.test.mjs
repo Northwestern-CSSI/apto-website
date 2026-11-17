@@ -315,7 +315,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(styles, /\.atlas-tool-card\s*\{[^}]*\bwidth:\s*100%;[^}]*min-height:\s*clamp\(612px,\s*calc\(962px\s*-\s*23\.9vw\),\s*662px\)[^}]*aspect-ratio:\s*1\s*\/\s*1\.20/);
   assert.match(styles, /@media \(max-width:\s*1232px\)[\s\S]*?\.atlas-tool-card\s*\{\s*min-height:\s*clamp\(656px,\s*calc\(926px\s*-\s*23\.9vw\),\s*746px\)[^}]*aspect-ratio:\s*1\s*\/\s*1\.16/);
   assert.match(styles, /@media \(max-width:\s*751px\)[\s\S]*?\.atlas-tool-card\s*\{[^}]*min-height:\s*clamp\(650px,\s*calc\(780px\s*-\s*20vw\),\s*710px\)[^}]*max-height:\s*none[^}]*aspect-ratio:\s*auto/);
-  assert.match(styles, /@media \(max-width:\s*520px\)[\s\S]*?\.atlas-tool-card\s*\{\s*min-height:\s*clamp\(676px,\s*calc\(1186px\s*-\s*110vw\),\s*900px\)/);
+  assert.match(styles, /@media \(max-width:\s*520px\)[\s\S]*?\.atlas-tool-card\s*\{\s*min-height:\s*clamp\(720px,\s*calc\(1332px\s*-\s*144\.2vw\),\s*900px\)/);
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   assert.match(resourceSource, /window\.matchMedia\("\(hover: none\), \(pointer: coarse\)"\)/);
   assert.doesNotMatch(resourceSource, />Available</);
