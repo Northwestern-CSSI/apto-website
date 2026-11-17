@@ -879,14 +879,13 @@
 }
 .apto-atlas [data-atlas-bar="pending"]::before { transform: scaleX(0); }
 
-/* Navigation: a short bar grows under the tab being pointed at. */
-.apto-atlas .story-header nav a { position: relative; }
-.apto-atlas .story-header nav a::after {
+/* Navigation: a bar as wide as the label grows under the tab being pointed at. */
+.apto-atlas .story-header nav a > span { position: relative; }
+.apto-atlas .story-header nav a > span::after {
   content: "";
   position: absolute;
-  left: calc(50% - 10px);
-  bottom: 7px;
-  width: 20px;
+  inset-inline: 0;
+  top: calc(100% + 1px);
   height: 3px;
   background: var(--atlas-gold);
   border-radius: 2px;
@@ -895,10 +894,10 @@
 }
 .apto-atlas .story-header nav a:hover,
 .apto-atlas .story-header nav a:focus-visible { background: transparent; }
-.apto-atlas .story-header nav a:hover::after,
-.apto-atlas .story-header nav a:focus-visible::after { transform: scaleX(1); }
+.apto-atlas .story-header nav a:hover > span::after,
+.apto-atlas .story-header nav a:focus-visible > span::after { transform: scaleX(1); }
 .apto-atlas .story-header nav a[aria-current] { background: var(--story-gold); }
-.apto-atlas .story-header nav a[aria-current]::after { display: none; }
+.apto-atlas .story-header nav a[aria-current] > span::after { display: none; }
 
 /* Image cards carry the bar as a tab on their top edge. */
 .atlas-tool-card::before,

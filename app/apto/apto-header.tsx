@@ -56,7 +56,7 @@ export function AptoHeader({ view, brandHref, navigationLabel, items, activeSect
         href={href}
         aria-current={activeSection === section ? (view === "atlas" ? "page" : "location") : undefined}
         data-testid={`${view}-nav-${section}`}
-      >{label}</a>)}
+      ><span>{label}</span></a>)}
     </nav>
     <AptoViewActions
       alternateView={alternateView}

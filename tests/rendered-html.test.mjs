@@ -267,7 +267,7 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.ok(opening >= 0 && opening < about && about < building && building < panorama && panorama < impact);
   assert.match(programHtml, /id="atlas-building" tabindex="-1"><header class="story-section-heading">/);
   assert.match(programHtml, /class="atlas-hero-scroll" href="#atlas-building" aria-label="Continue to What We Are Building"[^>]*>.*?<\/a><\/div><\/div><section class="story-section story-program"/s);
-  assert.match(programHtml, /data-testid="atlas-nav-home">Program<\/a>/);
+  assert.match(programHtml, /data-testid="atlas-nav-home"><span>Program<\/span><\/a>/);
   assert.match(programHtml, /aria-current="page" data-testid="atlas-nav-home"/);
   assert.match(programHtml, /href="\/apto\/atlas\/projects" data-testid="atlas-nav-projects"/);
   assert.doesNotMatch(programHtml, /class="story-project-chapters"|class="atlas-tool-collection"|class="atlas-convening-list"/);
