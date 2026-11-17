@@ -17,6 +17,18 @@
   --atlas-shell: min(100%, calc(var(--story-max) + 2 * var(--atlas-gutter)));
   --atlas-page-top: clamp(58px, 7vw, 104px);
   --atlas-page-gap: clamp(44px, 5vw, 76px);
+  /* Page and section headings: the title starts on the content edge and its
+     lede starts on the inner axis that this split defines. */
+  --atlas-split-columns: minmax(260px, .42fr) minmax(320px, .58fr);
+  --atlas-split-gap: clamp(28px, 5vw, 82px);
+  /* Visual system: one corner family, one elevation, and a short marker bar
+     that carries program gold or an institution color. */
+  --atlas-radius-lg: 12px;
+  --atlas-radius-md: 8px;
+  --atlas-radius-sm: 4px;
+  --atlas-elevation: 0 1px 2px rgb(0 37 84 / 6%), 0 12px 32px rgb(0 37 84 / 8%);
+  --atlas-marker-width: 36px;
+  --atlas-marker-height: 4px;
   --atlas-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 7' fill='none' stroke='%23002554' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1 4.5 4.5L10 1'/%3E%3C/svg%3E");
   min-height: 100vh;
   overflow-x: clip;
@@ -40,6 +52,7 @@
   --atlas-line: rgb(181 202 214 / 18%);
   --atlas-line-strong: rgb(181 202 214 / 34%);
   --atlas-shadow: 0 22px 68px rgb(0 0 0 / 42%);
+  --atlas-elevation: 0 1px 2px rgb(0 0 0 / 36%), 0 12px 32px rgb(0 0 0 / 30%);
   --atlas-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 7' fill='none' stroke='%23f4f8fa' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1 4.5 4.5L10 1'/%3E%3C/svg%3E");
   color-scheme: dark;
 }
@@ -74,7 +87,7 @@
   align-items: center;
   color: #fff;
   background: #002554;
-  border-radius: 5px;
+  border-radius: var(--atlas-radius-md);
   transform: translateY(-150%);
 }
 .atlas-skip-link:focus { transform: translateY(0); }
@@ -87,7 +100,7 @@
   display: grid;
   grid-template-columns: minmax(130px, .34fr) minmax(300px, .8fr) minmax(340px, 1fr);
   align-items: start;
-  gap: 12px clamp(28px, 5vw, 82px);
+  gap: 12px var(--atlas-split-gap);
 }
 .atlas-page-intro > p {
   padding-top: 8px;
@@ -102,10 +115,10 @@
   margin-bottom: 8px;
   color: var(--atlas-ink);
   font-size: clamp(1.9rem, 3.2vw, 2.9rem);
-  font-weight: 620;
-  letter-spacing: -.045em;
+  font-weight: 600;
+  letter-spacing: -.03em;
   line-height: 1.08;
-  text-align: right;
+  text-align: left;
   text-wrap: balance;
 }
 .atlas-page-intro > div { max-width: 70ch; color: var(--atlas-copy); font-size: clamp(.98rem, 1.2vw, 1.1rem); line-height: 1.72; text-align: left; }
@@ -132,15 +145,15 @@
 .atlas-framework dd { color: var(--atlas-copy); font-size: .86rem; line-height: 1.66; }
 
 .atlas-tool-collection { width: var(--atlas-shell); margin: 0 auto clamp(100px, 10vw, 160px); padding: 0 var(--atlas-gutter); }
-.atlas-tool-toolbar { margin-bottom: 28px; padding: 20px 22px; display: grid; grid-template-columns: minmax(220px, 1fr) auto auto; align-items: end; gap: 24px; background: color-mix(in srgb, var(--atlas-raised) 75%, transparent); border-radius: 8px; }
-.atlas-tool-toolbar h2 { margin-top: 5px; font-size: 1.28rem; font-weight: 700; letter-spacing: -.03em; }
+.atlas-tool-toolbar { margin-bottom: 28px; padding: 20px 22px; display: grid; grid-template-columns: minmax(220px, 1fr) auto auto; align-items: end; gap: 24px; background: color-mix(in srgb, var(--atlas-raised) 75%, transparent); border-radius: var(--atlas-radius-lg); }
+.atlas-tool-toolbar h2 { margin-top: 5px; font-size: 1.25rem; font-weight: 600; letter-spacing: -.02em; }
 .atlas-tool-toolbar fieldset { margin: 0; padding: 0; display: flex; gap: 10px; border: 0; }
 .atlas-tool-toolbar label { min-width: 205px; display: grid; gap: 5px; }
-.atlas-tool-toolbar label > span { color: var(--atlas-copy); font-size: .72rem; font-weight: 800; }
-.atlas-tool-toolbar select { min-height: 44px; padding: 0 42px 0 14px; color: var(--atlas-ink); background: var(--atlas-surface) var(--atlas-select-chevron) no-repeat right 16px center / 11px 7px; border: 1px solid var(--atlas-line-strong); border-radius: 5px; font-size: .82rem; font-weight: 700; appearance: none; cursor: pointer; }
+.atlas-tool-toolbar label > span { color: var(--atlas-copy); font-size: .75rem; font-weight: 600; }
+.atlas-tool-toolbar select { min-height: 44px; padding: 0 42px 0 14px; color: var(--atlas-ink); background: var(--atlas-surface) var(--atlas-select-chevron) no-repeat right 16px center / 11px 7px; border: 1px solid var(--atlas-line-strong); border-radius: var(--atlas-radius-md); font-size: .8125rem; font-weight: 600; appearance: none; cursor: pointer; }
 .atlas-tool-count { min-width: 108px; color: var(--atlas-copy); font-size: .72rem; text-align: right; }
 .atlas-tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); }
-.atlas-tool-card { position: relative; width: 100%; min-width: 0; min-height: clamp(612px, calc(962px - 23.9vw), 662px); aspect-ratio: 1 / 1.20; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
+.atlas-tool-card { position: relative; width: 100%; min-width: 0; min-height: clamp(612px, calc(962px - 23.9vw), 662px); aspect-ratio: 1 / 1.20; overflow: hidden; color: #fff; background: #06192b; border-radius: var(--atlas-radius-lg); box-shadow: var(--atlas-elevation); isolation: isolate; }
 .atlas-tool-card::after { content: ""; position: absolute; z-index: 4; inset: 0; border: 1px solid rgb(255 255 255 / 14%); border-radius: inherit; pointer-events: none; }
 .atlas-tool-media,
 .atlas-tool-media img,
@@ -177,7 +190,7 @@
     transform: translate3d(var(--atlas-kb-to-x, 0), var(--atlas-kb-to-y, 0), 0) scale(var(--atlas-kb-to-scale, 1.24));
   }
 }
-.atlas-tool-media figcaption { position: absolute; z-index: 2; top: 18px; left: 18px; max-width: calc(100% - 92px); padding: 5px 8px; color: rgb(255 255 255 / 80%); background: rgb(2 13 24 / 48%); border-radius: 3px; font-size: .6rem; font-weight: 700; backdrop-filter: blur(8px); }
+.atlas-tool-media figcaption { position: absolute; z-index: 2; top: 18px; left: 18px; max-width: calc(100% - 92px); padding: 5px 8px; color: rgb(255 255 255 / 80%); background: rgb(2 13 24 / 48%); border-radius: var(--atlas-radius-sm); font-size: .6rem; font-weight: 600; backdrop-filter: blur(8px); }
 .atlas-tool-shade { z-index: -1; background: linear-gradient(180deg, rgb(2 12 23 / 10%) 10%, rgb(2 12 23 / 19%) 44%, rgb(2 12 23 / 55%) 76%, rgb(2 12 23 / 76%) 100%); }
 .atlas-tool-panel {
   position: absolute;
@@ -278,21 +291,21 @@
 .atlas-footer-support { display: flex; align-items: center; gap: 18px; }
 .atlas-footer-support > a { width: 72px; height: 72px; flex: 0 0 72px; display: grid; place-items: center; background: #fff; border-radius: 50%; }
 .atlas-footer-support img { width: 62px; height: 62px; object-fit: contain; }
-.atlas-footer-support p { color: #fff; font-size: .82rem; font-weight: 850; line-height: 1.4; }
+.atlas-footer-support p { color: #fff; font-size: .8125rem; font-weight: 700; line-height: 1.4; }
 .atlas-footer-support span { margin-top: 4px; display: block; font-size: .75rem; line-height: 1.5; }
 .atlas-footer-contacts { font-style: normal; }
-.atlas-footer-contacts > strong { display: block; margin-bottom: 7px; color: #fff; font-size: .82rem; }
+.atlas-footer-contacts > strong { display: block; margin-bottom: 7px; color: #fff; font-size: .8125rem; }
 .atlas-footer-contacts ul { margin: 0; padding: 0; display: grid; gap: 12px; list-style: none; }
 .atlas-footer-contacts li { font-size: .75rem; line-height: 1.5; }
 .atlas-footer-contact-primary { display: grid; justify-items: start; gap: 4px; }
 .atlas-footer-contact-primary > span { display: flex; flex-wrap: wrap; gap: 0 4px; }
-.atlas-footer-contact-primary b { color: #fff; font-size: .78rem; font-style: normal; }
+.atlas-footer-contact-primary b { color: #fff; font-size: .8125rem; font-style: normal; }
 .atlas-footer-contact-primary small,
-.atlas-footer-team small { color: #a9c1cf; font-size: .7rem; font-style: normal; }
+.atlas-footer-team small { color: #a9c1cf; font-size: .75rem; font-style: normal; }
 .atlas-footer-contact-primary small::before { content: "· "; }
 .atlas-footer-team { display: grid; gap: 2px; }
 .atlas-footer-team > span { color: #fff; font-size: .75rem; font-style: normal; }
-.atlas-footer-contacts a { color: #fff; font-weight: 750; }
+.atlas-footer-contacts a { color: #fff; font-weight: 600; }
 .atlas-footer-disclaimer {
   grid-column: 1 / -1;
   width: 100%;
@@ -300,11 +313,11 @@
   margin: 0;
   padding-top: 18px;
   border-top: 1px solid rgb(197 215 226 / 22%);
-  font-size: .7rem;
+  font-size: .75rem;
   line-height: 1.6;
 }
 .atlas-footer > nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
-.atlas-footer > nav a { min-height: 44px; display: inline-flex; align-items: center; color: #fff; font-size: .78rem; font-weight: 750; text-decoration: none; }
+.atlas-footer > nav a { min-height: 44px; display: inline-flex; align-items: center; color: #fff; font-size: .8125rem; font-weight: 600; text-decoration: none; }
 .atlas-footer-actions { display: none; }
 
 /* Tool cards are tuned to the gallery's width, so their breakpoints sit where
@@ -397,14 +410,14 @@
 /* Shared editorial hierarchy: page titles carry the section without a
    separate eyebrow, and the two lead universities anchor the portfolio. */
 .atlas-page-intro {
-  grid-template-columns: minmax(260px, .42fr) minmax(320px, .58fr);
+  grid-template-columns: var(--atlas-split-columns);
 }
 
 .atlas-page-intro h1 {
   grid-column: 1;
-  justify-self: end;
+  justify-self: start;
   max-width: 18ch;
-  text-align: right;
+  text-align: left;
 }
 
 .atlas-page-intro > div {
@@ -436,13 +449,9 @@
   position: relative;
   min-height: min(760px, 78svh);
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--atlas-radius-lg);
   background: #061b33;
-  box-shadow: 0 24px 70px rgb(0 37 84 / 16%);
-}
-
-[data-apto-theme="dark"] .atlas-convening-card {
-  box-shadow: 0 24px 70px rgb(0 0 0 / 40%);
+  box-shadow: var(--atlas-elevation);
 }
 
 .atlas-convening-gallery {
@@ -480,30 +489,29 @@
   max-width: 620px;
   padding: clamp(24px, 3vw, 36px);
   background: rgb(3 22 43 / 76%);
+  border-radius: var(--atlas-radius-md);
   backdrop-filter: blur(7px);
 }
 
 .atlas-convening-copy p {
   margin-bottom: .7rem;
   color: #65d3e7;
-  font-size: .7rem;
-  font-weight: 850;
-  letter-spacing: .09em;
-  text-transform: uppercase;
+  font-size: .875rem;
+  font-weight: 600;
 }
 
 .atlas-convening-copy h2 {
   margin-bottom: 1rem;
   color: white;
   font-size: clamp(1.7rem, 3vw, 2.8rem);
-  letter-spacing: -.04em;
+  letter-spacing: -.03em;
   line-height: 1.04;
 }
 
 .atlas-convening-copy span {
   display: block;
   color: #d7e7ef;
-  font-size: clamp(.84rem, 1vw, .98rem);
+  font-size: clamp(.875rem, 1vw, 1rem);
   line-height: 1.62;
 }
 
@@ -558,8 +566,9 @@
 .apto-resource-path-atlas .apto-resource-route { min-height: 0; }
 .apto-resource-path-atlas .apto-resource-summary { min-height: 0; }
 .apto-resource-path-atlas .apto-resource-summary-copy { padding-top: 15px; padding-bottom: 14px; }
-.apto-resource-path-atlas .apto-resource-summary-copy > p { margin-bottom: 5px; font-size: .62rem; }
-.apto-resource-path-atlas .apto-resource-summary-copy h2 { font-size: clamp(1.04rem,1.25vw,1.2rem); }
+.apto-resource-path-atlas .apto-resource-summary-copy > p { margin-bottom: 4px; color: rgb(244 250 253 / 72%); font-size: .66rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
+.apto-resource-path-atlas .apto-resource-summary-copy h2 { font-size: clamp(1.04rem,1.25vw,1.2rem); font-weight: 600; }
+.apto-resource-path-atlas .apto-resource-summary-copy > a { font-weight: 700; }
 .apto-resource-path-atlas .apto-resource-summary-copy > span { margin-top: 5px; font-size: .66rem; line-height: 1.36; }
 .apto-resource-path-atlas.is-featured .apto-resource-summary-copy > span { font-size: .82rem; line-height: 1.42; }
 
@@ -599,13 +608,23 @@
 .atlas-building-intro {
   display: grid;
   row-gap: clamp(4px, 1svh, 12px);
-  padding-block: clamp(14px, 3svh, 40px) 6px;
+  /* Room above the title and its marker bar grows with the viewport height,
+     so short screens still fit the introduction on the opening screen. */
+  padding-block: clamp(20px, calc(15svh - 81px), 64px) 6px;
   background: var(--story-surface);
   scroll-margin-top: var(--story-header-height);
 }
 .atlas-building-intro .story-section-heading { margin-bottom: 0; }
 .atlas-building-intro .story-section-heading > h2 { margin-bottom: 0; }
 .apto-atlas .atlas-building-intro:focus { outline: none; box-shadow: none; }
+@media (width >= 1180px) {
+  /* Wide screens have height to spare beside the hero. */
+  .atlas-building-intro { padding-block-start: clamp(20px, calc(11svh - 46px), 64px); }
+}
+@media (max-width: 340px) {
+  /* The narrowest phones already scroll past the opening screen. */
+  .atlas-building-intro { padding-block-start: clamp(20px, 3svh, 40px); }
+}
 .apto-atlas .atlas-hero-scroll {
   width: 52px;
   height: 44px;
@@ -764,30 +783,200 @@
   .apto-resource-path-atlas .apto-resource-node { padding-inline: clamp(2.5px, .425vw, 5px); }
 }
 
-/* Atlas type scale: navigation and supporting copy stay legible beside the
-   page titles and body text. */
+/* Atlas type scale: titles at 600, labels at 600, strong names at 700, and
+   supporting copy on a 12 / 13 / 14 pixel ladder beside fluid body text. */
+.apto-atlas .story-hero h1 { font-weight: 600; }
+.apto-atlas .story-section-heading > :is(h1, h2) { font-weight: 600; letter-spacing: -.03em; }
+.apto-atlas .story-header nav a { font-weight: 600; border-radius: var(--atlas-radius-md); }
+.apto-atlas .story-directory-link { font-weight: 600; }
+.apto-atlas .story-brand span { font-size: .75rem; font-weight: 600; }
+.apto-atlas .story-theme-toggle { border-radius: var(--atlas-radius-md); }
+.apto-atlas .story-outcome-panorama figcaption small { font-weight: 600; }
+.apto-atlas .story-impact-group h3 { font-weight: 700; }
+.apto-atlas .story-impact-goals li { font-weight: 600; }
+.apto-atlas .story-project-chapter header p,
+.apto-atlas .story-project-meta,
+.apto-atlas .story-project-location,
+.apto-atlas .story-person p,
+.apto-atlas .story-person a { font-size: .75rem; }
+.apto-atlas .story-project-chapter header p,
+.apto-atlas .story-project-meta a,
+.apto-atlas .story-person a { font-weight: 600; }
+.apto-atlas .story-person :is(h3, h4) { font-size: .875rem; font-weight: 600; }
 @media (width >= 720px) {
+  .apto-atlas .story-hero h1 { letter-spacing: -.035em; }
   .apto-atlas .story-header nav a { font-size: .875rem; }
   .apto-atlas .story-directory-link { font-size: .8125rem; }
-  .apto-atlas .story-outcome-panorama figcaption small { font-size: clamp(.72rem, .9vw, .8rem); }
-  .apto-atlas .story-outcome-panorama figcaption span { font-size: clamp(.72rem, 1vw, .9rem); }
+  .apto-atlas .story-outcome-panorama figcaption small { font-size: clamp(.75rem, .9vw, .8125rem); }
+  .apto-atlas .story-outcome-panorama figcaption span { font-size: clamp(.75rem, 1vw, .875rem); }
 }
 /* The program name returns once it clears the larger navigation. */
 @media (width < 1280px) {
   .apto-atlas .story-brand span { display: none; }
 }
-.apto-atlas .story-project-location,
-.apto-atlas .story-person p { font-size: .75rem; }
-.apto-atlas .story-person a { font-size: .72rem; }
 
-/* Dark mode lifts each institution accent so its name and markers stay
-   readable against the deep navy canvas. */
-[data-apto-theme="dark"] .apto-atlas .story-impact-group h3 {
-  color: color-mix(in srgb, var(--story-impact-accent) 45%, var(--story-ink));
+/* Atlas surfaces: one canvas across the four pages, flat fills in place of
+   decorative gradients, one corner family, and a single soft elevation. */
+.apto-atlas > .apto-story,
+.apto-atlas .story-hero,
+.apto-atlas .story-impact,
+.apto-atlas .story-projects { background: var(--atlas-canvas); }
+.apto-atlas .story-program,
+.apto-atlas .atlas-building-intro { background: var(--atlas-surface); }
+.apto-atlas .story-hero-image,
+.apto-atlas .story-outcome-depth > figure {
+  border-radius: var(--atlas-radius-lg);
+  box-shadow: var(--atlas-elevation);
 }
-[data-apto-theme="dark"] .apto-atlas .story-impact-goals li::before {
-  background: color-mix(in srgb, var(--story-impact-accent) 58%, var(--story-ink));
+.apto-atlas .story-project-chapter {
+  position: relative;
+  background: var(--atlas-surface);
+  border-radius: var(--atlas-radius-lg);
+  box-shadow: var(--atlas-elevation);
 }
+.apto-atlas .story-project-people .story-person {
+  background: color-mix(in srgb, var(--atlas-raised) 70%, transparent);
+  border-radius: var(--atlas-radius-md);
+}
+.apto-atlas .story-impact-goals li {
+  background: var(--atlas-surface);
+  border-radius: var(--atlas-radius-md);
+  box-shadow: inset 0 0 0 1px var(--atlas-line);
+}
+.apto-atlas .story-impact-logo::before { display: none; }
+/* Each institution's logo stays beside its goals instead of fading with the scroll. */
+.apto-atlas .story-impact-logo { opacity: 1; filter: none; transform: none; will-change: auto; }
+.apto-atlas .story-participant-logo { border-radius: var(--atlas-radius-md); box-shadow: none; }
+.apto-atlas .story-logo-canvas { border-radius: 5px; }
+
+/* Section titles start on the content edge, in line with the hero title and
+   the cards below them. */
+.apto-atlas .story-section-heading > :is(h1, h2) { justify-self: start; text-align: left; }
+
+/* Signature marker: a short gold bar sits above every page and section
+   title, hangs as a tab from the top edge of images and cards, and underlines
+   the tab being pointed at. The same bar in an institution's color marks its
+   project, tools, and impact goals; institution colors appear only on these
+   markers. */
+.apto-atlas .story-section-heading > :is(h1, h2),
+.atlas-page-intro h1 { position: relative; }
+.apto-atlas .story-section-heading > :is(h1, h2)::before,
+.atlas-page-intro h1::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 14px);
+  width: var(--atlas-marker-width);
+  height: var(--atlas-marker-height);
+  background: var(--atlas-gold);
+  border-radius: 2px;
+}
+.apto-atlas .atlas-building-intro .story-section-heading > h2::before { bottom: calc(100% + 9px); }
+/* Navigation: a short bar grows under the tab being pointed at. */
+.apto-atlas .story-header nav a { position: relative; }
+.apto-atlas .story-header nav a::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 10px);
+  bottom: 7px;
+  width: 20px;
+  height: 3px;
+  background: var(--atlas-gold);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform .28s cubic-bezier(.2, .7, .2, 1);
+}
+.apto-atlas .story-header nav a:hover,
+.apto-atlas .story-header nav a:focus-visible { background: transparent; }
+.apto-atlas .story-header nav a:hover::after,
+.apto-atlas .story-header nav a:focus-visible::after { transform: scaleX(1); }
+.apto-atlas .story-header nav a[aria-current] { background: var(--story-gold); }
+.apto-atlas .story-header nav a[aria-current]::after { display: none; }
+
+/* Image cards carry the bar as a tab on their top edge. */
+.atlas-tool-card::before,
+.atlas-convening-copy > div::before,
+.atlas-footer::before {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  width: var(--atlas-marker-width);
+  height: var(--atlas-marker-height);
+  background: var(--atlas-gold);
+  border-radius: 0 0 2px 2px;
+  transition: width .35s cubic-bezier(.2, .7, .2, 1);
+}
+.atlas-tool-card::before {
+  left: 18px;
+  background: color-mix(in srgb, var(--atlas-participant-accent, var(--atlas-gold)) 62%, #fff);
+}
+.atlas-convening-copy > div { position: relative; }
+.atlas-convening-copy > div::before { left: clamp(24px, 3vw, 36px); }
+.atlas-footer { position: relative; }
+.atlas-footer::before { left: var(--atlas-gutter); }
+@media (max-width: 719px) {
+  .atlas-footer::before { left: 22px; }
+}
+/* Each building panel titles its caption with the same bar. */
+.apto-atlas .story-outcome-panorama figcaption strong::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  margin-bottom: 12px;
+  display: block;
+  background: var(--atlas-gold);
+  border-radius: 2px;
+  transition: width .35s cubic-bezier(.2, .7, .2, 1);
+}
+/* Markers lengthen under the pointer. */
+.atlas-tool-card:hover::before,
+.apto-atlas .story-project-chapter:hover::before { width: calc(var(--atlas-marker-width) + 20px); }
+.apto-atlas .story-outcome-depth:hover figcaption strong::before { width: 44px; }
+.apto-atlas .story-project-chapter::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 2.7vw, 38px);
+  width: var(--atlas-marker-width);
+  height: var(--atlas-marker-height);
+  background: var(--atlas-marker-color, var(--project-accent));
+  border-radius: 0 0 2px 2px;
+  transition: width .35s cubic-bezier(.2, .7, .2, 1);
+}
+.apto-atlas .story-impact-group h3 { color: var(--story-ink); }
+.apto-atlas .story-impact-group h3::before {
+  content: "";
+  width: 20px;
+  height: var(--atlas-marker-height);
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  background: var(--atlas-marker-color, var(--story-impact-accent));
+  border-radius: 2px;
+}
+.apto-atlas .story-impact-goals li::before { background: var(--atlas-marker-color, var(--story-impact-accent)); }
+/* Dark mode lifts each institution color so its markers stay visible against
+   the deep navy canvas. */
+[data-apto-theme="dark"] .apto-atlas .story-impact-group {
+  --atlas-marker-color: color-mix(in srgb, var(--story-impact-accent) 58%, var(--story-ink));
+}
+[data-apto-theme="dark"] .apto-atlas .story-project-chapter {
+  --atlas-marker-color: color-mix(in srgb, var(--project-accent) 58%, var(--story-ink));
+}
+
+/* Small labels: one that only repeats the wordmark beside it stays available
+   to assistive technology alone, and the labels that do inform read as plain
+   sentence-case lines. */
+.apto-atlas .story-project-chapter header:has(.logo-kind-wordmark) p {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.apto-atlas .story-impact-logo strong { display: none; }
 
 /* External-link arrows keep a small gap from their labels. */
 .apto-atlas :is(.story-project-meta, .story-person) a { gap: .3em; }
