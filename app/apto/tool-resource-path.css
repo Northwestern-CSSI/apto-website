@@ -134,7 +134,7 @@
   display: -webkit-box;
   overflow: hidden;
   color: inherit;
-  font-size: .67rem;
+  font-size: calc(.67rem * var(--resource-label-scale, 1));
   font-weight: 820;
   line-height: 1.16;
   text-shadow: 0 2px 9px rgb(0 7 19 / 92%);

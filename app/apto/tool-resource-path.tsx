@@ -51,6 +51,7 @@ export function ToolResourcePath({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [touchMode, setTouchMode] = useState(false);
   const rootRef = useRef<HTMLElement>(null);
+  const routeRef = useRef<HTMLOListElement>(null);
   const summaryId = useId();
   const activeResource = activeIndex === null ? null : resources[activeIndex] ?? null;
   const activeAvailable = activeResource ? isAvailable(activeResource) : false;
@@ -63,6 +64,25 @@ export function ToolResourcePath({
     media.addEventListener("change", updateTouchMode);
     return () => media.removeEventListener("change", updateTouchMode);
   }, []);
+
+  useEffect(() => {
+    const route = routeRef.current;
+    if (!route) return;
+    const labels = [...route.querySelectorAll<HTMLElement>(".apto-resource-node strong")];
+    // When one word is wider than its label, scale this tool's labels together until it fits.
+    const fitLabels = () => {
+      route.style.removeProperty("--resource-label-scale");
+      const scale = labels.reduce((fit, label) => label.scrollWidth > label.clientWidth
+        ? Math.min(fit, (label.clientWidth - 1) / label.scrollWidth)
+        : fit, 1);
+      if (scale < 1) route.style.setProperty("--resource-label-scale", Math.max(.76, scale).toFixed(3));
+    };
+    fitLabels();
+    const observer = new ResizeObserver(fitLabels);
+    observer.observe(route);
+    void document.fonts?.ready.then(fitLabels);
+    return () => observer.disconnect();
+  }, [resources]);
 
   useEffect(() => {
     if (!touchMode || activeIndex === null) return;
@@ -96,7 +116,7 @@ export function ToolResourcePath({
     onMouseLeave={() => { if (!touchMode) setActiveIndex(null); }}
     onBlurCapture={resetAfterKeyboardExit}
   >
-    <ol className="apto-resource-route">
+    <ol className="apto-resource-route" ref={routeRef}>
       {resources.map((resource, index) => {
         const active = index === activeIndex;
         const available = isAvailable(resource);
