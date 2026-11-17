@@ -89,6 +89,11 @@ export type AptoTool = {
   toolUrl: string | null;
 };
 
+// Several of one team's tools presented as a single card.
+export type AptoToolCollection = Pick<AptoTool, "id" | "participantId" | "name" | "summaryParagraphs" | "figure" | "galleryImages" | "statusLabel"> & {
+  toolIds: string[];
+};
+
 export type AptoParticipant = {
   id: AptoParticipantId;
   displayName: string;
@@ -299,6 +304,7 @@ type AptoGeneratedContent = {
   participants: AptoParticipant[];
   projects: AptoProject[];
   tools: AptoTool[];
+  toolCollections: AptoToolCollection[];
   convenings: AptoConvening[];
 };
 
@@ -314,5 +320,6 @@ export const aptoBoilerplate = aptoContent.boilerplate;
 export const aptoParticipants = aptoContent.participants;
 export const aptoProjects = aptoContent.projects;
 export const aptoTools = aptoContent.tools;
+export const aptoToolCollections = aptoContent.toolCollections;
 export const aptoConvenings = aptoContent.convenings;
 export const aptoOutcomes: readonly AptoOutcome[] = ["Capability", "Production", "Use"];

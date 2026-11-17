@@ -10,6 +10,7 @@ Edits here feed both APTO Atlas and APTO Continuum. Use `uchicago` as the
 | Award details or research summary | [Global observatory and virtual laboratory](projects/uchicago-global-observatory.md) |
 | Investigators, headshots, or profile links | [people/](people/) |
 | Tool summaries, links, gallery images, or supporting pieces | [tools/](tools/) |
+| Which tools share the AI Tools card, and that card's name, summary, and images | [tool-collections/uchicago-ai-tools.md](tool-collections/uchicago-ai-tools.md) |
 | Source photos, figures, icons, and logos | [assets/](assets/) |
 
 ## Tool records
@@ -22,7 +23,9 @@ Edits here feed both APTO Atlas and APTO Continuum. Use `uchicago` as the
 - [Dashboards](tools/uchicago-workforce-flows.md)
 
 The site groups AI Skills, AI Benchmarks, and AI Infrastructure into one
-**AI Tools** card. Edit the individual record to change that supporting area.
+**AI Tools** card. Edit the individual record to change that supporting area,
+and edit [the collection record](tool-collections/uchicago-ai-tools.md) to
+change the card itself or the tools it contains.
 
 Edit `summaryParagraphs` for the two paragraphs shown on the tool card.
 Edit `figure`, `galleryImages`, and `resources` to update the media and

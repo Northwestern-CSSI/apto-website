@@ -88,6 +88,51 @@ Explain a realistic question or task for which the tool would be useful.
 The H1 must exactly match `name`. The body must contain exactly
 `## Description` and `## Use case`.
 
+## Present several tools as one card
+
+A team can show two or more of its tools as a single card. Add a record to the
+team's `tool-collections/` folder, creating the folder if it does not exist.
+The card uses the collection's name, summary, and images, and each member tool
+appears on it as a supporting piece with that tool's first resource icon.
+
+```md
+---
+{
+  "kind": "tool-collection",
+  "id": "example-toolkit",
+  "participantId": "northwestern",
+  "name": "Example Toolkit",
+  "summaryParagraphs": [
+    "Say what the grouped tools cover together.",
+    "Say how a visitor should explore them."
+  ],
+  "toolIds": [
+    "example-technology-explorer",
+    "example-evidence-browser"
+  ],
+  "figure": {
+    "kind": "knowledge-map",
+    "src": "/apto/tools/photography/example-toolkit-01.jpg",
+    "label": "Example toolkit",
+    "alt": "Describe the image"
+  },
+  "galleryImages": [
+    { "src": "/apto/tools/photography/example-toolkit-02.jpg", "alt": "Describe the second image" },
+    { "src": "/apto/tools/photography/example-toolkit-03.jpg", "alt": "Describe the third image" },
+    { "src": "/apto/tools/photography/example-toolkit-04.jpg", "alt": "Describe the fourth image" }
+  ],
+  "statusLabel": "Research preview"
+}
+---
+
+# Example Toolkit
+```
+
+List at least two tool IDs from the same team in `toolIds`; a tool can belong
+to one collection only. The card takes the place of the first listed tool in
+the team's order. When you rename or remove a grouped tool, update `toolIds`.
+Delete the collection record to show the tools as separate cards again.
+
 ## Field reference
 
 | Field | Rule |

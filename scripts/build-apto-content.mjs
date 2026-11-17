@@ -907,6 +907,29 @@ function validateProject(document) {
   };
 }
 
+function validateToolMedia(metadata, context) {
+  const figure = requireObject(metadata.figure, `${context}.figure`);
+  assertExactKeys(figure, ["kind", "src", "label", "alt"], `${context}.figure`);
+  assert(allowedFigureKinds.has(requireString(figure, "kind", `${context}.figure`)), `${context}.figure.kind is not supported`);
+  const figureSrc = requireString(figure, "src", `${context}.figure`);
+  assert(figureSrc.startsWith("/apto/"), `${context}.figure.src must begin with /apto/`);
+  requireString(figure, "label", `${context}.figure`);
+  requireString(figure, "alt", `${context}.figure`);
+  const galleryImages = requireArray(metadata, "galleryImages", context);
+  assert(galleryImages.length === 3, `${context}.galleryImages must contain exactly three images so every Atlas tool has four cycling frames`);
+  galleryImages.forEach((image, index) => {
+    const imageContext = `${context}.galleryImages[${index}]`;
+    requireObject(image, imageContext);
+    assertExactKeys(image, ["src", "alt"], imageContext);
+    const imageSrc = requireString(image, "src", imageContext);
+    assert(imageSrc.startsWith("/apto/"), `${imageContext}.src must begin with /apto/`);
+    requireString(image, "alt", imageContext);
+  });
+  assert(new Set(galleryImages.map((image) => image.src)).size === galleryImages.length, `${context}.galleryImages sources must be unique`);
+  assert(new Set(galleryImages.map((image) => image.alt)).size === galleryImages.length, `${context}.galleryImages descriptions must be unique`);
+  assert(!galleryImages.some((image) => image.src === figureSrc), `${context}.galleryImages must not repeat figure.src`);
+}
+
 function validateTool(document) {
   const { metadata, h1, sections, file } = document;
   const context = relativeFile(file);
@@ -952,26 +975,7 @@ function validateTool(document) {
     requireStringValue(category, `${context}.categories[${index}]`);
     assert(allowedCategories.has(category), `${context}.categories[${index}] is not supported`);
   });
-  const figure = requireObject(metadata.figure, `${context}.figure`);
-  assertExactKeys(figure, ["kind", "src", "label", "alt"], `${context}.figure`);
-  assert(allowedFigureKinds.has(requireString(figure, "kind", `${context}.figure`)), `${context}.figure.kind is not supported`);
-  const figureSrc = requireString(figure, "src", `${context}.figure`);
-  assert(figureSrc.startsWith("/apto/"), `${context}.figure.src must begin with /apto/`);
-  requireString(figure, "label", `${context}.figure`);
-  requireString(figure, "alt", `${context}.figure`);
-  const galleryImages = requireArray(metadata, "galleryImages", context);
-  assert(galleryImages.length === 3, `${context}.galleryImages must contain exactly three images so every Atlas tool has four cycling frames`);
-  galleryImages.forEach((image, index) => {
-    const imageContext = `${context}.galleryImages[${index}]`;
-    requireObject(image, imageContext);
-    assertExactKeys(image, ["src", "alt"], imageContext);
-    const imageSrc = requireString(image, "src", imageContext);
-    assert(imageSrc.startsWith("/apto/"), `${imageContext}.src must begin with /apto/`);
-    requireString(image, "alt", imageContext);
-  });
-  assert(new Set(galleryImages.map((image) => image.src)).size === galleryImages.length, `${context}.galleryImages sources must be unique`);
-  assert(new Set(galleryImages.map((image) => image.alt)).size === galleryImages.length, `${context}.galleryImages descriptions must be unique`);
-  assert(!galleryImages.some((image) => image.src === figureSrc), `${context}.galleryImages must not repeat figure.src`);
+  validateToolMedia(metadata, context);
   const resources = requireArray(metadata, "resources", context);
   assert(resources.length > 0, `${context}.resources must contain at least one resource`);
   resources.forEach((resource, index) => {
@@ -1017,6 +1021,61 @@ function validateTool(document) {
     participantId,
     displayOrder,
   };
+}
+
+// A collection presents several of one team's tools as a single card; each
+// member tool becomes one of the card's supporting pieces.
+function validateToolCollection(document) {
+  const { metadata, h1, sections, file } = document;
+  const context = relativeFile(file);
+  assertExactKeys(
+    metadata,
+    ["kind", "id", "participantId", "name", "summaryParagraphs", "toolIds", "figure", "galleryImages", "statusLabel"],
+    `${context} frontmatter`,
+  );
+  assert(metadata.kind === "tool-collection", `${context}.kind must be “tool-collection”`);
+  const id = requireString(metadata, "id", context);
+  assertRecordIdMatchesFilename(file, id, context);
+  const participantId = requireString(metadata, "participantId", context);
+  assertTeamOwnership(file, participantId);
+  const name = requireString(metadata, "name", context);
+  assert(h1 === name, `${context} H1 must match name`);
+  assert(sections.size === 0, `${context} does not support H2 sections`);
+  const summaryParagraphs = requireArray(metadata, "summaryParagraphs", context);
+  assert(summaryParagraphs.length === 2, `${context}.summaryParagraphs must contain exactly two paragraphs`);
+  summaryParagraphs.forEach((paragraph, index) => requireStringValue(paragraph, `${context}.summaryParagraphs[${index}]`));
+  const toolIds = requireArray(metadata, "toolIds", context);
+  assert(toolIds.length >= 2, `${context}.toolIds must list at least two tools`);
+  toolIds.forEach((toolId, index) => requireStringValue(toolId, `${context}.toolIds[${index}]`));
+  assertUnique(toolIds, `${context}.toolIds`);
+  validateToolMedia(metadata, context);
+  requireString(metadata, "statusLabel", context);
+  return {
+    sourceFile: file,
+    collection: omitFields(metadata, ["kind"]),
+    id,
+    participantId,
+  };
+}
+
+function validateToolCollectionMembers(collectionRecords, toolRecords) {
+  const toolById = new Map(toolRecords.map((record) => [record.id, record]));
+  const claimedBy = new Map();
+  for (const { sourceFile, collection, id, participantId } of collectionRecords) {
+    const context = relativeFile(sourceFile);
+    assert(!toolById.has(id), `${context}.id must not repeat a tool id`);
+    const members = collection.toolIds.map((toolId, index) => {
+      const member = toolById.get(toolId);
+      assert(member, `${context}.toolIds[${index}] “${toolId}” does not match a tool record`);
+      assert(member.participantId === participantId, `${context}.toolIds[${index}] “${toolId}” must belong to the same team`);
+      assert(!claimedBy.has(toolId), `${context}.toolIds[${index}] “${toolId}” already belongs to ${claimedBy.get(toolId)}`);
+      claimedBy.set(toolId, context);
+      return member;
+    });
+    // Each member is shown through its first supporting piece's icon.
+    assertUnique(members.map((member) => member.tool.resources[0].image.src), `${context} member tools' first resource icons`);
+    assertUnique(members.map((member) => member.tool.name), `${context} member tool names`);
+  }
 }
 
 function validateConvening(document) {
@@ -1087,6 +1146,16 @@ function validateToolFigureFiles(toolRecords, assetSources) {
   }
 }
 
+function validateToolCollectionFiles(collectionRecords, assetSources) {
+  for (const { sourceFile, collection } of collectionRecords) {
+    const context = relativeFile(sourceFile);
+    validateImageAsset(assetSources, collection.figure.src, `${context}.figure.src`);
+    collection.galleryImages.forEach((image, index) => {
+      validateImageAsset(assetSources, image.src, `${context}.galleryImages[${index}].src`);
+    });
+  }
+}
+
 function validateToolMediaInventory(toolRecords) {
   toolRecords.forEach((record) => {
     const paths = [
@@ -1121,16 +1190,27 @@ function assertEveryAssetIsReferenced(assetSources, publicPaths) {
   }
 }
 
+// Folders a team adds only when it needs them.
+async function optionalMarkdownFiles(directory) {
+  try {
+    return await markdownFiles(directory);
+  } catch (error) {
+    if (error.code === "ENOENT") return [];
+    throw error;
+  }
+}
+
 async function buildContent() {
   const programFile = path.join(contentDirectory, "program.md");
   const teamPaths = await teamDirectories();
   assert(teamPaths.length > 0, "At least one team folder is required");
-  const [pageFiles, programTeamFiles, teamPeopleFiles, projectFilesByTeam, toolFilesByTeam, conveningFiles, assetSources] = await Promise.all([
+  const [pageFiles, programTeamFiles, teamPeopleFiles, projectFilesByTeam, toolFilesByTeam, toolCollectionFilesByTeam, conveningFiles, assetSources] = await Promise.all([
     markdownFiles(pageDirectory),
     markdownFiles(programTeamDirectory),
     Promise.all(teamPaths.map((team) => markdownFiles(path.join(team, "people")))),
     Promise.all(teamPaths.map((team) => markdownFiles(path.join(team, "projects")))),
     Promise.all(teamPaths.map((team) => markdownFiles(path.join(team, "tools")))),
+    Promise.all(teamPaths.map((team) => optionalMarkdownFiles(path.join(team, "tool-collections")))),
     markdownFiles(conveningDirectory),
     readAssetSources(teamPaths),
   ]);
@@ -1139,6 +1219,7 @@ async function buildContent() {
   const peopleFiles = [...programTeamFiles, ...teamPeopleFiles.flat()];
   const projectFiles = projectFilesByTeam.flat();
   const toolFiles = toolFilesByTeam.flat();
+  const toolCollectionFiles = toolCollectionFilesByTeam.flat();
 
   assert(pageFiles.length === expectedPages.size, `Expected exactly ${expectedPages.size} routed page Markdown files; found ${pageFiles.length}`);
   assert(conveningFiles.length > 0, "At least one annual convening Markdown file is required");
@@ -1153,6 +1234,7 @@ async function buildContent() {
     peopleDocuments,
     projectDocuments,
     toolDocuments,
+    toolCollectionDocuments,
     conveningDocuments,
   ] = await Promise.all([
     readMarkdown(programFile),
@@ -1163,6 +1245,7 @@ async function buildContent() {
     Promise.all(peopleFiles.map(readMarkdown)),
     Promise.all(projectFiles.map(readMarkdown)),
     Promise.all(toolFiles.map(readMarkdown)),
+    Promise.all(toolCollectionFiles.map(readMarkdown)),
     Promise.all(conveningFiles.map(readMarkdown)),
   ]);
 
@@ -1242,6 +1325,11 @@ async function buildContent() {
     }
   }
 
+  const toolCollectionRecords = toolCollectionDocuments.map(validateToolCollection);
+  assertUnique(toolCollectionRecords.map((record) => record.id), "tool collection ids");
+  validateToolCollectionMembers(toolCollectionRecords, toolRecords);
+  validateToolCollectionFiles(toolCollectionRecords, assetSources);
+
   const conveningRecords = conveningDocuments.map(validateConvening);
   assertUnique(conveningRecords.map((record) => record.convening.id), "convening ids");
   for (const { sourceFile, convening } of conveningRecords) {
@@ -1267,6 +1355,8 @@ async function buildContent() {
     ...toolRecords.map((record) => record.tool.figure.src),
     ...toolRecords.flatMap((record) => record.tool.galleryImages.map((image) => image.src)),
     ...toolRecords.flatMap((record) => record.tool.resources.map((resource) => resource.image.src)),
+    ...toolCollectionRecords.map((record) => record.collection.figure.src),
+    ...toolCollectionRecords.flatMap((record) => record.collection.galleryImages.map((image) => image.src)),
     ...conveningRecords.flatMap((record) => record.convening.images.map((image) => image.src)),
   ]);
 
@@ -1359,6 +1449,17 @@ async function buildContent() {
       ) || compareAlphabetically(left.shortName, right.shortName)
     ));
 
+  const toolCollections = [...toolCollectionRecords]
+    .sort((left, right) => (
+      compareParticipantIds(
+        left.participantId,
+        right.participantId,
+        participantById.get(left.participantId).participant.displayName,
+        participantById.get(right.participantId).participant.displayName,
+      ) || compareAlphabetically(left.collection.name, right.collection.name)
+    ))
+    .map((record) => record.collection);
+
   const convenings = conveningRecords
     .map((record) => record.convening)
     .sort((left, right) => right.year - left.year);
@@ -1372,6 +1473,7 @@ async function buildContent() {
     ...peopleFiles,
     ...projectFiles,
     ...toolFiles,
+    ...toolCollectionFiles,
     ...conveningFiles,
     ...assetSources.values(),
   ]
@@ -1381,7 +1483,7 @@ async function buildContent() {
   return {
     _generated: {
       warning: "AUTO-GENERATED FILE. Edit Markdown in content/apto/ and run node scripts/build-apto-content.mjs.",
-      schemaVersion: 17,
+      schemaVersion: 18,
       generator: "scripts/build-apto-content.mjs",
       sourceDirectory: "content/apto",
       generatedFrom: sourceFiles,
@@ -1394,6 +1496,7 @@ async function buildContent() {
     participants,
     projects,
     tools,
+    toolCollections,
     convenings,
     assetSources,
   };

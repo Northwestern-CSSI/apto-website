@@ -19,6 +19,7 @@ teams/<team-id>/
 ├── projects/
 ├── people/
 ├── tools/
+├── tool-collections/     Optional: tools presented together as one card
 └── assets/
     ├── partners/         Logos
     ├── people/           Headshots, where available

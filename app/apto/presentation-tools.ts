@@ -1,52 +1,49 @@
-import { aptoTools, type AptoTool } from "./content";
+import { aptoToolCollections, aptoTools, type AptoTool, type AptoToolCollection } from "./content";
 
-const aiToolIds = [
-  "uchicago-global-innovation-signals",
-  "uchicago-innovation-ecosystem-dynamics",
-  "uchicago-ai-infrastructure",
-] as const;
-const aiToolIdSet = new Set<string>(aiToolIds);
-const uchicagoAiTools = aiToolIds.map((id) => {
-  const tool = aptoTools.find((candidate) => candidate.id === id);
-  if (!tool) throw new Error(`Missing UChicago AI tool: ${id}`);
-  return tool;
-});
+// A collection card stands in for its member tools, which appear on the card
+// as its supporting pieces. Collections are defined in each team's
+// tool-collections/ content folder.
+function collectionCard(collection: AptoToolCollection): AptoTool {
+  const members = collection.toolIds.map((id) => {
+    const tool = aptoTools.find((candidate) => candidate.id === id);
+    if (!tool) throw new Error(`Tool collection ${collection.id} references a missing tool: ${id}`);
+    return tool;
+  });
 
-const [aiSkills, aiBenchmarks, aiInfrastructure] = uchicagoAiTools;
+  return {
+    id: collection.id,
+    participantId: collection.participantId,
+    name: collection.name,
+    summaryParagraphs: collection.summaryParagraphs,
+    categories: [...new Set(members.flatMap((tool) => tool.categories))],
+    description: members.map((tool) => tool.description).join(" "),
+    useCase: members.map((tool) => tool.useCase).join(" "),
+    figure: collection.figure,
+    galleryImages: collection.galleryImages,
+    resources: members.map((tool) => ({
+      name: tool.name,
+      description: tool.summaryParagraphs.join(" "),
+      status: tool.toolUrl ? "available" as const : "coming-soon" as const,
+      url: tool.toolUrl,
+      ...(tool.toolUrl ? { actionLabel: `Open ${tool.name}` } : {}),
+      image: tool.resources[0].image,
+    })),
+    statusLabel: collection.statusLabel,
+    demoVideoUrl: members.find((tool) => tool.demoVideoUrl)?.demoVideoUrl ?? null,
+    toolUrl: null,
+  };
+}
 
-export const uchicagoAiToolsCollection: AptoTool = {
-  id: "uchicago-ai-tools",
-  participantId: "uchicago",
-  name: "AI Tools",
-  summaryParagraphs: [
-    "AI Skills, AI Benchmarks, and AI Infrastructure are presented together as one UChicago AI Tools collection.",
-    "Explore the three supporting areas to see how the collection connects people, measurement, and technical capacity.",
-  ],
-  categories: [...new Set(uchicagoAiTools.flatMap((tool) => tool.categories))],
-  description: uchicagoAiTools.map((tool) => tool.description).join(" "),
-  useCase: uchicagoAiTools.map((tool) => tool.useCase).join(" "),
-  figure: aiSkills.figure,
-  galleryImages: [
-    aiBenchmarks.figure,
-    aiInfrastructure.galleryImages[1],
-    aiInfrastructure.galleryImages[2],
-  ],
-  resources: uchicagoAiTools.map((tool) => ({
-    name: tool.name,
-    description: tool.summaryParagraphs.join(" "),
-    status: tool.toolUrl ? "available" as const : "coming-soon" as const,
-    url: tool.toolUrl,
-    ...(tool.toolUrl ? { actionLabel: `Open ${tool.name}` } : {}),
-    image: tool.resources[0].image,
-  })),
-  statusLabel: aiSkills.statusLabel,
-  demoVideoUrl: uchicagoAiTools.find((tool) => tool.demoVideoUrl)?.demoVideoUrl ?? null,
-  toolUrl: null,
-};
+const collectionByToolId = new Map(
+  aptoToolCollections.flatMap((collection) => collection.toolIds.map((id) => [id, collection] as const)),
+);
+const placedCollections = new Set<string>();
 
-const firstAiToolIndex = aptoTools.findIndex((tool) => aiToolIdSet.has(tool.id));
-
-export const aptoPresentationTools: AptoTool[] = aptoTools.flatMap((tool, index) => {
-  if (index === firstAiToolIndex) return [uchicagoAiToolsCollection];
-  return aiToolIdSet.has(tool.id) ? [] : [tool];
+// Each collection takes the place of its first member in the tool order.
+export const aptoPresentationTools: AptoTool[] = aptoTools.flatMap((tool) => {
+  const collection = collectionByToolId.get(tool.id);
+  if (!collection) return [tool];
+  if (placedCollections.has(collection.id)) return [];
+  placedCollections.add(collection.id);
+  return [collectionCard(collection)];
 });

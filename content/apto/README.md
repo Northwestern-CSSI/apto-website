@@ -25,6 +25,7 @@ updates both presentations.
 | Team project descriptions and awards | `teams/<team-id>/projects/*.md` |
 | Tools-page introduction | `pages/tools.md` |
 | Team tools and supporting pieces | `teams/<team-id>/tools/*.md` |
+| Tools presented together as one card | `teams/<team-id>/tool-collections/*.md` |
 | Convening-page introduction | `pages/convening.md` |
 | Annual convening text and photography | `convenings/*.md` |
 | Team name, website, logo references, and location | `teams/<team-id>/organization.md` |
