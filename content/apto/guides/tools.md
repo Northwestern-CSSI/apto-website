@@ -156,9 +156,9 @@ Delete the collection record to show the tools as separate cards again.
 | `demoVideoUrl` | Full HTTPS URL or `null` |
 | `toolUrl` | Full HTTPS URL or `null` |
 
-When the same named supporting piece appears in more than one tool, reuse its
-existing SVG icon path so that the piece keeps one visual identity throughout
-the site. Generic provisional labels such as `Piece A`, `Piece B`, and `Piece C`
+When the same named supporting piece appears in more than one of your team's
+tools, reuse its existing SVG icon path so that the piece keeps one visual
+identity. Generic provisional labels such as `Piece A`, `Piece B`, and `Piece C`
 are exempt because they represent unrelated placeholders.
 
 Allowed `figure.kind` values:

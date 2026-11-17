@@ -3,7 +3,6 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 let workerModule;
-const placeholderTextPattern = /\b(?:lorem|ipsum|consectetur|adipiscing|vivamus|aenean|maecenas|cras|donec|nullam|etiam|morbi|vestibulum|praesent|curabitur|pellentesque|duis|fusce)\b/i;
 
 async function render(pathname = "/") {
   if (!workerModule) {
@@ -19,6 +18,29 @@ async function render(pathname = "/") {
 
 async function content() {
   return JSON.parse(await readFile(new URL("../app/apto/content.generated.json", import.meta.url), "utf8"));
+}
+
+// Tool cards as the pages present them: a collection stands in for its member tools.
+function presentationCards(data) {
+  const collectionByToolId = new Map(data.toolCollections.flatMap((collection) => collection.toolIds.map((id) => [id, collection])));
+  const placed = new Set();
+  return data.tools.flatMap((tool) => {
+    const collection = collectionByToolId.get(tool.id);
+    if (!collection) return [tool];
+    if (placed.has(collection.id)) return [];
+    placed.add(collection.id);
+    return [collection];
+  });
+}
+
+// The two lead institutions share paired rows, one row per card of the longer list.
+function featuredToolRowCount(data) {
+  const cards = presentationCards(data);
+  return Math.max(...["northwestern", "uchicago"].map((id) => cards.filter((card) => card.participantId === id).length));
+}
+
+function programManager(data) {
+  return data.program.programTeam.find((person) => person.role === "Program Manager");
 }
 
 test("publishes only the Story and Atlas presentation families", async () => {
@@ -47,57 +69,29 @@ test("publishes only the Story and Atlas presentation families", async () => {
 test("generated content follows the featured-institution order and supplied-image model", async () => {
   const data = await content();
   assert.deepEqual(data.participants.map((participant) => participant.id), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
-  assert.deepEqual(Object.fromEntries(data.participants.map((participant) => [participant.id, participant.accent])), {
-    northwestern: "#4E2A84",
-    uchicago: "#800000",
-    aperture: "#7B7BE2",
-    insilicom: "#78B52A",
-    macrocosm: "#0D5C8F",
-  });
-  assert.deepEqual(data.projects.map((project) => project.participantId), ["northwestern", "uchicago", "aperture", "insilicom", "macrocosm"]);
-  assert.deepEqual(data.program.impactGroups.map((group) => [group.participantId, group.entries.length]), [
-    ["northwestern", 3],
-    ["uchicago", 3],
-    ["aperture", 2],
-    ["insilicom", 2],
-    ["macrocosm", 2],
-  ]);
-  assert.ok(data.program.impactGroups[0].entries.every((entry) => !entry.startsWith("Lorem ipsum")));
-  assert.ok(data.program.impactGroups.slice(1).flatMap((group) => group.entries).every((entry) => placeholderTextPattern.test(entry)));
-  assert.equal(data.tools.filter((tool) => tool.participantId === "northwestern").length, 5);
-  assert.equal(data.tools.filter((tool) => tool.participantId === "uchicago").length, 6);
-  assert.deepEqual(data.tools.filter((tool) => tool.participantId === "northwestern").map((tool) => tool.name), [
-    "Aggregating Research Pipeline At Scale Tool",
-    "Agentic Framework For Technology Outcomes Tool",
-    "Multi-Objective Technology Outcomes Tool",
-    "Predicting Technological Evolution Tool",
-    "Emerging Technology Detection Tool",
-  ]);
-  assert.deepEqual(data.tools.filter((tool) => tool.participantId === "uchicago").map((tool) => tool.name), [
-    "Data",
-    "AI Skills",
-    "AI Benchmarks",
-    "The Parable Tool",
-    "Dashboards",
-    "AI Infrastructure",
-  ]);
-  for (const tool of data.tools.filter((candidate) => candidate.participantId === "uchicago")) {
-    assert.ok(tool.summaryParagraphs.every((paragraph) => placeholderTextPattern.test(paragraph)));
-    assert.ok(tool.resources.every((resource) => placeholderTextPattern.test(resource.description)));
+  // Structure only. Each team's copy, names, images, and colors can change
+  // inside its own folder without an edit to this file.
+  const participantIds = data.participants.map((participant) => participant.id);
+  const participantRank = (record) => participantIds.indexOf(record.participantId);
+  const inParticipantOrder = (records) => records.map(participantRank).every((rank, index, ranks) => rank >= 0 && (index === 0 || ranks[index - 1] <= rank));
+  for (const participant of data.participants) {
+    assert.match(participant.accent, /^#[0-9A-F]{6}$/i, `${participant.displayName} needs a six-digit accent color`);
+    assert.ok(data.projects.some((project) => project.participantId === participant.id), `${participant.displayName} needs a project`);
+    assert.ok(data.tools.some((tool) => tool.participantId === participant.id), `${participant.displayName} needs a tool`);
   }
-  for (const participantId of ["aperture", "insilicom", "macrocosm"]) {
-    const placeholderTools = data.tools.filter((tool) => tool.participantId === participantId);
-    assert.deepEqual(placeholderTools.map((tool) => tool.name), ["Tool A", "Tool B"]);
-    assert.ok(placeholderTools.every((tool) => tool.summaryParagraphs.every((paragraph) => placeholderTextPattern.test(paragraph))));
-    assert.ok(placeholderTools.every((tool) => tool.resources.map((resource) => resource.name).join(",") === "Piece A,Piece B"));
+  assert.ok(inParticipantOrder(data.projects), "projects should follow the participant order");
+  assert.ok(inParticipantOrder(data.tools), "tools should be grouped in participant order");
+  assert.deepEqual(data.program.impactGroups.map((group) => group.participantId), participantIds);
+  for (const group of data.program.impactGroups) {
+    assert.ok(group.entries.length > 0 && group.entries.every((entry) => entry.trim().length > 0), `${group.participantId} needs impact statements`);
   }
+  assert.equal(new Set(data.tools.map((tool) => tool.id)).size, data.tools.length, "tool ids should be unique");
   for (const tool of data.tools) {
     assert.equal(tool.summaryParagraphs.length, 2, `${tool.name} should expose exactly two compact summary paragraphs`);
     const media = [tool.figure, ...tool.galleryImages];
     assert.equal(media.length, 4, `${tool.name} should have four Ken Burns frames`);
     assert.equal(new Set(media.map((image) => image.src)).size, 4, `${tool.name} frames should be distinct`);
-    const mediaRoot = tool.participantId === "northwestern" ? "/apto/tools/photography/" : "/apto/tools/placeholders/";
-    assert.ok(media.every((image) => image.src.startsWith(mediaRoot)), `${tool.name} should use its designated photography collection`);
+    assert.ok(media.every((image) => image.src.startsWith("/apto/") && image.alt.trim().length > 0), `${tool.name} frames need /apto/ paths and alternative text`);
     assert.ok(tool.resources.length > 0, `${tool.name} should expose supporting pieces`);
     assert.equal(new Set(tool.resources.map((resource) => resource.image.src)).size, tool.resources.length, `${tool.name} supporting pieces should use distinct images`);
     for (const resource of tool.resources) {
@@ -106,61 +100,39 @@ test("generated content follows the featured-institution order and supplied-imag
       if (resource.url) assert.ok(resource.actionLabel?.length > 0, `${resource.name} should describe its linked destination`);
     }
   }
-  const sharedResourceIcons = new Map();
+  // A named supporting piece keeps one icon across its own team's tools.
+  const teamResourceIcons = new Map();
   for (const tool of data.tools) {
     for (const resource of tool.resources) {
       if (/^Piece [A-Z]$/i.test(resource.name)) continue;
-      const key = resource.name.trim().toLocaleLowerCase("en-US");
-      const previous = sharedResourceIcons.get(key);
+      const key = `${tool.participantId}:${resource.name.trim().toLocaleLowerCase("en-US")}`;
+      const previous = teamResourceIcons.get(key);
       if (previous) {
-        assert.equal(resource.image.src, previous, `${resource.name} should reuse one canonical icon across tools`);
+        assert.equal(resource.image.src, previous, `${resource.name} should reuse one icon across ${tool.participantId} tools`);
       } else {
-        sharedResourceIcons.set(key, resource.image.src);
+        teamResourceIcons.set(key, resource.image.src);
       }
     }
   }
-  assert.equal(sharedResourceIcons.get("techbridge"), "/apto/tools/icons/decision.svg");
-  assert.equal(sharedResourceIcons.get("innovation insights"), "/apto/tools/icons/innovation.svg");
-  const nonNorthwesternTools = data.tools.filter((tool) => tool.participantId !== "northwestern");
-  const placeholderImages = new Set(nonNorthwesternTools.flatMap((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src)));
-  assert.deepEqual([...placeholderImages].toSorted(), [
-    "/apto/tools/placeholders/adi-goldstein-circuit-board.jpg",
-    "/apto/tools/placeholders/greg-rosenke-machining.jpg",
-    "/apto/tools/placeholders/nasa-earth-orbit.jpg",
-    "/apto/tools/placeholders/sean-benesh-climber.jpg",
-    "/apto/tools/placeholders/zoshua-colah-mineral.jpg",
-  ]);
-  assert.equal(new Set(nonNorthwesternTools.map((tool) => [tool.figure, ...tool.galleryImages].map((image) => image.src).join("|"))).size, nonNorthwesternTools.length);
-  const placeholderTools = data.tools.filter((tool) => tool.participantId !== "northwestern");
-  const placeholderCopy = [
-    ...data.program.impactGroups.filter((group) => group.participantId !== "northwestern").flatMap((group) => group.entries),
-    ...placeholderTools.flatMap((tool) => [
-      ...tool.summaryParagraphs,
-      ...tool.resources.map((resource) => resource.description),
-    ]),
-  ];
-  assert.equal(placeholderCopy.length, 63);
-  assert.equal(new Set(placeholderCopy).size, placeholderCopy.length, "every displayed placeholder passage should be distinct");
-  const agenticTool = data.tools.find((tool) => tool.id === "agentic-framework-for-technology-outcome-mining");
-  assert.deepEqual(agenticTool.resources.map((resource) => resource.name), [
-    "Perovskite Dataset",
-    "Quantum Dataset",
-  ]);
-  assert.ok(agenticTool.resources.every((resource) => !/slides/i.test(`${resource.name} ${resource.description}`)));
-  const emergingTool = data.tools.find((tool) => tool.id === "emerging-technology-detection");
-  assert.ok(emergingTool.resources.some((resource) => resource.name === "Science Maps"));
-  assert.doesNotMatch(JSON.stringify(data.tools), /—/);
-  assert.equal(data.convenings[0].images.length, 7);
-  assert.ok(data.convenings[0].images[0].src.endsWith("img-4030-1.jpg"));
-  assert.deepEqual(data.convenings[0].images.map((image) => image.src.split("/").at(-1)).toSorted(), [
-    "img-3986-1.jpg",
-    "img-3989-1.jpg",
-    "img-3996-1.jpg",
-    "img-3998-1.jpg",
-    "img-4010-1.jpg",
-    "img-4013-1.jpg",
-    "img-4030-1.jpg",
-  ]);
+  // Collections group tools of one team, and a tool joins at most one.
+  const collectedToolIds = data.toolCollections.flatMap((collection) => collection.toolIds);
+  assert.equal(new Set(collectedToolIds).size, collectedToolIds.length, "a tool should belong to at most one collection");
+  for (const collection of data.toolCollections) {
+    assert.ok(collection.toolIds.length >= 2, `${collection.name} should group at least two tools`);
+    for (const toolId of collection.toolIds) {
+      const member = data.tools.find((tool) => tool.id === toolId);
+      assert.ok(member, `${collection.name} references a missing tool: ${toolId}`);
+      assert.equal(member.participantId, collection.participantId, `${collection.name} should group tools from its own team`);
+    }
+    assert.equal(collection.summaryParagraphs.length, 2, `${collection.name} should expose exactly two summary paragraphs`);
+    assert.equal(new Set([collection.figure, ...collection.galleryImages].map((image) => image.src)).size, 4, `${collection.name} frames should be distinct`);
+  }
+  assert.doesNotMatch(JSON.stringify(data.tools), /—/, "tool copy should use commas, colons, or hyphens instead of em dashes");
+  assert.ok(data.convenings.length > 0, "the site needs at least one convening");
+  for (const convening of data.convenings) {
+    assert.ok(convening.images.length > 0, `${convening.title} needs photography`);
+    assert.equal(new Set(convening.images.map((image) => image.src)).size, convening.images.length, `${convening.title} photos should be distinct`);
+  }
   const conveningGallerySource = await readFile(new URL("../app/apto/convening-gallery.tsx", import.meta.url), "utf8");
   assert.match(conveningGallerySource, /const tail = Array\.from\(\{ length: imageCount \}[\s\S]*?\.slice\(1\)/);
   assert.match(conveningGallerySource, /Math\.random\(\)/);
@@ -181,23 +153,13 @@ test("generated content follows the featured-institution order and supplied-imag
       data.participants.find((participant) => participant.id === project.participantId).people.map((person) => person.id),
     );
   }
-  const northwesternPeople = data.participants.find((participant) => participant.id === "northwestern").people;
-  assert.deepEqual(
-    northwesternPeople.filter((person) => person.headshotUrl).map((person) => person.id),
-    ["dashun-wang", "benjamin-jones", "jian-cao", "mark-hersam", "yian-yin"],
-  );
-  assert.deepEqual(data.program.programTeam.map((person) => [person.name, person.role]), [
-    ["Rebecca Chmiel", "Program Manager"],
-    ["Chaitanya Baru", "NSF Team"],
-    ["Megan Catterton", "NSF Team"],
-  ]);
-  assert.equal(data.program.programTeam.find((person) => person.id === "rebecca-chmiel").email, "rjchmiel@nsf.gov");
-  assert.equal(data.convenings[0].location, "Washington, D.C.");
+  assert.ok(programManager(data), "the program needs a Program Manager contact");
+  assert.match(programManager(data).email ?? "", /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "the Program Manager needs an email address");
 });
 
 test("Story gives project titles full card width and pairs lead-institution tools", async () => {
   const data = await content();
-  const presentationToolCount = data.tools.length - 2;
+  const presentationToolCount = presentationCards(data).length;
   const html = await (await render("/story")).text();
   assert.equal((html.match(/class="story-outcome-depth"/g) ?? []).length, 3);
   for (const output of ["Technology Outcome Models", "Causal, predictive models", "Datasets", "Tools"]) assert.ok(html.includes(output));
@@ -217,7 +179,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/data-story-reveal="right"/g) ?? []).length > 0);
   assert.ok((html.match(/data-story-reveal="left"/g) ?? []).length > 0);
   assert.match(html, /Together, the APTO cohort is working to achieve/);
-  assert.match(html, /Led by Northwestern University/);
+  for (const participant of data.participants) assert.ok(html.includes(`Led by ${participant.displayName}`), `Story should credit ${participant.displayName} on its tools`);
   assert.doesNotMatch(html, /story-cohort|story-nav-cohort|>Cohort</);
   assert.ok((html.match(/class="story-project-people"/g) ?? []).length >= data.projects.length);
   assert.ok((html.match(/class="story-project-people" data-people-layout="grid"/g) ?? []).length >= 2);
@@ -225,23 +187,26 @@ test("Story gives project titles full card width and pairs lead-institution tool
   assert.ok((html.match(/class="story-person"/g) ?? []).length >= data.participants.reduce((sum, participant) => sum + participant.people.length, 0));
   assert.match(html, /Program contacts/);
   assert.match(html, /class="story-footer-contact-primary"/);
-  assert.match(html, /Rebecca Chmiel/);
   assert.match(html, /Program Manager/);
   assert.match(html, /class="story-footer-team"/);
   assert.match(html, /NSF team/);
-  assert.match(html, /Chaitanya Baru/);
-  assert.match(html, /Megan Catterton/);
+  for (const person of data.program.programTeam) assert.ok(html.includes(person.name), `Story footer should list ${person.name}`);
   assert.doesNotMatch(html, /Program Contact/);
-  assert.match(html, /href="mailto:rjchmiel@nsf.gov"/);
+  assert.ok(html.includes(`href="mailto:${programManager(data).email}"`));
   assert.match(html, /class="story-footer-disclaimer"/);
   assert.match(html, /This material is based upon work supported by the National Science Foundation under Grant Number 2404035\./);
   assert.doesNotMatch(html, /Tools from across the APTO cohort/i);
   assert.doesNotMatch(html, /Agentic outcome-mining workflow/);
   assert.equal((html.match(/class="story-project-chapter"/g) ?? []).length, data.projects.length);
-  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, 5);
-  assert.match(html, /<h3>AI Tools<\/h3>/);
-  assert.doesNotMatch(html, /<h3>(?:AI Skills|AI Benchmarks|AI Infrastructure)<\/h3>/);
-  for (const area of ["AI Skills", "AI Benchmarks", "AI Infrastructure"]) assert.ok(html.includes(area));
+  assert.equal((html.match(/class="story-tool-pair"/g) ?? []).length, featuredToolRowCount(data));
+  for (const collection of data.toolCollections) {
+    assert.ok(html.includes(`<h3>${collection.name}</h3>`), `Story should present the ${collection.name} collection as one card`);
+    for (const toolId of collection.toolIds) {
+      const member = data.tools.find((tool) => tool.id === toolId);
+      assert.ok(!html.includes(`<h3>${member.name}</h3>`), `${member.name} should appear inside its collection, not as its own card`);
+      assert.ok(html.includes(member.name), `${member.name} should appear as a supporting piece`);
+    }
+  }
   // React's streamed payload can repeat serialized component markup. Require
   // at least one rendered gallery/resource group per tool without depending
   // on that framework-level transport detail.
@@ -278,7 +243,7 @@ test("Story gives project titles full card width and pairs lead-institution tool
 
 test("Atlas exposes supplied-image galleries and supporting pieces", async () => {
   const data = await content();
-  const presentationToolCount = data.tools.length - 2;
+  const presentationToolCount = presentationCards(data).length;
   const programHtml = await (await render("/atlas")).text();
   assert.match(programHtml, /class="story-section story-impact" id="atlas-impact"/);
   assert.match(programHtml, /class="story-hero-copy" data-story-reveal="heading" data-story-parallax="-0\.030"/);
@@ -384,11 +349,16 @@ test("Atlas exposes supplied-image galleries and supporting pieces", async () =>
   assert.match(atlasProjectsHtml, /class="atlas-footer-contact-primary"/);
   assert.match(atlasProjectsHtml, /class="atlas-footer-team"/);
   assert.doesNotMatch(atlasProjectsHtml, /Program Contact/);
-  assert.match(atlasProjectsHtml, /href="mailto:rjchmiel@nsf.gov"/);
+  assert.ok(atlasProjectsHtml.includes(`href="mailto:${programManager(data).email}"`));
 
   const atlasToolsHtml = await (await render("/atlas/tools")).text();
-  assert.match(atlasToolsHtml, /<h2>AI Tools<\/h2>/);
-  assert.doesNotMatch(atlasToolsHtml, /<h2>(?:AI Skills|AI Benchmarks|AI Infrastructure)<\/h2>/);
+  for (const collection of data.toolCollections) {
+    assert.ok(atlasToolsHtml.includes(`<h2>${collection.name}</h2>`), `Atlas should present the ${collection.name} collection as one card`);
+    for (const toolId of collection.toolIds) {
+      const member = data.tools.find((tool) => tool.id === toolId);
+      assert.ok(!atlasToolsHtml.includes(`<h2>${member.name}</h2>`), `${member.name} should appear inside its collection, not as its own card`);
+    }
+  }
   assert.ok((atlasToolsHtml.match(/class="atlas-tool-card"/g) ?? []).length >= presentationToolCount);
 });
 
@@ -421,29 +391,10 @@ test("the shared gallery preserves reduced-motion support and true crossfades", 
 
 test("available tool pieces open externally without a blocked cursor for unavailable pieces", async () => {
   const data = await content();
-  const expectedUrls = [
-    "https://niinstitute.kellogg.northwestern.edu/bridge",
-    "https://www.innovationinsights.org",
-    "https://northwestern-cssi.github.io/sciscinet/",
-    "https://sciscigpt.com",
-    "https://arxiv.org/abs/2605.16719",
-    "https://fundingthefrontier.com",
-  ];
-  const northwesternUrls = new Set(data.tools
-    .filter((tool) => tool.participantId === "northwestern")
-    .flatMap((tool) => tool.resources.map((resource) => resource.url).filter(Boolean)));
-  expectedUrls.forEach((url) => assert.ok(northwesternUrls.has(url), `missing Northwestern resource URL: ${url}`));
-
-  const linkedPieceActions = new Map(data.tools
-    .flatMap((tool) => tool.resources)
-    .filter((resource) => resource.url)
-    .map((resource) => [resource.name, resource.actionLabel]));
-  assert.equal(linkedPieceActions.get("TechBridge"), "Open the tool");
-  assert.equal(linkedPieceActions.get("Innovation Insights"), "Open the tool");
-  assert.equal(linkedPieceActions.get("SciSciNet"), "Explore the dataset");
-  assert.equal(linkedPieceActions.get("SciSciGPT"), "Open the tool");
-  assert.equal(linkedPieceActions.get("Punctuated Progress"), "Read the paper");
-  assert.equal(linkedPieceActions.get("Funding the Frontier"), "Open the portal");
+  for (const resource of data.tools.flatMap((tool) => tool.resources).filter((candidate) => candidate.url)) {
+    assert.match(resource.url, /^https:\/\//, `${resource.name} should link over HTTPS`);
+    assert.ok(resource.actionLabel?.trim().length > 0, `${resource.name} should describe its linked destination`);
+  }
 
   const resourceSource = await readFile(new URL("../app/apto/tool-resource-path.tsx", import.meta.url), "utf8");
   const resourceStyles = await readFile(new URL("../app/apto/tool-resource-path.css", import.meta.url), "utf8");
