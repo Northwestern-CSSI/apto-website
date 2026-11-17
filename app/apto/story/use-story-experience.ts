@@ -22,6 +22,7 @@ export function useStoryExperience(
     const parallaxElements = [...root.querySelectorAll<HTMLElement>("[data-story-parallax]")];
     const impactGroups = [...root.querySelectorAll<HTMLElement>("[data-story-impact-group]")];
     const impactLogos = [...root.querySelectorAll<HTMLElement>("[data-story-impact-logo]")];
+    const impactLeads = impactGroups.map((group) => (group.firstElementChild as HTMLElement | null) ?? group);
     const revealVectors: Record<string, readonly [number, number]> = {
       heading: [0, 0],
       left: [-18, 0],
@@ -109,17 +110,25 @@ export function useStoryExperience(
       }
 
       if (impactGroups.length > 0) {
-        const marker = window.scrollY + headerHeight + Math.max(0, viewportHeight - headerHeight) * .48;
+        const markerOffset = Math.max(0, viewportHeight - headerHeight) * .48;
+        const marker = window.scrollY + headerHeight + markerOffset;
         const centers = impactGroups.map((element) => documentTop(element) + element.offsetHeight / 2);
+        const ease = (linear: number) => reduceMotion ? (linear >= .5 ? 1 : 0) : linear * linear * (3 - 2 * linear);
         let impactPosition = 0;
+        // Outgoing logos follow a later release so they stay with goals that are still in view.
+        let releasePosition = 0;
         if (centers.length > 1 && marker >= centers.at(-1)!) {
           impactPosition = centers.length - 1;
+          releasePosition = impactPosition;
         } else if (centers.length > 1 && marker > centers[0]) {
           for (let index = 0; index < centers.length - 1; index += 1) {
             if (marker <= centers[index + 1]) {
-              const linear = clamp01((marker - centers[index]) / Math.max(1, centers[index + 1] - centers[index]));
-              const progress = reduceMotion ? (linear >= .5 ? 1 : 0) : linear * linear * (3 - 2 * linear);
-              impactPosition = index + progress;
+              const span = Math.max(1, centers[index + 1] - centers[index]);
+              const linear = clamp01((marker - centers[index]) / span);
+              // Hold until the group's first line reaches the header, within a range that leaves room to fade.
+              const hold = Math.max(.3, Math.min(.7, (documentTop(impactLeads[index]) + markerOffset - centers[index]) / span));
+              impactPosition = index + ease(linear);
+              releasePosition = index + ease(clamp01((linear - hold) / (1 - hold)));
               break;
             }
           }
@@ -133,10 +142,10 @@ export function useStoryExperience(
         });
         impactLogos.forEach((element, index) => {
           const delta = index - impactPosition;
-          const distance = Math.abs(delta);
+          const distance = delta < 0 ? Math.max(0, releasePosition - index) : delta;
           const opacity = reduceMotion ? (index === currentIndex ? 1 : 0) : clamp01(1 - distance * 1.18);
           const sideDirection = element.dataset.storyImpactSide === "left" ? -1 : 1;
-          const shift = reduceMotion ? 0 : sideDirection * (delta < 0 ? delta * 86 : delta * 48);
+          const shift = reduceMotion ? 0 : sideDirection * (delta < 0 ? -distance * 86 : delta * 48);
           const scale = reduceMotion ? 1 : .9 + opacity * .1;
           const blur = reduceMotion ? 0 : Math.min(7, distance * 4.5);
           element.style.setProperty("--story-impact-logo-opacity", opacity.toFixed(4));
