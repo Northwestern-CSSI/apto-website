@@ -455,16 +455,16 @@
      and the bottom padding keeps the gallery progress clear of the text. */
   position: relative;
   z-index: 3;
+  min-height: inherit;
   padding: clamp(28px, 5vw, 72px);
+  padding-bottom: calc(clamp(1rem, 3vw, 2rem) + 2.25rem);
   display: grid;
   grid-template-columns: minmax(220px, .46fr) minmax(340px, .54fr);
   align-items: end;
   gap: clamp(32px, 6vw, 100px);
   color: white;
   pointer-events: none;
-  min-height: inherit;
 }
-  padding-bottom: calc(clamp(1rem, 3vw, 2rem) + 2.25rem);
 
 .atlas-convening-copy > strong {
   align-self: start;
@@ -663,7 +663,8 @@
     grid-template-columns: auto minmax(0, 1fr);
     grid-template-rows: auto;
     gap: clamp(6px, 2vw, 16px);
-    padding: 6px clamp(8px, 2.5vw, 18px);
+    /* Meet the content edge as soon as the one-line navigation has room. */
+    padding: 6px clamp(8px, calc(25vw - 72px), 18px);
   }
   .apto-atlas .story-brand {
     min-height: 44px;
@@ -778,3 +779,15 @@
 .apto-atlas .story-project-location,
 .apto-atlas .story-person p { font-size: .75rem; }
 .apto-atlas .story-person a { font-size: .72rem; }
+
+/* Dark mode lifts each institution accent so its name and markers stay
+   readable against the deep navy canvas. */
+[data-apto-theme="dark"] .apto-atlas .story-impact-group h3 {
+  color: color-mix(in srgb, var(--story-impact-accent) 45%, var(--story-ink));
+}
+[data-apto-theme="dark"] .apto-atlas .story-impact-goals li::before {
+  background: color-mix(in srgb, var(--story-impact-accent) 58%, var(--story-ink));
+}
+
+/* External-link arrows keep a small gap from their labels. */
+.apto-atlas :is(.story-project-meta, .story-person) a { gap: .3em; }

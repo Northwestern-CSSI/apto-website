@@ -247,6 +247,7 @@
   margin-top: 5px;
   display: inline-flex;
   align-items: center;
+  gap: .3em;
   color: #9ce5f0;
   font-size: .65rem;
   font-weight: 850;
