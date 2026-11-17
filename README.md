@@ -6,7 +6,7 @@ responsive presentations—the long-scroll APTO Continuum and the image-led APTO
 Atlas—built from the same Markdown content and coordinated light and deep-navy
 themes.
 
-- Website: <https://filipinascimento.github.io/apto-website/>
+- Website: <https://northwestern-cssi.github.io/apto-website/>
 - Existing APTO deployment: <https://apto-design-study.moondark.chatgpt.site/story>
 - Main pages: Program, Projects, Tools, and Convening
 - Long-scroll presentation: `/` or `/story` on GitHub Pages and `/story` or
@@ -71,7 +71,7 @@ To reproduce the GitHub Pages export locally:
 GITHUB_PAGES=true \
 NEXT_PUBLIC_BASE_PATH=/apto-website \
 NEXT_PUBLIC_APTO_ROUTE_BASE='' \
-NEXT_PUBLIC_SITE_URL=https://filipinascimento.github.io/apto-website \
+NEXT_PUBLIC_SITE_URL=https://northwestern-cssi.github.io/apto-website \
 npm run build:pages
 
 NEXT_PUBLIC_BASE_PATH=/apto-website npm run check:pages
