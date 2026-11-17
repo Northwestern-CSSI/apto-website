@@ -17,6 +17,7 @@
   --atlas-shell: min(100%, calc(var(--story-max) + 2 * var(--atlas-gutter)));
   --atlas-page-top: clamp(58px, 7vw, 104px);
   --atlas-page-gap: clamp(44px, 5vw, 76px);
+  --atlas-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 7' fill='none' stroke='%23002554' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1 4.5 4.5L10 1'/%3E%3C/svg%3E");
   min-height: 100vh;
   overflow-x: clip;
   color: var(--atlas-ink);
@@ -39,6 +40,7 @@
   --atlas-line: rgb(181 202 214 / 18%);
   --atlas-line-strong: rgb(181 202 214 / 34%);
   --atlas-shadow: 0 22px 68px rgb(0 0 0 / 42%);
+  --atlas-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 7' fill='none' stroke='%23f4f8fa' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1 4.5 4.5L10 1'/%3E%3C/svg%3E");
   color-scheme: dark;
 }
 
@@ -135,7 +137,7 @@
 .atlas-tool-toolbar fieldset { margin: 0; padding: 0; display: flex; gap: 10px; border: 0; }
 .atlas-tool-toolbar label { min-width: 205px; display: grid; gap: 5px; }
 .atlas-tool-toolbar label > span { color: var(--atlas-copy); font-size: .72rem; font-weight: 800; }
-.atlas-tool-toolbar select { min-height: 44px; padding: 0 38px 0 12px; color: var(--atlas-ink); background: var(--atlas-surface); border: 1px solid var(--atlas-line-strong); border-radius: 5px; font-size: .82rem; font-weight: 700; }
+.atlas-tool-toolbar select { min-height: 44px; padding: 0 42px 0 14px; color: var(--atlas-ink); background: var(--atlas-surface) var(--atlas-select-chevron) no-repeat right 16px center / 11px 7px; border: 1px solid var(--atlas-line-strong); border-radius: 5px; font-size: .82rem; font-weight: 700; appearance: none; cursor: pointer; }
 .atlas-tool-count { min-width: 108px; color: var(--atlas-copy); font-size: .72rem; text-align: right; }
 .atlas-tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); }
 .atlas-tool-card { position: relative; width: 100%; min-width: 0; min-height: clamp(612px, calc(962px - 23.9vw), 662px); aspect-ratio: 1 / 1.20; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
@@ -318,6 +320,10 @@
   .atlas-tool-panel { height: 50%; }
 }
 
+@media (width > 900px) {
+  .atlas-tool-toolbar > div { min-height: 44px; display: flex; align-items: center; }
+}
+
 @media (max-width: 1180px) {
   .atlas-tool-toolbar { grid-template-columns: 1fr auto; }
   .atlas-tool-toolbar fieldset { grid-column: 2; grid-row: 1; }
@@ -381,6 +387,7 @@
 }
 
 @media (forced-colors: active) {
+  .atlas-tool-toolbar select { background-image: none; appearance: auto; }
   .atlas-person-initials { forced-color-adjust: none; border: 2px solid CanvasText; }
   .atlas-tool-shade { background: linear-gradient(transparent, Canvas 70%); }
   .atlas-tool-panel { background: Canvas; border: 2px solid CanvasText; }
