@@ -11,6 +11,12 @@
   --atlas-line: rgb(0 37 84 / 16%);
   --atlas-line-strong: rgb(0 37 84 / 30%);
   --atlas-shadow: 0 18px 54px rgb(0 37 84 / 14%);
+  /* One gutter keeps the header, page content, and footer on shared edges;
+     wide viewports center content on the common maximum width. */
+  --atlas-gutter: clamp(20px, 5vw, 80px);
+  --atlas-shell: min(100%, calc(var(--story-max) + 2 * var(--atlas-gutter)));
+  --atlas-page-top: clamp(58px, 7vw, 104px);
+  --atlas-page-gap: clamp(44px, 5vw, 76px);
   min-height: 100vh;
   overflow-x: clip;
   color: var(--atlas-ink);
@@ -73,13 +79,13 @@
 
 .atlas-main { min-height: 70vh; }
 .atlas-page-intro {
-  width: min(100%, 1500px);
+  width: var(--atlas-shell);
   margin: 0 auto;
-  padding: clamp(58px, 7vw, 104px) max(4vw, 28px) clamp(44px, 5vw, 76px);
+  padding: var(--atlas-page-top) var(--atlas-gutter) var(--atlas-page-gap);
   display: grid;
   grid-template-columns: minmax(130px, .34fr) minmax(300px, .8fr) minmax(340px, 1fr);
   align-items: start;
-  gap: clamp(28px, 5vw, 82px);
+  gap: 12px clamp(28px, 5vw, 82px);
 }
 .atlas-page-intro > p {
   padding-top: 8px;
@@ -91,15 +97,16 @@
 }
 .atlas-page-intro h1 {
   max-width: 690px;
+  margin-bottom: 8px;
   color: var(--atlas-ink);
-  font-size: clamp(2.1rem, 3.15vw, 3rem);
-  font-weight: 650;
-  letter-spacing: -.055em;
-  line-height: 1.05;
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  font-weight: 620;
+  letter-spacing: -.045em;
+  line-height: 1.08;
   text-align: right;
   text-wrap: balance;
 }
-.atlas-page-intro > div { max-width: 680px; color: var(--atlas-copy); font-size: 1.01rem; line-height: 1.72; text-align: left; }
+.atlas-page-intro > div { max-width: 70ch; color: var(--atlas-copy); font-size: clamp(.98rem, 1.2vw, 1.1rem); line-height: 1.72; text-align: left; }
 .atlas-framework article header > p,
 .atlas-tool-toolbar > div > p,
 .atlas-leadership header > p,
@@ -122,16 +129,16 @@
 .atlas-framework dt { margin-bottom: 11px; font-size: 1rem; font-weight: 800; }
 .atlas-framework dd { color: var(--atlas-copy); font-size: .86rem; line-height: 1.66; }
 
-.atlas-tool-collection { width: min(100%, 1540px); margin: 0 auto clamp(100px, 10vw, 160px); padding: 0 max(3vw, 22px); }
+.atlas-tool-collection { width: var(--atlas-shell); margin: 0 auto clamp(100px, 10vw, 160px); padding: 0 var(--atlas-gutter); }
 .atlas-tool-toolbar { margin-bottom: 28px; padding: 20px 22px; display: grid; grid-template-columns: minmax(220px, 1fr) auto auto; align-items: end; gap: 24px; background: color-mix(in srgb, var(--atlas-raised) 75%, transparent); border-radius: 8px; }
 .atlas-tool-toolbar h2 { margin-top: 5px; font-size: 1.28rem; font-weight: 700; letter-spacing: -.03em; }
 .atlas-tool-toolbar fieldset { margin: 0; padding: 0; display: flex; gap: 10px; border: 0; }
 .atlas-tool-toolbar label { min-width: 205px; display: grid; gap: 5px; }
-.atlas-tool-toolbar label > span { color: var(--atlas-copy); font-size: .62rem; font-weight: 800; }
-.atlas-tool-toolbar select { min-height: 44px; padding: 0 38px 0 12px; color: var(--atlas-ink); background: var(--atlas-surface); border: 1px solid var(--atlas-line-strong); border-radius: 5px; font-size: .76rem; font-weight: 700; }
+.atlas-tool-toolbar label > span { color: var(--atlas-copy); font-size: .72rem; font-weight: 800; }
+.atlas-tool-toolbar select { min-height: 44px; padding: 0 38px 0 12px; color: var(--atlas-ink); background: var(--atlas-surface); border: 1px solid var(--atlas-line-strong); border-radius: 5px; font-size: .82rem; font-weight: 700; }
 .atlas-tool-count { min-width: 108px; color: var(--atlas-copy); font-size: .72rem; text-align: right; }
 .atlas-tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); }
-.atlas-tool-card { position: relative; width: 100%; min-width: 0; min-height: clamp(600px, calc(950px - 25vw), 650px); aspect-ratio: 1 / 1.20; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
+.atlas-tool-card { position: relative; width: 100%; min-width: 0; min-height: clamp(612px, calc(962px - 23.9vw), 662px); aspect-ratio: 1 / 1.20; overflow: hidden; color: #fff; background: #06192b; border-radius: 10px; box-shadow: 0 16px 38px rgb(0 17 34 / 18%); isolation: isolate; }
 .atlas-tool-card::after { content: ""; position: absolute; z-index: 4; inset: 0; border: 1px solid rgb(255 255 255 / 14%); border-radius: inherit; pointer-events: none; }
 .atlas-tool-media,
 .atlas-tool-media img,
@@ -258,7 +265,7 @@
 .atlas-person a { min-height: 34px; margin-top: 3px; font-size: .66rem; }
 
 .atlas-footer {
-  padding: clamp(46px, 6vw, 80px) max(4vw, 28px);
+  padding: clamp(46px, 6vw, 80px) var(--atlas-gutter);
   display: grid;
   grid-template-columns: minmax(240px,.9fr) minmax(270px,1fr) auto;
   align-items: start;
@@ -269,20 +276,20 @@
 .atlas-footer-support { display: flex; align-items: center; gap: 18px; }
 .atlas-footer-support > a { width: 72px; height: 72px; flex: 0 0 72px; display: grid; place-items: center; background: #fff; border-radius: 50%; }
 .atlas-footer-support img { width: 62px; height: 62px; object-fit: contain; }
-.atlas-footer-support p { color: #fff; font-size: .75rem; font-weight: 850; line-height: 1.4; }
-.atlas-footer-support span { margin-top: 4px; display: block; font-size: .65rem; line-height: 1.45; }
+.atlas-footer-support p { color: #fff; font-size: .82rem; font-weight: 850; line-height: 1.4; }
+.atlas-footer-support span { margin-top: 4px; display: block; font-size: .75rem; line-height: 1.5; }
 .atlas-footer-contacts { font-style: normal; }
-.atlas-footer-contacts > strong { display: block; margin-bottom: 7px; color: #fff; font-size: .75rem; }
+.atlas-footer-contacts > strong { display: block; margin-bottom: 7px; color: #fff; font-size: .82rem; }
 .atlas-footer-contacts ul { margin: 0; padding: 0; display: grid; gap: 12px; list-style: none; }
-.atlas-footer-contacts li { font-size: .65rem; line-height: 1.45; }
+.atlas-footer-contacts li { font-size: .75rem; line-height: 1.5; }
 .atlas-footer-contact-primary { display: grid; justify-items: start; gap: 4px; }
 .atlas-footer-contact-primary > span { display: flex; flex-wrap: wrap; gap: 0 4px; }
-.atlas-footer-contact-primary b { color: #fff; font-size: .7rem; font-style: normal; }
+.atlas-footer-contact-primary b { color: #fff; font-size: .78rem; font-style: normal; }
 .atlas-footer-contact-primary small,
-.atlas-footer-team small { color: #a9c1cf; font-size: .61rem; font-style: normal; }
+.atlas-footer-team small { color: #a9c1cf; font-size: .7rem; font-style: normal; }
 .atlas-footer-contact-primary small::before { content: "· "; }
 .atlas-footer-team { display: grid; gap: 2px; }
-.atlas-footer-team > span { color: #fff; font-size: .65rem; font-style: normal; }
+.atlas-footer-team > span { color: #fff; font-size: .75rem; font-style: normal; }
 .atlas-footer-contacts a { color: #fff; font-weight: 750; }
 .atlas-footer-disclaimer {
   grid-column: 1 / -1;
@@ -291,35 +298,34 @@
   margin: 0;
   padding-top: 18px;
   border-top: 1px solid rgb(197 215 226 / 22%);
-  font-size: .62rem;
+  font-size: .7rem;
   line-height: 1.6;
 }
 .atlas-footer > nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
-.atlas-footer > nav a { min-height: 44px; display: inline-flex; align-items: center; color: #fff; font-size: .7rem; font-weight: 750; text-decoration: none; }
+.atlas-footer > nav a { min-height: 44px; display: inline-flex; align-items: center; color: #fff; font-size: .78rem; font-weight: 750; text-decoration: none; }
 .atlas-footer-actions { display: none; }
 
-/* Give the longest summaries room where the three-column cards are narrowest. */
-@media (1180px < width < 1280px) {
-  .atlas-tool-card { min-height: clamp(630px, calc(2045px - 110vw), 744px); }
+/* Tool cards are tuned to the gallery's width, so their breakpoints sit where
+   the gutter-adjusted gallery reaches each tuned card width. Give the longest
+   summaries room where the three-column cards are narrowest. */
+@media (1232px < width < 1337px) {
+  .atlas-tool-card { min-height: clamp(642px, calc(2057px - 105.3vw), 756px); }
+}
+
+@media (max-width: 1232px) {
+  .atlas-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atlas-tool-card { min-height: clamp(656px, calc(926px - 23.9vw), 746px); aspect-ratio: 1 / 1.16; }
+  .atlas-tool-panel { height: 50%; }
 }
 
 @media (max-width: 1180px) {
-  .atlas-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .atlas-tool-card { min-height: clamp(650px, calc(920px - 25vw), 740px); aspect-ratio: 1 / 1.16; }
-  .atlas-tool-panel { height: 50%; }
   .atlas-tool-toolbar { grid-template-columns: 1fr auto; }
-  .atlas-tool-toolbar fieldset { grid-column: 2; grid-row: 1 / 3; }
+  .atlas-tool-toolbar fieldset { grid-column: 2; grid-row: 1; }
   .atlas-tool-count { grid-column: 1; text-align: left; }
   .atlas-team-chapter { gap: 44px; }
 }
 
 @media (max-width: 900px) {
-  .atlas-page-intro { grid-template-columns: 1fr; gap: 13px; }
-  .atlas-page-intro > p,
-  .atlas-page-intro h1 { padding-top: 0; text-align: left; }
-  .atlas-page-intro > p { margin-bottom: 4px; }
-  .atlas-page-intro h1 { max-width: 760px; }
-  .atlas-page-intro > div { max-width: 760px; }
   .atlas-framework article,
   .atlas-leadership { grid-template-columns: 1fr; }
   .atlas-framework article:first-child,
@@ -339,8 +345,8 @@
 }
 
 @media (max-width: 719px) {
-  .atlas-page-intro { padding: 42px 20px 36px; }
-  .atlas-page-intro h1 { font-size: clamp(2rem, 9vw, 2.4rem); }
+  .apto-atlas { --atlas-page-top: 42px; --atlas-page-gap: 36px; }
+  .atlas-page-intro { padding-inline: 20px; }
   .atlas-framework,
   .atlas-cohort-index,
   .atlas-team-chapters { padding-right: 20px; padding-left: 20px; }
@@ -351,8 +357,6 @@
   .atlas-tool-toolbar { padding: 17px; }
   .atlas-tool-toolbar fieldset { display: grid; }
   .atlas-tool-toolbar label { min-width: 0; }
-  .atlas-tool-grid { grid-template-columns: 1fr; }
-  .atlas-tool-card { width: min(100%, 560px); min-height: clamp(650px, calc(780px - 20vw), 710px); max-height: none; margin: 0 auto; aspect-ratio: auto; }
   .atlas-leadership { width: calc(100% - 32px); padding: 28px 22px; }
   .atlas-team-chapter { min-height: 0; padding: 28px 22px; }
   .atlas-team-people { grid-template-columns: 1fr; }
@@ -362,6 +366,11 @@
   .atlas-footer { padding: 42px 22px; grid-template-columns: 1fr; align-items: start; }
   .atlas-footer-disclaimer { grid-column: 1; }
   .atlas-footer > nav { justify-content: flex-start; }
+}
+
+@media (max-width: 751px) {
+  .atlas-tool-grid { grid-template-columns: 1fr; }
+  .atlas-tool-card { width: min(100%, 560px); min-height: clamp(650px, calc(780px - 20vw), 710px); max-height: none; margin: 0 auto; aspect-ratio: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -381,7 +390,7 @@
 /* Shared editorial hierarchy: page titles carry the section without a
    separate eyebrow, and the two lead universities anchor the portfolio. */
 .atlas-page-intro {
-  grid-template-columns: minmax(280px, .44fr) minmax(340px, .56fr);
+  grid-template-columns: minmax(260px, .42fr) minmax(320px, .58fr);
 }
 
 .atlas-page-intro h1 {
@@ -411,9 +420,9 @@
 }
 
 .atlas-convening-list {
-  width: min(100%, 1440px);
+  width: var(--atlas-shell);
   margin: 0 auto clamp(100px, 12vw, 170px);
-  padding: 0 max(4vw, 28px);
+  padding: 0 var(--atlas-gutter);
 }
 
 .atlas-convening-card {
@@ -491,6 +500,11 @@
 .atlas-convening-copy span + span { margin-top: .8rem; }
 
 @media (max-width: 900px) {
+  .atlas-tool-toolbar { grid-template-columns: 1fr; }
+  .atlas-convening-copy { grid-template-columns: 1fr; align-content: space-between; }
+}
+
+@media (max-width: 820px) {
   .atlas-page-intro {
     grid-template-columns: 1fr;
   }
@@ -498,12 +512,10 @@
   .atlas-page-intro h1,
   .atlas-page-intro > div {
     grid-column: 1;
-    max-width: 760px;
+    max-width: none;
     justify-self: start;
     text-align: left;
   }
-
-  .atlas-convening-copy { grid-template-columns: 1fr; align-content: space-between; }
 }
 
 @media (max-width: 719px) {
@@ -536,13 +548,13 @@
 .apto-resource-path-atlas .apto-resource-route { min-height: 0; }
 .apto-resource-path-atlas .apto-resource-summary { min-height: 0; }
 .apto-resource-path-atlas .apto-resource-summary-copy { padding-top: 15px; padding-bottom: 14px; }
-.apto-resource-path-atlas .apto-resource-summary-copy > p { margin-bottom: 5px; font-size: .5rem; }
+.apto-resource-path-atlas .apto-resource-summary-copy > p { margin-bottom: 5px; font-size: .62rem; }
 .apto-resource-path-atlas .apto-resource-summary-copy h2 { font-size: clamp(1.04rem,1.25vw,1.2rem); }
 .apto-resource-path-atlas .apto-resource-summary-copy > span { margin-top: 5px; font-size: .66rem; line-height: 1.36; }
 .apto-resource-path-atlas.is-featured .apto-resource-summary-copy > span { font-size: .82rem; line-height: 1.42; }
 
 @media (max-width: 520px) {
-  .atlas-tool-card { min-height: clamp(676px, calc(1180px - 110vw), 900px); max-height: none; aspect-ratio: auto; }
+  .atlas-tool-card { min-height: clamp(676px, calc(1186px - 110vw), 900px); max-height: none; aspect-ratio: auto; }
   .atlas-tool-card .atlas-tool-panel { --resource-panel-edge: 16px; padding: 16px 16px 0; }
 }
 
@@ -725,3 +737,43 @@
     min-height: clamp(124px, 45svh, 220px);
   }
 }
+
+/* Atlas layout rhythm: from tablet widths up, the shared Story sections and
+   header follow the Atlas gutter so every page keeps the same edges. */
+@media (width >= 720px) {
+  .apto-atlas .story-header { padding-inline: var(--atlas-gutter); }
+  .apto-atlas .story-hero {
+    padding-inline: max(var(--atlas-gutter), calc((100% - var(--story-max)) / 2));
+  }
+  .apto-atlas :is(.story-section-heading, .story-outcome-panorama, .story-impact-layout, .story-projects-layout) {
+    width: min(calc(100% - 2 * var(--atlas-gutter)), var(--story-max));
+  }
+}
+
+/* The Projects page opens with the same title position as Tools and
+   Convening, and its cards span the full content width on small screens. */
+.apto-atlas .story-projects { padding-top: var(--atlas-page-top); }
+.apto-atlas .story-projects .story-section-heading { margin-bottom: var(--atlas-page-gap); row-gap: 12px; }
+.apto-atlas .story-project-chapters { width: auto; }
+
+/* The wider gutter narrows each tool card slightly, so the supporting pieces
+   give that width back to their thumbnails and labels. */
+@media (width >= 720px) {
+  .apto-resource-path-atlas .apto-resource-node { padding-inline: clamp(2.5px, .425vw, 5px); }
+}
+
+/* Atlas type scale: navigation and supporting copy stay legible beside the
+   page titles and body text. */
+@media (width >= 720px) {
+  .apto-atlas .story-header nav a { font-size: .875rem; }
+  .apto-atlas .story-directory-link { font-size: .8125rem; }
+  .apto-atlas .story-outcome-panorama figcaption small { font-size: clamp(.72rem, .9vw, .8rem); }
+  .apto-atlas .story-outcome-panorama figcaption span { font-size: clamp(.72rem, 1vw, .9rem); }
+}
+/* The program name returns once it clears the larger navigation. */
+@media (width < 1280px) {
+  .apto-atlas .story-brand span { display: none; }
+}
+.apto-atlas .story-project-location,
+.apto-atlas .story-person p { font-size: .75rem; }
+.apto-atlas .story-person a { font-size: .72rem; }
