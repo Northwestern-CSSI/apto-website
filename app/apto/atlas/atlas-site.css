@@ -872,6 +872,13 @@
   border-radius: 2px;
 }
 .apto-atlas .atlas-building-intro .story-section-heading > h2::before { bottom: calc(100% + 9px); }
+/* Title bars draw in from the left as their title comes into view. */
+.apto-atlas [data-atlas-bar]::before {
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(.16, 1, .3, 1) .25s;
+}
+.apto-atlas [data-atlas-bar="pending"]::before { transform: scaleX(0); }
+
 /* Navigation: a short bar grows under the tab being pointed at. */
 .apto-atlas .story-header nav a { position: relative; }
 .apto-atlas .story-header nav a::after {
@@ -963,6 +970,33 @@
 }
 [data-apto-theme="dark"] .apto-atlas .story-project-chapter {
   --atlas-marker-color: color-mix(in srgb, var(--project-accent) 58%, var(--story-ink));
+}
+
+/* Content rises into place piece by piece as it scrolls into view. Only
+   pieces the script has marked are hidden, so the page reads normally without
+   scripting, with reduced motion, and in print. */
+.apto-atlas {
+  --atlas-reveal-distance: 56px;
+  --atlas-reveal-scale: .96;
+}
+.apto-atlas :is(.story-impact-group > header, .story-impact-goals li, .story-impact-logo-stack) {
+  --atlas-reveal-distance: 36px;
+  --atlas-reveal-scale: .98;
+}
+/* Impact goals use this entrance in place of the scroll-linked slide. */
+.apto-atlas .apto-story .story-impact-goals li { opacity: 1; transform: none; }
+.apto-atlas [data-atlas-reveal].is-revealed {
+  transition:
+    opacity 1.3s cubic-bezier(.16, 1, .3, 1) var(--atlas-reveal-delay, 0ms),
+    transform 1.3s cubic-bezier(.16, 1, .3, 1) var(--atlas-reveal-delay, 0ms);
+}
+.apto-atlas.is-reveal-ready [data-atlas-reveal]:not(.is-revealed) {
+  opacity: 0;
+  transform: translate3d(0, var(--atlas-reveal-distance), 0) scale(var(--atlas-reveal-scale));
+}
+@media (prefers-reduced-motion: reduce), print {
+  .apto-atlas [data-atlas-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .apto-atlas [data-atlas-bar]::before { transform: none !important; transition: none !important; }
 }
 
 /* Small labels: one that only repeats the wordmark beside it stays available

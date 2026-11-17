@@ -32,6 +32,7 @@ import { aptoPresentationTools } from "../presentation-tools";
 import { useAptoTheme } from "../use-apto-theme";
 import { ProgramSections } from "../story/program-sections";
 import { useStoryExperience } from "../story/use-story-experience";
+import { useAtlasReveal } from "./use-atlas-reveal";
 
 export type AtlasSection = "home" | "projects" | "tools" | "convening";
 
@@ -223,7 +224,9 @@ function AtlasFooter({ theme, onToggle }: { theme: AptoTheme; onToggle: () => vo
 export function AtlasSitePage({ section }: { section: AtlasSection }) {
   const { theme, toggleTheme } = useAptoTheme("light");
   const participantOrders = useParticipantOrders();
-  return <div className="apto-atlas" data-theme={theme} data-testid="apto-atlas-root">
+  const rootRef = useRef<HTMLDivElement>(null);
+  useAtlasReveal(rootRef, `${section}|${Object.values(participantOrders).map((order) => order.join(",")).join("|")}`);
+  return <div className="apto-atlas" ref={rootRef} data-theme={theme} data-testid="apto-atlas-root">
     <a className="atlas-skip-link" href="#atlas-main">{aptoInterface.accessibility.skipLinkLabel}</a>
     <AptoHeader
       view="atlas"
